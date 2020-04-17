@@ -1,0 +1,203 @@
+//
+//  BBZMultiImageFilter.m
+//  BBZVideoEngine
+//
+//  Created by Hbo on 2020/4/17.
+//  Copyright © 2020 BBZ. All rights reserved.
+//
+
+#import "BBZMultiImageFilter.h"
+#import "GPUImageFramebuffer+BBZ.h"
+
+
+@interface BBZMultiImageFilter () {
+    GLint _uniformTextures[5];
+    GLint _uniformMat33;
+    GLint _uniformV4[2];
+    
+}
+@property (nonatomic, strong) NSMutableArray *objectsArray;
+@property (nonatomic, strong) NSMutableArray <GPUImageFramebuffer *>*frameBufferArray;
+@property (nonatomic, assign) NSInteger index;
+@property (nonatomic, assign) NSInteger maxIndex;
+@end
+
+@implementation BBZMultiImageFilter
+
+- (id)initWithVertexShaderFromString:(NSString *)vertexShaderString fragmentShaderFromString:(NSString *)fragmentShaderString {
+    if (!(self = [super initWithVertexShaderFromString:vertexShaderString fragmentShaderFromString:fragmentShaderString])) {
+        return nil;
+    }
+    _objectsArray = [NSMutableArray array];
+    _frameBufferArray = [NSMutableArray array];
+    _maxIndex = 5;
+    _index = 1;
+    runSynchronouslyOnVideoProcessingQueue(^{
+        [GPUImageContext useImageProcessingContext];
+        self->_uniformTextures[0] = self->filterInputTextureUniform;
+        GLint tmpIndex = [self->filterProgram uniformIndex:@"inputImageTexture2"];
+        NSLog(@"bob -- tmpIndex :%d", tmpIndex);
+        for (int i = 1; i < self->_maxIndex; i++) {
+            NSString *uniformName = [NSString stringWithFormat:@"inputImageTexture%d", i+1];
+            GLint uniformTexture = [self->filterProgram uniformIndex:uniformName];
+            self->_uniformTextures[i] = uniformTexture;
+            NSLog(@"bob -- _uniformTextures %d :%d, %@", i, uniformTexture, uniformName);
+        }
+        {
+            NSString *uniformName  = @"matParam";
+            GLint uniformIndex = [self->filterProgram uniformIndex:uniformName];
+            self->_uniformMat33 = uniformIndex;
+            NSLog(@"bob -- _uniformMat33 :%d", uniformIndex);
+        }
+        
+        for (int i = 0; i < 2; i++) {
+            NSString *uniformName = [NSString stringWithFormat:@"v4Param%d", i+1];
+            GLint uniformTexture = [self->filterProgram uniformIndex:uniformName];
+            self->_uniformV4[i] = uniformTexture;
+            NSLog(@"bob -- _uniformV4 %d :%d", i, uniformTexture);
+        }
+        NSLog(@"bob -- tmpIndex :%d", tmpIndex);
+    });
+    return self;
+}
+
+
+
+- (NSInteger)addImageTexture:(UIImage *)image {
+    NSInteger resultIndex = -1;
+    if(!image) {
+        return resultIndex;
+    }
+    NSAssert(self.index + 1 <= self.maxIndex, @"texture too much");
+    runSynchronouslyOnVideoProcessingQueue(^{
+        self.index ++;
+        [self.objectsArray addObject:image];
+        GPUImageFramebuffer *frameBuffer = [GPUImageFramebuffer BBZ_frameBufferWithImage:image.CGImage];
+        [frameBuffer disableReferenceCounting];
+        [self.frameBufferArray addObject:frameBuffer];
+    });
+    resultIndex = self.objectsArray.count;
+    return resultIndex;
+}
+- (BOOL)removeImageTexture:(UIImage *)image {
+    __block BOOL bRet = NO;
+    runSynchronouslyOnVideoProcessingQueue(^{
+        if([self.objectsArray containsObject:image]) {
+            NSInteger objectIndex = [self.objectsArray indexOfObject:image];
+            [self.objectsArray removeObject:image];
+            [self.frameBufferArray removeObjectAtIndex:objectIndex];
+            self.index --;
+            bRet = YES;
+        }
+    });
+    NSAssert(self.index >= 1, @"error happend");
+    return bRet;
+}
+
+- (NSInteger)addFrameBuffer:(GPUImageFramebuffer *)frameBuffer {
+    NSInteger resultIndex = -1;
+    if(!frameBuffer) {
+        return resultIndex;
+    }
+    NSAssert(self.index + 1 <= self.maxIndex, @"texture too much");
+    runSynchronouslyOnVideoProcessingQueue(^{
+        self.index ++;
+        [self.objectsArray addObject:frameBuffer];
+        [self.frameBufferArray addObject:frameBuffer];
+    });
+    resultIndex = self.objectsArray.count;
+    return resultIndex;
+}
+
+- (BOOL)removeFrameBuffer:(GPUImageFramebuffer *)frameBuffer {
+    __block BOOL bRet = NO;
+    runSynchronouslyOnVideoProcessingQueue(^{
+        if([self.objectsArray containsObject:frameBuffer]) {
+            NSInteger objectIndex = [self.objectsArray indexOfObject:frameBuffer];
+            [self.objectsArray removeObject:frameBuffer];
+            [self.frameBufferArray removeObjectAtIndex:objectIndex];
+            self.index --;
+            bRet = YES;
+        }
+    });
+    NSAssert(self.index >= 1, @"error happend");
+    return bRet;
+}
+
+
+#pragma mark - BBZGPUFilter
+
+- (GLfloat *)adjustVertices:(GLfloat *)vertices {
+    return vertices;
+}
+
+- (GLfloat *)adjustTextureCoordinates:(GLfloat *)textureCoordinates {
+    return textureCoordinates;
+}
+
+- (void)renderToTextureWithVertices:(const GLfloat *)vertices textureCoordinates:(const GLfloat *)textureCoordinates {
+    if (self.preventRendering) {
+        [firstInputFramebuffer unlock];
+        return;
+    }
+    
+    [GPUImageContext setActiveShaderProgram:filterProgram];
+    
+    outputFramebuffer = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:[self sizeOfFBO] textureOptions:self.outputTextureOptions onlyTexture:NO];
+    [outputFramebuffer activateFramebuffer];
+    if (usingNextFrameForImageCapture) {
+        [outputFramebuffer lock];
+    }
+    
+    [self setUniformsForProgramAtIndex:0];
+    
+    glClearColor(backgroundColorRed, backgroundColorGreen, backgroundColorBlue, backgroundColorAlpha);
+    glClear(GL_COLOR_BUFFER_BIT);
+    
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, [firstInputFramebuffer texture]);
+    
+    glUniform1i(filterInputTextureUniform, 2);
+    
+    NSInteger uniformIndex = 1;
+    GLint textureIndex = 1;
+    for (GPUImageFramebuffer *fb in self.frameBufferArray) {
+        glActiveTexture(GL_TEXTURE2 + textureIndex);
+        glBindTexture(GL_TEXTURE_2D, [fb texture]);
+        glUniform1i(_uniformTextures[uniformIndex], 2 + textureIndex);
+        uniformIndex++;
+        textureIndex++;
+    }
+    if(_uniformMat33 >= 0) {
+        glUniformMatrix3fv(_uniformMat33, 1, GL_FALSE, (GLfloat *)(&_mat33ParamValue));
+    }
+    if(_uniformV4[0] >= 0) {
+        glUniform4fv(_uniformV4[0], 1, (GLfloat *)&_vector4ParamValue1);
+    }
+    if(_uniformV4[1] >= 0) {
+        glUniform4fv(_uniformV4[1], 1, (GLfloat *)&_vector4ParamValue2);
+    }
+    glVertexAttribPointer(filterPositionAttribute, 2, GL_FLOAT, 0, 0, [self adjustVertices:vertices]);
+    glVertexAttribPointer(filterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, textureCoordinates);
+    
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    
+    [firstInputFramebuffer unlock];
+    //    for (GPUImageFramebuffer *fb in self.frameBufferArray) {
+    //        [fb unlock];
+    //    }
+    
+    if (usingNextFrameForImageCapture) {
+        dispatch_semaphore_signal(imageCaptureSemaphore);
+    }
+}
+
+- (void)removeAllCacheFrameBuffer {
+    runSynchronouslyOnVideoProcessingQueue(^{
+        self.index = 1;
+        [self.objectsArray removeAllObjects];
+        [self.frameBufferArray removeAllObjects];
+    });
+}
+@end
+

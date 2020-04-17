@@ -32,6 +32,7 @@
 		1426D705243D82BE008BEB86 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1426D703243D82BE008BEB86 /* LaunchScreen.storyboard */; };
 		1426D708243D82BE008BEB86 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1426D707243D82BE008BEB86 /* main.m */; };
 		1426D716243D90B9008BEB86 /* HomeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1426D715243D90B9008BEB86 /* HomeTableViewController.m */; };
+		1431FA1124495E5000AA2F65 /* BBZMultiImageFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1431FA1024495E5000AA2F65 /* BBZMultiImageFilter.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -85,6 +86,8 @@
 		1426D707243D82BE008BEB86 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		1426D714243D90B9008BEB86 /* HomeTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeTableViewController.h; sourceTree = "<group>"; };
 		1426D715243D90B9008BEB86 /* HomeTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeTableViewController.m; sourceTree = "<group>"; };
+		1431FA0F24495E5000AA2F65 /* BBZMultiImageFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZMultiImageFilter.h; sourceTree = "<group>"; };
+		1431FA1024495E5000AA2F65 /* BBZMultiImageFilter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZMultiImageFilter.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -190,6 +193,8 @@
 				1409D1B9244959850053CFA4 /* Source */,
 				1409D1F2244959D40053CFA4 /* GPUImageFramebuffer+BBZ.h */,
 				1409D1F3244959D40053CFA4 /* GPUImageFramebuffer+BBZ.m */,
+				1431FA0F24495E5000AA2F65 /* BBZMultiImageFilter.h */,
+				1431FA1024495E5000AA2F65 /* BBZMultiImageFilter.m */,
 			);
 			path = GPUImage;
 			sourceTree = "<group>";
@@ -266,6 +271,7 @@
 			files = (
 				1409D1F4244959D40053CFA4 /* GPUImageFramebuffer+BBZ.m in Sources */,
 				1409D1E9244959850053CFA4 /* GPUImagePicture+TextureSubimage.m in Sources */,
+				1431FA1124495E5000AA2F65 /* BBZMultiImageFilter.m in Sources */,
 				1409D1E7244959850053CFA4 /* GPUImageMovieWriter.m in Sources */,
 				1409D1EE244959850053CFA4 /* GPUImageBuffer.m in Sources */,
 				1409D1E4244959850053CFA4 /* GPUImageFramebuffer.m in Sources */,
