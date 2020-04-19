@@ -7,7 +7,10 @@
 //
 
 #import "HomeTableViewController.h"
-
+#define BBINFO(fmt, ...)          NSLog(@"[%@:%d]"fmt, \
+[[NSString stringWithFormat:@"%s", __FILE__] lastPathComponent], \
+__LINE__, \
+##__VA_ARGS__)
 @interface HomeTableViewController ()
 @property (nonatomic, strong) NSMutableArray *array;
 @end
@@ -23,6 +26,7 @@
     [self.array addObject:@"相片+视频合成"];
     [self.array addObject:@"相片+视频+转场 合成"];
     [self.array addObject:@"相片+视频+音乐 合成"];
+    BBINFO(@"test");
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {

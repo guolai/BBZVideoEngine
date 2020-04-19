@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "HomeTableViewController.h"
+#import "BBZErrorMonitor.h"
 
 @interface AppDelegate ()
 
@@ -20,6 +21,13 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
+    
+    [[BBZErrorMonitor shareInstance] addErrorBlock:^(NSError *error) {
+        NSSet *ignoredErrors = [NSSet setWithObjects:@(4097), @(-50), @(2), @(4), @(-999), @(-17001), @(7), @(401), nil];
+        if (error && ![ignoredErrors containsObject:@(error.code)]) {
+            BBZINFO(@"%@", [NSString stringWithFormat:@"%@:%ld",error.domain,(long)error.code]);
+        }
+    }];
     
     HomeTableViewController *homeVc = [[HomeTableViewController alloc] init];
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:homeVc];
@@ -36,7 +44,9 @@
     [self.window setRootViewController:rootViewController];
     
     [self.window makeKeyAndVisible];
-    return YES;
+    
+
+    
     return YES;
 }
 

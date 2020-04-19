@@ -33,6 +33,25 @@
 		1426D708243D82BE008BEB86 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1426D707243D82BE008BEB86 /* main.m */; };
 		1426D716243D90B9008BEB86 /* HomeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1426D715243D90B9008BEB86 /* HomeTableViewController.m */; };
 		1431FA1124495E5000AA2F65 /* BBZMultiImageFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1431FA1024495E5000AA2F65 /* BBZMultiImageFilter.m */; };
+		1431FA24244B585B00AA2F65 /* BBZBaseAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = 1431FA23244B585B00AA2F65 /* BBZBaseAsset.m */; };
+		1431FA27244B58A400AA2F65 /* BBZVideoAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = 1431FA26244B58A400AA2F65 /* BBZVideoAsset.m */; };
+		1431FA2A244B58B300AA2F65 /* BBZImageAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = 1431FA29244B58B300AA2F65 /* BBZImageAsset.m */; };
+		1431FA2D244B58C100AA2F65 /* BBZAudioAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = 1431FA2C244B58C100AA2F65 /* BBZAudioAsset.m */; };
+		1431FA30244B5AC700AA2F65 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1431FA2F244B5AC700AA2F65 /* AVFoundation.framework */; };
+		1431FA32244B5ACD00AA2F65 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1431FA31244B5ACD00AA2F65 /* OpenGLES.framework */; };
+		1431FA34244B5ADA00AA2F65 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1431FA33244B5ADA00AA2F65 /* Photos.framework */; };
+		1431FA36244B5B0100AA2F65 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1431FA35244B5B0100AA2F65 /* VideoToolbox.framework */; };
+		1431FA38244B5B0A00AA2F65 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1431FA37244B5B0A00AA2F65 /* Foundation.framework */; };
+		1431FA3A244B5B0F00AA2F65 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1431FA39244B5B0F00AA2F65 /* UIKit.framework */; };
+		1431FA3C244B5B1D00AA2F65 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1431FA3B244B5B1D00AA2F65 /* AudioToolbox.framework */; };
+		1431FA40244B717600AA2F65 /* BBZPhotoKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 1431FA3F244B717600AA2F65 /* BBZPhotoKit.m */; };
+		1431FA43244B71EF00AA2F65 /* NSError+BBZ.m in Sources */ = {isa = PBXBuildFile; fileRef = 1431FA42244B71EF00AA2F65 /* NSError+BBZ.m */; };
+		1431FA46244B731E00AA2F65 /* BBZErrorMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 1431FA45244B731E00AA2F65 /* BBZErrorMonitor.m */; };
+		1431FA4C244B736400AA2F65 /* README.markdown in Resources */ = {isa = PBXBuildFile; fileRef = 1431FA4A244B736400AA2F65 /* README.markdown */; };
+		1431FA4D244B736400AA2F65 /* JRSwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1431FA4B244B736400AA2F65 /* JRSwizzle.m */; };
+		1431FA50244C98F000AA2F65 /* BBZVideoTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 1431FA4F244C98F000AA2F65 /* BBZVideoTools.m */; };
+		1431FA53244C994700AA2F65 /* BBZAVAssetExportSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 1431FA52244C994700AA2F65 /* BBZAVAssetExportSession.m */; };
+		1431FA56244CB75D00AA2F65 /* NSFileManager+BBZTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 1431FA55244CB75D00AA2F65 /* NSFileManager+BBZTools.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -88,6 +107,37 @@
 		1426D715243D90B9008BEB86 /* HomeTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeTableViewController.m; sourceTree = "<group>"; };
 		1431FA0F24495E5000AA2F65 /* BBZMultiImageFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZMultiImageFilter.h; sourceTree = "<group>"; };
 		1431FA1024495E5000AA2F65 /* BBZMultiImageFilter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZMultiImageFilter.m; sourceTree = "<group>"; };
+		1431FA22244B585B00AA2F65 /* BBZBaseAsset.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZBaseAsset.h; sourceTree = "<group>"; };
+		1431FA23244B585B00AA2F65 /* BBZBaseAsset.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZBaseAsset.m; sourceTree = "<group>"; };
+		1431FA25244B58A400AA2F65 /* BBZVideoAsset.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZVideoAsset.h; sourceTree = "<group>"; };
+		1431FA26244B58A400AA2F65 /* BBZVideoAsset.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZVideoAsset.m; sourceTree = "<group>"; };
+		1431FA28244B58B300AA2F65 /* BBZImageAsset.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZImageAsset.h; sourceTree = "<group>"; };
+		1431FA29244B58B300AA2F65 /* BBZImageAsset.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZImageAsset.m; sourceTree = "<group>"; };
+		1431FA2B244B58C100AA2F65 /* BBZAudioAsset.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZAudioAsset.h; sourceTree = "<group>"; };
+		1431FA2C244B58C100AA2F65 /* BBZAudioAsset.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZAudioAsset.m; sourceTree = "<group>"; };
+		1431FA2F244B5AC700AA2F65 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		1431FA31244B5ACD00AA2F65 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		1431FA33244B5ADA00AA2F65 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
+		1431FA35244B5B0100AA2F65 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
+		1431FA37244B5B0A00AA2F65 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		1431FA39244B5B0F00AA2F65 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		1431FA3B244B5B1D00AA2F65 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		1431FA3D244B68D700AA2F65 /* BBZVideoEngine-prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BBZVideoEngine-prefix.pch"; sourceTree = "<group>"; };
+		1431FA3E244B717600AA2F65 /* BBZPhotoKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZPhotoKit.h; sourceTree = "<group>"; };
+		1431FA3F244B717600AA2F65 /* BBZPhotoKit.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZPhotoKit.m; sourceTree = "<group>"; };
+		1431FA41244B71EF00AA2F65 /* NSError+BBZ.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSError+BBZ.h"; sourceTree = "<group>"; };
+		1431FA42244B71EF00AA2F65 /* NSError+BBZ.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSError+BBZ.m"; sourceTree = "<group>"; };
+		1431FA44244B731E00AA2F65 /* BBZErrorMonitor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZErrorMonitor.h; sourceTree = "<group>"; };
+		1431FA45244B731E00AA2F65 /* BBZErrorMonitor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZErrorMonitor.m; sourceTree = "<group>"; };
+		1431FA49244B736400AA2F65 /* JRSwizzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRSwizzle.h; sourceTree = "<group>"; };
+		1431FA4A244B736400AA2F65 /* README.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.markdown; sourceTree = "<group>"; };
+		1431FA4B244B736400AA2F65 /* JRSwizzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JRSwizzle.m; sourceTree = "<group>"; };
+		1431FA4E244C98F000AA2F65 /* BBZVideoTools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZVideoTools.h; sourceTree = "<group>"; };
+		1431FA4F244C98F000AA2F65 /* BBZVideoTools.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZVideoTools.m; sourceTree = "<group>"; };
+		1431FA51244C994700AA2F65 /* BBZAVAssetExportSession.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZAVAssetExportSession.h; sourceTree = "<group>"; };
+		1431FA52244C994700AA2F65 /* BBZAVAssetExportSession.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZAVAssetExportSession.m; sourceTree = "<group>"; };
+		1431FA54244CB75D00AA2F65 /* NSFileManager+BBZTools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+BBZTools.h"; sourceTree = "<group>"; };
+		1431FA55244CB75D00AA2F65 /* NSFileManager+BBZTools.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+BBZTools.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +145,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1431FA3C244B5B1D00AA2F65 /* AudioToolbox.framework in Frameworks */,
+				1431FA3A244B5B0F00AA2F65 /* UIKit.framework in Frameworks */,
+				1431FA38244B5B0A00AA2F65 /* Foundation.framework in Frameworks */,
+				1431FA36244B5B0100AA2F65 /* VideoToolbox.framework in Frameworks */,
+				1431FA34244B5ADA00AA2F65 /* Photos.framework in Frameworks */,
+				1431FA32244B5ACD00AA2F65 /* OpenGLES.framework in Frameworks */,
+				1431FA30244B5AC700AA2F65 /* AVFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -158,6 +215,7 @@
 			children = (
 				1426D6F7243D82BD008BEB86 /* BBZVideoEngine */,
 				1426D6F6243D82BD008BEB86 /* Products */,
+				1431FA2E244B5AC700AA2F65 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -172,6 +230,8 @@
 		1426D6F7243D82BD008BEB86 /* BBZVideoEngine */ = {
 			isa = PBXGroup;
 			children = (
+				1431FA47244B736400AA2F65 /* ThirdLib */,
+				1431FA1C244B583500AA2F65 /* VideoEngine */,
 				1426D717243D920C008BEB86 /* GPUImage */,
 				1426D6F8243D82BD008BEB86 /* AppDelegate.h */,
 				1426D6F9243D82BD008BEB86 /* AppDelegate.m */,
@@ -183,6 +243,7 @@
 				1426D707243D82BE008BEB86 /* main.m */,
 				1426D714243D90B9008BEB86 /* HomeTableViewController.h */,
 				1426D715243D90B9008BEB86 /* HomeTableViewController.m */,
+				1431FA3D244B68D700AA2F65 /* BBZVideoEngine-prefix.pch */,
 			);
 			path = BBZVideoEngine;
 			sourceTree = "<group>";
@@ -197,6 +258,105 @@
 				1431FA1024495E5000AA2F65 /* BBZMultiImageFilter.m */,
 			);
 			path = GPUImage;
+			sourceTree = "<group>";
+		};
+		1431FA1C244B583500AA2F65 /* VideoEngine */ = {
+			isa = PBXGroup;
+			children = (
+				1431FA1D244B583500AA2F65 /* Effect */,
+				1431FA1E244B583500AA2F65 /* ActionBuilder */,
+				1431FA1F244B583500AA2F65 /* VideoUtility */,
+				1431FA20244B583500AA2F65 /* Model */,
+				1431FA21244B583500AA2F65 /* Node */,
+			);
+			path = VideoEngine;
+			sourceTree = "<group>";
+		};
+		1431FA1D244B583500AA2F65 /* Effect */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Effect;
+			sourceTree = "<group>";
+		};
+		1431FA1E244B583500AA2F65 /* ActionBuilder */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ActionBuilder;
+			sourceTree = "<group>";
+		};
+		1431FA1F244B583500AA2F65 /* VideoUtility */ = {
+			isa = PBXGroup;
+			children = (
+				1431FA3E244B717600AA2F65 /* BBZPhotoKit.h */,
+				1431FA3F244B717600AA2F65 /* BBZPhotoKit.m */,
+				1431FA41244B71EF00AA2F65 /* NSError+BBZ.h */,
+				1431FA42244B71EF00AA2F65 /* NSError+BBZ.m */,
+				1431FA44244B731E00AA2F65 /* BBZErrorMonitor.h */,
+				1431FA45244B731E00AA2F65 /* BBZErrorMonitor.m */,
+				1431FA4E244C98F000AA2F65 /* BBZVideoTools.h */,
+				1431FA4F244C98F000AA2F65 /* BBZVideoTools.m */,
+				1431FA51244C994700AA2F65 /* BBZAVAssetExportSession.h */,
+				1431FA52244C994700AA2F65 /* BBZAVAssetExportSession.m */,
+				1431FA54244CB75D00AA2F65 /* NSFileManager+BBZTools.h */,
+				1431FA55244CB75D00AA2F65 /* NSFileManager+BBZTools.m */,
+			);
+			path = VideoUtility;
+			sourceTree = "<group>";
+		};
+		1431FA20244B583500AA2F65 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				1431FA22244B585B00AA2F65 /* BBZBaseAsset.h */,
+				1431FA23244B585B00AA2F65 /* BBZBaseAsset.m */,
+				1431FA25244B58A400AA2F65 /* BBZVideoAsset.h */,
+				1431FA26244B58A400AA2F65 /* BBZVideoAsset.m */,
+				1431FA28244B58B300AA2F65 /* BBZImageAsset.h */,
+				1431FA29244B58B300AA2F65 /* BBZImageAsset.m */,
+				1431FA2B244B58C100AA2F65 /* BBZAudioAsset.h */,
+				1431FA2C244B58C100AA2F65 /* BBZAudioAsset.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		1431FA21244B583500AA2F65 /* Node */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Node;
+			sourceTree = "<group>";
+		};
+		1431FA2E244B5AC700AA2F65 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1431FA3B244B5B1D00AA2F65 /* AudioToolbox.framework */,
+				1431FA39244B5B0F00AA2F65 /* UIKit.framework */,
+				1431FA37244B5B0A00AA2F65 /* Foundation.framework */,
+				1431FA35244B5B0100AA2F65 /* VideoToolbox.framework */,
+				1431FA33244B5ADA00AA2F65 /* Photos.framework */,
+				1431FA31244B5ACD00AA2F65 /* OpenGLES.framework */,
+				1431FA2F244B5AC700AA2F65 /* AVFoundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		1431FA47244B736400AA2F65 /* ThirdLib */ = {
+			isa = PBXGroup;
+			children = (
+				1431FA48244B736400AA2F65 /* JRSwizzle */,
+			);
+			path = ThirdLib;
+			sourceTree = "<group>";
+		};
+		1431FA48244B736400AA2F65 /* JRSwizzle */ = {
+			isa = PBXGroup;
+			children = (
+				1431FA49244B736400AA2F65 /* JRSwizzle.h */,
+				1431FA4A244B736400AA2F65 /* README.markdown */,
+				1431FA4B244B736400AA2F65 /* JRSwizzle.m */,
+			);
+			path = JRSwizzle;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -259,6 +419,7 @@
 			files = (
 				1426D705243D82BE008BEB86 /* LaunchScreen.storyboard in Resources */,
 				1426D702243D82BE008BEB86 /* Assets.xcassets in Resources */,
+				1431FA4C244B736400AA2F65 /* README.markdown in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -271,11 +432,13 @@
 			files = (
 				1409D1F4244959D40053CFA4 /* GPUImageFramebuffer+BBZ.m in Sources */,
 				1409D1E9244959850053CFA4 /* GPUImagePicture+TextureSubimage.m in Sources */,
+				1431FA2D244B58C100AA2F65 /* BBZAudioAsset.m in Sources */,
 				1431FA1124495E5000AA2F65 /* BBZMultiImageFilter.m in Sources */,
 				1409D1E7244959850053CFA4 /* GPUImageMovieWriter.m in Sources */,
 				1409D1EE244959850053CFA4 /* GPUImageBuffer.m in Sources */,
 				1409D1E4244959850053CFA4 /* GPUImageFramebuffer.m in Sources */,
 				1409D1EF244959850053CFA4 /* GPUImageRawDataInput.m in Sources */,
+				1431FA43244B71EF00AA2F65 /* NSError+BBZ.m in Sources */,
 				1409D1E5244959850053CFA4 /* GPUImageFramebufferCache.m in Sources */,
 				1409D1E2244959850053CFA4 /* GLProgram.m in Sources */,
 				1409D1EA244959850053CFA4 /* GPUImageView.m in Sources */,
@@ -286,10 +449,19 @@
 				1409D1E8244959850053CFA4 /* GPUImagePicture.m in Sources */,
 				1409D1F0244959850053CFA4 /* GPUImageLookupFilter.m in Sources */,
 				1409D1E6244959850053CFA4 /* GPUImageContext.m in Sources */,
+				1431FA27244B58A400AA2F65 /* BBZVideoAsset.m in Sources */,
+				1431FA2A244B58B300AA2F65 /* BBZImageAsset.m in Sources */,
+				1431FA53244C994700AA2F65 /* BBZAVAssetExportSession.m in Sources */,
 				1409D1E3244959850053CFA4 /* GPUImageOutput.m in Sources */,
 				1426D708243D82BE008BEB86 /* main.m in Sources */,
+				1431FA56244CB75D00AA2F65 /* NSFileManager+BBZTools.m in Sources */,
+				1431FA50244C98F000AA2F65 /* BBZVideoTools.m in Sources */,
 				1409D1EC244959850053CFA4 /* GPUImageRawDataOutput.m in Sources */,
 				1409D1E1244959850053CFA4 /* GPUImageMovie.m in Sources */,
+				1431FA46244B731E00AA2F65 /* BBZErrorMonitor.m in Sources */,
+				1431FA4D244B736400AA2F65 /* JRSwizzle.m in Sources */,
+				1431FA40244B717600AA2F65 /* BBZPhotoKit.m in Sources */,
+				1431FA24244B585B00AA2F65 /* BBZBaseAsset.m in Sources */,
 				1409D1E0244959850053CFA4 /* GPUImageTwoInputFilter.m in Sources */,
 				1409D1F1244959850053CFA4 /* GPUImageFilter.m in Sources */,
 				1426D6FA243D82BD008BEB86 /* AppDelegate.m in Sources */,
@@ -428,6 +600,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UB6H7XT56R;
+				GCC_PREFIX_HEADER = "BBZVideoEngine/BBZVideoEngine-prefix.pch";
 				INFOPLIST_FILE = BBZVideoEngine/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -446,6 +619,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UB6H7XT56R;
+				GCC_PREFIX_HEADER = "BBZVideoEngine/BBZVideoEngine-prefix.pch";
 				INFOPLIST_FILE = BBZVideoEngine/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = (
