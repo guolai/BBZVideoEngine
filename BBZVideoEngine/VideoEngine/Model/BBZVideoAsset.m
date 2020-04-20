@@ -29,7 +29,7 @@
 }
 
 + (instancetype)assetWithAVAsset:(AVAsset *)avAsset {
-    BBZVideoAsset *asset = [[self alloc] initWithAVAsset:avAsset];
+    BBZVideoAsset *asset = [[BBZVideoAsset alloc] initWithAVAsset:avAsset];
     return asset;
 }
 
@@ -44,6 +44,21 @@
             completion(videoAsset);
         }
     }];
+}
+
+- (instancetype)initWithFilePath:(NSString *)filePath {
+    if(filePath && [[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+        AVAsset *asset = [AVAsset assetWithURL:[NSURL fileURLWithPath:filePath]];
+        BBZVideoAsset *videoAsset = [[BBZVideoAsset alloc] initWithAVAsset:asset];
+        videoAsset.filePath = filePath;
+        return videoAsset;
+    }
+    return nil;
+}
+
++ (instancetype)assetWithFilePath:(NSString *)filePath {
+    BBZVideoAsset *asset = [[BBZVideoAsset  alloc] initWithFilePath:filePath];
+    return asset;
 }
 
 - (NSObject *)asset {

@@ -11,8 +11,7 @@
 @implementation BBZVideoTools
 + (AVAsset *)mergeVideoFile:(NSString *)videoFile
                andAudioFile:(NSString *)audioFile
-                 videoSpeed:(CGFloat)speed
-{
+                 videoSpeed:(CGFloat)speed {
     AVMutableComposition *mixComposition = [[AVMutableComposition alloc] init];
     
     NSDictionary *options = @{AVURLAssetPreferPreciseDurationAndTimingKey : @YES,};
@@ -68,8 +67,7 @@
 + (AVAssetExportSession *)saveOutputVideoWithAsset:(AVAsset * __nonnull)asset
                                         toFilePath:(NSString * __nonnull)targetPath
                                           metaInfo:(NSArray<AVMetadataItem *> *_Nullable)metaInfo
-                                        completion:(void (^__nullable)(BOOL success, NSError * __nullable error))handler;
-{
+                                        completion:(void (^__nullable)(BOOL success, NSError * __nullable error))handler; {
     
     NSString *fileName = [[NSString stringWithFormat:@"export-%.6f-%li", [NSDate timeIntervalSinceReferenceDate], (NSInteger)arc4random()] stringByAppendingPathExtension:@"mp4"];
     NSString *filePath = [NSTemporaryDirectory() stringByAppendingPathComponent:fileName];
@@ -90,8 +88,7 @@
     exporter.metadata = metaInfo;
     [exporter exportAsynchronouslyWithCompletionHandler:^{
         BOOL ret = YES;
-        if (exporter.error)
-        {
+        if (exporter.error) {
             BBZINFO(@"视频保存Asset失败：%@, %@", exporter.error, targetPath);
             ret = NO;
         }
@@ -114,8 +111,7 @@
                                          audioSettings:(NSDictionary *)audioSettings
                                               audioMix:(AVAudioMix *)audioMix
                                              modelInfo:(NSObject *_Nullable)model
-                                            completion:(void (^)(BOOL success, NSError *error))handler
-{
+                                            completion:(void (^)(BOOL success, NSError *error))handler {
     NSString *fileName = [[NSString stringWithFormat:@"export-%.6f-%li", [NSDate timeIntervalSinceReferenceDate], (NSInteger)arc4random()] stringByAppendingPathExtension:@"mp4"];
     NSString *filePath = [NSTemporaryDirectory() stringByAppendingPathComponent:fileName];
     NSURL *url = [NSURL fileURLWithPath:filePath];
@@ -131,8 +127,7 @@
     exporter.audioMix = audioMix;
     [exporter exportAsynchronouslyWithCompletionHandler:^(BBZAVAssetExportSession *exportSession){
         BOOL ret = YES;
-        if (exporter.error)
-        {
+        if (exporter.error) {
             BBZINFO(@"视频保存Asset失败：%@, %@", exporter.error, targetPath);
             ret = NO;
         }
@@ -150,54 +145,44 @@
 }
 
 
-+ (CMTime)durationOfAsset:(AVAsset * __nonnull)asset timeRange:(CMTimeRange)timeRange
-{
-    if (asset == nil)
-    {
++ (CMTime)durationOfAsset:(AVAsset * __nonnull)asset timeRange:(CMTimeRange)timeRange {
+    if (asset == nil) {
         return kCMTimeZero;
     }
     
     CMTimeRange wholeTimeRange = CMTimeRangeMake(kCMTimeZero, asset.duration);
     AVAssetTrack *videoTrack = [asset tracksWithMediaType:AVMediaTypeVideo].firstObject;
-    if (videoTrack != nil)
-    {
+    if (videoTrack != nil)  {
         wholeTimeRange = CMTimeRangeGetIntersection(wholeTimeRange, videoTrack.timeRange);
     }
     
     return CMTIMERANGE_IS_VALID(timeRange) ? CMTimeRangeGetIntersection(timeRange, wholeTimeRange).duration : wholeTimeRange.duration;
 }
 
-+ (CMTime)durationOfVideoAtPath:(NSString * __nonnull)path timeRange:(CMTimeRange)timeRange
-{
-    if (path == nil)
-    {
++ (CMTime)durationOfVideoAtPath:(NSString * __nonnull)path timeRange:(CMTimeRange)timeRange {
+    if (path == nil) {
         return kCMTimeZero;
     }
     
     return [self durationOfAsset:[AVAsset assetWithURL:[NSURL fileURLWithPath:path]] timeRange:timeRange];
 }
 
-+ (CMTime)audioDurationOfAsset:(AVAsset * __nonnull)asset timeRange:(CMTimeRange)timeRange
-{
-    if (asset == nil)
-    {
++ (CMTime)audioDurationOfAsset:(AVAsset * __nonnull)asset timeRange:(CMTimeRange)timeRange {
+    if (asset == nil) {
         return kCMTimeZero;
     }
     
     CMTimeRange wholeTimeRange = CMTimeRangeMake(kCMTimeZero, asset.duration);
     AVAssetTrack *audioTrack = [asset tracksWithMediaType:AVMediaTypeAudio].firstObject;
-    if (audioTrack != nil)
-    {
+    if (audioTrack != nil) {
         wholeTimeRange = CMTimeRangeGetIntersection(wholeTimeRange, audioTrack.timeRange);
     }
     
     return CMTIMERANGE_IS_VALID(timeRange) ? CMTimeRangeGetIntersection(timeRange, wholeTimeRange).duration : wholeTimeRange.duration;
 }
 
-+ (CGSize)resolutionForVideoSize:(CGSize)videoSize limitedByLongestEdge:(CGFloat)longestEdge
-{
-    if ((videoSize.width > longestEdge) || (videoSize.height > longestEdge))
-    {
++ (CGSize)resolutionForVideoSize:(CGSize)videoSize limitedByLongestEdge:(CGFloat)longestEdge {
+    if ((videoSize.width > longestEdge) || (videoSize.height > longestEdge))  {
         CGRect aspectFitFrame = AVMakeRectWithAspectRatioInsideRect(videoSize, CGRectMake(0, 0, longestEdge, longestEdge));
         return CGSizeMake((int)aspectFitFrame.size.width, (int)aspectFitFrame.size.height);
     }
@@ -205,12 +190,10 @@
     return videoSize;
 }
 
-+ (CGSize)resolutionForVideoSize:(CGSize)videoSize limitedByResolution:(NSInteger)resolutionLimit
-{
++ (CGSize)resolutionForVideoSize:(CGSize)videoSize limitedByResolution:(NSInteger)resolutionLimit {
     CGFloat resolution = videoSize.width * videoSize.height;
     
-    if (resolutionLimit < resolution)
-    {
+    if (resolutionLimit < resolution) {
         CGFloat scale = sqrt(resolutionLimit / resolution);
         videoSize.width = videoSize.width * scale;
         videoSize.height = videoSize.height * scale;
@@ -218,8 +201,7 @@
     return CGSizeMake([self adjustVideoSizeValue:videoSize.width], [self adjustVideoSizeValue:videoSize.height]);
 }
 
-+ (int)adjustVideoSizeValue:(CGFloat)fValue
-{
++ (int)adjustVideoSizeValue:(CGFloat)fValue {
     int value = fValue;
     value = value - value % 2;
     return value;

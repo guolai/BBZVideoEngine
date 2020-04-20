@@ -52,6 +52,8 @@
 		1431FA50244C98F000AA2F65 /* BBZVideoTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 1431FA4F244C98F000AA2F65 /* BBZVideoTools.m */; };
 		1431FA53244C994700AA2F65 /* BBZAVAssetExportSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 1431FA52244C994700AA2F65 /* BBZAVAssetExportSession.m */; };
 		1431FA56244CB75D00AA2F65 /* NSFileManager+BBZTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 1431FA55244CB75D00AA2F65 /* NSFileManager+BBZTools.m */; };
+		1431FA5D244D7AA000AA2F65 /* BBZEngineSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = 1431FA5C244D7AA000AA2F65 /* BBZEngineSetting.m */; };
+		1431FA63244D804F00AA2F65 /* UIDevice+BBZ.m in Sources */ = {isa = PBXBuildFile; fileRef = 1431FA62244D804F00AA2F65 /* UIDevice+BBZ.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -138,6 +140,10 @@
 		1431FA52244C994700AA2F65 /* BBZAVAssetExportSession.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZAVAssetExportSession.m; sourceTree = "<group>"; };
 		1431FA54244CB75D00AA2F65 /* NSFileManager+BBZTools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+BBZTools.h"; sourceTree = "<group>"; };
 		1431FA55244CB75D00AA2F65 /* NSFileManager+BBZTools.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+BBZTools.m"; sourceTree = "<group>"; };
+		1431FA5B244D7AA000AA2F65 /* BBZEngineSetting.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZEngineSetting.h; sourceTree = "<group>"; };
+		1431FA5C244D7AA000AA2F65 /* BBZEngineSetting.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZEngineSetting.m; sourceTree = "<group>"; };
+		1431FA61244D804F00AA2F65 /* UIDevice+BBZ.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIDevice+BBZ.h"; sourceTree = "<group>"; };
+		1431FA62244D804F00AA2F65 /* UIDevice+BBZ.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+BBZ.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -263,6 +269,7 @@
 		1431FA1C244B583500AA2F65 /* VideoEngine */ = {
 			isa = PBXGroup;
 			children = (
+				1431FA57244D4D3300AA2F65 /* Config */,
 				1431FA1D244B583500AA2F65 /* Effect */,
 				1431FA1E244B583500AA2F65 /* ActionBuilder */,
 				1431FA1F244B583500AA2F65 /* VideoUtility */,
@@ -301,6 +308,8 @@
 				1431FA52244C994700AA2F65 /* BBZAVAssetExportSession.m */,
 				1431FA54244CB75D00AA2F65 /* NSFileManager+BBZTools.h */,
 				1431FA55244CB75D00AA2F65 /* NSFileManager+BBZTools.m */,
+				1431FA61244D804F00AA2F65 /* UIDevice+BBZ.h */,
+				1431FA62244D804F00AA2F65 /* UIDevice+BBZ.m */,
 			);
 			path = VideoUtility;
 			sourceTree = "<group>";
@@ -357,6 +366,15 @@
 				1431FA4B244B736400AA2F65 /* JRSwizzle.m */,
 			);
 			path = JRSwizzle;
+			sourceTree = "<group>";
+		};
+		1431FA57244D4D3300AA2F65 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				1431FA5B244D7AA000AA2F65 /* BBZEngineSetting.h */,
+				1431FA5C244D7AA000AA2F65 /* BBZEngineSetting.m */,
+			);
+			path = Config;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -442,6 +460,7 @@
 				1409D1E5244959850053CFA4 /* GPUImageFramebufferCache.m in Sources */,
 				1409D1E2244959850053CFA4 /* GLProgram.m in Sources */,
 				1409D1EA244959850053CFA4 /* GPUImageView.m in Sources */,
+				1431FA63244D804F00AA2F65 /* UIDevice+BBZ.m in Sources */,
 				1409D1ED244959850053CFA4 /* GPUImageMovieComposition.m in Sources */,
 				1426D716243D90B9008BEB86 /* HomeTableViewController.m in Sources */,
 				1426D6FD243D82BD008BEB86 /* ViewController.m in Sources */,
@@ -461,6 +480,7 @@
 				1431FA46244B731E00AA2F65 /* BBZErrorMonitor.m in Sources */,
 				1431FA4D244B736400AA2F65 /* JRSwizzle.m in Sources */,
 				1431FA40244B717600AA2F65 /* BBZPhotoKit.m in Sources */,
+				1431FA5D244D7AA000AA2F65 /* BBZEngineSetting.m in Sources */,
 				1431FA24244B585B00AA2F65 /* BBZBaseAsset.m in Sources */,
 				1409D1E0244959850053CFA4 /* GPUImageTwoInputFilter.m in Sources */,
 				1409D1F1244959850053CFA4 /* GPUImageFilter.m in Sources */,

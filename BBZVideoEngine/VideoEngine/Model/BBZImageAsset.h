@@ -10,7 +10,7 @@
 
 
 @interface BBZImageAsset : BBZBaseAsset
-@property (nonatomic, strong, readonly) UIImage *image;
+@property (nonatomic, strong, readonly) UIImage *sourceimage;
 @property (nonatomic, assign, readonly) BOOL bFullResolution;
 
 + (instancetype)assetWithImage:(UIImage *)image;

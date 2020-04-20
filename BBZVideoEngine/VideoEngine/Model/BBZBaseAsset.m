@@ -19,7 +19,7 @@
 
 - (instancetype)init {
     if(self = [super init]){
-        _identifier = [NSString stringWithFormat:@"Asset-%.6f-%li", [NSDate timeIntervalSinceReferenceDate], (NSInteger)arc4random()];
+        _identifier = [NSString stringWithFormat:@"Asset%ld-%.6f-%li", (long)_mediaType, [NSDate timeIntervalSinceReferenceDate], (NSInteger)arc4random()];
         _sourceTimeRange = kCMTimeRangeZero;
         _transform = CGAffineTransformIdentity;
     }
@@ -27,17 +27,14 @@
 }
 
 - (instancetype)initWithFilePath:(NSString *)filePath {
-    if([self init]) {
-        _filePath = filePath;
-//        _asset = nil;
-    }
-    return self;
+    NSAssert(false, @"must be implement from child class");
+    return nil;
 }
 
 
 + (instancetype)assetWithFilePath:(NSString *)filePath {
-    BBZBaseAsset *asset = [[self  alloc] initWithFilePath:filePath];
-    return asset;
+    NSAssert(false, @"must be implement from child class");
+    return nil;
 }
 
 #pragma mark - Proerty
