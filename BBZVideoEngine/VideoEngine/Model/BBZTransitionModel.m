@@ -9,5 +9,10 @@
 #import "BBZTransitionModel.h"
 
 @implementation BBZTransitionModel
+- (instancetype)init {
+    if(self = [super init]){
 
+    }
+    return self;
+}
 @end

@@ -7,10 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "BBZAction.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BBZFilterAction : NSObject
+@interface BBZFilterAction : BBZAction
 
 @end
 

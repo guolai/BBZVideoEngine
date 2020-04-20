@@ -27,6 +27,8 @@ __LINE__, \
     [self.array addObject:@"相片+视频+转场 合成"];
     [self.array addObject:@"相片+视频+音乐 合成"];
     BBINFO(@"test");
+//    UIImage *image = [UIImage imageNamed:@"IMG_7317.HEIC"];
+//    BBINFO(@"%@", image);
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
