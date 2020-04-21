@@ -8,18 +8,47 @@
 
 #import "BBZTask.h"
 
+@interface BBZTask ()
+@property (nonatomic, weak) id<BBZTaskDelegate> scheduler;
+@end
+
 @implementation BBZTask
 
-- (void)start {
-    _state = BBZTaskStateRunning;
+- (instancetype)init {
+    if(self = [super init]) {
+        _cost = 0.0;
+        _progress = 0.0;
+        _weight = 0.0;
+        _state = BBZTaskStateIdel;
+    }
+    return self;
 }
 
-- (void)pause {
-    _state = BBZTaskStatePause;
+- (BOOL)start {
+    self.state = BBZTaskStateRunning;
+    return YES;
 }
 
-- (void)cancel {
-    _state = BBZTaskStateCancel;
+- (BOOL)pause {
+    self.state = BBZTaskStatePause;
+    return YES;
+}
+
+- (BOOL)cancel {
+    self.state = BBZTaskStateCancel;
+    return YES;
+}
+
+- (void)completeWithError:(NSError *)error {
+    if (self.scheduler) {
+        [self.scheduler task:self didCompleteWithError:error];
+    }
+}
+
+- (void)updateProgress:(float)progress {
+    if (self.scheduler) {
+        [self.scheduler task:self didUpdateProgress:progress];
+    }
 }
 
 @end

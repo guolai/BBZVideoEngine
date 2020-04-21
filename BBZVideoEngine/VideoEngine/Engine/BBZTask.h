@@ -35,12 +35,14 @@ typedef void (^BBZTaskCompleteBlock)(BBZTask *task, NSError *error);
 @property (nonatomic, assign) BBZTaskState state;
 @property (nonatomic, assign) float cost;
 @property (nonatomic, assign) float progress;
+@property (nonatomic, assign) float weight;
 
 - (BOOL)start;
-
 - (BOOL)pause;
-
 - (BOOL)cancel;
+
+- (void)completeWithError:(NSError *)error;
+- (void)updateProgress:(float)progress;
 
 @end
 
