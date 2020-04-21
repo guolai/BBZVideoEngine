@@ -9,5 +9,17 @@
 #import "BBZExportTask.h"
 
 @implementation BBZExportTask
+@synthesize videoModel = _videoModel;
 
+- (instancetype)initWithModel:(BBZVideoModel *)videoModel {
+    if(self = [super init]) {
+        _videoModel = videoModel;
+    }
+    return self;
+}
+
++ (instancetype)taskWithModel:(BBZVideoModel *)videoModel {
+    BBZExportTask *exportTask = [[BBZExportTask alloc] initWithModel:videoModel];
+    return exportTask;
+}
 @end

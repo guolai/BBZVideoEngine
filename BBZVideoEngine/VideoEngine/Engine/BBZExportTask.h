@@ -7,11 +7,14 @@
 //
 
 #import "BBZTask.h"
+#import "BBZVideoModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface BBZExportTask : BBZTask
+@property (nonatomic, strong, readonly)BBZVideoModel *videoModel;
 
++ (instancetype)taskWithModel:(BBZVideoModel *)videoModel;
 @end
 
 NS_ASSUME_NONNULL_END

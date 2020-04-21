@@ -10,4 +10,16 @@
 
 @implementation BBZTask
 
+- (void)start {
+    _state = BBZTaskStateRunning;
+}
+
+- (void)pause {
+    _state = BBZTaskStatePause;
+}
+
+- (void)cancel {
+    _state = BBZTaskStateCancel;
+}
+
 @end

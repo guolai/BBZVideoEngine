@@ -15,8 +15,18 @@ NS_ASSUME_NONNULL_BEGIN
 @interface BBZVideoModel : NSObject
 @property (nonatomic, strong, readonly) NSString *identifier;
 /// video and image
-@property (nonatomic, strong) NSArray<BBZBaseAsset *> *assetItems;
-@property (nonatomic, strong) NSArray<BBZAudioAsset *> * _Nullable audioItems;
+@property (nonatomic, strong, readonly) NSArray<BBZBaseAsset *> *assetItems;
+@property (nonatomic, strong, readonly) NSArray<BBZAudioAsset *> * _Nullable audioItems;
+
+
+- (BOOL)addVideoSource:(NSString *)filePath;
+- (BOOL)addVideoAsset:(AVAsset *)avAsset;
+- (BOOL)addImageSource:(NSString *)filePath;
+- (BOOL)addUIImage:(UIImage *)image;
+
 @end
+
+
+
 
 NS_ASSUME_NONNULL_END

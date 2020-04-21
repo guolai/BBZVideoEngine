@@ -7,10 +7,8 @@
 //
 
 #import "HomeTableViewController.h"
-#define BBINFO(fmt, ...)          NSLog(@"[%@:%d]"fmt, \
-[[NSString stringWithFormat:@"%s", __FILE__] lastPathComponent], \
-__LINE__, \
-##__VA_ARGS__)
+#import "BBZExportViewController.h"
+
 @interface HomeTableViewController ()
 @property (nonatomic, strong) NSMutableArray *array;
 @end
@@ -26,9 +24,6 @@ __LINE__, \
     [self.array addObject:@"相片+视频合成"];
     [self.array addObject:@"相片+视频+转场 合成"];
     [self.array addObject:@"相片+视频+音乐 合成"];
-    BBINFO(@"test");
-//    UIImage *image = [UIImage imageNamed:@"IMG_7317.HEIC"];
-//    BBINFO(@"%@", image);
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -48,9 +43,7 @@ __LINE__, \
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UIViewController *vc = nil;
-   
-    
+    BBZExportViewController *vc = [[BBZExportViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

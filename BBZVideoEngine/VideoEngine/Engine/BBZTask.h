@@ -8,9 +8,39 @@
 
 #import <Foundation/Foundation.h>
 
+typedef NS_ENUM(NSInteger, BBZTaskState) {
+    BBZTaskStateIdel = 0,
+    BBZTaskStateRunning,
+    BBZTaskStatePause,
+    BBZTaskStateCancel,
+    BBZTaskStateFinish,
+};
+
 NS_ASSUME_NONNULL_BEGIN
 
+@class BBZTask;
+
+typedef void (^BBZTaskUpdateProgressBlock)(BBZTask *task, float progress);
+typedef void (^BBZTaskCompleteBlock)(BBZTask *task, NSError *error);
+
+
+@protocol BBZTaskDelegate <NSObject>
+@required
+- (void)task:(BBZTask *)task didCompleteWithError:(NSError *)error;
+@optional
+- (void)task:(BBZTask *)task didUpdateProgress:(float)progress;
+@end
+
 @interface BBZTask : NSObject
+@property (nonatomic, assign) BBZTaskState state;
+@property (nonatomic, assign) float cost;
+@property (nonatomic, assign) float progress;
+
+- (BOOL)start;
+
+- (BOOL)pause;
+
+- (BOOL)cancel;
 
 @end
 
