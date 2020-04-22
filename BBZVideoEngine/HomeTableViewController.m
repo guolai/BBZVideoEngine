@@ -8,6 +8,7 @@
 
 #import "HomeTableViewController.h"
 #import "BBZExportViewController.h"
+#import "BBZFilterModel.h"
 
 @interface HomeTableViewController ()
 @property (nonatomic, strong) NSMutableArray *array;
@@ -24,6 +25,7 @@
     [self.array addObject:@"相片+视频合成"];
     [self.array addObject:@"相片+视频+转场 合成"];
     [self.array addObject:@"相片+视频+音乐 合成"];
+    [self test];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -45,6 +47,14 @@
 {
     BBZExportViewController *vc = [[BBZExportViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+#pragma mark - Test
+
+- (void)test {
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"Filter" ofType:@"xml" inDirectory:@"Resource/demo3"];
+    BBZFilterModel *filterModel = [[BBZFilterModel alloc] initWidthFilePath:path];
+    BBZINFO(@"%@", filterModel);
 }
 
 @end
