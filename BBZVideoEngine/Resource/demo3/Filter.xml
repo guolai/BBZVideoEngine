@@ -1,8 +1,6 @@
 <!-- 新老引擎的分发通过miniVersion来判定 所有数据保留两位有效小数位，坐标相关可以保留5位 -->
 <root duration="1000.0" miniVersion="1.0">
-    <filterGroup>
-        <filter index="0" timestamp="0.00"  duration="100.0" repeat="1">
-            <action begin="0.00" end="10.00" name="blend" blend_type="3" repeat="1" mask_video="maskvideo.mp4" order="1"/>
-        </filter>
-    </filterGroup>
+    <filter index="0" timestamp="0.00"  duration="100.0" repeat="1">
+        <action begin="0.00" end="10.00" name="blend" blend_type="3" repeat="1" mask_video="maskvideo.mp4" order="1"/>
+    </filter>
 </root>
