@@ -67,6 +67,9 @@ typedef NS_ENUM(NSInteger, BBZErrorCode)
     BBZErrorCodeAlbumAssetOnICloud   = BBZErrorCodeBase + 401,  //相册资源存储在iCloud端
     BBZErrorCodeAlbumAssetLoadFailed = BBZErrorCodeBase + 402,  //从相册加载资源失败
     BBZErrorCodeAlbumAssetNotExist   = BBZErrorCodeBase + 403,  //相册视频or照片资源不存在
+    
+    //任务相关的错误
+    BBZErrorCodeTaskState   = BBZErrorCodeBase + 800,  //task状态错误
 };
 
 NS_ASSUME_NONNULL_END

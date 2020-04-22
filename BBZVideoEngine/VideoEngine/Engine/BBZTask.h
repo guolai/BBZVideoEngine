@@ -16,7 +16,6 @@ typedef NS_ENUM(NSInteger, BBZTaskState) {
     BBZTaskStateFinish,
 };
 
-NS_ASSUME_NONNULL_BEGIN
 
 @class BBZTask;
 
@@ -46,4 +45,3 @@ typedef void (^BBZTaskCompleteBlock)(BBZTask *task, NSError *error);
 
 @end
 
-NS_ASSUME_NONNULL_END

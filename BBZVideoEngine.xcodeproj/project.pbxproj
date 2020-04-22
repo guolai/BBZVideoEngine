@@ -71,7 +71,8 @@
 		14F6AD13244EE92A00A908E8 /* BBZExportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F6AD12244EE92A00A908E8 /* BBZExportViewController.m */; };
 		14F6AD16244EF43800A908E8 /* BBZVideoModel+Source.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F6AD15244EF43800A908E8 /* BBZVideoModel+Source.m */; };
 		14F6AD18244F034100A908E8 /* Resource in Resources */ = {isa = PBXBuildFile; fileRef = 14F6AD17244F034000A908E8 /* Resource */; };
-		14F6AD1B244F1A5A00A908E8 /* BBZTaskQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F6AD1A244F1A5A00A908E8 /* BBZTaskQueue.m */; };
+		14F6AD1B244F1A5A00A908E8 /* BBZTaskFlow.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F6AD1A244F1A5A00A908E8 /* BBZTaskFlow.m */; };
+		184F0948244FF52F00C82BD1 /* BBZQueueManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 184F0947244FF52F00C82BD1 /* BBZQueueManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -195,8 +196,10 @@
 		14F6AD14244EF43800A908E8 /* BBZVideoModel+Source.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BBZVideoModel+Source.h"; sourceTree = "<group>"; };
 		14F6AD15244EF43800A908E8 /* BBZVideoModel+Source.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "BBZVideoModel+Source.m"; sourceTree = "<group>"; };
 		14F6AD17244F034000A908E8 /* Resource */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Resource; sourceTree = "<group>"; };
-		14F6AD19244F1A5A00A908E8 /* BBZTaskQueue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZTaskQueue.h; sourceTree = "<group>"; };
-		14F6AD1A244F1A5A00A908E8 /* BBZTaskQueue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZTaskQueue.m; sourceTree = "<group>"; };
+		14F6AD19244F1A5A00A908E8 /* BBZTaskFlow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZTaskFlow.h; sourceTree = "<group>"; };
+		14F6AD1A244F1A5A00A908E8 /* BBZTaskFlow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZTaskFlow.m; sourceTree = "<group>"; };
+		184F0946244FF52F00C82BD1 /* BBZQueueManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZQueueManager.h; sourceTree = "<group>"; };
+		184F0947244FF52F00C82BD1 /* BBZQueueManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZQueueManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -328,7 +331,6 @@
 				1431FA7F244D9E7000AA2F65 /* Engine */,
 				1431FA57244D4D3300AA2F65 /* Config */,
 				1431FA1D244B583500AA2F65 /* Effect */,
-				1431FA1E244B583500AA2F65 /* ActionBuilder */,
 				1431FA1F244B583500AA2F65 /* VideoUtility */,
 				1431FA20244B583500AA2F65 /* Model */,
 				1431FA21244B583500AA2F65 /* Node */,
@@ -351,13 +353,6 @@
 				1431FA99244DA4AC00AA2F65 /* BBZAction.m */,
 			);
 			path = Effect;
-			sourceTree = "<group>";
-		};
-		1431FA1E244B583500AA2F65 /* ActionBuilder */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ActionBuilder;
 			sourceTree = "<group>";
 		};
 		1431FA1F244B583500AA2F65 /* VideoUtility */ = {
@@ -467,8 +462,10 @@
 				1431FA9F244DB5D900AA2F65 /* BBZExportTask.m */,
 				14F6ACFD244ECD3800A908E8 /* BBZActionBuilder.h */,
 				14F6ACFE244ECD3800A908E8 /* BBZActionBuilder.m */,
-				14F6AD19244F1A5A00A908E8 /* BBZTaskQueue.h */,
-				14F6AD1A244F1A5A00A908E8 /* BBZTaskQueue.m */,
+				14F6AD19244F1A5A00A908E8 /* BBZTaskFlow.h */,
+				14F6AD1A244F1A5A00A908E8 /* BBZTaskFlow.m */,
+				184F0946244FF52F00C82BD1 /* BBZQueueManager.h */,
+				184F0947244FF52F00C82BD1 /* BBZQueueManager.m */,
 			);
 			path = Engine;
 			sourceTree = "<group>";
@@ -546,7 +543,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1409D1F4244959D40053CFA4 /* GPUImageFramebuffer+BBZ.m in Sources */,
-				14F6AD1B244F1A5A00A908E8 /* BBZTaskQueue.m in Sources */,
+				14F6AD1B244F1A5A00A908E8 /* BBZTaskFlow.m in Sources */,
 				1409D1E9244959850053CFA4 /* GPUImagePicture+TextureSubimage.m in Sources */,
 				1431FA2D244B58C100AA2F65 /* BBZAudioAsset.m in Sources */,
 				1431FA1124495E5000AA2F65 /* BBZMultiImageFilter.m in Sources */,
@@ -569,6 +566,7 @@
 				1409D1E8244959850053CFA4 /* GPUImagePicture.m in Sources */,
 				1431FA94244DA3F000AA2F65 /* BBZActionMixer.m in Sources */,
 				1409D1F0244959850053CFA4 /* GPUImageLookupFilter.m in Sources */,
+				184F0948244FF52F00C82BD1 /* BBZQueueManager.m in Sources */,
 				1409D1E6244959850053CFA4 /* GPUImageContext.m in Sources */,
 				1431FA27244B58A400AA2F65 /* BBZVideoAsset.m in Sources */,
 				1431FA2A244B58B300AA2F65 /* BBZImageAsset.m in Sources */,

@@ -1,5 +1,5 @@
 //
-//  BBZTaskQueue.h
+//  BBZTaskFlow.h
 //  BBZVideoEngine
 //
 //  Created by Hbo on 2020/4/21.
@@ -13,18 +13,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 
-@class BBZTaskQueue;
-typedef void (^BBZTaskQueueCompleteBlock)(BBZTaskQueue *taskFlow, BBZTask *task, NSError *error);
+@class BBZTaskFlow;
+typedef void (^BBZTaskFlowCompleteBlock)(BBZTaskFlow *taskFlow, BBZTask *task, NSError *error);
 
-@interface BBZTaskQueue : BBZTask
+@interface BBZTaskFlow : BBZTask
 @property (nonatomic, strong, readonly) NSArray<BBZTask *> *tasks;
 
 
 @property (nonatomic, copy) BBZTaskCompleteBlock completeBlock;
 @property (nonatomic, copy) BBZTaskUpdateProgressBlock updateProgressBlock;
-@property (nonatomic, copy) BBZTaskQueueCompleteBlock taskCompleteBlock;
+@property (nonatomic, copy) BBZTaskFlowCompleteBlock taskCompleteBlock;
 
 + (instancetype)taskQueueWithTasks:(NSArray<BBZTask*> *)tasks;
+- (void)reset;
 @end
 
 NS_ASSUME_NONNULL_END

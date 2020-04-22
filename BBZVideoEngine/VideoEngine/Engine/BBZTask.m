@@ -46,6 +46,7 @@
 }
 
 - (void)updateProgress:(float)progress {
+    self.progress = progress;
     if (self.scheduler) {
         [self.scheduler task:self didUpdateProgress:progress];
     }
