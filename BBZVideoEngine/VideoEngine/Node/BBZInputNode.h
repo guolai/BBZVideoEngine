@@ -13,6 +13,7 @@
 /*
          <input index="2" playOrder="2" assetOrder="2" scale="0.5">
  */
+
 @interface BBZInputNode : NSObject
 @property (nonatomic, assign) NSInteger index;
 @property (nonatomic, assign) NSInteger playOrder;
@@ -22,3 +23,5 @@
 
 - (instancetype)initWithDictionary:(NSDictionary *)dic;
 @end
+
+

@@ -158,6 +158,8 @@
 		14F6AD18244F034100A908E8 /* Resource in Resources */ = {isa = PBXBuildFile; fileRef = 14F6AD17244F034000A908E8 /* Resource */; };
 		14F6AD1B244F1A5A00A908E8 /* BBZTaskFlow.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F6AD1A244F1A5A00A908E8 /* BBZTaskFlow.m */; };
 		184F0948244FF52F00C82BD1 /* BBZQueueManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 184F0947244FF52F00C82BD1 /* BBZQueueManager.m */; };
+		18B80E162451F59300B3B376 /* BBZSpliceGroupNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B80E152451F59300B3B376 /* BBZSpliceGroupNode.m */; };
+		18B80E192451F5A600B3B376 /* BBZTransitionGroupNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B80E182451F5A600B3B376 /* BBZTransitionGroupNode.m */; };
 		18FC29482450A17100473556 /* BBZFilterNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 18FC29472450A17100473556 /* BBZFilterNode.m */; };
 		18FC294E2450B44800473556 /* BBZInputNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 18FC294D2450B44700473556 /* BBZInputNode.m */; };
 /* End PBXBuildFile section */
@@ -458,6 +460,10 @@
 		14F6AD1A244F1A5A00A908E8 /* BBZTaskFlow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZTaskFlow.m; sourceTree = "<group>"; };
 		184F0946244FF52F00C82BD1 /* BBZQueueManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZQueueManager.h; sourceTree = "<group>"; };
 		184F0947244FF52F00C82BD1 /* BBZQueueManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZQueueManager.m; sourceTree = "<group>"; };
+		18B80E142451F59300B3B376 /* BBZSpliceGroupNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZSpliceGroupNode.h; sourceTree = "<group>"; };
+		18B80E152451F59300B3B376 /* BBZSpliceGroupNode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZSpliceGroupNode.m; sourceTree = "<group>"; };
+		18B80E172451F5A600B3B376 /* BBZTransitionGroupNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZTransitionGroupNode.h; sourceTree = "<group>"; };
+		18B80E182451F5A600B3B376 /* BBZTransitionGroupNode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZTransitionGroupNode.m; sourceTree = "<group>"; };
 		18FC29462450A17100473556 /* BBZFilterNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZFilterNode.h; sourceTree = "<group>"; };
 		18FC29472450A17100473556 /* BBZFilterNode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZFilterNode.m; sourceTree = "<group>"; };
 		18FC294C2450B44700473556 /* BBZInputNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBZInputNode.h; sourceTree = "<group>"; };
@@ -942,6 +948,10 @@
 				1431FA87244D9FB300AA2F65 /* BBZNode.m */,
 				18FC29462450A17100473556 /* BBZFilterNode.h */,
 				18FC29472450A17100473556 /* BBZFilterNode.m */,
+				18B80E142451F59300B3B376 /* BBZSpliceGroupNode.h */,
+				18B80E152451F59300B3B376 /* BBZSpliceGroupNode.m */,
+				18B80E172451F5A600B3B376 /* BBZTransitionGroupNode.h */,
+				18B80E182451F5A600B3B376 /* BBZTransitionGroupNode.m */,
 			);
 			path = Node;
 			sourceTree = "<group>";
@@ -1214,9 +1224,11 @@
 				14183FAF2450511D00D03057 /* YYGestureRecognizer.m in Sources */,
 				14183FA22450511D00D03057 /* NSString+YYAdd.m in Sources */,
 				14183F862450511D00D03057 /* UIPasteboard+YYText.m in Sources */,
+				18B80E162451F59300B3B376 /* BBZSpliceGroupNode.m in Sources */,
 				1409D1E0244959850053CFA4 /* GPUImageTwoInputFilter.m in Sources */,
 				14183F7B2450511D00D03057 /* YYTextLayout.m in Sources */,
 				14183F652450511D00D03057 /* YYKVStorage.m in Sources */,
+				18B80E192451F5A600B3B376 /* BBZTransitionGroupNode.m in Sources */,
 				1409D1F1244959850053CFA4 /* GPUImageFilter.m in Sources */,
 				1431FA66244D8E3000AA2F65 /* BBZVideoModel.m in Sources */,
 				14183CA724503AA400D03057 /* BBZFilterModel.m in Sources */,
