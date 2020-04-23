@@ -7,14 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "BBZFilterNode.h"
 
 @interface BBZFilterModel : NSObject
 @property (nonatomic, assign, readonly) CGFloat duration;
 @property (nonatomic, assign, readonly) CGFloat minVersion;
-@property (nonatomic, strong, readonly) NSArray *filterGroup;
 @property (nonatomic, strong, readonly) NSString *filePath;
+@property (nonatomic, strong, readonly) NSArray<BBZFilterNode *> *filterGroups;
 
-- (instancetype)initWidthFilePath:(NSString *)filePath;
+
+- (instancetype)initWidthDir:(NSString *)filePath;
 @end
 

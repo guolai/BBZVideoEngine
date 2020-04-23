@@ -10,23 +10,32 @@
 #import "BBZImageAsset.h"
 #import "BBZVideoAsset.h"
 #import "BBZAudioAsset.h"
-NS_ASSUME_NONNULL_BEGIN
+#import "BBZTransitionModel.h"
+#import "BBZFilterModel.h"
 
 @interface BBZVideoModel : NSObject
 @property (nonatomic, strong, readonly) NSString *identifier;
 /// video and image
 @property (nonatomic, strong, readonly) NSArray<BBZBaseAsset *> *assetItems;
 @property (nonatomic, strong, readonly) NSArray<BBZAudioAsset *> * _Nullable audioItems;
+@property (nonatomic, strong, readonly) BBZTransitionModel *transitonModel;
+@property (nonatomic, strong, readonly) BBZFilterModel *filterModel;
+@property (nonatomic, assign, readonly) CGFloat duration;
 
-
+//asset
 - (BOOL)addVideoSource:(NSString *)filePath;
 - (BOOL)addVideoAsset:(AVAsset *)avAsset;
 - (BOOL)addImageSource:(NSString *)filePath;
 - (BOOL)addUIImage:(UIImage *)image;
 
+//filter
+- (void)addFilterGroup:(NSString *)strDirectory;
+- (void)addTransitionGroup:(NSString *)strDirectory;
+
+
+//timeline
+- (void)buildTimeLine;
+
 @end
 
 
-
-
-NS_ASSUME_NONNULL_END

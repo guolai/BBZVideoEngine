@@ -8,12 +8,9 @@
 
 #import "BBZVideoModel.h"
 
-NS_ASSUME_NONNULL_BEGIN
-
 @interface BBZVideoModel (Source)
 
 
 
 @end
 
-NS_ASSUME_NONNULL_END

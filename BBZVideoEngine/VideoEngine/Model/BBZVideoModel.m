@@ -25,6 +25,8 @@
     return self;
 }
 
+
+#pragma mark - Asset
 - (BOOL)addVideoSource:(NSString *)filePath {
     AVURLAsset *avAsset = [[AVURLAsset alloc] initWithURL:[NSURL URLWithString:filePath] options:nil];
     BBZVideoAsset *videoAsset = [BBZVideoAsset assetWithAVAsset:avAsset];
@@ -56,6 +58,21 @@
 
 - (NSArray *)audioItems {
     return self.interAudioItems;
+}
+
+#pragma mark - Filter
+
+- (void)addFilterGroup:(NSString *)strDirectory {
+    _filterModel = [[BBZFilterModel alloc] initWidthDir:strDirectory];
+}
+
+- (void)addTransitionGroup:(NSString *)strDirectory {
+    _transitonModel = [[BBZTransitionModel alloc] initWidthDir:strDirectory];
+}
+
+#pragma mark - Timeline
+- (void)buildTimeLine{
+    
 }
 
 @end

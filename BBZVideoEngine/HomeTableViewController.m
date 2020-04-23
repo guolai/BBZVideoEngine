@@ -52,8 +52,9 @@
 #pragma mark - Test
 
 - (void)test {
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"Filter" ofType:@"xml" inDirectory:@"Resource/demo3"];
-    BBZFilterModel *filterModel = [[BBZFilterModel alloc] initWidthFilePath:path];
+//    NSString *path = [[NSBundle mainBundle] pathForResource:@"Filter" ofType:@"xml" inDirectory:@"Resource/demo3"];
+    NSString *path = [NSString stringWithFormat:@"%@/Resource/demo3", [[NSBundle mainBundle] bundlePath]];
+    BBZFilterModel *filterModel = [[BBZFilterModel alloc] initWidthDir:path];
     BBZINFO(@"%@", filterModel);
 }
 

@@ -10,6 +10,8 @@
 
 @implementation BBZVideoModel (Source)
 
-
+- (void)buildTimeLine {
+    
+}
 
 @end

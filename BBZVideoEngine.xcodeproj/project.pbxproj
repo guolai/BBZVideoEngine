@@ -26,8 +26,6 @@
 		1409D1F0244959850053CFA4 /* GPUImageLookupFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1409D1DB244959850053CFA4 /* GPUImageLookupFilter.m */; };
 		1409D1F1244959850053CFA4 /* GPUImageFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1409D1DD244959850053CFA4 /* GPUImageFilter.m */; };
 		1409D1F4244959D40053CFA4 /* GPUImageFramebuffer+BBZ.m in Sources */ = {isa = PBXBuildFile; fileRef = 1409D1F3244959D40053CFA4 /* GPUImageFramebuffer+BBZ.m */; };
-		14183C9E245039BE00D03057 /* BBZTransitionInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 14183C9D245039BE00D03057 /* BBZTransitionInput.m */; };
-		14183CA1245039CC00D03057 /* BBZTransitionSplice.m in Sources */ = {isa = PBXBuildFile; fileRef = 14183CA0245039CC00D03057 /* BBZTransitionSplice.m */; };
 		14183CA724503AA400D03057 /* BBZFilterModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 14183CA624503AA400D03057 /* BBZFilterModel.m */; };
 		14183DAB24504A4100D03057 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 14183DAA24504A4100D03057 /* libxml2.tbd */; };
 		14183F632450511D00D03057 /* YYDiskCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 14183EB42450511D00D03057 /* YYDiskCache.m */; };
@@ -204,10 +202,6 @@
 		1409D1DF244959850053CFA4 /* GLProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLProgram.h; sourceTree = "<group>"; };
 		1409D1F2244959D40053CFA4 /* GPUImageFramebuffer+BBZ.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GPUImageFramebuffer+BBZ.h"; sourceTree = "<group>"; };
 		1409D1F3244959D40053CFA4 /* GPUImageFramebuffer+BBZ.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "GPUImageFramebuffer+BBZ.m"; sourceTree = "<group>"; };
-		14183C9C245039BE00D03057 /* BBZTransitionInput.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZTransitionInput.h; sourceTree = "<group>"; };
-		14183C9D245039BE00D03057 /* BBZTransitionInput.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZTransitionInput.m; sourceTree = "<group>"; };
-		14183C9F245039CC00D03057 /* BBZTransitionSplice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZTransitionSplice.h; sourceTree = "<group>"; };
-		14183CA0245039CC00D03057 /* BBZTransitionSplice.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZTransitionSplice.m; sourceTree = "<group>"; };
 		14183CA524503AA400D03057 /* BBZFilterModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZFilterModel.h; sourceTree = "<group>"; };
 		14183CA624503AA400D03057 /* BBZFilterModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZFilterModel.m; sourceTree = "<group>"; };
 		14183DAA24504A4100D03057 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
@@ -929,10 +923,6 @@
 				1431FA7D244D981900AA2F65 /* BBZTransitionModel.m */,
 				14F6AD14244EF43800A908E8 /* BBZVideoModel+Source.h */,
 				14F6AD15244EF43800A908E8 /* BBZVideoModel+Source.m */,
-				14183C9C245039BE00D03057 /* BBZTransitionInput.h */,
-				14183C9D245039BE00D03057 /* BBZTransitionInput.m */,
-				14183C9F245039CC00D03057 /* BBZTransitionSplice.h */,
-				14183CA0245039CC00D03057 /* BBZTransitionSplice.m */,
 				14183CA524503AA400D03057 /* BBZFilterModel.h */,
 				14183CA624503AA400D03057 /* BBZFilterModel.m */,
 			);
@@ -1163,13 +1153,11 @@
 				14183F6B2450511D00D03057 /* YYImageCoder.m in Sources */,
 				14183FA62450511D00D03057 /* YYCGUtilities.m in Sources */,
 				14183F702450511D00D03057 /* MKAnnotationView+YYWebImage.m in Sources */,
-				14183CA1245039CC00D03057 /* BBZTransitionSplice.m in Sources */,
 				1409D1E3244959850053CFA4 /* GPUImageOutput.m in Sources */,
 				14183F692450511D00D03057 /* YYSpriteSheetImage.m in Sources */,
 				14183F632450511D00D03057 /* YYDiskCache.m in Sources */,
 				14183F822450511D00D03057 /* YYTextUtilities.m in Sources */,
 				14183F952450511D00D03057 /* UIImage+YYAdd.m in Sources */,
-				14183C9E245039BE00D03057 /* BBZTransitionInput.m in Sources */,
 				1431FA7E244D981900AA2F65 /* BBZTransitionModel.m in Sources */,
 				1431FA88244D9FB300AA2F65 /* BBZNode.m in Sources */,
 				1426D708243D82BE008BEB86 /* main.m in Sources */,

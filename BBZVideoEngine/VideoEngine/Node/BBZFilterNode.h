@@ -20,7 +20,6 @@
  <filter index="0" timestamp="0.00"  duration="100.0" repeat="1">
  */
 @interface BBZFilterNode : NSObject
-
 @property (nonatomic, assign) CGFloat timestamp;
 @property (nonatomic, assign) CGFloat duration;
 @property (nonatomic, assign) NSInteger index;

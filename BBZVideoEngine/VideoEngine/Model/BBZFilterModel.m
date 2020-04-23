@@ -12,7 +12,6 @@
 @interface BBZFilterModel ()
 @property (nonatomic, assign, readwrite) CGFloat duration;
 @property (nonatomic, assign, readwrite) CGFloat minVersion;
-@property (nonatomic, strong) NSMutableArray *interFilterGroup;
 
 @end
 
@@ -20,14 +19,13 @@
 
 - (instancetype)init {
     if(self = [super init]) {
-        _interFilterGroup = [NSMutableArray arrayWithCapacity:2];
         _duration = 1.0;
         _minVersion = 1.0;
     }
     return self;
 }
 
-- (instancetype)initWidthFilePath:(NSString *)filePath {
+- (instancetype)initWidthDir:(NSString *)filePath {
     if([self init]) {
         _filePath = filePath;
         [self parseFileContent];
@@ -36,34 +34,38 @@
 }
 
 - (void)parseFileContent {
+    BOOL isDirectory = NO;
     if(self.filePath.length == 0 ||
-       ![[NSFileManager defaultManager] fileExistsAtPath:self.filePath]) {
-        BBZERROR(@"filePath not exsit, %@", self.filePath);
+       ![[NSFileManager defaultManager] fileExistsAtPath:self.filePath isDirectory:&isDirectory] ||
+       !isDirectory) {
+        BBZERROR(@"directory not exsit, %@", self.filePath);
         return;
     }
-    NSData *data = [NSData  dataWithContentsOfFile:self.filePath];
+    NSString *strFilterFile = [NSString stringWithFormat:@"%@/Filter.xml", self.filePath];
+    if(![[NSFileManager defaultManager] fileExistsAtPath:strFilterFile]) {
+        BBZERROR(@"file not exsit, %@", strFilterFile);
+        return;
+    }
+    
+    NSMutableArray *array = [NSMutableArray array];
+    NSData *data = [NSData  dataWithContentsOfFile:strFilterFile];
     NSDictionary *dic = [NSDictionary dictionaryWithXML:data];
     if(dic) {
         self.duration = [[dic objectForKey:@"duration"] floatValue];
         self.minVersion = [[dic objectForKey:@"miniVersion"] floatValue];
-        id inputGroup = dic[@"filterGroup"];
-        if ([inputGroup isKindOfClass:[NSArray class]])
-        {
-            for (NSDictionary *item in inputGroup)
-            {
-//                MVTransitionInputGroup *group = [[MVTransitionInputGroup alloc] initWithDic:item dir:dir];
-//                [self.inputGroups addObject:group];
+        id inputGroup = dic[@"filter"];
+        if ([inputGroup isKindOfClass:[NSArray class]]) {
+            for (NSDictionary *item in inputGroup) {
+                BBZFilterNode *node = [[BBZFilterNode alloc] initWithDictionary:item];
+                [array addObject:node];
             }
+        } else if ([inputGroup isKindOfClass:[NSDictionary class]]) {
+            BBZFilterNode *node = [[BBZFilterNode alloc] initWithDictionary:inputGroup];
+            [array addObject:node];
         }
-        else if ([inputGroup isKindOfClass:[NSDictionary class]])
-        {
-//            [self.inputGroups addObject:[[MVTransitionInputGroup alloc] initWithDic:inputGroup dir:dir]];
-        }
+        _filterGroups = array;
     }
 }
 
-- (NSArray *)filterGroup {
-    return self.interFilterGroup;
-}
 
 @end
