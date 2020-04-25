@@ -17,10 +17,11 @@
 @property (nonatomic, strong, readonly) NSString *identifier;
 /// video and image
 @property (nonatomic, strong, readonly) NSArray<BBZBaseAsset *> *assetItems;
-@property (nonatomic, strong, readonly) NSArray<BBZAudioAsset *> * _Nullable audioItems;
+@property (nonatomic, strong, readonly) NSArray<BBZAudioAsset *> *audioItems;
 @property (nonatomic, strong, readonly) BBZTransitionModel *transitonModel;
 @property (nonatomic, strong, readonly) BBZFilterModel *filterModel;
 @property (nonatomic, assign, readonly) CGFloat duration;
+@property (nonatomic, strong, readonly) NSString *videoResourceDir;
 
 //asset
 - (BOOL)addVideoSource:(NSString *)filePath;

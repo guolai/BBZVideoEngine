@@ -8,7 +8,7 @@
 
 #import "HomeTableViewController.h"
 #import "BBZExportViewController.h"
-#import "BBZFilterModel.h"
+#import "BBZVideoModel.h"
 
 @interface HomeTableViewController ()
 @property (nonatomic, strong) NSMutableArray *array;
@@ -54,8 +54,9 @@
 - (void)test {
 //    NSString *path = [[NSBundle mainBundle] pathForResource:@"Filter" ofType:@"xml" inDirectory:@"Resource/demo3"];
     NSString *path = [NSString stringWithFormat:@"%@/Resource/demo3", [[NSBundle mainBundle] bundlePath]];
-    BBZFilterModel *filterModel = [[BBZFilterModel alloc] initWidthDir:path];
-    BBZINFO(@"%@", filterModel);
+    BBZVideoModel *videoModel = [[BBZVideoModel alloc] init];
+//    videoModel
+    BBZINFO(@"%@", videoModel);
 }
 
 @end

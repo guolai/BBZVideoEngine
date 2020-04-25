@@ -12,7 +12,7 @@
 @implementation NSFileManager (BBZTools)
 - (BOOL)moveFile:(NSString *)originFilePath toPath:(NSString *)newFilePath replaceIfExist:(BOOL)replaceIfExist {
     if ([self fileExistsAtPath:originFilePath isDirectory:nil] == NO) {
-        BBZERROR(@"移动文件失败，需要移动的文件不存在。");
+        BBZERROR(@"移动文件失败，需要移动的文件不存在");
         return NO;
     }
     
@@ -58,7 +58,7 @@
     return fileSize;
 }
 
-+ (BOOL)createDriIfNeed:(NSString *)dir {
++ (BOOL)createDirIfNeed:(NSString *)dir {
     BOOL isDir;
     BOOL isDirExist = [[NSFileManager defaultManager] fileExistsAtPath:dir isDirectory:&isDir];
     if (isDirExist && isDir) {

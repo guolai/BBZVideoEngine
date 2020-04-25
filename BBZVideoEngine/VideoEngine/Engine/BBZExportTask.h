@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface BBZExportTask : BBZTask
 @property (nonatomic, strong, readonly)BBZVideoModel *videoModel;
+@property (nonatomic, strong) NSString *outputFile;
 
 + (instancetype)taskWithModel:(BBZVideoModel *)videoModel;
 @end

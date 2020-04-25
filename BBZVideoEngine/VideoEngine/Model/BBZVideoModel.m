@@ -7,10 +7,13 @@
 //
 
 #import "BBZVideoModel.h"
+#import "NSFileManager+BBZTools.h"
+
 
 @interface BBZVideoModel ()
 @property (nonatomic, strong) NSMutableArray<BBZBaseAsset *> *interAssetItems;
 @property (nonatomic, strong) NSMutableArray<BBZAudioAsset *> * _Nullable interAudioItems;
+@property (nonatomic, strong, readwrite) NSString *videoResourceDir;
 
 @end
 
@@ -19,8 +22,12 @@
 - (instancetype)init {
     if(self = [super init]){
         _identifier = [NSString stringWithFormat:@"Model%.6f-%li",[NSDate timeIntervalSinceReferenceDate], (long)arc4random()];
+        NSString *cacheDir = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).firstObject;
+        NSString *baseDir = [cacheDir stringByAppendingPathComponent:@"VideoModel"];
         _interAssetItems = [NSMutableArray array];
         _interAudioItems = [NSMutableArray array];
+        _videoResourceDir = [NSString stringWithFormat:@"%@/%@", baseDir, _identifier];
+        [NSFileManager createDirIfNeed:_videoResourceDir];
     }
     return self;
 }

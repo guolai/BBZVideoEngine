@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)moveFile:(NSString *)originFilePath toPath:(NSString *)newFilePath replaceIfExist:(BOOL)replaceIfExist;
 - (NSInteger)sizeOfFile:(NSString *)file;
-+ (BOOL)createDriIfNeed:(NSString *)dir;
++ (BOOL)createDirIfNeed:(NSString *)dir;
 + (BOOL)removeFileIfExist:(NSString *)file;
 
 @end
