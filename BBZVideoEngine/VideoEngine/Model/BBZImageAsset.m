@@ -68,11 +68,14 @@
     
     if (self.identifierOfPHAsset != nil) {
         PHAsset *asset = [BBZPhotoKit PHAssetWithIdentifier:self.identifierOfPHAsset];
-        NSInteger limit = [BBZEngineSetting perfectResolutionForImage];
         CGSize size = CGSizeMake(asset.pixelWidth, asset.pixelHeight);
-        size = [BBZVideoTools resolutionForVideoSize:size limitedByResolution:limit];
+        if(self.bUserOriginalSize) {
+        } else {
+            NSInteger limit = [BBZEngineSetting perfectResolutionForImage];
+            size = [BBZVideoTools resolutionForVideoSize:size limitedByResolution:limit];
+        }
+    
         BOOL isFullResolution = (size.width * size.height) > (asset.pixelWidth * asset.pixelHeight - 1);
-        
         [BBZPhotoKit loadImageWithPHAsset:asset size:size completion:^(UIImage *image)  {
             self->_sourceimage = image;
             self->_bFullResolution = isFullResolution;

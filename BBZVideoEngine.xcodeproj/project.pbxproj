@@ -150,6 +150,8 @@
 		1431FA9A244DA4AC00AA2F65 /* BBZAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 1431FA99244DA4AC00AA2F65 /* BBZAction.m */; };
 		1431FA9D244DB5C700AA2F65 /* BBZTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 1431FA9C244DB5C700AA2F65 /* BBZTask.m */; };
 		1431FAA0244DB5D900AA2F65 /* BBZExportTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 1431FA9F244DB5D900AA2F65 /* BBZExportTask.m */; };
+		147375B02455BEB700252084 /* BBZEngineSetting+VideoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 147375AF2455BEB700252084 /* BBZEngineSetting+VideoModel.m */; };
+		14B7C8792456E48F0008F3AE /* BBZVideoEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 14B7C8782456E48F0008F3AE /* BBZVideoEngine.m */; };
 		14F6ACFF244ECD3800A908E8 /* BBZActionBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F6ACFE244ECD3800A908E8 /* BBZActionBuilder.m */; };
 		14F6AD13244EE92A00A908E8 /* BBZExportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F6AD12244EE92A00A908E8 /* BBZExportViewController.m */; };
 		14F6AD16244EF43800A908E8 /* BBZVideoModel+Source.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F6AD15244EF43800A908E8 /* BBZVideoModel+Source.m */; };
@@ -443,6 +445,11 @@
 		1431FA9C244DB5C700AA2F65 /* BBZTask.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZTask.m; sourceTree = "<group>"; };
 		1431FA9E244DB5D900AA2F65 /* BBZExportTask.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZExportTask.h; sourceTree = "<group>"; };
 		1431FA9F244DB5D900AA2F65 /* BBZExportTask.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZExportTask.m; sourceTree = "<group>"; };
+		147375AE2455BEB700252084 /* BBZEngineSetting+VideoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BBZEngineSetting+VideoModel.h"; sourceTree = "<group>"; };
+		147375AF2455BEB700252084 /* BBZEngineSetting+VideoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "BBZEngineSetting+VideoModel.m"; sourceTree = "<group>"; };
+		14B7C8772456E48F0008F3AE /* BBZVideoEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZVideoEngine.h; sourceTree = "<group>"; };
+		14B7C8782456E48F0008F3AE /* BBZVideoEngine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZVideoEngine.m; sourceTree = "<group>"; };
+		14B7C87A2456E51A0008F3AE /* BBZVideoControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZVideoControl.h; sourceTree = "<group>"; };
 		14F6ACFD244ECD3800A908E8 /* BBZActionBuilder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZActionBuilder.h; sourceTree = "<group>"; };
 		14F6ACFE244ECD3800A908E8 /* BBZActionBuilder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZActionBuilder.m; sourceTree = "<group>"; };
 		14F6AD11244EE92A00A908E8 /* BBZExportViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZExportViewController.h; sourceTree = "<group>"; };
@@ -985,6 +992,8 @@
 			children = (
 				1431FA5B244D7AA000AA2F65 /* BBZEngineSetting.h */,
 				1431FA5C244D7AA000AA2F65 /* BBZEngineSetting.m */,
+				147375AE2455BEB700252084 /* BBZEngineSetting+VideoModel.h */,
+				147375AF2455BEB700252084 /* BBZEngineSetting+VideoModel.m */,
 			);
 			path = Config;
 			sourceTree = "<group>";
@@ -1008,6 +1017,9 @@
 				14F6AD1A244F1A5A00A908E8 /* BBZTaskFlow.m */,
 				184F0946244FF52F00C82BD1 /* BBZQueueManager.h */,
 				184F0947244FF52F00C82BD1 /* BBZQueueManager.m */,
+				14B7C8772456E48F0008F3AE /* BBZVideoEngine.h */,
+				14B7C8782456E48F0008F3AE /* BBZVideoEngine.m */,
+				14B7C87A2456E51A0008F3AE /* BBZVideoControl.h */,
 			);
 			path = Engine;
 			sourceTree = "<group>";
@@ -1089,6 +1101,7 @@
 				1409D1F4244959D40053CFA4 /* GPUImageFramebuffer+BBZ.m in Sources */,
 				14183F6C2450511D00D03057 /* YYFrameImage.m in Sources */,
 				14183FA82450511D00D03057 /* YYWeakProxy.m in Sources */,
+				14B7C8792456E48F0008F3AE /* BBZVideoEngine.m in Sources */,
 				14F6AD1B244F1A5A00A908E8 /* BBZTaskFlow.m in Sources */,
 				14183F9E2450511D00D03057 /* NSKeyedUnarchiver+YYAdd.m in Sources */,
 				1409D1E9244959850053CFA4 /* GPUImagePicture+TextureSubimage.m in Sources */,
@@ -1129,6 +1142,7 @@
 				1431FA63244D804F00AA2F65 /* UIDevice+BBZ.m in Sources */,
 				1409D1ED244959850053CFA4 /* GPUImageMovieComposition.m in Sources */,
 				14183F722450511D00D03057 /* YYAnimatedImageView.m in Sources */,
+				147375B02455BEB700252084 /* BBZEngineSetting+VideoModel.m in Sources */,
 				1426D716243D90B9008BEB86 /* HomeTableViewController.m in Sources */,
 				1431FA8E244DA23A00AA2F65 /* BBZFilterMixer.m in Sources */,
 				1426D6FD243D82BD008BEB86 /* ViewController.m in Sources */,

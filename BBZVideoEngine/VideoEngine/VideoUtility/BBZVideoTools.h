@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "BBZAVAssetExportSession.h"
+#import "BBZVideoAsset.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -38,6 +39,12 @@ NS_ASSUME_NONNULL_BEGIN
 + (CGSize)resolutionForVideoSize:(CGSize)videoSize limitedByLongestEdge:(CGFloat)longestEdge;
 
 + (CGSize)resolutionForVideoSize:(CGSize)videoSize limitedByResolution:(NSInteger)resolutionLimit;
+
++ (void)readAVAsset:(AVAsset *)videoAsset
+          forVideoSize:(CGSize *)videoSize
+          videoBitRate:(NSInteger *)videoBitRate
+             frameRate:(NSInteger *)frameRate
+          audioBitRate:(NSInteger *)audioBitRate;
 @end
 
 NS_ASSUME_NONNULL_END

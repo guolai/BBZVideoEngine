@@ -9,5 +9,13 @@
 #import "BBZCompositonDirector.h"
 
 @implementation BBZCompositonDirector
-
+//+ (instancetype)compositorWithModel:(BBZVideoModel *)model
+//                      videoSettings:(BBZEngineSetting *)videoSettings
+//                         outputFile:(NSString *)outputFile {
+//    BBZCompositonDirector *compositor = [[BBZCompositonDirector alloc] init];
+//    compositor.videoSettings = videoSettings;
+//    compositor.outputFile = outputFile;
+//    return compositor;
+//    
+//}
 @end

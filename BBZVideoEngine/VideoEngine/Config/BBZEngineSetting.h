@@ -15,8 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) CGSize videoSize;
 @property (nonatomic, assign) NSInteger videoBitRate;
 @property (nonatomic, assign) NSInteger videoFrameRate;
-@property (nonatomic, assign) NSInteger videoMaxKeyFrameInterval;
-@property (nonatomic, assign) BOOL allowFrameReorder;
+//@property (nonatomic, assign) NSInteger videoMaxKeyFrameInterval;//非必须
+//@property (nonatomic, assign) BOOL allowFrameReorder;
 
 @property (nonatomic, assign) NSInteger audioBitRate;
 @property (nonatomic, assign) NSInteger audioSampleRate;
@@ -35,9 +35,11 @@ NS_ASSUME_NONNULL_BEGIN
 ///helper 
 + (NSInteger)perfectAudioBitRate;
 + (NSInteger)perfectVideoBitRate;
++ (CGSize)perfectRenderSize;
 + (NSInteger)perfectResolutionForRenderSize;
 + (NSInteger)maxResolution;
 
++ (CGSize)perfectImageSize;
 + (NSInteger)perfectResolutionForImage;
 + (NSInteger)maxResolutionForImage;
 

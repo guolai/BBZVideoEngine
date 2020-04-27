@@ -8,14 +8,16 @@
 
 #import "BBZTask.h"
 #import "BBZVideoModel.h"
+#import "BBZEngineSetting.h"
 
-NS_ASSUME_NONNULL_BEGIN
+
+
 
 @interface BBZExportTask : BBZTask
 @property (nonatomic, strong, readonly)BBZVideoModel *videoModel;
+@property (nonatomic, strong) BBZEngineSetting *videoSetting;
 @property (nonatomic, strong) NSString *outputFile;
 
 + (instancetype)taskWithModel:(BBZVideoModel *)videoModel;
 @end
 
-NS_ASSUME_NONNULL_END

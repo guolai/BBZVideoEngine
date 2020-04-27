@@ -6,12 +6,18 @@
 //  Copyright © 2020 BBZ. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "BBZTask.h"
+#import "BBZVideoModel.h"
+#import "BBZEngineSetting.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BBZCompositonDirector : NSObject
-//- (instancetype)initWith
+@interface BBZCompositonDirector : BBZTask
+//+ (instancetype)compositorWithModel:(BBZVideoModel *)model
+//                      videoSettings:(BBZEngineSetting *)videoSettings
+//                         outputFile:(NSString *)outputFile;
+
+
 @end
 
 NS_ASSUME_NONNULL_END

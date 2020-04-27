@@ -12,6 +12,7 @@
 
 @implementation BBZEngineSetting
 
+
 + (instancetype)passthroughVideoSettings {
     BBZEngineSetting *videoSettings = [[BBZEngineSetting alloc] init];
     videoSettings.passthroughPresetName = AVAssetExportPresetPassthrough;
@@ -35,13 +36,17 @@
     
     NSMutableDictionary *compression = [NSMutableDictionary dictionary];
     compression[AVVideoProfileLevelKey] = _profileLevel ? : AVVideoProfileLevelH264HighAutoLevel;
-    compression[AVVideoMaxKeyFrameIntervalKey] = @((_videoMaxKeyFrameInterval > 0) ? _videoMaxKeyFrameInterval : _videoFrameRate);
+//    if(_videoMaxKeyFrameInterval > 0) {
+//        compression[AVVideoMaxKeyFrameIntervalKey] = @(_videoMaxKeyFrameInterval);
+//    }
+//
     if (_videoBitRate > 0) {
         compression[AVVideoAverageBitRateKey] = @((CGFloat)_videoBitRate);
     }
     
     compression[AVVideoExpectedSourceFrameRateKey] = @(_videoFrameRate);
-    compression[AVVideoAllowFrameReorderingKey] = @(_allowFrameReorder);
+//    compression[AVVideoAllowFrameReorderingKey] = @(_allowFrameReorder);
+    compression[AVVideoAllowFrameReorderingKey] = @(NO);
     
     return @{AVVideoCodecKey: AVVideoCodecH264,
              AVVideoWidthKey: @((NSInteger)_videoSize.width),
@@ -80,20 +85,26 @@
 }
 
 + (NSInteger)perfectVideoBitRate {
-    return 20 * 1024 * 1024;
+    return 5 * 1024 * 1024;
+}
+
+
++ (CGSize)perfectRenderSize {
+    if ([UIDevice getDeviceLevel] == kBBZDeviceLeveliPhone6p) {
+       return CGSizeMake(450.0, 800);
+    }
+    else if ([UIDevice getDeviceLevel] < kBBZDeviceLeveliPhoneSE) {
+        return CGSizeMake(540.0, 960.0);
+    }
+    else if ([UIDevice getDeviceLevel] < kBBZDeviceLeveliPhone7) {
+        return CGSizeMake(720., 1280.);
+    }
+    return CGSizeMake(1080., 1920.);
 }
 
 + (NSInteger)perfectResolutionForRenderSize {
-    if ([UIDevice getDeviceLevel] == kBBZDeviceLeveliPhone6p) {
-        return 450 * 800;
-    }
-    else if ([UIDevice getDeviceLevel] < kBBZDeviceLeveliPhoneSE) {
-        return 540 * 960;
-    }
-    else if ([UIDevice getDeviceLevel] < kBBZDeviceLeveliPhone7) {
-        return 720 * 1280;
-    }
-    return 1080 * 1920;
+    CGSize renderSize = [BBZEngineSetting perfectRenderSize];
+    return renderSize.width * renderSize.height;
 }
 
 + (NSInteger)maxResolution {
@@ -101,17 +112,22 @@
 }
 
 
-+ (NSInteger)perfectResolutionForImage {
++ (CGSize)perfectImageSize {
     if ([UIDevice getDeviceLevel] == kBBZDeviceLeveliPhone6p) {
-        return 450 * 800;
+        return CGSizeMake(450.0, 800);
     }
     else if ([UIDevice getDeviceLevel] < kBBZDeviceLeveliPhoneSE) {
-        return 540 * 960;
+        return CGSizeMake(540.0, 960.0);
     }
     else if ([UIDevice getDeviceLevel] < kBBZDeviceLeveliPhone7) {
-        return 720 * 1280;
+        return CGSizeMake(720., 1280.);
     }
-    return 1080 * 1920;
+    return CGSizeMake(1080., 1920.);
+}
+
++ (NSInteger)perfectResolutionForImage {
+    CGSize renderSize = [BBZEngineSetting perfectRenderSize];
+    return renderSize.width * renderSize.height;
 }
 
 + (NSInteger)maxResolutionForImage {

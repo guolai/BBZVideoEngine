@@ -49,7 +49,7 @@
         return 0;
     }
     NSError *error;
-    NSDictionary *fileAttributes = [self attributesOfItemAtPath:file error:&error];
+    NSDictionary *fileAttributes = [self attributesOfItemAtPath:file error:&error]; 
     if (error) {
         BBZERROR(@"read sizeOfFile: %@; error:%@", file, error);
     }
@@ -67,7 +67,7 @@
     NSError *error;
     BOOL succ = [[NSFileManager defaultManager] createDirectoryAtPath:dir withIntermediateDirectories:YES attributes:nil error:&error];
     if (error) {
-        BBZERROR(@"create directory(%d) with error(%ld):%@", succ, error.code, error.localizedDescription);
+        BBZERROR(@"create directory(%d) with error(%ld):%@", succ, (long)error.code, error.localizedDescription);
     }
     return YES;
 }

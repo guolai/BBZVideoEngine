@@ -24,8 +24,8 @@ typedef NS_ENUM(NSInteger, BBZBaseAssetMediaType) {
 @property (nonatomic, strong, readonly) NSString *identifier;
 @property (nonatomic, assign) BBZBaseAssetMediaType mediaType;
 @property (nonatomic, strong) NSString *filePath;
-@property (nonatomic, strong, readonly) NSObject *asset;
-///@brief 当通过PHAsset创建实例时，此值为PHAsset资源的标识符
+//@property (nonatomic, strong, readonly) NSObject *asset;
+///当通过PHAsset创建实例时，此值为PHAsset资源的标识符
 @property (nonatomic, strong) NSString *identifierOfPHAsset;
 
 @property (nonatomic, assign) NSTimeInterval sourceDuration;
@@ -33,7 +33,7 @@ typedef NS_ENUM(NSInteger, BBZBaseAssetMediaType) {
 @property (nonatomic, assign) NSTimeInterval playDuration;
 @property (nonatomic, assign) CMTimeRange playTimeRange;
 
-///@brief 追加运用在视频上的transform(目前支持旋转)
+// 
 @property (nonatomic, assign) CGAffineTransform transform;
 @property (nonatomic, assign) CGSize sourceSize;
 

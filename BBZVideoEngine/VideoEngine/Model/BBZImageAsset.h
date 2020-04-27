@@ -10,6 +10,7 @@
 
 
 @interface BBZImageAsset : BBZBaseAsset
+@property (nonatomic, assign) BOOL bUserOriginalSize;//有些图片不需要进行拉金伸 比如一些图标
 @property (nonatomic, strong, readonly) UIImage *sourceimage;
 @property (nonatomic, assign, readonly) BOOL bFullResolution;
 

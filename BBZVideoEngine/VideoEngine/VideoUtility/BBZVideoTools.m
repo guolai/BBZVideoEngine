@@ -207,4 +207,106 @@
     return value;
 }
 
++ (void)readAVAsset:(AVAsset *)videoAsset
+         forVideoSize:(CGSize *)videoSize
+         videoBitRate:(NSInteger *)videoBitRate
+            frameRate:(NSInteger *)frameRate
+         audioBitRate:(NSInteger *)audioBitRate {
+    if (videoAsset == nil) {
+        return;
+    }
+    
+    AVAssetTrack *videoTrack = [videoAsset tracksWithMediaType:AVMediaTypeVideo].firstObject;
+    if (videoTrack != nil)  {
+        if (videoSize != NULL) {
+            *videoSize = [self videoSizeOfAVAsset:videoAsset];
+        }
+        if (videoBitRate != NULL) {
+            *videoBitRate = videoTrack.estimatedDataRate;
+        }
+        if (frameRate != NULL) {
+            *frameRate = (int)(videoTrack.nominalFrameRate + 0.5);
+        }
+    }
+    
+    AVAssetTrack *audioTrack = [videoAsset tracksWithMediaType:AVMediaTypeAudio].firstObject;
+    if (audioTrack != nil) {
+        if (audioBitRate != NULL) {
+            *audioBitRate = audioTrack.estimatedDataRate;
+        }
+    }
+}
+
++ (CGSize)videoSizeOfAVAsset:(AVAsset *)videoAsset {
+    AVAssetTrack *track = [videoAsset tracksWithMediaType:AVMediaTypeVideo].firstObject;
+    if (track == nil) {
+        return CGSizeZero;
+    }
+    
+    CGAffineTransform naturalTransform = track.preferredTransform;
+    return [self videoSizeForVideoWithNaturalSize:track.naturalSize naturalTransform:naturalTransform];
+}
+
++ (CGSize)videoSizeForVideoWithNaturalSize:(CGSize)naturalSize naturalTransform:(CGAffineTransform)naturalTransform {
+    CGSize adjustedSize;
+    
+    ///目前视频Transform能力仅支持方向旋转，所以在此标准化参数
+    ///所有视频的
+    naturalTransform.a = [self normalizedTransfromParam:naturalTransform.a];
+    naturalTransform.b = [self normalizedTransfromParam:naturalTransform.b];
+    naturalTransform.c = [self normalizedTransfromParam:naturalTransform.c];
+    naturalTransform.d = [self normalizedTransfromParam:naturalTransform.d];
+    
+    //获取修正后的最终画面尺寸与Transform信息
+    [self getAdjustedSize:&adjustedSize adjustedTransform:NULL forVideoWithNaturalSize:naturalSize naturalTransform:naturalTransform];
+    
+    return adjustedSize;
+}
+
++ (CGFloat)normalizedTransfromParam:(CGFloat)param {
+    if (param > FLT_EPSILON) {
+        return 1.0;
+    }  else if (param < -FLT_EPSILON) {
+        return -1.0;
+    }
+    return 0.0;
+}
+
++ (void)getAdjustedSize:(CGSize *)adjustedSize adjustedTransform:(CGAffineTransform *)adjustedTransform forVideoWithNaturalSize:(CGSize)naturalSize naturalTransform:(CGAffineTransform)transform {
+    CGSize size = naturalSize;
+    if ((transform.a > 0.0) && (transform.b == 0) && (transform.c == 0) && (transform.d > 0.0)) {
+        //正向
+        transform.tx = (1.0 - transform.a) * naturalSize.width;
+        transform.ty = (1.0 - transform.d) * naturalSize.height;
+        size.width = naturalSize.width * transform.a;
+        size.height = naturalSize.height * transform.d;
+    } else if ((transform.a == 0) && (transform.b > 0.0) && (transform.c < 0.0) && (transform.d == 0)) {
+        //右旋90度
+        transform.tx = (0.0 - transform.c) * naturalSize.height;
+        transform.ty = (1.0 - transform.b) * naturalSize.width;
+        size.width = naturalSize.height * -transform.c;
+        size.height = naturalSize.width * transform.b;
+    } else if ((transform.a == 0) && (transform.b < 0.0) && (transform.c > 0.0) && (transform.d == 0)) {
+        //左旋90度
+        transform.tx = (1.0 - transform.c) * naturalSize.height;
+        transform.ty = (0.0 - transform.b) * naturalSize.width;
+        size.width = naturalSize.height * transform.c;
+        size.height = naturalSize.width * -transform.b;
+    } else if ((transform.a < 0.0) && (transform.b == 0) && (transform.c == 0) && (transform.d < 0.0)) {
+        //倒向
+        transform.tx = (0.0 - transform.a) * naturalSize.width;
+        transform.ty = (0.0 - transform.d) * naturalSize.height;
+        size.width = naturalSize.width * -transform.a;
+        size.height = naturalSize.height * -transform.d;
+    }
+    
+    if (adjustedSize)  {
+        *adjustedSize = size;
+    }
+    if (adjustedTransform) {
+        *adjustedTransform = transform;
+    }
+}
+
+
 @end

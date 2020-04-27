@@ -12,6 +12,7 @@
 
 @interface BBZVideoAsset : BBZBaseAsset
 @property (nonatomic, strong) AVAudioMix *audioMix;
+@property (nonatomic, strong, readonly) AVAsset *asset;
 
 - (instancetype)initWithAVAsset:(AVAsset *)avAsset;
 + (instancetype)assetWithAVAsset:(AVAsset *)avAsset;

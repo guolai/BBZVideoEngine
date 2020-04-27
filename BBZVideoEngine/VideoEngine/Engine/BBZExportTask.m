@@ -8,9 +8,12 @@
 
 #import "BBZExportTask.h"
 #import "BBZQueueManager.h"
+#import "BBZCompositonDirector.h"
+#import "BBZEngineSetting+VideoModel.h"
 
 @interface BBZExportTask ()
 @property (nonatomic, strong) NSString *exportFilePath;
+@property (nonatomic, strong) BBZCompositonDirector *compositionDirector;
 //@property (nonatomic, assign) dispatch_queue_t queue;
 @end
 
@@ -46,8 +49,11 @@
             }
             self.state = BBZTaskStateRunning;
             bRet = YES;
+            if(self.videoSetting) {
+                self.videoSetting = [[BBZEngineSetting alloc] buildVideoSettings:self.videoModel];
+            }
             BBZRunAsynchronouslyOnExportQueue(^{
-                
+//                self.compositionDirector = [BBZCompositonDirector alloc] ini
             });
         }
     });
