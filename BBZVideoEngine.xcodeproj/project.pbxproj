@@ -158,6 +158,7 @@
 		14F6AD18244F034100A908E8 /* Resource in Resources */ = {isa = PBXBuildFile; fileRef = 14F6AD17244F034000A908E8 /* Resource */; };
 		14F6AD1B244F1A5A00A908E8 /* BBZTaskFlow.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F6AD1A244F1A5A00A908E8 /* BBZTaskFlow.m */; };
 		184F0948244FF52F00C82BD1 /* BBZQueueManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 184F0947244FF52F00C82BD1 /* BBZQueueManager.m */; };
+		186CE3ED24574A49006222F7 /* BBZEngineContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 186CE3EC24574A49006222F7 /* BBZEngineContext.m */; };
 		18B80E162451F59300B3B376 /* BBZSpliceGroupNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B80E152451F59300B3B376 /* BBZSpliceGroupNode.m */; };
 		18B80E192451F5A600B3B376 /* BBZTransitionGroupNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B80E182451F5A600B3B376 /* BBZTransitionGroupNode.m */; };
 		18FC29482450A17100473556 /* BBZFilterNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 18FC29472450A17100473556 /* BBZFilterNode.m */; };
@@ -461,6 +462,8 @@
 		14F6AD1A244F1A5A00A908E8 /* BBZTaskFlow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZTaskFlow.m; sourceTree = "<group>"; };
 		184F0946244FF52F00C82BD1 /* BBZQueueManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZQueueManager.h; sourceTree = "<group>"; };
 		184F0947244FF52F00C82BD1 /* BBZQueueManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZQueueManager.m; sourceTree = "<group>"; };
+		186CE3EB24574A49006222F7 /* BBZEngineContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZEngineContext.h; sourceTree = "<group>"; };
+		186CE3EC24574A49006222F7 /* BBZEngineContext.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZEngineContext.m; sourceTree = "<group>"; };
 		18B80E142451F59300B3B376 /* BBZSpliceGroupNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZSpliceGroupNode.h; sourceTree = "<group>"; };
 		18B80E152451F59300B3B376 /* BBZSpliceGroupNode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZSpliceGroupNode.m; sourceTree = "<group>"; };
 		18B80E172451F5A600B3B376 /* BBZTransitionGroupNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZTransitionGroupNode.h; sourceTree = "<group>"; };
@@ -1020,6 +1023,8 @@
 				14B7C8772456E48F0008F3AE /* BBZVideoEngine.h */,
 				14B7C8782456E48F0008F3AE /* BBZVideoEngine.m */,
 				14B7C87A2456E51A0008F3AE /* BBZVideoControl.h */,
+				186CE3EB24574A49006222F7 /* BBZEngineContext.h */,
+				186CE3EC24574A49006222F7 /* BBZEngineContext.m */,
 			);
 			path = Engine;
 			sourceTree = "<group>";
@@ -1182,6 +1187,7 @@
 				14183F9D2450511D00D03057 /* NSThread+YYAdd.m in Sources */,
 				14183F992450511D00D03057 /* NSNumber+YYAdd.m in Sources */,
 				14183F782450511D00D03057 /* YYTextContainerView.m in Sources */,
+				186CE3ED24574A49006222F7 /* BBZEngineContext.m in Sources */,
 				14183F8F2450511D00D03057 /* UITableView+YYAdd.m in Sources */,
 				14183FAD2450511D00D03057 /* YYDispatchQueuePool.m in Sources */,
 				1431FA50244C98F000AA2F65 /* BBZVideoTools.m in Sources */,

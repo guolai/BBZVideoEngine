@@ -8,6 +8,16 @@
 
 #import "BBZTask.h"
 
+
+
+typedef NS_ENUM(NSInteger, BBZEngineScheduleMode) {
+    BBZEngineScheduleModeRecord,
+    BBZEngineScheduleModePlay,
+    BBZEngineScheduleModeExport,
+    BBZEngineScheduleModeImageGenerator,
+};
+
+
 @protocol BBZVideoControl <NSObject>
 
 
