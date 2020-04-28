@@ -64,6 +64,8 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
     
     if(self.context.scheduleMode == BBZEngineScheduleModeExport) {
         
+    }else {
+        NSAssert(false, @"not handled");
     }
     
     

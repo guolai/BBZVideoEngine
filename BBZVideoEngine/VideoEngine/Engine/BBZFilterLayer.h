@@ -7,8 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "BBZVideoModel.h"
+#import "BBZEngineContext.h"
 
 @interface BBZFilterLayer : NSObject
+@property (nonatomic, strong, readonly) BBZVideoModel *model;
+@property (nonatomic, strong, readonly) BBZEngineContext *context;
+
+- (instancetype)initWithModel:(BBZVideoModel *)model context:(BBZEngineContext *)context;
+- (void)buildTimelineNodes;
 
 @end

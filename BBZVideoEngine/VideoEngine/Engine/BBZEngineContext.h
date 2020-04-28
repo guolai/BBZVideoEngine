@@ -14,6 +14,7 @@
 @interface BBZEngineContext : NSObject
 @property (nonatomic, strong) BBZEngineSetting *videoSettings;
 @property (nonatomic, assign) BBZEngineScheduleMode scheduleMode;
+@property (nonatomic, assign) float totalDuration;
 @property (nonatomic, assign, readonly) CGSize renderSize;
 
 
