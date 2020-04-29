@@ -8,10 +8,9 @@
 
 #import "BBZSourceAction.h"
 
-NS_ASSUME_NONNULL_BEGIN
 
 @interface BBZVideoAction : BBZSourceAction
 
 @end
 
-NS_ASSUME_NONNULL_END
+

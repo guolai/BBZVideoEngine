@@ -8,10 +8,22 @@
 
 #import <Foundation/Foundation.h>
 
-
-
 @interface BBZAction : NSObject
 
+@property (nonatomic, assign) CGFloat startTime;
+@property (nonatomic, assign) CGFloat duration;
+@property (nonatomic, assign) NSInteger repeatCount;
+
+
+- (void)updateWithTime:(CGFloat)time;
+- (void)seekToTime:(CGFloat)time;
+
+
+- (void)lock;
+- (void)unlock;
+- (void)disableReferenceCounting;
+- (void)enableReferenceCounting;
+- (void)destroySomething;
 @end
 
 

@@ -8,10 +8,8 @@
 
 #import "BBZVistualFilterAction.h"
 
-NS_ASSUME_NONNULL_BEGIN
 
 @interface BBZFilterAction : BBZVistualFilterAction
 
 @end
 
-NS_ASSUME_NONNULL_END
