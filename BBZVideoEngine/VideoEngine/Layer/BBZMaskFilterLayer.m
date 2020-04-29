@@ -1,13 +1,13 @@
 //
-//  BBZMaskFiltetLayer.h
+//  BBZMaskFilterLayer.m
 //  BBZVideoEngine
 //
 //  Created by bob on 2020/4/29.
 //  Copyright © 2020年 BBZ. All rights reserved.
 //
 
-#import "BBZFilterLayer.h"
+#import "BBZMaskFilterLayer.h"
 
-@interface BBZMaskFiltetLayer : BBZFilterLayer
+@implementation BBZMaskFilterLayer
 
 @end

@@ -41,8 +41,11 @@
     [videoModel addVideoSource:path];
     path = [[NSBundle mainBundle] pathForResource:@"IMG_7316" ofType:@"MOV" inDirectory:@"Resource"];
     [videoModel addVideoSource:path];
-    
-//    BBZExportTask *task = [BBZExportTask ]
+    path = [NSString stringWithFormat:@"%@/Resource/demo3", [[NSBundle mainBundle] bundlePath]];
+    [videoModel addTransitionGroup:path];
+    [videoModel addFilterGroup:path];
+    BBZExportTask *task = [BBZExportTask taskWithModel:videoModel];
+    [task start];
     
 }
 

@@ -8,13 +8,13 @@
 
 #import "BBZExportTask.h"
 #import "BBZQueueManager.h"
-#import "BBZCompositonDirector.h"
 #import "BBZEngineSetting+VideoModel.h"
 #import "BBZEngineContext.h"
+#import "BBZVideoEngine.h"
 
 @interface BBZExportTask ()
 @property (nonatomic, strong) NSString *exportFilePath;
-@property (nonatomic, strong) BBZCompositonDirector *compositionDirector;
+@property (nonatomic, strong) BBZVideoEngine *videoEngine;
 @property (nonatomic, strong) BBZEngineContext *context;
 //@property (nonatomic, assign) dispatch_queue_t queue;
 @end
@@ -57,7 +57,8 @@
             BBZEngineContext *context = [BBZEngineContext contextWithVideoSettings:self.videoSetting];
             self.context = context;
             BBZRunAsynchronouslyOnExportQueue(^{
-//                self.compositionDirector = [BBZCompositonDirector alloc] ini
+                self.videoEngine = [BBZVideoEngine videoEngineWithModel:self.videoModel context:self.context outputFile:self.outputFile];
+                [self.videoEngine start];
             });
         }
     });

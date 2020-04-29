@@ -10,9 +10,15 @@
 #import "BBZVideoModel.h"
 #import "BBZEngineContext.h"
 
+
+@protocol BBZFilterLayerProtocol <NSObject>
+- (void)filterLayerAppendTimePoint:(NSArray *)timePoints;
+@end
+
 @interface BBZFilterLayer : NSObject
 @property (nonatomic, strong, readonly) BBZVideoModel *model;
 @property (nonatomic, strong, readonly) BBZEngineContext *context;
+@property (nonatomic, weak) id<BBZFilterLayerProtocol> layerDelegate;
 
 - (instancetype)initWithModel:(BBZVideoModel *)model context:(BBZEngineContext *)context;
 - (void)buildTimelineNodes;

@@ -10,6 +10,11 @@
 #import "BBZSchedule.h"
 #import "BBZFilterLayer.h"
 #import "BBZFilterMixer.h"
+#import "BBZVideoFilterLayer.h"
+#import "BBZAudioFilterLayer.h"
+#import "BBZEffetFilterLayer.h"
+#import "BBZMaskFilterLayer.h"
+#import "BBZOutputFilterLayer.h"
 
 
 
@@ -62,13 +67,38 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
 - (void)buildFilterLayers {
     self.filterLayers = [NSMutableDictionary dictionaryWithCapacity:BBZFilterLayerTypeMax];
     
-    if(self.context.scheduleMode == BBZEngineScheduleModeExport) {
-        
-    }else {
-        NSAssert(false, @"not handled");
+    
+    BBZVideoFilterLayer *videolayer = [[BBZVideoFilterLayer alloc] initWithModel:self.videoModel context:self.context];
+        self.filterLayers[@(BBZFilterLayerTypeVideo)] = videolayer;
+    BBZAudioFilterLayer *audioLayer = [[BBZAudioFilterLayer alloc] initWithModel:self.videoModel context:self.context];
+    self.filterLayers[@(BBZFilterLayerTypeAudio)] = audioLayer;
+    
+    BBZEffetFilterLayer *effectLayer = [[BBZEffetFilterLayer alloc] initWithModel:self.videoModel context:self.context];
+    self.filterLayers[@(BBZFilterLayerTypeEffect)] = effectLayer;
+    
+    BBZMaskFilterLayer *maskLayer = [[BBZMaskFilterLayer alloc] initWithModel:self.videoModel context:self.context];
+    self.filterLayers[@(BBZFilterLayerTypeMask)] = maskLayer;
+    
+    BBZOutputFilterLayer *outputLayer = [[BBZOutputFilterLayer alloc] initWithModel:self.videoModel context:self.context];
+    self.filterLayers[@(BBZFilterLayerTypeOutput)] = outputLayer;
+    
+    for (int i = BBZFilterLayerTypeVideo; i < BBZFilterLayerTypeMax; i++) {
+        BBZFilterLayer *layer = self.filterLayers[@(i)];
+        [layer buildTimelineNodes];
     }
-    
-    
+}
+
+- (BOOL)start {
+   
+    return YES;
+}
+
+- (BOOL)pause {
+    return YES;
+}
+
+- (BOOL)cancel {
+    return YES;
 }
 
 
