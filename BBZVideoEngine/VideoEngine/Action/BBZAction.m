@@ -36,10 +36,8 @@
     
 }
 
-- (void)lock;
-{
-    if (_referenceCountingDisabled)
-    {
+- (void)lock {
+    if (_referenceCountingDisabled) {
         return;
     }
     
@@ -59,13 +57,11 @@
 }
 
 
-- (void)disableReferenceCounting;
-{
+- (void)disableReferenceCounting {
     _referenceCountingDisabled = YES;
 }
 
-- (void)enableReferenceCounting;
-{
+- (void)enableReferenceCounting {
     _referenceCountingDisabled = NO;
 }
 

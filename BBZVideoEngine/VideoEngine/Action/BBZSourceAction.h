@@ -8,9 +8,12 @@
 
 
 #import "BBZAction.h"
+#import "BBZBaseAsset.h"
 
 
 @interface BBZSourceAction : BBZAction
+
+@property (nonatomic, strong) BBZBaseAsset *asset;
 
 @end
 

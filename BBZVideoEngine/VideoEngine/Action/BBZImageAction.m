@@ -7,7 +7,16 @@
 //
 
 #import "BBZImageAction.h"
+#import "BBZImageAsset.h"
 
 @implementation BBZImageAction
+- (void)destroySomething {
+    [((BBZImageAsset *)self.asset) unloadImage];
+}
+
+- (void)lock {
+    [super lock];
+    [((BBZImageAsset *)self.asset) loadImageWithCompletion:nil];
+}
 
 @end

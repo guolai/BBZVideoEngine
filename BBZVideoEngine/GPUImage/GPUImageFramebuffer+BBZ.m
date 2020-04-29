@@ -13,69 +13,35 @@
 
 @implementation GPUImageFramebuffer (BBZ)
 
-+ (GPUImageFramebuffer *)BBZ_frameBufferWithImage:(CGImageRef)image {
+
++ (GPUImageFramebuffer *)BBZ_frameBufferWithImage:(CGImageRef)inputImage {
     @autoreleasepool {
-        if (image == nil) {
+        if (inputImage == nil) {
             return nil;
         }
-        
-        CGImageRetain(image);
-        int width = (int)CGImageGetWidth(image);
-        int height = (int)CGImageGetHeight(image);
-        
-        if (width == 0 || height == 0) {
-            NSAssert(NO, @"Invaild image size.");
-            CGImageRelease(image);
-            return nil;
+        NSError *error;
+        GLKTextureInfo *textureInfo = [GLKTextureLoader textureWithCGImage:inputImage options:nil error:&error];
+        if (error) {
+            //        NSAssert(NO, @"load image failed...%@",*error);
+            NSLog(@"error : %@",error);
+            
+            int width = roundf(CGImageGetWidth(inputImage));
+            int height = roundf(CGImageGetHeight(inputImage));
+            
+            UIGraphicsBeginImageContext(CGSizeMake(width, height));
+            [[UIImage imageWithCGImage:inputImage] drawInRect:CGRectMake(0, 0, width, height)];
+            UIImage *imageref = UIGraphicsGetImageFromCurrentImageContext();
+            UIGraphicsEndImageContext();
+            
+            error = nil;
+            textureInfo = [GLKTextureLoader textureWithCGImage:imageref.CGImage options:nil error:&error];
         }
         
-        Byte *contextData = calloc(1, width * height * 4);
-        if (contextData == NULL) {
-            NSAssert(NO, @"Failed to malloc data buffer...[size: %d KB]",width*height*4 >> 10);
-            CGImageRelease(image);
-            return nil;
-        }
+        GPUImageFramebuffer *frameBuffer = [[GPUImageFramebuffer alloc]
+                                            initWithSize:CGSizeMake(CGImageGetWidth(inputImage), CGImageGetHeight(inputImage))
+                                            overriddenTexture:textureInfo.name];
         
-        static CGColorSpaceRef genericRGBColorspace = NULL;
-        if (genericRGBColorspace == NULL) {
-            genericRGBColorspace = CGColorSpaceCreateDeviceRGB();
-        }
-        
-        CGContextRef bitmapContext = CGBitmapContextCreate(contextData, width, height, 8, width * 4, genericRGBColorspace,  kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);
-        CGContextSetInterpolationQuality(bitmapContext, kCGInterpolationNone);
-        CGContextDrawImage(bitmapContext, CGContextGetClipBoundingBox(bitmapContext), image);
-        CGContextRelease(bitmapContext);
-        
-        GPUTextureOptions outputTextureOptions;
-        outputTextureOptions.minFilter = GL_LINEAR;
-        outputTextureOptions.magFilter = GL_LINEAR;
-        outputTextureOptions.wrapS = GL_CLAMP_TO_EDGE;
-        outputTextureOptions.wrapT = GL_CLAMP_TO_EDGE;
-        outputTextureOptions.internalFormat = GL_RGBA;
-        outputTextureOptions.format = GL_BGRA;
-        outputTextureOptions.type = GL_UNSIGNED_BYTE;
-        
-        __block GPUImageFramebuffer *framebuffer;
-        runSynchronouslyOnVideoProcessingQueue(^{
-            framebuffer = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:CGSizeMake(width, height) textureOptions:outputTextureOptions onlyTexture:YES];
-            glBindTexture(GL_TEXTURE_2D, [framebuffer texture]);
-            glTexImage2D(GL_TEXTURE_2D,
-                         0,
-                         outputTextureOptions.internalFormat,
-                         width,
-                         height,
-                         0,
-                         outputTextureOptions.format,
-                         outputTextureOptions.type,
-                         contextData);
-        });
-        
-        CGImageRelease(image);
-        free(contextData);
-        
-        //NSLog(@"BBZ_frameBufferWithImage");
-        
-        return framebuffer;
+        return frameBuffer;
     }
 }
 

@@ -11,8 +11,14 @@
 #import "BBZVideoTools.h"
 #import "BBZEngineSetting.h"
 
+@interface BBZImageAsset ()
+@property (nonatomic, strong) UIImage *sourceimage;
+@property (nonatomic, assign) BOOL bFullResolution;
+
+@end
+
 @implementation BBZImageAsset
-@synthesize sourceimage = _sourceimage;
+//@synthesize sourceimage = _sourceimage;
 @synthesize bFullResolution = _bFullResolution;
 
 - (instancetype)initWithFilePath:(NSString *)filePath {
@@ -77,8 +83,8 @@
     
         BOOL isFullResolution = (size.width * size.height) > (asset.pixelWidth * asset.pixelHeight - 1);
         [BBZPhotoKit loadImageWithPHAsset:asset size:size completion:^(UIImage *image)  {
-            self->_sourceimage = image;
-            self->_bFullResolution = isFullResolution;
+            self.sourceimage = image;
+            self.bFullResolution = isFullResolution;
             if (completion) {
                 completion(self);
             }
@@ -88,21 +94,21 @@
 
 - (void)unloadImage {
     if (self.filePath != nil && [[NSFileManager defaultManager] fileExistsAtPath:self.filePath]) {
-        _sourceimage = nil;
-        _bFullResolution = NO;
+        self.sourceimage = nil;
+        self.bFullResolution = NO;
     }
 }
 
-- (UIImage *)sourceimage {
-    if(!_sourceimage) {
+- (UIImage *)asset {
+    if(!self.sourceimage) {
         if (self.filePath != nil)  {
             NSData *data = [NSData dataWithContentsOfFile:self.filePath];
-            _sourceimage = [UIImage imageWithData:data];
-            _bFullResolution = YES;
+            self.sourceimage = [UIImage imageWithData:data];
+            self.bFullResolution = YES;
             NSAssert(_sourceimage, @"filtpath exsit, image is lost");
         }
     }
-    return _sourceimage;
+    return self.sourceimage;
 }
 
 @end

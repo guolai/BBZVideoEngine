@@ -40,8 +40,7 @@
 }
 
 
-+ (BBZEngineSetting *)videoSettingsForVideoAsset:(BBZVideoAsset *)videoAsset
-{
++ (BBZEngineSetting *)videoSettingsForVideoAsset:(BBZVideoAsset *)videoAsset {
     NSInteger videoBitRate = 0;
     NSInteger videoFrameRate = 0;
     NSInteger audioBitRate = 0;
@@ -64,11 +63,10 @@
 }
 
 
-+ (BBZEngineSetting *)videoSettingsForImageAsset:(BBZImageAsset *)imageAsset
-{
++ (BBZEngineSetting *)videoSettingsForImageAsset:(BBZImageAsset *)imageAsset {
     BBZEngineSetting *settings = [[BBZEngineSetting alloc] init];
-    CGSize imageSize = imageAsset.sourceimage.size;
-    if(imageAsset.bUserOriginalSize) {
+    CGSize imageSize = imageAsset.asset.size;
+    if(imageAsset.bUserOriginalSize && !CGSizeEqualToSize(imageSize, CGSizeZero)) {
         settings.videoSize = imageSize;
     } else {
         settings.videoSize = [BBZEngineSetting perfectImageSize];
