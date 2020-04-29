@@ -153,10 +153,8 @@
 		1431FA88244D9FB300AA2F65 /* BBZNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 1431FA87244D9FB300AA2F65 /* BBZNode.m */; };
 		1431FA8B244DA21900AA2F65 /* BBZFilterLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1431FA8A244DA21800AA2F65 /* BBZFilterLayer.m */; };
 		1431FA8E244DA23A00AA2F65 /* BBZFilterMixer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1431FA8D244DA23A00AA2F65 /* BBZFilterMixer.m */; };
-		1431FA91244DA3CD00AA2F65 /* BBZFilterAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 1431FA90244DA3CD00AA2F65 /* BBZFilterAction.m */; };
 		1431FA94244DA3F000AA2F65 /* BBZActionMixer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1431FA93244DA3F000AA2F65 /* BBZActionMixer.m */; };
 		1431FA97244DA42800AA2F65 /* BBZActionTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 1431FA96244DA42800AA2F65 /* BBZActionTree.m */; };
-		1431FA9A244DA4AC00AA2F65 /* BBZAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 1431FA99244DA4AC00AA2F65 /* BBZAction.m */; };
 		1431FA9D244DB5C700AA2F65 /* BBZTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 1431FA9C244DB5C700AA2F65 /* BBZTask.m */; };
 		1431FAA0244DB5D900AA2F65 /* BBZExportTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 1431FA9F244DB5D900AA2F65 /* BBZExportTask.m */; };
 		147375B02455BEB700252084 /* BBZEngineSetting+VideoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 147375AF2455BEB700252084 /* BBZEngineSetting+VideoModel.m */; };
@@ -466,14 +464,10 @@
 		1431FA8A244DA21800AA2F65 /* BBZFilterLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZFilterLayer.m; sourceTree = "<group>"; };
 		1431FA8C244DA23A00AA2F65 /* BBZFilterMixer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZFilterMixer.h; sourceTree = "<group>"; };
 		1431FA8D244DA23A00AA2F65 /* BBZFilterMixer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZFilterMixer.m; sourceTree = "<group>"; };
-		1431FA8F244DA3CD00AA2F65 /* BBZFilterAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZFilterAction.h; sourceTree = "<group>"; };
-		1431FA90244DA3CD00AA2F65 /* BBZFilterAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZFilterAction.m; sourceTree = "<group>"; };
 		1431FA92244DA3F000AA2F65 /* BBZActionMixer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZActionMixer.h; sourceTree = "<group>"; };
 		1431FA93244DA3F000AA2F65 /* BBZActionMixer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZActionMixer.m; sourceTree = "<group>"; };
 		1431FA95244DA42800AA2F65 /* BBZActionTree.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZActionTree.h; sourceTree = "<group>"; };
 		1431FA96244DA42800AA2F65 /* BBZActionTree.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZActionTree.m; sourceTree = "<group>"; };
-		1431FA98244DA4AC00AA2F65 /* BBZAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZAction.h; sourceTree = "<group>"; };
-		1431FA99244DA4AC00AA2F65 /* BBZAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZAction.m; sourceTree = "<group>"; };
 		1431FA9B244DB5C700AA2F65 /* BBZTask.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZTask.h; sourceTree = "<group>"; };
 		1431FA9C244DB5C700AA2F65 /* BBZTask.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZTask.m; sourceTree = "<group>"; };
 		1431FA9E244DB5D900AA2F65 /* BBZExportTask.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZExportTask.h; sourceTree = "<group>"; };
@@ -971,14 +965,10 @@
 			children = (
 				1431FA8C244DA23A00AA2F65 /* BBZFilterMixer.h */,
 				1431FA8D244DA23A00AA2F65 /* BBZFilterMixer.m */,
-				1431FA8F244DA3CD00AA2F65 /* BBZFilterAction.h */,
-				1431FA90244DA3CD00AA2F65 /* BBZFilterAction.m */,
 				1431FA92244DA3F000AA2F65 /* BBZActionMixer.h */,
 				1431FA93244DA3F000AA2F65 /* BBZActionMixer.m */,
 				1431FA95244DA42800AA2F65 /* BBZActionTree.h */,
 				1431FA96244DA42800AA2F65 /* BBZActionTree.m */,
-				1431FA98244DA4AC00AA2F65 /* BBZAction.h */,
-				1431FA99244DA4AC00AA2F65 /* BBZAction.m */,
 			);
 			path = Effect;
 			sourceTree = "<group>";
@@ -1297,7 +1287,6 @@
 				14183F6E2450511D00D03057 /* UIButton+YYWebImage.m in Sources */,
 				1431FA8B244DA21900AA2F65 /* BBZFilterLayer.m in Sources */,
 				142F0C7E2459A6DD0005AA8A /* BBZImageAction.m in Sources */,
-				1431FA9A244DA4AC00AA2F65 /* BBZAction.m in Sources */,
 				1409D1EC244959850053CFA4 /* GPUImageRawDataOutput.m in Sources */,
 				14183F982450511D00D03057 /* NSArray+YYAdd.m in Sources */,
 				1431FA9D244DB5C700AA2F65 /* BBZTask.m in Sources */,
@@ -1327,7 +1316,6 @@
 				14183F762450511D00D03057 /* YYTextView.m in Sources */,
 				1431FA24244B585B00AA2F65 /* BBZBaseAsset.m in Sources */,
 				14F6ACFF244ECD3800A908E8 /* BBZActionBuilder.m in Sources */,
-				1431FA91244DA3CD00AA2F65 /* BBZFilterAction.m in Sources */,
 				14F6AD13244EE92A00A908E8 /* BBZExportViewController.m in Sources */,
 				14183FAF2450511D00D03057 /* YYGestureRecognizer.m in Sources */,
 				14183FA22450511D00D03057 /* NSString+YYAdd.m in Sources */,
