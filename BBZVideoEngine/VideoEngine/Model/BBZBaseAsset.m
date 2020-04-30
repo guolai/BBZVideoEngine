@@ -8,7 +8,8 @@
 
 #import "BBZBaseAsset.h"
 
-
+const int BBZVideoTimeScale = 600;
+const int BBZVideoDurationScale = 100;
 
 @interface BBZBaseAsset ()
 
@@ -41,12 +42,12 @@
 
 - (void)setSourceTimeRange:(CMTimeRange)sourceTimeRange {
     _sourceTimeRange = sourceTimeRange;
-    _sourceDuration = CMTimeGetSeconds(_sourceTimeRange.duration);
+    _sourceDuration = (NSUInteger)(CMTimeGetSeconds(_sourceTimeRange.duration) * BBZVideoDurationScale);
 }
 
 - (void)setPlayTimeRange:(CMTimeRange)playTimeRange {
     _playTimeRange = playTimeRange;
-    _playDuration = CMTimeGetSeconds(_playTimeRange.duration);
+    _playDuration = (NSUInteger)(CMTimeGetSeconds(_playTimeRange.duration) * BBZVideoDurationScale);
 }
 
 @end

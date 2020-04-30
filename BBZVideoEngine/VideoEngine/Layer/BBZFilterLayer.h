@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "bbzAction.h"
 #import "BBZVideoModel.h"
 #import "BBZEngineContext.h"
 
@@ -24,3 +25,11 @@
 - (void)buildTimelineNodes;
 
 @end
+
+@interface BBZActionBuilderResult : NSObject
+@property (nonatomic, assign) NSUInteger groupIndex;
+@property (nonatomic, assign) NSUInteger assetIndex;
+@property (nonatomic, assign) double startTime;
+@property (nonatomic, strong) NSArray<BBZAction* > *groupActions;
+@end
+

@@ -14,12 +14,25 @@
 @interface BBZImageAsset ()
 @property (nonatomic, strong) UIImage *sourceimage;
 @property (nonatomic, assign) BOOL bFullResolution;
-
 @end
+
+//@property (nonatomic, assign) NSTimeInterval sourceDuration;
+//@property (nonatomic, assign) CMTimeRange sourceTimeRange;
+//@property (nonatomic, assign) NSTimeInterval playDuration;
+//@property (nonatomic, assign) CMTimeRange playTimeRange;
 
 @implementation BBZImageAsset
 //@synthesize sourceimage = _sourceimage;
 @synthesize bFullResolution = _bFullResolution;
+
+- (instancetype)init {
+    if (self = [super init]) {
+        
+        self.sourceTimeRange = CMTimeRangeMake(kCMTimeZero, CMTimeMake(2 * BBZVideoTimeScale, BBZVideoTimeScale));
+        self.playTimeRange = self.sourceTimeRange;
+    }
+    return self;
+}
 
 - (instancetype)initWithFilePath:(NSString *)filePath {
     if(filePath && [[NSFileManager defaultManager] fileExistsAtPath:filePath]) {

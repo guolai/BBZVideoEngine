@@ -9,16 +9,22 @@
 #import <Foundation/Foundation.h>
 #import "BBZNode.h"
 
+extern const int BBZVideoTimeScale;
+extern const int BBZVideoDurationScale;
+
+
 @interface BBZAction : NSObject
-@property (nonatomic, assign) CGFloat startTime;
-@property (nonatomic, assign) CGFloat duration;
+@property (nonatomic, assign) NSUInteger startTime;
+@property (nonatomic, assign) NSUInteger duration;
 @property (nonatomic, assign) NSInteger repeatCount;
+@property (nonatomic, assign) NSInteger order;
 
 @property (nonatomic, strong) BBZNode *node;
 
 
-- (void)updateWithTime:(CGFloat)time;
-- (void)seekToTime:(CGFloat)time;
+- (void)updateWithTime:(NSUInteger)time;
+- (void)newFrameAtTime:(NSUInteger)time;
+
 
 
 - (void)lock;

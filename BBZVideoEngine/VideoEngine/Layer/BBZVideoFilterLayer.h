@@ -8,6 +8,7 @@
 
 #import "BBZFilterLayer.h"
 
+
 @interface BBZVideoFilterLayer : BBZFilterLayer
 
 @end

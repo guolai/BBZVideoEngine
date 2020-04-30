@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 #import <Photos/Photos.h>
 
+extern const int BBZVideoTimeScale;
+extern const int BBZVideoDurationScale;
+
 typedef NS_ENUM(NSInteger, BBZBaseAssetMediaType) {
     BBZBaseAssetMediaTypeUnknown = 0,
     BBZBaseAssetMediaTypeImage   = 1,
@@ -28,9 +31,9 @@ typedef NS_ENUM(NSInteger, BBZBaseAssetMediaType) {
 ///当通过PHAsset创建实例时，此值为PHAsset资源的标识符
 @property (nonatomic, strong) NSString *identifierOfPHAsset;
 
-@property (nonatomic, assign) NSTimeInterval sourceDuration;
+@property (nonatomic, assign) NSUInteger sourceDuration;
 @property (nonatomic, assign) CMTimeRange sourceTimeRange;
-@property (nonatomic, assign) NSTimeInterval playDuration;
+@property (nonatomic, assign) NSUInteger playDuration;
 @property (nonatomic, assign) CMTimeRange playTimeRange;
 
 // 

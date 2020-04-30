@@ -10,6 +10,15 @@
 
 
 @interface BBZActionTree : NSObject
+@property (nonatomic, strong, readonly) NSArray *subActions;
+
+- (void)addSubTree:(BBZActionTree *)subTree;
+- (void)removeSubTree:(BBZActionTree *)subTree;
+- (BOOL)containsChildTree:(BBZActionTree *)subTree;
+
+- (void)remoeAllSubTrees;
+
+- (BBZActionTree *)mergeWithTree:(BBZActionTree *)otherTree;
 
 @end
 

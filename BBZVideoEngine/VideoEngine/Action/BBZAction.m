@@ -28,11 +28,11 @@
 }
 
 
-- (void)updateWithTime:(CGFloat)time {
+- (void)updateWithTime:(NSUInteger)time {
     
 }
 
-- (void)seekToTime:(CGFloat)time {
+- (void)newFrameAtTime:(NSUInteger)time {
     
 }
 
