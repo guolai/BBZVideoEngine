@@ -7,18 +7,28 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "BBZAction.h"
 
 
 @interface BBZActionTree : NSObject
-@property (nonatomic, strong, readonly) NSArray *subActions;
+@property (nonatomic, strong, readonly) NSArray<BBZActionTree *> *subTrees;
+@property (nonatomic, strong, readonly) NSArray<BBZActionTree *> *allNodes;
+@property (nonatomic, strong, readonly) NSArray<BBZAction *> *allActions;
+@property (nonatomic, strong, readonly) NSArray<BBZAction *> *actions;
+@property (nonatomic, assign, readonly) NSUInteger depth;
+
++ (BBZActionTree *)createActionTreeWithAction:(BBZAction *)action;
 
 - (void)addSubTree:(BBZActionTree *)subTree;
-- (void)removeSubTree:(BBZActionTree *)subTree;
+//- (void)removeSubTree:(BBZActionTree *)subTree;
 - (BOOL)containsChildTree:(BBZActionTree *)subTree;
+
+- (void)addAction:(BBZAction *)action;
 
 - (void)remoeAllSubTrees;
 
-- (BBZActionTree *)mergeWithTree:(BBZActionTree *)otherTree;
+- (BBZActionTree *)mergeWithOtherTree:(BBZActionTree *)otherTree;
+
 
 @end
 

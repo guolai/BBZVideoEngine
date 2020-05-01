@@ -43,10 +43,15 @@
     return builder;
 }
 
-- (void)buildTimelineNodeWithTrasntion {
-//    BBZVideoNodesBuilder *builder = [[BBZVideoNodesBuilder alloc] init];
-//    NSMutableArray *retArray = [NSMutableArray array];
+- (BBZActionBuilderResult *)buildTimelineNodeWithTrasntion {
+    BBZActionBuilderResult *builder = [[BBZActionBuilderResult alloc] init];
+    builder.startTime = 0;
+    builder.groupIndex = 0;
+    NSMutableArray *retArray = [NSMutableArray array];
+    builder.groupActions = retArray;
+    return builder;
 }
+
 
 - (BBZImageAction *)imageActionWithAsset:(BBZImageAsset *)asset {
     BBZImageAction *imageAction = [[BBZImageAction alloc] init];

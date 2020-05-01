@@ -10,6 +10,7 @@
 #import "bbzAction.h"
 #import "BBZVideoModel.h"
 #import "BBZEngineContext.h"
+#import "BBZActionTree.h"
 
 
 @protocol BBZFilterLayerProtocol <NSObject>
