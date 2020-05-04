@@ -1,12 +1,12 @@
 //
-//  BBZTransformFilter.m
+//  BBZVideoInputFilter.m
 //  BBZVideoEngine
 //
 //  Created by Hbo on 2020/5/4.
 //  Copyright © 2020 BBZ. All rights reserved.
 //
 
-#import "BBZTransformFilter.h"
+#import "BBZVideoInputFilter.h"
 #import "GPUImageColorConversion.h"
 
 
@@ -51,7 +51,7 @@ NSString *const kBBZVideoRenderFragmentShaderString = SHADER_STRING
  );
 
 
-@interface BBZTransformFilter () {
+@interface BBZVideoInputFilter () {
     GLint _transformMatrixUniform;
     GLint _orthographicMatrixUniform;
     GPUMatrix4x4 _orthographicMatrix;
@@ -63,23 +63,23 @@ NSString *const kBBZVideoRenderFragmentShaderString = SHADER_STRING
     GLint _bgfilterInputTextureUniform;
 }
 
-@property (nonatomic, assign, readwrite) BBZTransformType type;
+@property (nonatomic, assign, readwrite) BBZVideoInputType type;
 @property (nonatomic, strong) GLProgram *bgFilterProgram;
 
 @end
 
 
-@implementation BBZTransformFilter
+@implementation BBZVideoInputFilter
 
 - (void)dealloc{
     [self.bgFrameBuffer unlock];
     self.bgFrameBuffer = nil;
-    BBZINFO(@"BBZTransformFilter dealloc");
+    BBZINFO(@"BBZVideoInputFilter dealloc");
 }
 
-- (instancetype)initWithTransfromType:(BBZTransformType)type {
+- (instancetype)initWithTransfromType:(BBZVideoInputType)type {
     _type = type;
-    if(_type == BBZTransformTypeImage) {
+    if(_type == BBZVideoInputTypeImage) {
         self = [super initWithVertexShaderFromString:kBBZVideoRenderTransformVertexShaderString fragmentShaderFromString:kGPUImagePassthroughFragmentShaderString];
     } else {
         self = [super initWithVertexShaderFromString:kBBZVideoRenderTransformVertexShaderString fragmentShaderFromString:kBBZVideoRenderFragmentShaderString];

@@ -9,5 +9,8 @@
 #import "BBZVideoAction.h"
 
 @implementation BBZVideoAction
+- (CMSampleBufferRef)samplebufferAtTime:(CMTime)time {
+    return nil;
+}
 
 @end

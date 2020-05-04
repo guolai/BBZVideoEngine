@@ -19,4 +19,8 @@
     [((BBZImageAsset *)self.asset) loadImageWithCompletion:nil];
 }
 
+- (GPUImageFramebuffer *)frameBufferAtTime:(CMTime)time {
+    return nil;
+}
+
 @end
