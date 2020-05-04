@@ -72,6 +72,8 @@ NSString *const kBBZVideoRenderFragmentShaderString = SHADER_STRING
 @implementation BBZTransformFilter
 
 - (void)dealloc{
+    [self.bgFrameBuffer unlock];
+    self.bgFrameBuffer = nil;
     BBZINFO(@"BBZTransformFilter dealloc");
 }
 
@@ -193,13 +195,13 @@ NSString *const kBBZVideoRenderFragmentShaderString = SHADER_STRING
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
 
-- (void)renderVideo:(CMSampleBufferRef)sampleBuffer {
+- (void)renderVideo:(CMSampleBufferRef)sampleBuffer atTime:(CMTime)time {
     runSynchronouslyOnVideoProcessingQueue(^{
-        [self drawVideo:sampleBuffer];
+        [self drawVideo:sampleBuffer atTime:time];
     });
 }
 
-- (void)drawVideo:(CMSampleBufferRef)sampleBuffer {
+- (void)drawVideo:(CMSampleBufferRef)sampleBuffer atTime:(CMTime)time {
     
     BOOL bDrawBackGround = NO;
     if(self.bUseBackGroundImage && self.bgFrameBuffer) {
@@ -225,8 +227,8 @@ NSString *const kBBZVideoRenderFragmentShaderString = SHADER_STRING
     }
     
     
-    CGFloat _imageBufferWidth;
-    CGFloat _imageBufferHeight;
+    CGFloat _imageBufferWidth = 0.0;
+    CGFloat _imageBufferHeight = 0.0;
     GLuint _luminanceTexture;
     GLuint _chrominanceTexture;
     
@@ -253,8 +255,6 @@ NSString *const kBBZVideoRenderFragmentShaderString = SHADER_STRING
         }
         
     }
-    
-    CFAbsoluteTime startTime = CFAbsoluteTimeGetCurrent();
     
     CVOpenGLESTextureRef luminanceTextureRef = NULL;
     CVOpenGLESTextureRef chrominanceTextureRef = NULL;
@@ -318,9 +318,11 @@ NSString *const kBBZVideoRenderFragmentShaderString = SHADER_STRING
         glBindTexture(GL_TEXTURE_2D, _luminanceTexture);
         glUniform1i(filterInputTextureUniform, 4);
         
-        glActiveTexture(GL_TEXTURE5);
+        NSInteger uniformIndex = 1;
+        GLint textureIndex = 1;
+        glActiveTexture(GL_TEXTURE4 + textureIndex);
         glBindTexture(GL_TEXTURE_2D, _chrominanceTexture);
-        glUniform1i(filterInputTexture2Uniform, 5);
+        glUniform1i(_uniformTextures[uniformIndex], 4 + textureIndex);
         
         self.mat33ParamValue =  *((GPUMatrix3x3 *)_preferredConversion);
         if(_uniformMat33 >= 0) {
@@ -350,22 +352,89 @@ NSString *const kBBZVideoRenderFragmentShaderString = SHADER_STRING
         CFRelease(luminanceTextureRef);
         CFRelease(chrominanceTextureRef);
     }
-    
-    
-  
-    glVertexAttribPointer(filterPositionAttribute, 2, GL_FLOAT, 0, 0, imageVertices);
-    glVertexAttribPointer(filterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, noRotationTextureCoordinates);
-    
-    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-    
-    [firstInputFramebuffer unlock];
-    if (usingNextFrameForImageCapture) {
-        dispatch_semaphore_signal(imageCaptureSemaphore);
-    }
+    [self informTargetsAboutNewFrameAtTime:time];
 }
 
-- (void)renderImage:(GPUImageFramebuffer *)imageFrameBuffer {
+- (void)renderImage:(GPUImageFramebuffer *)imageFrameBuffer atTime:(CMTime)time {
+    runSynchronouslyOnVideoProcessingQueue(^{
+        [self drawImage:imageFrameBuffer atTime:time];
+    });
+}
+
+- (void)drawImage:(GPUImageFramebuffer *)imageFrameBuffer atTime:(CMTime)time {
+    BOOL bDrawBackGround = NO;
+    if(self.bUseBackGroundImage && self.bgFrameBuffer) {
+        [self drawBackGroundImage];
+        bDrawBackGround = YES;
+    }
     
+    [GPUImageContext setActiveShaderProgram:filterProgram];
+    if (!_ignoreAspectRatio) {
+        [self loadOrthoMatrix:(GLfloat *)&_orthographicMatrix left:-1.0 right:1.0 bottom:(-1.0 * self.renderSize.height / self.renderSize.width) top:(1.0 * self.renderSize.height / self.renderSize.width) near:-1.0 far:1.0];
+    } else {
+        [self loadOrthoMatrix:(GLfloat *)&_orthographicMatrix left:-1.0 right:1.0 bottom:-1.0 top:1.0 near:-1.0 far:1.0];
+    }
+    [self convert3DTransform:&_transform3D toMatrix:&_transformMatrix];
+    
+    if(!bDrawBackGround) {
+        outputFramebuffer = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:[self sizeOfFBO] textureOptions:self.outputTextureOptions onlyTexture:NO];
+    }
+    
+    [outputFramebuffer activateFramebuffer];
+    if (usingNextFrameForImageCapture) {
+        [outputFramebuffer lock];
+    }
+    
+    static const GLfloat normalVertices[] = {
+        -1.0f, -1.0f,
+        1.0f, -1.0f,
+        -1.0f,  1.0f,
+        1.0f,  1.0f,
+    };
+    
+    static const GLfloat normalTextureCoordinates[] = {
+        0.0f, 0.0f,
+        1.0f, 0.0f,
+        0.0f, 1.0f,
+        1.0f, 1.0f,
+    };
+    
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, [imageFrameBuffer texture]);
+    glUniform1i(filterInputTextureUniform, 2);
+    
+    NSInteger uniformIndex = 1;
+    GLint textureIndex = 1;
+    for (GPUImageFramebuffer *fb in self.frameBuffers) {
+        glActiveTexture(GL_TEXTURE2 + textureIndex);
+        glBindTexture(GL_TEXTURE_2D, [fb texture]);
+        glUniform1i(_uniformTextures[uniformIndex], 2 + textureIndex);
+        uniformIndex++;
+        textureIndex++;
+    }
+    if(_uniformMat33 >= 0) {
+        GPUMatrix3x3 tmpMat33ParamValue = self.mat33ParamValue;
+        glUniformMatrix3fv(_uniformMat33, 1, GL_FALSE, (GLfloat *)(&tmpMat33ParamValue));
+    }
+    if(_uniformV4[0] >= 0) {
+        GPUVector4 tmpVector4ParamValue1 = self.vector4ParamValue1;
+        glUniform4fv(_uniformV4[0], 1, (GLfloat *)&tmpVector4ParamValue1);
+    }
+    if(_uniformV4[1] >= 0) {
+        GPUVector4 tmpVector4ParamValue2 = self.vector4ParamValue2;
+        glUniform4fv(_uniformV4[1], 1, (GLfloat *)&tmpVector4ParamValue2);
+    }
+    
+    glVertexAttribPointer(filterPositionAttribute, 2, GL_FLOAT, 0, 0, normalVertices);
+    glVertexAttribPointer(filterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, normalTextureCoordinates);
+    
+    glEnableVertexAttribArray(filterPositionAttribute);
+    glEnableVertexAttribArray(filterTextureCoordinateAttribute);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    
+    [imageFrameBuffer unlock];
+    
+    [self informTargetsAboutNewFrameAtTime:time];
 }
 
 #pragma mark  - Conversion from matrix formats

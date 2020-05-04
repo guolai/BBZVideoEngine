@@ -30,8 +30,8 @@ typedef NS_ENUM(NSInteger, BBZTransformType) {
 @property (nonatomic, assign) CATransform3D transform3D;
 @property (nonatomic, assign) BOOL ignoreAspectRatio;
 
-- (void)renderVideo:(CMSampleBufferRef)sampleBuffer;
-- (void)renderImage:(GPUImageFramebuffer *)imageFrameBuffer;
+- (void)renderVideo:(CMSampleBufferRef)sampleBuffer atTime:(CMTime)time;
+- (void)renderImage:(GPUImageFramebuffer *)imageFrameBuffer atTime:(CMTime)time;
 
 
 @end
