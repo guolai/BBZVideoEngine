@@ -17,6 +17,9 @@
 @property (nonatomic, strong, readonly) NSArray<BBZAction *> *actions;
 @property (nonatomic, assign, readonly) NSUInteger depth;
 
+@property (nonatomic, assign, readonly) NSUInteger beginTime;
+@property (nonatomic, assign, readonly) NSUInteger endTime;
+
 + (BBZActionTree *)createActionTreeWithAction:(BBZAction *)action;
 
 - (void)addSubTree:(BBZActionTree *)subTree;

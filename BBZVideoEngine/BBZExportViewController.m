@@ -44,6 +44,11 @@
     path = [NSString stringWithFormat:@"%@/Resource/demo3", [[NSBundle mainBundle] bundlePath]];
     [videoModel addTransitionGroup:path];
     [videoModel addFilterGroup:path];
+    
+    path = [[NSBundle mainBundle] pathForResource:@"IMG_7305" ofType:@"HEIC" inDirectory:@"Resource"];
+    BBZImageAsset *imageAsset = [BBZImageAsset assetWithFilePath:path];
+    videoModel.bgImageAsset = imageAsset;
+    
     BBZExportTask *task = [BBZExportTask taskWithModel:videoModel];
     [task start];
     

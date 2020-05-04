@@ -17,7 +17,6 @@ typedef NS_ENUM(NSInteger, BBZTransformType) {
  使用transform有三种场景
  1.视频输入
  2.image输入
- 3.中间滤镜使用
  */
 @interface BBZTransformFilter : BBZMultiImageFilter
 

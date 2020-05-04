@@ -33,6 +33,8 @@ extern const int BBZVideoDurationScale;
 - (void)enableReferenceCounting;
 - (void)destroySomething;
 
+- (NSUInteger)endTime;
+
 @end
 
 

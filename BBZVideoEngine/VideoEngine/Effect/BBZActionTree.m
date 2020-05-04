@@ -12,6 +12,8 @@
 @property (nonatomic, strong, readwrite) NSMutableArray<BBZActionTree *> *arrayNodes;
 @property (nonatomic, strong, readwrite) NSMutableArray<BBZAction *> *arrayActions;
 @property (nonatomic, assign, readwrite) NSUInteger depth;
+@property (nonatomic, assign, readwrite) NSUInteger beginTime;
+@property (nonatomic, assign, readwrite) NSUInteger endTime;
 @end
 
 
@@ -26,11 +28,17 @@
 
 + (BBZActionTree *)createActionTreeWithAction:(BBZAction *)action {
     BBZActionTree *actionTree = [[BBZActionTree alloc] init];
+    actionTree.beginTime = action.startTime;
+    actionTree.endTime = action.startTime+action.duration;
     [actionTree addAction:action];
     return actionTree;
 }
 
 - (void)addSubTree:(BBZActionTree *)subTree {
+    if(subTree.beginTime > self.beginTime || subTree.endTime < self.endTime) {
+        BBZERROR(@"segment error %ld, %ld, %ld, %ld", subTree.beginTime, subTree.endTime, self.beginTime, self.endTime);
+        NSAssert(false, @"segment error");
+    }
     [self.arrayNodes addObject:subTree];
     self.depth = MAX(self.depth, subTree.depth+1);
 }
@@ -53,6 +61,10 @@
 }
 
 - (void)addAction:(BBZAction *)action {
+    if(action.startTime > self.beginTime || action.endTime < self.endTime) {
+        BBZERROR(@"segment error %ld, %ld, %ld, %ld", action.startTime, action.endTime, self.beginTime, self.endTime);
+        NSAssert(false, @"segment error");
+    }
     [self.arrayActions addObject:action];
 }
 
@@ -81,6 +93,7 @@
 - (NSArray<BBZAction *> *)actions {
     return [NSArray arrayWithArray:self.arrayActions];
 }
+
 
 - (void)remoeAllSubTrees {
     [self.arrayNodes removeAllObjects];

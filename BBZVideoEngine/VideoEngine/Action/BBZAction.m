@@ -70,5 +70,8 @@
     
 }
 
+- (NSUInteger)endTime {
+    return self.startTime + self.duration;
+}
 
 @end
