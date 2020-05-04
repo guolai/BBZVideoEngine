@@ -19,13 +19,17 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self.view setBackgroundColor:[UIColor grayColor]];
     UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
+    [btn setTitle:@"开始转换" forState:UIControlStateNormal];
     btn.center = self.view.center;
     [self.view addSubview:btn];
     [btn addTarget:self action:@selector(btnPressed:) forControlEvents:UIControlEventTouchUpInside];
     UILabel *lbl = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
     [self.view addSubview:lbl];
     [lbl setTextColor:[UIColor orangeColor]];
+    [lbl setTextAlignment:NSTextAlignmentCenter];
+    lbl.text = @"0%";
     self.lblProgress = lbl;
 }
 

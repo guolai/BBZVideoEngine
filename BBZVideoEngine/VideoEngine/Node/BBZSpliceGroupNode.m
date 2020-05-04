@@ -7,7 +7,7 @@
 //
 
 #import "BBZSpliceGroupNode.h"
-
+#import "NSDictionary+YYAdd.h"
 
 @implementation BBZSpliceNode
 -(instancetype)initWithDictionary:(NSDictionary *)dic {
@@ -23,6 +23,9 @@
                 [array addObject:node];
             }
         }
+        [array sortUsingComparator:^NSComparisonResult(BBZNode *obj1, BBZNode *obj2) {
+            return (obj1.order<obj2.order)?NSOrderedAscending:NSOrderedDescending;
+        }];
         self.actions = array;
     }
     return self;
@@ -34,7 +37,8 @@
 @implementation BBZSpliceGroupNode
 -(instancetype)initWithDictionary:(NSDictionary *)dic {
     if (self = [super init]) {
-        
+        self.minDuration = [dic floatValueForKey:@"duration" default:0.0];
+        self.order = [dic intValueForKey:@"order" default:0];
         id Obj = [dic objectForKey:@"splice"];
         if ([Obj isKindOfClass:[NSDictionary class]]) {
             BBZSpliceNode *node = [[BBZSpliceNode alloc] initWithDictionary:Obj];
@@ -54,6 +58,9 @@
                 [array addObject:node];
             }
         }
+        [array sortUsingComparator:^NSComparisonResult(BBZInputNode *obj1, BBZInputNode *obj2) {
+            return (obj1.index<obj2.index)?NSOrderedAscending:NSOrderedDescending;
+        }];
         self.inputNodes = array;
     }
     return self;

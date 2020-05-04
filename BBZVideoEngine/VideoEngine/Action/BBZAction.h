@@ -19,8 +19,9 @@ extern const int BBZVideoDurationScale;
 @property (nonatomic, assign) NSInteger repeatCount;
 @property (nonatomic, assign) NSInteger order;
 
-@property (nonatomic, strong) BBZNode *node;
+@property (nonatomic, strong, readonly) BBZNode *node;
 
+- (instancetype)initWithNode:(BBZNode *)node;
 
 - (void)updateWithTime:(NSUInteger)time;
 - (void)newFrameAtTime:(NSUInteger)time;

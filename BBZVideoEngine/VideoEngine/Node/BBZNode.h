@@ -21,7 +21,7 @@
 - (instancetype)initWithDictionary:(NSDictionary *)dic;
 @end
 
-@interface BBZNodeAnimation : NSObject
+@interface BBZNodeAnimation : NSObject<NSCopying>
 @property (nonatomic, assign) double begin;
 @property (nonatomic, assign) double end;
 @property (nonatomic, strong) BBZNodeAnimationParams *param_begin;

@@ -19,8 +19,6 @@
 @property (nonatomic, assign) CGFloat scale;
 
 
-
-
 @end
 
 

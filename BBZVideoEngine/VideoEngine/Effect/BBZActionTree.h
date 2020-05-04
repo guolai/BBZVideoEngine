@@ -30,6 +30,8 @@
 
 - (void)remoeAllSubTrees;
 
+//- (void)updateDuration:(NSUInteger)duration;
+
 - (BBZActionTree *)mergeWithOtherTree:(BBZActionTree *)otherTree;
 
 

@@ -40,6 +40,15 @@
 }
 
 
+- (id)copyWithZone:(NSZone *)zone {
+    BBZNodeAnimation *copyAnimation = [[BBZNodeAnimation alloc] init];
+    copyAnimation.begin = self.begin;
+    copyAnimation.end = self.end;
+    copyAnimation.param_begin = self.param_begin;
+    copyAnimation.param_end = self.param_end;
+    return copyAnimation;
+}
+
 @end
 
 @implementation BBZNode

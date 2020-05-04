@@ -28,9 +28,9 @@
 @end
 
 @interface BBZActionBuilderResult : NSObject
-@property (nonatomic, assign) NSUInteger groupIndex;
-@property (nonatomic, assign) NSUInteger assetIndex;
-@property (nonatomic, assign) double startTime;
+@property (nonatomic, assign) NSInteger groupIndex;
+@property (nonatomic, assign) NSInteger assetIndex;
+@property (nonatomic, assign) NSUInteger startTime;
 @property (nonatomic, strong) NSArray<BBZAction* > *groupActions;
 @end
 

@@ -31,6 +31,9 @@
                 [array addObject:node];
             }
         }
+        [array sortUsingComparator:^NSComparisonResult(BBZNode *obj1, BBZNode *obj2) {
+            return (obj1.order<obj2.order)?NSOrderedAscending:NSOrderedDescending;
+        }];
         self.actions = array;
     }
     return self;
@@ -63,6 +66,9 @@
                 [array addObject:node];
             }
         }
+        [array sortUsingComparator:^NSComparisonResult(BBZInputNode *obj1, BBZInputNode *obj2) {
+            return (obj1.index<obj2.index)?NSOrderedAscending:NSOrderedDescending;
+        }];
         self.inputNodes = array;
     }
     return self;

@@ -41,7 +41,7 @@
         return;
     }
     NSString *strFilterFile = [NSString stringWithFormat:@"%@/Splice.xml", self.filePath];
-    if(![[NSFileManager defaultManager] fileExistsAtPath:strFilterFile]) {
+    if([[NSFileManager defaultManager] fileExistsAtPath:strFilterFile]) {
         NSMutableArray *array = [NSMutableArray array];
         NSData *data = [NSData  dataWithContentsOfFile:strFilterFile];
         NSDictionary *dic = [NSDictionary dictionaryWithXML:data];
@@ -57,6 +57,9 @@
                 BBZSpliceGroupNode *node = [[BBZSpliceGroupNode alloc] initWithDictionary:inputGroup];
                 [array addObject:node];
             }
+            [array sortUsingComparator:^NSComparisonResult(BBZSpliceGroupNode *obj1, BBZSpliceGroupNode *obj2) {
+                return (obj1.order<obj2.order)?NSOrderedAscending:NSOrderedDescending;
+            }];
             _spliceGroups = array;
         }
     } else {
@@ -64,7 +67,7 @@
     }
     
     strFilterFile = [NSString stringWithFormat:@"%@/Transition.xml", self.filePath];
-    if(![[NSFileManager defaultManager] fileExistsAtPath:strFilterFile]) {
+    if([[NSFileManager defaultManager] fileExistsAtPath:strFilterFile]) {
         NSMutableArray *array = [NSMutableArray array];
         NSData *data = [NSData  dataWithContentsOfFile:strFilterFile];
         NSDictionary *dic = [NSDictionary dictionaryWithXML:data];
@@ -80,6 +83,9 @@
                 BBZTransitionGroupNode *node = [[BBZTransitionGroupNode alloc] initWithDictionary:inputGroup];
                 [array addObject:node];
             }
+            [array sortUsingComparator:^NSComparisonResult(BBZTransitionGroupNode *obj1, BBZTransitionGroupNode *obj2) {
+                return (obj1.order<obj2.order)?NSOrderedAscending:NSOrderedDescending;
+            }];
             _transitionGroups = array;
         }
     } else {

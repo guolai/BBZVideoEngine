@@ -1,6 +1,6 @@
 <!-- 新老引擎的分发通过miniVersion来判定 -->
 <root miniVersion="1.0">
-    <!-- <inputGroup duration="2.00" order="0">
+    <inputGroup duration="2.00" order="0">
         <input index="0" playOrder="0" assetOrder="0" scale="0.5">
             <action begin="0.0" end="2.0" name="fit_screen" scale_mode="AspectFit" order="1"/>
         </input>
@@ -26,14 +26,6 @@
         </input>
         <splice >
             <action begin="0.0" end="2.0" name="two_input" fShader="two.glsl" order="1"/>
-        </splice>
-    </inputGroup> -->
-    <inputGroup duration="2.00" order="1">
-        <input index="0" playOrder="1" assetOrder="1" scale="1.0">
-            <action begin="0.0" end="1000.0" name="fit_screen" scale_mode="AspectFit" order="2"/>
-        </input>
-        <splice >
-            <action begin="0.0" end="1000.0" name="videoOnImage" fShader="videoOnImage.glsl" order="1"/>
         </splice>
     </inputGroup>
 </root>

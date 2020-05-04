@@ -15,6 +15,7 @@
 @end
 
 @implementation BBZAction
+@synthesize node = _node;
 
 - (instancetype)init {
     if(self = [super init]) {
@@ -23,6 +24,13 @@
         _duration = 1.0;
         _referenceCountingDisabled = NO;
         _referenceCount = 0;
+    }
+    return self;
+}
+
+- (instancetype)initWithNode:(BBZNode *)node {
+    if([self init]) {
+        _node = node;
     }
     return self;
 }

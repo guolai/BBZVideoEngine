@@ -99,6 +99,7 @@
     [self.arrayNodes removeAllObjects];
 }
 
+
 - (BBZActionTree *)mergeWithOtherTree:(BBZActionTree *)otherTree {
     BBZActionTree *parentTree = [[BBZActionTree alloc] init];
     [parentTree addSubTree:self];
