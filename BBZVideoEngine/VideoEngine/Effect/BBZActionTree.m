@@ -61,6 +61,10 @@
 }
 
 - (void)addAction:(BBZAction *)action {
+    if(self.beginTime == self.endTime && self.beginTime == 0) {
+        self.beginTime = action.startTime;
+        self.endTime = action.endTime;
+    }
     if(action.startTime > self.beginTime || action.endTime < self.endTime) {
         BBZERROR(@"segment error %ld, %ld, %ld, %ld", action.startTime, action.endTime, self.beginTime, self.endTime);
         NSAssert(false, @"segment error");

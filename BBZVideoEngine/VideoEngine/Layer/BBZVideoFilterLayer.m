@@ -115,7 +115,7 @@
             
         }
 
-        BBZActionTree *spliceTree = [self actionTreeWithSpliceNode:splice.spliceNode];
+        BBZActionTree *spliceTree = [self actionTreeWithSpliceNode:splice.spliceNode duration:playDuration startTime:builder.startTime];
         int i = 0;
         for (BBZInputNode *input in splice.inputNodes) {
             BBZSourceAction *sourceAction = [sourceArray objectAtIndex:i];
@@ -130,7 +130,7 @@
             BBZActionTree *filterTree = [BBZActionTree createActionTreeWithAction:filterAction];
             [filterTree addSubTree:actionTree];
             
-            BBZActionTree *inputActionTree = [self actionTreeWithInputNode:input duration:playDuration];
+            BBZActionTree *inputActionTree = [self actionTreeWithInputNode:input duration:playDuration startTime:builder.startTime];
             [inputActionTree addSubTree:filterTree];
             [spliceTree addSubTree:inputActionTree];
             i++;
@@ -175,17 +175,30 @@
     return videoAction;
 }
 
-- (BBZActionTree *)actionTreeWithSpliceNode:(BBZSpliceNode *)spliceNode {
-    BBZActionTree *spliceTree = nil;
-//    BBZFilterAction *filterAction = [[BBZFilterAction alloc] init];
-//    filterAction.node = splice.spliceNode;
+- (BBZActionTree *)actionTreeWithSpliceNode:(BBZSpliceNode *)spliceNode
+                                   duration:(NSUInteger)duration
+                                  startTime:(NSUInteger)startTime{
+    BBZActionTree *spliceTree = [[BBZActionTree alloc] init];
+    for (BBZNode *node in spliceNode.actions) {
+        BBZFilterAction *filterAction = [[BBZFilterAction alloc] initWithNode:node];
+        filterAction.startTime = startTime;
+        filterAction.duration = duration;
+        [spliceTree addAction:filterAction];
+    }
+   
     return spliceTree;
 }
 
-- (BBZActionTree *)actionTreeWithInputNode:(BBZInputNode *)inputNode duration:(NSUInteger)duration{
-    BBZActionTree *inputTree = nil;
-    //    BBZFilterAction *filterAction = [[BBZFilterAction alloc] init];
-    //    filterAction.node = splice.spliceNode;
+- (BBZActionTree *)actionTreeWithInputNode:(BBZInputNode *)inputNode
+                                  duration:(NSUInteger)duration
+                                 startTime:(NSUInteger)startTime{
+    BBZActionTree *inputTree = [[BBZActionTree alloc] init];
+    for (BBZNode *node in inputNode.actions) {
+        BBZFilterAction *filterAction = [[BBZFilterAction alloc] initWithNode:node];
+        filterAction.startTime = startTime;
+        filterAction.duration = duration;
+        [inputTree addAction:filterAction];
+    }
     return inputTree;
 }
 
