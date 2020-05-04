@@ -10,12 +10,7 @@
 #import "GPUImageFramebuffer+BBZ.h"
 
 
-@interface BBZMultiImageFilter () {
-    GLint _uniformTextures[5];
-    GLint _uniformMat33;
-    GLint _uniformV4[2];
-    
-}
+@interface BBZMultiImageFilter ()
 @property (nonatomic, strong) NSMutableArray *objectsArray;
 @property (nonatomic, strong) NSMutableArray <GPUImageFramebuffer *>*frameBufferArray;
 @property (nonatomic, assign) NSInteger index;
@@ -156,7 +151,6 @@
     
     glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, [firstInputFramebuffer texture]);
-    
     glUniform1i(filterInputTextureUniform, 2);
     
     NSInteger uniformIndex = 1;
@@ -199,5 +193,10 @@
         [self.frameBufferArray removeAllObjects];
     });
 }
+
+- (NSArray<GPUImageFramebuffer *> *)frameBuffers {
+    return self.frameBufferArray;
+}
+
 @end
 

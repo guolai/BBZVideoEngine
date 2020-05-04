@@ -8,9 +8,11 @@
 
 #import "GPUImageFilter.h"
 
-NS_ASSUME_NONNULL_BEGIN
-
-@interface BBZMultiImageFilter : GPUImageFilter
+@interface BBZMultiImageFilter : GPUImageFilter {
+    GLint _uniformTextures[5];
+    GLint _uniformMat33;
+    GLint _uniformV4[2];
+}
 @property (nonatomic, assign) GPUMatrix3x3 mat33ParamValue;
 @property (nonatomic, assign) GPUVector4 vector4ParamValue1;
 @property (nonatomic, assign) GPUVector4 vector4ParamValue2;
@@ -23,9 +25,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)removeAllCacheFrameBuffer;
 
+
+- (NSArray<GPUImageFramebuffer *> *)frameBuffers;
 - (GLfloat *)adjustVertices:(GLfloat *)vertices;
 - (GLfloat *)adjustTextureCoordinates:(GLfloat *)textureCoordinates;
 
 @end
-
-NS_ASSUME_NONNULL_END

@@ -158,6 +158,7 @@
 		1431FA9D244DB5C700AA2F65 /* BBZTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 1431FA9C244DB5C700AA2F65 /* BBZTask.m */; };
 		1431FAA0244DB5D900AA2F65 /* BBZExportTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 1431FA9F244DB5D900AA2F65 /* BBZExportTask.m */; };
 		147375B02455BEB700252084 /* BBZEngineSetting+VideoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 147375AF2455BEB700252084 /* BBZEngineSetting+VideoModel.m */; };
+		14940A11245F277900C5E5A3 /* BBZTransformFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 14940A10245F277900C5E5A3 /* BBZTransformFilter.m */; };
 		14B7C8792456E48F0008F3AE /* BBZVideoEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 14B7C8782456E48F0008F3AE /* BBZVideoEngine.m */; };
 		14F6ACFF244ECD3800A908E8 /* BBZActionBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F6ACFE244ECD3800A908E8 /* BBZActionBuilder.m */; };
 		14F6AD13244EE92A00A908E8 /* BBZExportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F6AD12244EE92A00A908E8 /* BBZExportViewController.m */; };
@@ -474,6 +475,8 @@
 		1431FA9F244DB5D900AA2F65 /* BBZExportTask.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZExportTask.m; sourceTree = "<group>"; };
 		147375AE2455BEB700252084 /* BBZEngineSetting+VideoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BBZEngineSetting+VideoModel.h"; sourceTree = "<group>"; };
 		147375AF2455BEB700252084 /* BBZEngineSetting+VideoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "BBZEngineSetting+VideoModel.m"; sourceTree = "<group>"; };
+		14940A0F245F277900C5E5A3 /* BBZTransformFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZTransformFilter.h; sourceTree = "<group>"; };
+		14940A10245F277900C5E5A3 /* BBZTransformFilter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZTransformFilter.m; sourceTree = "<group>"; };
 		14B7C8772456E48F0008F3AE /* BBZVideoEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZVideoEngine.h; sourceTree = "<group>"; };
 		14B7C8782456E48F0008F3AE /* BBZVideoEngine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZVideoEngine.m; sourceTree = "<group>"; };
 		14B7C87A2456E51A0008F3AE /* BBZVideoControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZVideoControl.h; sourceTree = "<group>"; };
@@ -532,34 +535,34 @@
 		1409D1B9244959850053CFA4 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				1409D1BA244959850053CFA4 /* GPUImageBuffer.h */,
-				1409D1BB244959850053CFA4 /* GPUImageMovieComposition.h */,
-				1409D1BC244959850053CFA4 /* GPUImageRawDataOutput.h */,
-				1409D1BD244959850053CFA4 /* GPUImageColorConversion.h */,
-				1409D1BE244959850053CFA4 /* GPUImageTwoInputFilter.m */,
-				1409D1BF244959850053CFA4 /* GPUImageMovie.m */,
-				1409D1C0244959850053CFA4 /* GPUImageRawDataInput.h */,
-				1409D1C1244959850053CFA4 /* GLProgram.m */,
-				1409D1C2244959850053CFA4 /* GPUImageOutput.m */,
-				1409D1C3244959850053CFA4 /* GPUImageFramebuffer.m */,
-				1409D1C4244959850053CFA4 /* GPUImageFilter.h */,
-				1409D1C5244959850053CFA4 /* GPUImageLookupFilter.h */,
-				1409D1C6244959850053CFA4 /* GPUImageFramebufferCache.m */,
-				1409D1C7244959850053CFA4 /* iOS */,
-				1409D1D2244959850053CFA4 /* GPUImageTwoInputFilter.h */,
-				1409D1D3244959850053CFA4 /* GPUImageColorConversion.m */,
-				1409D1D4244959850053CFA4 /* GPUImageRawDataOutput.m */,
-				1409D1D5244959850053CFA4 /* GPUImageMovieComposition.m */,
-				1409D1D6244959850053CFA4 /* GPUImageBuffer.m */,
-				1409D1D7244959850053CFA4 /* GPUImageRawDataInput.m */,
-				1409D1D8244959850053CFA4 /* GPUImageMovie.h */,
-				1409D1D9244959850053CFA4 /* GPUImageFramebufferCache.h */,
-				1409D1DA244959850053CFA4 /* GPUImage.h */,
-				1409D1DB244959850053CFA4 /* GPUImageLookupFilter.m */,
-				1409D1DC244959850053CFA4 /* GPUImageFramebuffer.h */,
-				1409D1DD244959850053CFA4 /* GPUImageFilter.m */,
-				1409D1DE244959850053CFA4 /* GPUImageOutput.h */,
 				1409D1DF244959850053CFA4 /* GLProgram.h */,
+				1409D1C1244959850053CFA4 /* GLProgram.m */,
+				1409D1DA244959850053CFA4 /* GPUImage.h */,
+				1409D1BA244959850053CFA4 /* GPUImageBuffer.h */,
+				1409D1D6244959850053CFA4 /* GPUImageBuffer.m */,
+				1409D1BD244959850053CFA4 /* GPUImageColorConversion.h */,
+				1409D1D3244959850053CFA4 /* GPUImageColorConversion.m */,
+				1409D1C4244959850053CFA4 /* GPUImageFilter.h */,
+				1409D1DD244959850053CFA4 /* GPUImageFilter.m */,
+				1409D1DC244959850053CFA4 /* GPUImageFramebuffer.h */,
+				1409D1C3244959850053CFA4 /* GPUImageFramebuffer.m */,
+				1409D1D9244959850053CFA4 /* GPUImageFramebufferCache.h */,
+				1409D1C6244959850053CFA4 /* GPUImageFramebufferCache.m */,
+				1409D1C5244959850053CFA4 /* GPUImageLookupFilter.h */,
+				1409D1DB244959850053CFA4 /* GPUImageLookupFilter.m */,
+				1409D1D8244959850053CFA4 /* GPUImageMovie.h */,
+				1409D1BF244959850053CFA4 /* GPUImageMovie.m */,
+				1409D1BB244959850053CFA4 /* GPUImageMovieComposition.h */,
+				1409D1D5244959850053CFA4 /* GPUImageMovieComposition.m */,
+				1409D1DE244959850053CFA4 /* GPUImageOutput.h */,
+				1409D1C2244959850053CFA4 /* GPUImageOutput.m */,
+				1409D1C0244959850053CFA4 /* GPUImageRawDataInput.h */,
+				1409D1D7244959850053CFA4 /* GPUImageRawDataInput.m */,
+				1409D1BC244959850053CFA4 /* GPUImageRawDataOutput.h */,
+				1409D1D4244959850053CFA4 /* GPUImageRawDataOutput.m */,
+				1409D1D2244959850053CFA4 /* GPUImageTwoInputFilter.h */,
+				1409D1BE244959850053CFA4 /* GPUImageTwoInputFilter.m */,
+				1409D1C7244959850053CFA4 /* iOS */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -897,6 +900,8 @@
 				1409D1F3244959D40053CFA4 /* GPUImageFramebuffer+BBZ.m */,
 				1431FA0F24495E5000AA2F65 /* BBZMultiImageFilter.h */,
 				1431FA1024495E5000AA2F65 /* BBZMultiImageFilter.m */,
+				14940A0F245F277900C5E5A3 /* BBZTransformFilter.h */,
+				14940A10245F277900C5E5A3 /* BBZTransformFilter.m */,
 			);
 			path = GPUImage;
 			sourceTree = "<group>";
@@ -1288,6 +1293,7 @@
 				1431FA8B244DA21900AA2F65 /* BBZFilterLayer.m in Sources */,
 				142F0C7E2459A6DD0005AA8A /* BBZImageAction.m in Sources */,
 				1409D1EC244959850053CFA4 /* GPUImageRawDataOutput.m in Sources */,
+				14940A11245F277900C5E5A3 /* BBZTransformFilter.m in Sources */,
 				14183F982450511D00D03057 /* NSArray+YYAdd.m in Sources */,
 				1431FA9D244DB5C700AA2F65 /* BBZTask.m in Sources */,
 				14183FA72450511D00D03057 /* CALayer+YYAdd.m in Sources */,

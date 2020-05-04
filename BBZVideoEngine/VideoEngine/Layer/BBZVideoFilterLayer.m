@@ -52,6 +52,30 @@
     return builder;
 }
 
+- (BBZActionBuilderResult *)buildTimeLineSplice {
+    BBZActionBuilderResult *builder = [[BBZActionBuilderResult alloc] init];
+    builder.startTime = 0;
+    builder.groupIndex = 0;
+    NSMutableArray *retArray = [NSMutableArray array];
+    if(self.model.transitonModel.spliceGroups.count > 0) {
+        
+    } else {
+        
+    }
+    
+    builder.groupActions = retArray;
+    return builder;
+}
+
+- (BBZActionBuilderResult *)buildTimeLineTranstion {
+    BBZActionBuilderResult *builder = [[BBZActionBuilderResult alloc] init];
+    builder.startTime = 0;
+    builder.groupIndex = 0;
+    NSMutableArray *retArray = [NSMutableArray array];
+    builder.groupActions = retArray;
+    return builder;
+}
+
 
 - (BBZImageAction *)imageActionWithAsset:(BBZImageAsset *)asset {
     BBZImageAction *imageAction = [[BBZImageAction alloc] init];
