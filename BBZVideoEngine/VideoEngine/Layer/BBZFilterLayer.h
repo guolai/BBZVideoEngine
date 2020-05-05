@@ -17,15 +17,6 @@
 - (void)filterLayerAppendTimePoint:(NSArray *)timePoints;
 @end
 
-@interface BBZFilterLayer : NSObject
-@property (nonatomic, strong, readonly) BBZVideoModel *model;
-@property (nonatomic, strong, readonly) BBZEngineContext *context;
-@property (nonatomic, weak) id<BBZFilterLayerProtocol> layerDelegate;
-
-- (instancetype)initWithModel:(BBZVideoModel *)model context:(BBZEngineContext *)context;
-- (void)buildTimelineNodes;
-
-@end
 
 @interface BBZActionBuilderResult : NSObject
 @property (nonatomic, assign) NSInteger groupIndex;
@@ -33,4 +24,16 @@
 @property (nonatomic, assign) NSUInteger startTime;
 @property (nonatomic, strong) NSArray<BBZActionTree *> *groupActions;
 @end
+
+
+@interface BBZFilterLayer : NSObject
+@property (nonatomic, strong, readonly) BBZVideoModel *model;
+@property (nonatomic, strong, readonly) BBZEngineContext *context;
+@property (nonatomic, weak) id<BBZFilterLayerProtocol> layerDelegate;
+
+- (instancetype)initWithModel:(BBZVideoModel *)model context:(BBZEngineContext *)context;
+- (BBZActionBuilderResult *)buildTimelineNodes:(BBZActionBuilderResult *)inputBuilder;
+
+@end
+
 

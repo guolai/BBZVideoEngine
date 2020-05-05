@@ -14,14 +14,15 @@
 
 @implementation BBZVideoFilterLayer
 
-- (void)buildTimelineNodes {
+- (BBZActionBuilderResult *)buildTimelineNodes:(BBZActionBuilderResult *)inputBuilder {
     NSAssert(self.model.assetItems.count > 0, @"must have at least one asset");
-    if(self.model.transitonModel.spliceGroups.count == 0 &&
-       self.model.transitonModel.transitionGroups.count == 0) {
-        [self buildDefaultTimeline];
+    BBZActionBuilderResult *builder = nil;
+    if(self.model.transitonModel.spliceGroups.count == 0) {
+       builder = [self buildDefaultTimeline];
     } else {
-        [self buildTimelineNodeWithTrasntion];
+       builder = [self buildSpliceTimeline];
     }
+    return builder;
 }
 
 - (BBZActionBuilderResult *)buildDefaultTimeline {
@@ -60,23 +61,17 @@
     假设splice的最短时长 2秒
     某一段资源前后转场两次相加的时长 不能超过2秒
  */
-- (BBZActionBuilderResult *)buildTimelineNodeWithTrasntion {
+- (BBZActionBuilderResult *)buildSpliceTimeline {
     BBZActionBuilderResult *builder = nil;
-    BBZActionBuilderResult *spliceBuilder = nil;
     if(self.model.transitonModel.spliceGroups.count > 0) {
-        spliceBuilder = [self buildTimeLineSplice];
+        builder = [self buildTimeLineWithSpliceNodes];
     } else  {
-        spliceBuilder = [self buildDefaultTimeline];
-    }
-    if(self.model.transitonModel.transitionGroups.count > 0) {
-        builder = [self buildTimeLineTranstion:spliceBuilder];
-    } else {
-        builder = spliceBuilder;
+        builder = [self buildDefaultTimeline];
     }
     return builder;
 }
 
-- (BBZActionBuilderResult *)buildTimeLineSplice {
+- (BBZActionBuilderResult *)buildTimeLineWithSpliceNodes {
     BBZActionBuilderResult *builder = [[BBZActionBuilderResult alloc] init];
     builder.startTime = 0;
     builder.groupIndex = 0;
@@ -151,37 +146,6 @@
     return builder;
 }
 
-- (BBZActionBuilderResult *)buildTimeLineTranstion:(BBZActionBuilderResult *)spliceBuilder {
-    BBZActionBuilderResult *builder = [[BBZActionBuilderResult alloc] init];
-    builder.startTime = 0;
-    builder.groupIndex = 0;
-    NSMutableArray *retArray = [NSMutableArray array];
-    NSInteger transionIndex = 0;
-    BBZActionTree *beforeTree = nil;
-    for (BBZActionTree *spliceTree in spliceBuilder.groupActions) {
-        if(!beforeTree) {
-            beforeTree = spliceTree;
-            builder.startTime = beforeTree.endTime;
-            continue;
-        }
-        if(transionIndex >= self.model.transitonModel.transitionGroups.count) {
-            transionIndex = 0;
-        }
-        
-        BBZTransitionGroupNode *transition = [self.model.transitonModel.transitionGroups objectAtIndex:transionIndex];
-        NSUInteger transionDuration = transition.duration;
-        builder.startTime -= transionDuration;
-        NSAssert(builder.startTime > 0, @"transionStartTime error");
-        NSAssert((spliceTree.beginTime - transionDuration > 0), @"transionStartTime error");
-        
-        
-        
-        
-    }
-    builder.groupActions = retArray;
-    return builder;
-}
-
 
 - (BBZImageAction *)imageActionWithAsset:(BBZImageAsset *)asset {
     BBZImageAction *imageAction = [[BBZImageAction alloc] init];
@@ -224,21 +188,6 @@
         [inputTree addAction:filterAction];
     }
     return inputTree;
-}
-
-
-- (BBZActionTree *)actionTreeWithTransitionNode:(BBZTransitionNode *)transitionNode
-                                   duration:(NSUInteger)duration
-                                  startTime:(NSUInteger)startTime{
-    BBZActionTree *spliceTree = [[BBZActionTree alloc] init];
-    for (BBZNode *node in transitionNode.actions) {
-        BBZFilterAction *filterAction = [[BBZFilterAction alloc] initWithNode:node];
-        filterAction.startTime = startTime;
-        filterAction.duration = duration;
-        [spliceTree addAction:filterAction];
-    }
-    
-    return spliceTree;
 }
 
 @end

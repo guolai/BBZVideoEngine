@@ -14,6 +14,7 @@
 @property (nonatomic, assign, readwrite) NSUInteger depth;
 @property (nonatomic, assign, readwrite) NSUInteger beginTime;
 @property (nonatomic, assign, readwrite) NSUInteger endTime;
+@property (nonatomic, assign, readwrite) NSUInteger offset;
 @end
 
 
@@ -121,17 +122,29 @@
     return mtblString;
 }
 
-- (void)updateBegineTime:(NSUInteger)time {
-    NSUInteger duration = self.endTime - self.beginTime;
-    self.beginTime = time;
-    self.endTime = time+duration;
+- (void)updateOffsetTime:(NSUInteger)time {
+    if(self.offset == time) {
+        return;
+    }
+    self.offset = time;
     for (BBZAction *action in self.arrayActions) {
         action.startTime = self.beginTime;
     }
     for (BBZActionTree *tree in self.arrayNodes) {
-        [tree updateBegineTime:time];
+        [tree updateOffsetTime:time];
     }
-    
+}
+
+- (NSUInteger)beginTime {
+    return _beginTime + self.offset;
+}
+
+- (NSUInteger)endTime {
+    return _endTime + self.offset;
+}
+
+- (NSUInteger)duration {
+    return self.endTime - self.beginTime;
 }
 
 @end

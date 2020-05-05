@@ -19,6 +19,7 @@
 
 @property (nonatomic, assign, readonly) NSUInteger beginTime;
 @property (nonatomic, assign, readonly) NSUInteger endTime;
+@property (nonatomic, assign, readonly) NSUInteger offset;
 
 + (BBZActionTree *)createActionTreeWithAction:(BBZAction *)action;
 
@@ -30,7 +31,8 @@
 
 - (void)remoeAllSubTrees;
 
-- (void)updateBegineTime:(NSUInteger)time;
+- (void)updateOffsetTime:(NSUInteger)time;
+- (NSUInteger)duration;
 
 - (BBZActionTree *)mergeWithOtherTree:(BBZActionTree *)otherTree;
 

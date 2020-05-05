@@ -170,6 +170,7 @@
 		186CE3ED24574A49006222F7 /* BBZEngineContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 186CE3EC24574A49006222F7 /* BBZEngineContext.m */; };
 		18B80E162451F59300B3B376 /* BBZSpliceGroupNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B80E152451F59300B3B376 /* BBZSpliceGroupNode.m */; };
 		18B80E192451F5A600B3B376 /* BBZTransitionGroupNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B80E182451F5A600B3B376 /* BBZTransitionGroupNode.m */; };
+		18DC30FA2461A02100023423 /* BBZTransitionFilterLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 18DC30F92461A02100023423 /* BBZTransitionFilterLayer.m */; };
 		18F3E80724589093005221A8 /* BBZVideoFilterLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F3E80624589093005221A8 /* BBZVideoFilterLayer.m */; };
 		18F3E80A245890AE005221A8 /* BBZAudioFilterLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F3E809245890AE005221A8 /* BBZAudioFilterLayer.m */; };
 		18F3E80D245890D1005221A8 /* BBZEffetFilterLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F3E80C245890D1005221A8 /* BBZEffetFilterLayer.m */; };
@@ -500,6 +501,8 @@
 		18B80E152451F59300B3B376 /* BBZSpliceGroupNode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZSpliceGroupNode.m; sourceTree = "<group>"; };
 		18B80E172451F5A600B3B376 /* BBZTransitionGroupNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZTransitionGroupNode.h; sourceTree = "<group>"; };
 		18B80E182451F5A600B3B376 /* BBZTransitionGroupNode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZTransitionGroupNode.m; sourceTree = "<group>"; };
+		18DC30F82461A02100023423 /* BBZTransitionFilterLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZTransitionFilterLayer.h; sourceTree = "<group>"; };
+		18DC30F92461A02100023423 /* BBZTransitionFilterLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZTransitionFilterLayer.m; sourceTree = "<group>"; };
 		18F3E80524589093005221A8 /* BBZVideoFilterLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZVideoFilterLayer.h; sourceTree = "<group>"; };
 		18F3E80624589093005221A8 /* BBZVideoFilterLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZVideoFilterLayer.m; sourceTree = "<group>"; };
 		18F3E808245890AE005221A8 /* BBZAudioFilterLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZAudioFilterLayer.h; sourceTree = "<group>"; };
@@ -951,6 +954,8 @@
 				18F3E80C245890D1005221A8 /* BBZEffetFilterLayer.m */,
 				18F3E80E245890F4005221A8 /* BBZMaskFilterLayer.h */,
 				18F3E80F245890F4005221A8 /* BBZMaskFilterLayer.m */,
+				18DC30F82461A02100023423 /* BBZTransitionFilterLayer.h */,
+				18DC30F92461A02100023423 /* BBZTransitionFilterLayer.m */,
 			);
 			path = Layer;
 			sourceTree = "<group>";
@@ -1239,6 +1244,7 @@
 				142F0C872459A71B0005AA8A /* BBZFilterAction.m in Sources */,
 				1409D1EA244959850053CFA4 /* GPUImageView.m in Sources */,
 				14183F932450511D00D03057 /* UIBarButtonItem+YYAdd.m in Sources */,
+				18DC30FA2461A02100023423 /* BBZTransitionFilterLayer.m in Sources */,
 				1431FA63244D804F00AA2F65 /* UIDevice+BBZ.m in Sources */,
 				1409D1ED244959850053CFA4 /* GPUImageMovieComposition.m in Sources */,
 				14183F722450511D00D03057 /* YYAnimatedImageView.m in Sources */,

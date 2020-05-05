@@ -15,12 +15,13 @@
 #import "BBZEffetFilterLayer.h"
 #import "BBZMaskFilterLayer.h"
 #import "BBZOutputFilterLayer.h"
-
+#import "BBZTransitionFilterLayer.h"
 
 
 typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
-    BBZFilterLayerTypeVideo,//视频 图片 背景图 拼接 转场
+    BBZFilterLayerTypeVideo,//视频 图片 背景图 拼接
     BBZFilterLayerTypeAudio,//音频
+    BBZFilterLayerTypeTransition,//转场
     BBZFilterLayerTypeEffect,//特效
     BBZFilterLayerTypeMask,//水印
     BBZFilterLayerTypeOutput,//输出
@@ -73,6 +74,9 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
     BBZAudioFilterLayer *audioLayer = [[BBZAudioFilterLayer alloc] initWithModel:self.videoModel context:self.context];
     self.filterLayers[@(BBZFilterLayerTypeAudio)] = audioLayer;
     
+    BBZTransitionFilterLayer *transitionLayer = [[BBZTransitionFilterLayer alloc] initWithModel:self.videoModel context:self.context];
+    self.filterLayers[@(BBZFilterLayerTypeTransition)] = transitionLayer;
+    
     BBZEffetFilterLayer *effectLayer = [[BBZEffetFilterLayer alloc] initWithModel:self.videoModel context:self.context];
     self.filterLayers[@(BBZFilterLayerTypeEffect)] = effectLayer;
     
@@ -82,9 +86,15 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
     BBZOutputFilterLayer *outputLayer = [[BBZOutputFilterLayer alloc] initWithModel:self.videoModel context:self.context];
     self.filterLayers[@(BBZFilterLayerTypeOutput)] = outputLayer;
     
+    BBZActionBuilderResult *builerResult = nil;
     for (int i = BBZFilterLayerTypeVideo; i < BBZFilterLayerTypeMax; i++) {
         BBZFilterLayer *layer = self.filterLayers[@(i)];
-        [layer buildTimelineNodes];
+        if(i == BBZFilterLayerTypeVideo || i == BBZFilterLayerTypeTransition) {
+            builerResult = [layer buildTimelineNodes:builerResult];
+        } else {
+            [layer buildTimelineNodes:builerResult];
+        }
+        
     }
 }
 

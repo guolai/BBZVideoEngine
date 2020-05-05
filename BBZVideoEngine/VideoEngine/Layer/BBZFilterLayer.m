@@ -8,6 +8,8 @@
 
 #import "BBZFilterLayer.h"
 
+@implementation BBZActionBuilderResult
+@end
 
 @interface BBZFilterLayer ()
 @property (nonatomic, strong) BBZVideoModel *model;
@@ -23,14 +25,11 @@
     return self;
 }
 
-- (void)buildTimelineNodes {
-    
+- (BBZActionBuilderResult *)buildTimelineNodes:(BBZActionBuilderResult *)inputBuilder {
+    return nil;
 }
 
 @end
 
 
-@implementation BBZActionBuilderResult
 
-
-@end
