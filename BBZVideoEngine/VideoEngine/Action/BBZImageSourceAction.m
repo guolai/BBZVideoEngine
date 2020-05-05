@@ -1,15 +1,15 @@
 //
-//  BBZImageAction.m
+//  BBZImageSourceAction.m
 //  BBZVideoEngine
 //
 //  Created by Hbo on 2020/4/29.
 //  Copyright © 2020 BBZ. All rights reserved.
 //
 
-#import "BBZImageAction.h"
+#import "BBZImageSourceAction.h"
 #import "BBZImageAsset.h"
 
-@implementation BBZImageAction
+@implementation BBZImageSourceAction
 - (void)destroySomething {
     [((BBZImageAsset *)self.asset) unloadImage];
 }

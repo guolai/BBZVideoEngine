@@ -7,8 +7,8 @@
 //
 
 #import "BBZTransitionFilterLayer.h"
-#import "BBZVideoAction.h"
-#import "BBZImageAction.h"
+#import "BBZVideoSourceAction.h"
+#import "BBZImageSourceAction.h"
 #import "BBZInputFilterAction.h"
 
 @implementation BBZTransitionFilterLayer
@@ -60,7 +60,7 @@
         NSUInteger transionDuration = transition.duration;
         builder.startTime -= transionDuration;
         NSAssert(builder.startTime > 0, @"transionStartTime error");
-        NSAssert((spliceTree.beginTime - transionDuration > 0), @"transionStartTime error");    
+        NSAssert((spliceTree.beginTime - transionDuration > 0), @"transionStartTime error");
     }
     
     builder.groupActions = retArray;

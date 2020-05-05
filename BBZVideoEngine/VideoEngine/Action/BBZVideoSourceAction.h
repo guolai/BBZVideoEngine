@@ -1,5 +1,5 @@
 //
-//  BBZImageAction.h
+//  BBZVideoSourceAction.h
 //  BBZVideoEngine
 //
 //  Created by Hbo on 2020/4/29.
@@ -9,6 +9,8 @@
 #import "BBZSourceAction.h"
 
 
-@interface BBZImageAction : BBZSourceAction
-- (GPUImageFramebuffer *)frameBufferAtTime:(CMTime)time;
+@interface BBZVideoSourceAction : BBZSourceAction
+- (CMSampleBufferRef)samplebufferAtTime:(CMTime)time;
 @end
+
+

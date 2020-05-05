@@ -118,8 +118,8 @@
 		142F0C752459A6630005AA8A /* BBZAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 142F0C742459A6630005AA8A /* BBZAction.m */; };
 		142F0C782459A68D0005AA8A /* BBZSourceAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 142F0C772459A68D0005AA8A /* BBZSourceAction.m */; };
 		142F0C7B2459A6A50005AA8A /* BBZVistualFilterAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 142F0C7A2459A6A50005AA8A /* BBZVistualFilterAction.m */; };
-		142F0C7E2459A6DD0005AA8A /* BBZImageAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 142F0C7D2459A6DD0005AA8A /* BBZImageAction.m */; };
-		142F0C812459A6F00005AA8A /* BBZVideoAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 142F0C802459A6F00005AA8A /* BBZVideoAction.m */; };
+		142F0C7E2459A6DD0005AA8A /* BBZImageSourceAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 142F0C7D2459A6DD0005AA8A /* BBZImageSourceAction.m */; };
+		142F0C812459A6F00005AA8A /* BBZVideoSourceAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 142F0C802459A6F00005AA8A /* BBZVideoSourceAction.m */; };
 		142F0C842459A7040005AA8A /* BBZVideoReaderAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 142F0C832459A7040005AA8A /* BBZVideoReaderAction.m */; };
 		142F0C872459A71B0005AA8A /* BBZFilterAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 142F0C862459A71B0005AA8A /* BBZFilterAction.m */; };
 		142F0C8A2459A7350005AA8A /* BBZOutputAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 142F0C892459A7350005AA8A /* BBZOutputAction.m */; };
@@ -404,10 +404,10 @@
 		142F0C772459A68D0005AA8A /* BBZSourceAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZSourceAction.m; sourceTree = "<group>"; };
 		142F0C792459A6A50005AA8A /* BBZVistualFilterAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZVistualFilterAction.h; sourceTree = "<group>"; };
 		142F0C7A2459A6A50005AA8A /* BBZVistualFilterAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZVistualFilterAction.m; sourceTree = "<group>"; };
-		142F0C7C2459A6DD0005AA8A /* BBZImageAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZImageAction.h; sourceTree = "<group>"; };
-		142F0C7D2459A6DD0005AA8A /* BBZImageAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZImageAction.m; sourceTree = "<group>"; };
-		142F0C7F2459A6F00005AA8A /* BBZVideoAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZVideoAction.h; sourceTree = "<group>"; };
-		142F0C802459A6F00005AA8A /* BBZVideoAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZVideoAction.m; sourceTree = "<group>"; };
+		142F0C7C2459A6DD0005AA8A /* BBZImageSourceAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZImageSourceAction.h; sourceTree = "<group>"; };
+		142F0C7D2459A6DD0005AA8A /* BBZImageSourceAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZImageSourceAction.m; sourceTree = "<group>"; };
+		142F0C7F2459A6F00005AA8A /* BBZVideoSourceAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZVideoSourceAction.h; sourceTree = "<group>"; };
+		142F0C802459A6F00005AA8A /* BBZVideoSourceAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZVideoSourceAction.m; sourceTree = "<group>"; };
 		142F0C822459A7040005AA8A /* BBZVideoReaderAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZVideoReaderAction.h; sourceTree = "<group>"; };
 		142F0C832459A7040005AA8A /* BBZVideoReaderAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZVideoReaderAction.m; sourceTree = "<group>"; };
 		142F0C852459A71B0005AA8A /* BBZFilterAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZFilterAction.h; sourceTree = "<group>"; };
@@ -921,10 +921,10 @@
 				142F0C772459A68D0005AA8A /* BBZSourceAction.m */,
 				142F0C792459A6A50005AA8A /* BBZVistualFilterAction.h */,
 				142F0C7A2459A6A50005AA8A /* BBZVistualFilterAction.m */,
-				142F0C7C2459A6DD0005AA8A /* BBZImageAction.h */,
-				142F0C7D2459A6DD0005AA8A /* BBZImageAction.m */,
-				142F0C7F2459A6F00005AA8A /* BBZVideoAction.h */,
-				142F0C802459A6F00005AA8A /* BBZVideoAction.m */,
+				142F0C7C2459A6DD0005AA8A /* BBZImageSourceAction.h */,
+				142F0C7D2459A6DD0005AA8A /* BBZImageSourceAction.m */,
+				142F0C7F2459A6F00005AA8A /* BBZVideoSourceAction.h */,
+				142F0C802459A6F00005AA8A /* BBZVideoSourceAction.m */,
 				142F0C822459A7040005AA8A /* BBZVideoReaderAction.h */,
 				142F0C832459A7040005AA8A /* BBZVideoReaderAction.m */,
 				142F0C852459A71B0005AA8A /* BBZFilterAction.h */,
@@ -1249,7 +1249,7 @@
 				1409D1ED244959850053CFA4 /* GPUImageMovieComposition.m in Sources */,
 				14183F722450511D00D03057 /* YYAnimatedImageView.m in Sources */,
 				147375B02455BEB700252084 /* BBZEngineSetting+VideoModel.m in Sources */,
-				142F0C812459A6F00005AA8A /* BBZVideoAction.m in Sources */,
+				142F0C812459A6F00005AA8A /* BBZVideoSourceAction.m in Sources */,
 				1426D716243D90B9008BEB86 /* HomeTableViewController.m in Sources */,
 				1431FA8E244DA23A00AA2F65 /* BBZFilterMixer.m in Sources */,
 				142F0C842459A7040005AA8A /* BBZVideoReaderAction.m in Sources */,
@@ -1303,7 +1303,7 @@
 				14183F902450511D00D03057 /* UIScrollView+YYAdd.m in Sources */,
 				14183F6E2450511D00D03057 /* UIButton+YYWebImage.m in Sources */,
 				1431FA8B244DA21900AA2F65 /* BBZFilterLayer.m in Sources */,
-				142F0C7E2459A6DD0005AA8A /* BBZImageAction.m in Sources */,
+				142F0C7E2459A6DD0005AA8A /* BBZImageSourceAction.m in Sources */,
 				1409D1EC244959850053CFA4 /* GPUImageRawDataOutput.m in Sources */,
 				14940A11245F277900C5E5A3 /* BBZVideoInputFilter.m in Sources */,
 				14183F982450511D00D03057 /* NSArray+YYAdd.m in Sources */,

@@ -1,14 +1,14 @@
 //
-//  BBZVideoAction.m
+//  BBZVideoSourceAction.m
 //  BBZVideoEngine
 //
 //  Created by Hbo on 2020/4/29.
 //  Copyright © 2020 BBZ. All rights reserved.
 //
 
-#import "BBZVideoAction.h"
+#import "BBZVideoSourceAction.h"
 
-@implementation BBZVideoAction
+@implementation BBZVideoSourceAction
 - (CMSampleBufferRef)samplebufferAtTime:(CMTime)time {
     return nil;
 }

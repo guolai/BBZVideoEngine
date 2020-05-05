@@ -7,8 +7,8 @@
 //
 
 #import "BBZVideoFilterLayer.h"
-#import "BBZVideoAction.h"
-#import "BBZImageAction.h"
+#import "BBZVideoSourceAction.h"
+#import "BBZImageSourceAction.h"
 #import "BBZInputFilterAction.h"
 
 
@@ -147,16 +147,16 @@
 }
 
 
-- (BBZImageAction *)imageActionWithAsset:(BBZImageAsset *)asset {
-    BBZImageAction *imageAction = [[BBZImageAction alloc] init];
+- (BBZImageSourceAction *)imageActionWithAsset:(BBZImageAsset *)asset {
+    BBZImageSourceAction *imageAction = [[BBZImageSourceAction alloc] init];
     imageAction.asset = asset;
     imageAction.renderSize = asset.sourceSize;
     imageAction.duration = asset.playDuration;
     return imageAction;
 }
 
-- (BBZVideoAction *)videoActionWithAsset:(BBZVideoAsset *)asset {
-    BBZVideoAction *videoAction = [[BBZVideoAction alloc] init];
+- (BBZVideoSourceAction *)videoActionWithAsset:(BBZVideoAsset *)asset {
+    BBZVideoSourceAction *videoAction = [[BBZVideoSourceAction alloc] init];
     videoAction.asset = asset;
     videoAction.renderSize = self.context.renderSize;
     videoAction.duration = asset.playDuration;
