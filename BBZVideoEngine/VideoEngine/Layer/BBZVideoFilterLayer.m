@@ -10,6 +10,7 @@
 #import "BBZVideoSourceAction.h"
 #import "BBZImageSourceAction.h"
 #import "BBZInputFilterAction.h"
+#import "BBZVideoReaderAction.h"
 
 
 @implementation BBZVideoFilterLayer
@@ -156,7 +157,7 @@
 }
 
 - (BBZVideoSourceAction *)videoActionWithAsset:(BBZVideoAsset *)asset {
-    BBZVideoSourceAction *videoAction = [[BBZVideoSourceAction alloc] init];
+    BBZVideoReaderAction *videoAction = [[BBZVideoReaderAction alloc] init];
     videoAction.asset = asset;
     videoAction.renderSize = self.context.renderSize;
     videoAction.duration = asset.playDuration;

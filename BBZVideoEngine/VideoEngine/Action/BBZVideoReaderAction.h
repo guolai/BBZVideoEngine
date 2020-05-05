@@ -6,10 +6,10 @@
 //  Copyright © 2020 BBZ. All rights reserved.
 //
 
-#import "BBZSourceAction.h"
+#import "BBZVideoSourceAction.h"
 
 
-@interface BBZVideoReaderAction : BBZSourceAction
+@interface BBZVideoReaderAction : BBZVideoSourceAction
 
 @end
 
