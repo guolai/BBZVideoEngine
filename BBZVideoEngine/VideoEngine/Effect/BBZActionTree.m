@@ -121,4 +121,17 @@
     return mtblString;
 }
 
+- (void)updateBegineTime:(NSUInteger)time {
+    NSUInteger duration = self.endTime - self.beginTime;
+    self.beginTime = time;
+    self.endTime = time+duration;
+    for (BBZAction *action in self.arrayActions) {
+        action.startTime = self.beginTime;
+    }
+    for (BBZActionTree *tree in self.arrayNodes) {
+        [tree updateBegineTime:time];
+    }
+    
+}
+
 @end

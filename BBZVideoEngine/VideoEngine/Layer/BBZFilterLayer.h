@@ -31,6 +31,6 @@
 @property (nonatomic, assign) NSInteger groupIndex;
 @property (nonatomic, assign) NSInteger assetIndex;
 @property (nonatomic, assign) NSUInteger startTime;
-@property (nonatomic, strong) NSArray<BBZAction* > *groupActions;
+@property (nonatomic, strong) NSArray<BBZActionTree *> *groupActions;
 @end
 
