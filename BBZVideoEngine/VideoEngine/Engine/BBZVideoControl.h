@@ -8,7 +8,8 @@
 
 #import "BBZTask.h"
 
-
+extern const int BBZVideoTimeScale;
+extern const int BBZVideoDurationScale;
 
 typedef NS_ENUM(NSInteger, BBZEngineScheduleMode) {
     BBZEngineScheduleModeRecord,

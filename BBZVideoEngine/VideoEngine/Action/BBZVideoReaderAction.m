@@ -7,7 +7,15 @@
 //
 
 #import "BBZVideoReaderAction.h"
+#import "BBZAssetReader.h"
+
+@interface BBZVideoReaderAction ()
+@property (nonatomic, strong) BBZAssetReader *reader;
+@property (nonatomic, strong) BBZAssetReaderSequentialAccessVideoOutput *videoOutPut;
+@end
+
 
 @implementation BBZVideoReaderAction
+
 
 @end

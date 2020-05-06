@@ -26,16 +26,16 @@
 
 @implementation BBZAssetReader
 
-- (id)initWithAsset:(AVAsset *)asset {
+- (instancetype)initWithAsset:(AVAsset *)asset {
     return [self initWithAsset:asset videoComposition:nil audioMix:nil];
 }
 
-- (id)initWithPlayerItem:(AVPlayerItem *)playerItem {
+- (instancetype)initWithPlayerItem:(AVPlayerItem *)playerItem {
     NSAssert(false, @"not handled");
     return nil;
 }
 
-- (id)initWithAsset:(AVAsset *)asset videoComposition:(AVVideoComposition *)videoComposition audioMix:(AVAudioMix *)audioMix {
+- (instancetype)initWithAsset:(AVAsset *)asset videoComposition:(AVVideoComposition *)videoComposition audioMix:(AVAudioMix *)audioMix {
     if (self = [super init]) {
         self.asset = asset;
         self.audioMix = audioMix;
@@ -72,7 +72,7 @@
 
 @implementation BBZAssetReaderOutput
 
-- (id)initWithOutputSettings:(NSDictionary *)outputSettings {
+- (instancetype)initWithOutputSettings:(NSDictionary *)outputSettings {
     if (self = [super init]) {
         self.outputSettings = outputSettings;
     }

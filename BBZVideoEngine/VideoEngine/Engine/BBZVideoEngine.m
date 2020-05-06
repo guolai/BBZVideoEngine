@@ -49,6 +49,7 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
     if(self = [super init]) {
         _videoModel = videoModel;
         _context = context;
+        [self buildVideoEngine];
         [self buildFilterLayers];
     }
     return self;
@@ -96,6 +97,11 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
         }
         
     }
+}
+
+- (void)buildVideoEngine {
+    self.schedule = [[BBZSchedule alloc] init];
+    self.filterMixer = [[BBZFilterMixer alloc] init];
 }
 
 - (BOOL)start {

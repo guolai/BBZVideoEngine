@@ -17,9 +17,9 @@
 @property (nonatomic, strong, readonly) NSArray<BBZAssetReaderOutput*> *outputs;
 @property (nonatomic, assign) CMTimeRange timeRange;
 
-- (id)initWithAsset:(AVAsset *)asset;
-//- (id)initWithPlayerItem:(AVPlayerItem *)playerItem;
-- (id)initWithAsset:(AVAsset *)asset videoComposition:(AVVideoComposition *)videoComposition audioMix:(AVAudioMix *)audioMix;
+- (instancetype)initWithAsset:(AVAsset *)asset;
+//- (instancetype)initWithPlayerItem:(AVPlayerItem *)playerItem;
+- (instancetype)initWithAsset:(AVAsset *)asset videoComposition:(AVVideoComposition *)videoComposition audioMix:(AVAudioMix *)audioMix;
 
 - (void)addOutput:(BBZAssetReaderOutput *)output;
 - (void)removeOutput:(BBZAssetReaderOutput *)output;
@@ -31,7 +31,7 @@
 @property (nonatomic, strong, readonly) NSDictionary *outputSettings;
 @property (nonatomic, strong, readonly) NSError *error;
 
-- (id)initWithOutputSettings:(NSDictionary *)outputSettings;
+- (instancetype)initWithOutputSettings:(NSDictionary *)outputSettings;
 - (void)startProcessing;
 - (void)endProcessing;
 - (void)cancelProcessing;

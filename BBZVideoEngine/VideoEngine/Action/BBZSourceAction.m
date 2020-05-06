@@ -9,6 +9,8 @@
 #import "BBZSourceAction.h"
 
 @implementation BBZSourceAction
+@synthesize asset = _asset;
+
 
 - (instancetype)init {
     if(self = [super init]) {
