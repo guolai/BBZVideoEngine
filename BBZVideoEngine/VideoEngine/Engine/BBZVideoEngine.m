@@ -29,7 +29,7 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
 };
 
 
-@interface BBZVideoEngine ()
+@interface BBZVideoEngine () <BBZScheduleObserver>
 @property (nonatomic, strong) BBZVideoModel *videoModel;
 @property (nonatomic, strong) BBZEngineContext *context;
 @property (nonatomic, strong) NSString *outputFile;
@@ -95,12 +95,12 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
         } else {
             [layer buildTimelineNodes:builerResult];
         }
-        
     }
 }
 
 - (void)buildVideoEngine {
-    self.schedule = [[BBZSchedule alloc] init];
+    self.schedule = [BBZSchedule scheduleWithMode:self.context.scheduleMode];
+    self.schedule.observer = self;
     self.filterMixer = [[BBZFilterMixer alloc] init];
 }
 
@@ -117,5 +117,19 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
     return YES;
 }
 
+
+#pragma mark - Schedule
+
+- (void)updateWithTime:(NSTimeInterval)time{
+    
+}
+
+- (void)didSeekToTime:(NSTimeInterval)time{
+    
+}
+
+- (void)didReachEndTime{
+    
+}
 
 @end

@@ -17,5 +17,20 @@
 
 @implementation BBZVideoReaderAction
 
+- (void)updateWithTime:(NSUInteger)time {
+    
+}
+
+- (void)newFrameAtTime:(NSUInteger)time {
+    
+}
+
+
+
+
+
+- (void)destroySomething{
+    
+}
 
 @end

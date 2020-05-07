@@ -75,13 +75,20 @@
 
 - (void)startTimeline {
     self.bPaused = NO;
-
-    if (self.displayLink == nil &&  self.mode != BBZEngineScheduleModeExport) {
-        self.displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(onTimer:)];
-        [self updateFrameIntervalForDisplayLink];
-        [self.displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
-        self.displayLink.paused = NO;
+    if(self.mode == BBZEngineScheduleModeExport) {
+        NSTimeInterval now = CFAbsoluteTimeGetCurrent();
+        NSTimeInterval deltaTime = (now - self.lastTime) * self.rate;
+        self.currentTime = self.currentTime + deltaTime;
+        self.lastTime = now;
+    } else {
+        if (self.displayLink == nil) {
+            self.displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(onTimer:)];
+            [self updateFrameIntervalForDisplayLink];
+            [self.displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
+            self.displayLink.paused = NO;
+        }
     }
+    
     BBZINFO(@"timeline start");
 }
 
@@ -118,6 +125,7 @@
 
 - (void)increaseTime {
     self.currentTime += CMTimeGetSeconds(self.targetFrameDuration);
+    [self.observer updateWithTime:self.currentTime];
 }
 
 @end
