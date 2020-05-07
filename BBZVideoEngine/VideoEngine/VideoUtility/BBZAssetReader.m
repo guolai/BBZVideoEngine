@@ -223,12 +223,15 @@
 
 @interface BBZAssetReaderSequentialAccessVideoOutput ()
 @property (nonatomic, strong) AVAssetReaderOutput *providerOutput;
+@property (nonatomic, assign) CMSampleBufferRef currentSampleBuffer;
 @end
 
 @implementation BBZAssetReaderSequentialAccessVideoOutput
 
 - (void)cleanup {
     [super cleanup];
+    [self releaseSampleBuffer:self.currentSampleBuffer];
+    self.currentSampleBuffer = NULL;
     self.providerOutput = nil;
 }
 
@@ -249,7 +252,10 @@
             return NULL;
         }
     }
-    return [self nextSampleBufferForProviderOutput:self.providerOutput];
+    CMSampleBufferRef sampleBuffer = [self nextSampleBufferForProviderOutput:self.providerOutput];
+    CFRetain(sampleBuffer);
+    self.currentSampleBuffer = sampleBuffer;
+    return sampleBuffer;
 }
 
 @end
@@ -272,6 +278,7 @@
     [self releaseSampleBuffer:self.nextSampleBuffer];
     self.currentSampleBuffer = NULL;
     self.nextSampleBuffer = NULL;
+    self.providerOutput = nil;
 }
 
 - (CMTime)headerSampleBufferTime {

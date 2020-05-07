@@ -40,12 +40,14 @@
 
 
 @interface BBZAssetReaderSequentialAccessVideoOutput : BBZAssetReaderOutput
+@property (nonatomic, assign, readonly) CMSampleBufferRef currentSampleBuffer;
 @property (nonatomic, readonly) BOOL isReadingToEndTime;
 
 - (CMSampleBufferRef)nextSampleBuffer;
 @end
 
 @interface BBZAssetReaderRandomAccessVideoOutput : BBZAssetReaderOutput
+@property (nonatomic, assign, readonly) CMSampleBufferRef currentSampleBuffer;
 - (CMSampleBufferRef)sampleBufferAtTime:(CMTime)time;
 @end
 
