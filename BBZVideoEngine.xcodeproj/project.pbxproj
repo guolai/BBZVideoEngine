@@ -159,6 +159,7 @@
 		1431FAA0244DB5D900AA2F65 /* BBZExportTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 1431FA9F244DB5D900AA2F65 /* BBZExportTask.m */; };
 		147375B02455BEB700252084 /* BBZEngineSetting+VideoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 147375AF2455BEB700252084 /* BBZEngineSetting+VideoModel.m */; };
 		1476D5A924608010002AA4BA /* BBZInputFilterAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 1476D5A824608010002AA4BA /* BBZInputFilterAction.m */; };
+		1493807B24697EB300051DFC /* BBZVideoOutputFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1493807A24697EB300051DFC /* BBZVideoOutputFilter.m */; };
 		14940A11245F277900C5E5A3 /* BBZVideoInputFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 14940A10245F277900C5E5A3 /* BBZVideoInputFilter.m */; };
 		14B562952462BF2300A5B2B4 /* BBZAssetReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 14B562942462BF2300A5B2B4 /* BBZAssetReader.m */; };
 		14B7C8792456E48F0008F3AE /* BBZVideoEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 14B7C8782456E48F0008F3AE /* BBZVideoEngine.m */; };
@@ -480,6 +481,8 @@
 		147375AF2455BEB700252084 /* BBZEngineSetting+VideoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "BBZEngineSetting+VideoModel.m"; sourceTree = "<group>"; };
 		1476D5A724608010002AA4BA /* BBZInputFilterAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZInputFilterAction.h; sourceTree = "<group>"; };
 		1476D5A824608010002AA4BA /* BBZInputFilterAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZInputFilterAction.m; sourceTree = "<group>"; };
+		1493807924697EB300051DFC /* BBZVideoOutputFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZVideoOutputFilter.h; sourceTree = "<group>"; };
+		1493807A24697EB300051DFC /* BBZVideoOutputFilter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZVideoOutputFilter.m; sourceTree = "<group>"; };
 		14940A0F245F277900C5E5A3 /* BBZVideoInputFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZVideoInputFilter.h; sourceTree = "<group>"; };
 		14940A10245F277900C5E5A3 /* BBZVideoInputFilter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZVideoInputFilter.m; sourceTree = "<group>"; };
 		14B562932462BF2300A5B2B4 /* BBZAssetReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZAssetReader.h; sourceTree = "<group>"; };
@@ -911,6 +914,8 @@
 				1431FA1024495E5000AA2F65 /* BBZMultiImageFilter.m */,
 				14940A0F245F277900C5E5A3 /* BBZVideoInputFilter.h */,
 				14940A10245F277900C5E5A3 /* BBZVideoInputFilter.m */,
+				1493807924697EB300051DFC /* BBZVideoOutputFilter.h */,
+				1493807A24697EB300051DFC /* BBZVideoOutputFilter.m */,
 			);
 			path = GPUImage;
 			sourceTree = "<group>";
@@ -1353,6 +1358,7 @@
 				14183CA724503AA400D03057 /* BBZFilterModel.m in Sources */,
 				1426D6FA243D82BD008BEB86 /* AppDelegate.m in Sources */,
 				14183F8D2450511D00D03057 /* UIDevice+YYAdd.m in Sources */,
+				1493807B24697EB300051DFC /* BBZVideoOutputFilter.m in Sources */,
 				14B562952462BF2300A5B2B4 /* BBZAssetReader.m in Sources */,
 				14183F8E2450511D00D03057 /* UIApplication+YYAdd.m in Sources */,
 				14183F9C2450511D00D03057 /* NSData+YYAdd.m in Sources */,

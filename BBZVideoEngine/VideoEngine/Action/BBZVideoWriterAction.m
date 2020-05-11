@@ -8,6 +8,10 @@
 
 #import "BBZVideoWriterAction.h"
 
+@protocol BBZVideoWriterActionDelegate <NSObject>
+//- (void)didDrawFrameBuffer:(SSZGPUFramebuffer *)outputFramebuffer;
+@end
+
 @interface BBZVideoWriterAction ()
 @property (nonatomic, assign) CMTime updateTime;
 @end
@@ -17,5 +21,7 @@
 - (void)updateWithTime:(CMTime)time {
     self.updateTime = time;
 }
+
+
 
 @end

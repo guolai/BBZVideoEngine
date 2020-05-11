@@ -10,7 +10,7 @@
 
 
 @interface BBZVideoWriterAction : BBZOutputAction
-
+@property (nonatomic, strong) NSString *strOutputFile;
 @end
 
 
