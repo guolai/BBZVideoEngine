@@ -8,6 +8,14 @@
 
 #import "BBZVideoWriterAction.h"
 
+@interface BBZVideoWriterAction ()
+@property (nonatomic, assign) CMTime updateTime;
+@end
+
 @implementation BBZVideoWriterAction
+
+- (void)updateWithTime:(CMTime)time {
+    self.updateTime = time;
+}
 
 @end

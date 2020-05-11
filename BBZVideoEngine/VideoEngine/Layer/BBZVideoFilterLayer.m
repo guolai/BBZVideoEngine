@@ -157,7 +157,13 @@
 }
 
 - (BBZVideoSourceAction *)videoActionWithAsset:(BBZVideoAsset *)asset {
-    BBZVideoReaderAction *videoAction = [[BBZVideoReaderAction alloc] init];
+    BBZVideoSourceAction *videoAction = nil;
+    if(self.context.scheduleMode == BBZEngineScheduleModeExport) {
+        BBZVideoReaderAction *readerAction = [[BBZVideoReaderAction alloc] init];
+        videoAction = readerAction;
+    } else {
+        NSAssert(false, @"error");
+    }
     videoAction.asset = asset;
     videoAction.renderSize = self.context.renderSize;
     videoAction.duration = asset.playDuration;

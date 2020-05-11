@@ -28,8 +28,8 @@
         _bPaused = YES;
         _currentTime = 0;
         _preferredFramesPerSecond = 30;
-        _targetFrameDuration = CMTimeMake(BBZVideoDurationScale/_preferredFramesPerSecond, BBZVideoDurationScale);
-        _minimumFrameDuration = CMTimeMake(BBZVideoDurationScale * 2 /_preferredFramesPerSecond, BBZVideoDurationScale);
+        _targetFrameDuration = CMTimeMake(BBZScheduleTimeScale/_preferredFramesPerSecond, BBZScheduleTimeScale);
+        _minimumFrameDuration = CMTimeMake(BBZScheduleTimeScale * 2 /_preferredFramesPerSecond, BBZScheduleTimeScale);
     }
     return self;
 }
@@ -45,9 +45,9 @@
     NSTimeInterval deltaTime = (now - self.lastTime) * self.rate;
     self.currentTime = self.currentTime + deltaTime;
     self.lastTime = now;
-
-    BBZINFO(@" currentTime = %.3f", self.currentTime);
-    [self.observer updateWithTime:self.currentTime];
+    CMTime tmpTime = CMTimeMake(self.currentTime * BBZScheduleTimeScale, BBZScheduleTimeScale);
+    BBZINFO(@" currentTime = %.4f,%.4f", self.currentTime, CMTimeGetSeconds(tmpTime));
+    [self.observer updateWithTime:tmpTime];
 }
 
 - (void)updateFrameIntervalForDisplayLink {
@@ -118,14 +118,16 @@
     BBZINFO(@"resetTimeline");
 }
 
-- (void)seekTimelineToTime:(NSTimeInterval)time {
-    self.currentTime = time;
+- (void)seekTimelineToTime:(CMTime)time {
+    self.currentTime = CMTimeGetSeconds(time);
     self.lastTime = CFAbsoluteTimeGetCurrent();
 }
 
 - (void)increaseTime {
     self.currentTime += CMTimeGetSeconds(self.targetFrameDuration);
-    [self.observer updateWithTime:self.currentTime];
+    CMTime tmpTime = CMTimeMake(self.currentTime * BBZScheduleTimeScale, BBZScheduleTimeScale);
+    BBZINFO(@" currentTime = %.4f,%.4f", self.currentTime, CMTimeGetSeconds(tmpTime));
+    [self.observer updateWithTime:tmpTime];
 }
 
 @end

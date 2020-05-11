@@ -9,15 +9,10 @@
 #import "BBZTask.h"
 #import "BBZVideoModel.h"
 #import "BBZEngineSetting.h"
+#import "BBZSchedule.h"
 
-NS_ASSUME_NONNULL_BEGIN
-
-@interface BBZCompositonDirector : BBZTask
-//+ (instancetype)compositorWithModel:(BBZVideoModel *)model
-//                      videoSettings:(BBZEngineSetting *)videoSettings
-//                         outputFile:(NSString *)outputFile;
+@interface BBZCompositonDirector : BBZTask <BBZScheduleObserver>
 
 
 @end
 
-NS_ASSUME_NONNULL_END

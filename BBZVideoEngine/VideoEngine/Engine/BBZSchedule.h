@@ -11,8 +11,8 @@
 
 @protocol BBZScheduleObserver <NSObject>
 @required
-- (void)updateWithTime:(NSTimeInterval)time;
-- (void)didSeekToTime:(NSTimeInterval)time;
+- (void)updateWithTime:(CMTime)time;
+- (void)didSeekToTime:(CMTime)time;
 @optional
 - (void)didReachEndTime;
 @end
@@ -21,7 +21,7 @@
 @property (nonatomic, assign, readonly) BOOL bPaused;
 @property (nonatomic, assign, readonly) NSTimeInterval currentTime;
 @property (nonatomic, assign, readonly) float rate;
-@property (nonatomic, assign) NSInteger preferredFramesPerSecond;
+@property (nonatomic, assign) NSInteger preferredFramesPerSecond; //最好是30, 24, 60这样的数值
 @property (nonatomic, weak) id<BBZScheduleObserver> observer;
 @property (nonatomic, assign, readonly) CMTime targetFrameDuration;
 @property (nonatomic, assign, readonly) CMTime minimumFrameDuration;
@@ -33,7 +33,7 @@
 - (void)startTimeline;
 - (void)pauseTimeline;
 - (void)stopTimeline;
-- (void)seekTimelineToTime:(NSTimeInterval)time;
+- (void)seekTimelineToTime:(CMTime)time;
 - (void)increaseTime;
 
 @end

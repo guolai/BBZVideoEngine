@@ -36,11 +36,11 @@
 }
 
 
-- (void)updateWithTime:(NSUInteger)time {
+- (void)updateWithTime:(CMTime)time {
     
 }
 
-- (void)newFrameAtTime:(NSUInteger)time {
+- (void)newFrameAtTime:(CMTime)time {
     
 }
 

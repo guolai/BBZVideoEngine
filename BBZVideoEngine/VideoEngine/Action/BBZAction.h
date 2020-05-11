@@ -8,12 +8,14 @@
 
 #import <Foundation/Foundation.h>
 #import "BBZNode.h"
+#import "BBZVideoControl.h"
 
 extern const int BBZVideoTimeScale;
 extern const int BBZVideoDurationScale;
+extern const int BBZScheduleTimeScale;
 
 
-@interface BBZAction : NSObject
+@interface BBZAction : NSObject <BBZPlayActionProtocol>
 @property (nonatomic, assign) NSUInteger startTime;
 @property (nonatomic, assign) NSUInteger duration;
 @property (nonatomic, assign) NSInteger repeatCount;
@@ -21,12 +23,9 @@ extern const int BBZVideoDurationScale;
 
 @property (nonatomic, strong, readonly) BBZNode *node;
 
+
+
 - (instancetype)initWithNode:(BBZNode *)node;
-
-- (void)updateWithTime:(NSUInteger)time;
-- (void)newFrameAtTime:(NSUInteger)time;
-
-
 
 - (void)lock;
 - (void)unlock;

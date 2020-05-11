@@ -11,6 +11,7 @@
 
 extern const int BBZVideoTimeScale;
 extern const int BBZVideoDurationScale;
+extern const int BBZScheduleTimeScale;
 
 typedef NS_ENUM(NSInteger, BBZBaseAssetMediaType) {
     BBZBaseAssetMediaTypeUnknown = 0,

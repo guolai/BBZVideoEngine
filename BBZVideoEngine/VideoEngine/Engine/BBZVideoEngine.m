@@ -7,7 +7,7 @@
 //
 
 #import "BBZVideoEngine.h"
-#import "BBZSchedule.h"
+#import "BBZCompositonDirector.h"
 #import "BBZFilterLayer.h"
 #import "BBZFilterMixer.h"
 #import "BBZVideoFilterLayer.h"
@@ -29,13 +29,13 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
 };
 
 
-@interface BBZVideoEngine () <BBZScheduleObserver>
+@interface BBZVideoEngine () 
 @property (nonatomic, strong) BBZVideoModel *videoModel;
 @property (nonatomic, strong) BBZEngineContext *context;
 @property (nonatomic, strong) NSString *outputFile;
 
 @property (nonatomic, strong) BBZSchedule *schedule;
-//@property (nonatomic, strong) BBZVideoModel *videoModel;
+@property (nonatomic, strong) BBZCompositonDirector *director;
 @property (nonatomic, strong) BBZFilterMixer *filterMixer;
 @property (nonatomic, strong) NSMutableDictionary *filterLayers;
 
@@ -99,38 +99,23 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
 }
 
 - (void)buildVideoEngine {
+    self.director = [[BBZCompositonDirector alloc] init];
     self.schedule = [BBZSchedule scheduleWithMode:self.context.scheduleMode];
-    self.schedule.observer = self;
+    self.schedule.observer = self.director;
     self.filterMixer = [[BBZFilterMixer alloc] init];
 }
 
 - (BOOL)start {
    
-    return YES;
+    return [self.director start];
 }
 
 - (BOOL)pause {
-    return YES;
+    return  [self.director pause];
 }
 
 - (BOOL)cancel {
-    return YES;
-}
-
-
-#pragma mark - Schedule
-
-- (void)updateWithTime:(NSTimeInterval)time{
-    //to do check time 是否超出
-}
-
-- (void)didSeekToTime:(NSTimeInterval)time{
-    
-}
-
-- (void)didReachEndTime{
-    //到达结束两种情形 1.updateWithTime 2.读取资源失败并且接近尾声，
-    //读取资源失败未接近尾声的时候可以通过纠错的方式来修正，比如返回一个黑帧或者返回上一帧画面(视频画面拉长或者视频将播放时长大于媒体时长，但是在action正常时常范围内)
+    return  [self.director cancel];
 }
 
 @end
