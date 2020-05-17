@@ -9,5 +9,5 @@
 #import "BBZFilterLayer.h"
 
 @interface BBZOutputFilterLayer : BBZFilterLayer
-
+@property (nonatomic, strong) NSString *outputFile;
 @end

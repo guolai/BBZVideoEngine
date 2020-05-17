@@ -20,8 +20,9 @@ typedef NS_ENUM(NSInteger, BBZEngineScheduleMode) {
 };
 
 
-@protocol BBZVideoControl <NSObject>
-
+@protocol BBZVideoWriteControl <NSObject>
+- (void)didWriteVideoFrame;
+- (void)didWriteAudioFrame;
 @end
 
 @protocol BBZPlayActionProtocol <NSObject>

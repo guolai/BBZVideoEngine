@@ -8,6 +8,11 @@
 
 #import "BBZVideoOutputFilter.h"
 
+@interface BBZVideoOutputFilter ()
+@property (nonatomic, assign) CMTime frameTime;
+
+@end
+
 @implementation BBZVideoOutputFilter
 
 - (instancetype)initWithVertexShaderFromString:(NSString *)vertexShaderString fragmentShaderFromString:(NSString *)fragmentShaderString {
@@ -37,7 +42,7 @@
         -1.0f,  1.0f,
         1.0f,  1.0f,
     };
-    
+    self.frameTime = frameTime;
     [self renderToTextureWithVertices:imageVertices textureCoordinates:[[self class] textureCoordinatesForRotation:inputRotation]];
 }
 
@@ -50,7 +55,9 @@
         outputFramebuffer = firstInputFramebuffer;
     }
     glFinish();
-    
+    if([self.delegate respondsToSelector:@selector(didDrawFrameBuffer:time:)]) {
+        [self.delegate didDrawFrameBuffer:outputFramebuffer time:self.frameTime];
+    }
     [outputFramebuffer unlock];
     outputFramebuffer = nil;
     

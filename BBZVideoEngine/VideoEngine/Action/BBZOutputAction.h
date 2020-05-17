@@ -7,9 +7,8 @@
 //
 
 #import "BBZAction.h"
-
+#import "BBZBaseAsset.h"
 
 @interface BBZOutputAction : BBZAction
-
 @end
 

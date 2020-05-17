@@ -110,6 +110,14 @@
 
 - (void)writeVideoPixelBuffer:(CVPixelBufferRef)pixelBuffer withPresentationTime:(CMTime)time {
     dispatch_async(self.inputQueue, ^{
+        CFRetain(pixelBuffer);
+        [self processVideoPixelBuffer:pixelBuffer withPresentationTime:time];
+        CFRelease(pixelBuffer);
+    });
+}
+
+- (void)writeSyncVideoPixelBuffer:(CVPixelBufferRef)pixelBuffer withPresentationTime:(CMTime)time {
+    dispatch_sync(self.inputQueue, ^{
         [self processVideoPixelBuffer:pixelBuffer withPresentationTime:time];
     });
 }
@@ -148,6 +156,9 @@
             self.completionBlock(NO, self.assetWriter.error);
         }
     }
+    if(bAdd && [self.writeControl respondsToSelector:@selector(didWriteVideoFrame)]) {
+        [self.writeControl didWriteVideoFrame];
+    }
 }
 
 - (void)writeAudioFrameBuffer:(CMSampleBufferRef)frameBuffer {
@@ -157,7 +168,7 @@
     if(!self.audioInput) {
         return;
     }
-    dispatch_async(self.inputQueue, ^{
+    dispatch_sync(self.inputQueue, ^{
         [self processAudioBuffer:frameBuffer];
     });
 }
@@ -207,6 +218,9 @@
         if(self.completionBlock) {
             self.completionBlock(NO, self.assetWriter.error);
         }
+    }
+    if(bAdd && [self.writeControl respondsToSelector:@selector(didWriteAudioFrame)]) {
+        [self.writeControl didWriteAudioFrame];
     }
 }
 

@@ -8,10 +8,15 @@
 
 #import "BBZMultiImageFilter.h"
 
+@protocol BBZVideoOutputFilterDelegate <NSObject>
+- (void)didDrawFrameBuffer:(GPUImageFramebuffer *)outputFramebuffer time:(CMTime)time;
+@end
+
 
 @interface BBZVideoOutputFilter : BBZMultiImageFilter
 @property (nonatomic, assign) CGSize outputVideoSize; // default 480x640
 @property (nonatomic, assign) BOOL bShouldDrawAgain;//大多数情况下这里不需要再次draw了 直接写文件就好了
+@property (nonatomic, weak) id<BBZVideoOutputFilterDelegate> delegate;
 
 @end
 

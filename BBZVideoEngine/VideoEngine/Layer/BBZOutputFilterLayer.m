@@ -18,7 +18,7 @@
     builder.groupIndex = 0;
     NSMutableArray *retArray = [NSMutableArray array];
     if(self.context.scheduleMode == BBZEngineScheduleModeExport) {
-        BBZVideoWriterAction *action = [[BBZVideoWriterAction alloc] init];
+        BBZVideoWriterAction *action = [[BBZVideoWriterAction alloc] initWithVideoSetting:self.context.videoSettings outputFile:self.outputFile];
         action.duration = inputBuilder.startTime;
         action.startTime = builder.startTime;
         action.order = builder.groupIndex;
