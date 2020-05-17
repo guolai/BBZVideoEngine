@@ -22,6 +22,17 @@
     self.updateTime = time;
 }
 
+- (void)lock {
+    [super lock];
+//    [self buildReader];
+//    [self.videoOutPut startProcessing];
+}
 
+- (void)destroySomething{
+//    [self.videoOutPut endProcessing];
+//    [self.reader removeOutput:self.videoOutPut];
+//    self.videoOutPut = nil;
+//    self.reader = nil;
+}
 
 @end

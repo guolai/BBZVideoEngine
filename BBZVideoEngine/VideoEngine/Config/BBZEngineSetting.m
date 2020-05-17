@@ -36,10 +36,8 @@
     
     NSMutableDictionary *compression = [NSMutableDictionary dictionary];
     compression[AVVideoProfileLevelKey] = _profileLevel ? : AVVideoProfileLevelH264HighAutoLevel;
-//    if(_videoMaxKeyFrameInterval > 0) {
-//        compression[AVVideoMaxKeyFrameIntervalKey] = @(_videoMaxKeyFrameInterval);
-//    }
-//
+    compression[AVVideoMaxKeyFrameIntervalKey] = @(250);
+
     if (_videoBitRate > 0) {
         compression[AVVideoAverageBitRateKey] = @((CGFloat)_videoBitRate);
     }

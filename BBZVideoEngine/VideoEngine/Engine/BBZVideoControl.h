@@ -22,8 +22,6 @@ typedef NS_ENUM(NSInteger, BBZEngineScheduleMode) {
 
 @protocol BBZVideoControl <NSObject>
 
-
-
 @end
 
 @protocol BBZPlayActionProtocol <NSObject>
