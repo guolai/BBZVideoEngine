@@ -9,5 +9,6 @@
 #import "BBZFilterLayer.h"
 
 @interface BBZOutputFilterLayer : BBZFilterLayer
+@property (nonatomic, weak) id<BBZVideoWriteControl> writerControl;
 @property (nonatomic, strong) NSString *outputFile;
 @end

@@ -9,6 +9,10 @@
 #import "BBZOutputFilterLayer.h"
 #import "BBZVideoWriterAction.h"
 
+@interface BBZOutputFilterLayer ()<BBZVideoWriteControl>
+
+@end
+
 @implementation BBZOutputFilterLayer
 
 - (BBZActionBuilderResult *)buildTimelineNodes:(BBZActionBuilderResult *)inputBuilder {
@@ -19,6 +23,7 @@
     NSMutableArray *retArray = [NSMutableArray array];
     if(self.context.scheduleMode == BBZEngineScheduleModeExport) {
         BBZVideoWriterAction *action = [[BBZVideoWriterAction alloc] initWithVideoSetting:self.context.videoSettings outputFile:self.outputFile];
+        action.writerControl = self;
         action.duration = inputBuilder.startTime;
         action.startTime = builder.startTime;
         action.order = builder.groupIndex;
@@ -33,5 +38,16 @@
     return builder;
 }
 
+
+- (void)didWriteVideoFrame {
+    if([self.writerControl respondsToSelector:@selector(didWriteVideoFrame)]) {
+        [self.writerControl didWriteVideoFrame];
+    }
+}
+- (void)didWriteAudioFrame {
+    if([self.writerControl respondsToSelector:@selector(didWriteAudioFrame)]) {
+        [self.writerControl didWriteAudioFrame];
+    }
+}
 
 @end

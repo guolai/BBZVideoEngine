@@ -16,6 +16,7 @@
 #import "BBZMaskFilterLayer.h"
 #import "BBZOutputFilterLayer.h"
 #import "BBZTransitionFilterLayer.h"
+#import "BBZQueueManager.h"
 
 
 typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
@@ -29,7 +30,7 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
 };
 
 
-@interface BBZVideoEngine () 
+@interface BBZVideoEngine ()<BBZVideoWriteControl>
 @property (nonatomic, strong) BBZVideoModel *videoModel;
 @property (nonatomic, strong) BBZEngineContext *context;
 @property (nonatomic, strong) NSString *outputFile;
@@ -86,6 +87,7 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
     
     BBZOutputFilterLayer *outputLayer = [[BBZOutputFilterLayer alloc] initWithModel:self.videoModel context:self.context];
     self.filterLayers[@(BBZFilterLayerTypeOutput)] = outputLayer;
+    outputLayer.writerControl = self;
     
     BBZActionBuilderResult *builerResult = nil;
     for (int i = BBZFilterLayerTypeVideo; i < BBZFilterLayerTypeMax; i++) {
@@ -116,6 +118,22 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
 
 - (BOOL)cancel {
     return  [self.director cancel];
+}
+
+#pragma mark - WriteControl Delegate
+
+- (void)didWriteVideoFrame {
+    if(self.context.scheduleMode == BBZEngineScheduleModeExport) {
+        __weak typeof(self) weakSelf = self;
+        BBZRunAsynchronouslyOnTaskQueue(^{
+            __strong typeof(self) strongSelf = weakSelf;
+            [strongSelf.schedule increaseTime];
+        });
+    }
+}
+
+- (void)didWriteAudioFrame {
+    
 }
 
 @end
