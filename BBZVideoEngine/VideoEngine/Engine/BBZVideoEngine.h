@@ -20,5 +20,8 @@
 + (instancetype)videoEngineWithModel:(BBZVideoModel *)model
                       context:(BBZEngineContext *)context
                          outputFile:(NSString *)outputFile;
+
+- (CGFloat)videoModelCombinedDuration;
+
 @end
 

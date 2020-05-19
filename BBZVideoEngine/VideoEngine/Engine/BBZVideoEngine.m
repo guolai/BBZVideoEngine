@@ -39,6 +39,9 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
 @property (nonatomic, strong) BBZCompositonDirector *director;
 @property (nonatomic, strong) BBZFilterMixer *filterMixer;
 @property (nonatomic, strong) NSMutableDictionary *filterLayers;
+@property (nonatomic, strong) NSMutableSet *timePointSet;
+@property (nonatomic, assign) NSUInteger intDuration;
+
 
 @end
 
@@ -93,9 +96,13 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
     for (int i = BBZFilterLayerTypeVideo; i < BBZFilterLayerTypeMax; i++) {
         BBZFilterLayer *layer = self.filterLayers[@(i)];
         if(i == BBZFilterLayerTypeVideo || i == BBZFilterLayerTypeTransition) {
-            builerResult = [layer buildTimelineNodes:builerResult];
+            BBZActionBuilderResult *currentResult = [layer buildTimelineNodes:builerResult];
+            [self addTimePointFrom:currentResult];
+            builerResult = currentResult;
+            self.intDuration = builerResult.startTime;
         } else {
-            [layer buildTimelineNodes:builerResult];
+            BBZActionBuilderResult *currentResult = [layer buildTimelineNodes:builerResult];
+            [self addTimePointFrom:currentResult];
         }
     }
 }
@@ -108,7 +115,6 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
 }
 
 - (BOOL)start {
-   
     return [self.director start];
 }
 
@@ -118,6 +124,11 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
 
 - (BOOL)cancel {
     return  [self.director cancel];
+}
+
+- (CGFloat)videoModelCombinedDuration {
+    CGFloat duration  = self.intDuration / BBZVideoDurationScale;
+    return duration;
 }
 
 #pragma mark - WriteControl Delegate
@@ -133,6 +144,15 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
 }
 
 - (void)didWriteAudioFrame {
+    
+}
+
+
+#pragma mark - Private
+
+#pragma mark - TimePoint
+
+- (void)addTimePointFrom:(BBZActionBuilderResult *)result {
     
 }
 
