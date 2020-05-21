@@ -30,7 +30,7 @@
 + (BBZActionTree *)createActionTreeWithAction:(BBZAction *)action {
     BBZActionTree *actionTree = [[BBZActionTree alloc] init];
     actionTree.beginTime = action.startTime;
-    actionTree.endTime = action.startTime+action.duration;
+    actionTree.endTime = action.endTime;
     [actionTree addAction:action];
     return actionTree;
 }
@@ -114,6 +114,18 @@
 
 
 - (BBZActionTree *)subTreeFromTime:(NSUInteger)startTime endTime:(NSUInteger)endTime {
+    BBZActionTree *subTree = nil;
+    for (BBZAction *action in self.actions) {
+        if(action.startTime <= startTime && action.endTime >= endTime) {
+            if(!subTree) {
+                subTree = [BBZActionTree createActionTreeWithAction:action];
+            } else {
+                [subTree addAction:action];
+            }
+        } else {
+            BBZINFO(@"%@", action.debugDescription);
+        }
+    }
     return nil;
 }
 

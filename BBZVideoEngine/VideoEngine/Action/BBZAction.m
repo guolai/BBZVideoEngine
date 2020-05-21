@@ -82,4 +82,9 @@
     return self.startTime + self.duration * self.repeatCount;
 }
 
+- (NSString *)debugDescription {
+    NSString *retString = [NSString stringWithFormat:@"starttime:%lu, endTime:%lu, duration:%lu, repeat:%ld, refcount:%ld,disableRef:%d", self.startTime, self.endTime, self.duration, self.repeatCount, _referenceCount, _referenceCountingDisabled];
+    return retString;
+}
+
 @end
