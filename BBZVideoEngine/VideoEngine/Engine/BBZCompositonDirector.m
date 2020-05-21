@@ -7,13 +7,61 @@
 //
 
 #import "BBZCompositonDirector.h"
+#import "BBZSourceAction.h"
+#import "BBZFilterAction.h"
+#import "BBZOutputAction.h"
+
+@interface BBZCompositonDirector ()
+@property (nonatomic, strong) BBZFilterMixer *filterMixer;
+
+// 当前区间
+@property (nonatomic, strong) NSArray *actions;
+@property (nonatomic, assign) BOOL bLocked;
+@property (nonatomic, assign) NSUInteger currentTimePoint;
+@property (nonatomic, assign) NSUInteger currentIndex;
+@end
+
 
 @implementation BBZCompositonDirector
+
+- (instancetype)init {
+    if(self = [super init]) {
+        _filterMixer = [[BBZFilterMixer alloc] init];
+        _currentIndex = 0;
+    }
+    return self;
+}
 
 #pragma mark - Schedule
 
 - (void)updateWithTime:(CMTime)time{
-    //to do check time 是否超出
+    //首次进入
+    if(self.currentTimePoint == 0 && ![self findNextTimePoint]) {
+        [self didReachEndTime];
+        return;
+    }
+    //to do 需要进行时间换算，和误差处理
+    if(CMTimeGetSeconds(time) >= self.currentTimePoint) {
+        if(![self findNextTimePoint]) {
+            [self didReachEndTime];
+            return;
+        } else {
+            NSArray *actons = self.actions;
+            self.actions = [self.segmentDelegate layerActionTreesBeforeTimePoint:self.currentTimePoint];
+            self.bLocked = NO;
+            [self updateWithTime:time];
+            for (BBZAction *action in actons) {
+                [action unlock];
+            }
+        }
+    }
+    for (BBZAction *action in self.actions) {
+        if(!self.bLocked) {
+            [action lock];
+        }
+        [action updateWithTime:time];
+    }
+    self.bLocked = YES;
 }
 
 - (void)didSeekToTime:(CMTime)time{
@@ -23,9 +71,23 @@
 - (void)didReachEndTime{
     //到达结束两种情形 1.updateWithTime 2.读取资源失败并且接近尾声，
     //读取资源失败未接近尾声的时候可以通过纠错的方式来修正，比如返回一个黑帧或者返回上一帧画面(视频画面拉长或者视频将播放时长大于媒体时长，但是在action正常时常范围内)
+    for (BBZAction *action in self.actions) {
+       [action unlock];
+    }
+    self.currentIndex = 0;
+    self.currentTimePoint = 0;
 }
 
-
+- (BOOL)findNextTimePoint {
+    BOOL bFind = YES;
+    self.currentIndex++;
+    if(self.currentIndex >= self.timePointsArray.count - 1) {
+        bFind = NO;
+        return bFind;
+    }
+    self.currentTimePoint = [[self.timePointsArray objectAtIndex:self.currentIndex] unsignedIntegerValue];
+    return bFind;
+}
 
 
 @end

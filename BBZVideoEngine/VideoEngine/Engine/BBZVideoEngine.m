@@ -30,17 +30,18 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
 };
 
 
-@interface BBZVideoEngine ()<BBZVideoWriteControl>
+@interface BBZVideoEngine ()<BBZVideoWriteControl, BBZSegmentActionDelegate>
 @property (nonatomic, strong) BBZVideoModel *videoModel;
 @property (nonatomic, strong) BBZEngineContext *context;
 @property (nonatomic, strong) NSString *outputFile;
-
+@property (nonatomic, strong) BBZFilterMixer *filterMixer;
 @property (nonatomic, strong) BBZSchedule *schedule;
 @property (nonatomic, strong) BBZCompositonDirector *director;
-@property (nonatomic, strong) BBZFilterMixer *filterMixer;
-@property (nonatomic, strong) NSMutableDictionary *filterLayers;
+@property (nonatomic, strong) NSMutableDictionary *filterLayers; //@(BBZFilterLayerType):BBZFilterLayer
 @property (nonatomic, strong) NSMutableSet *timePointSet;
 @property (nonatomic, assign) NSUInteger intDuration;
+@property (nonatomic, assign) NSMutableDictionary *timeSegments; // @(time): ActionTree
+
 
 
 @end
@@ -53,6 +54,8 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
     if(self = [super init]) {
         _videoModel = videoModel;
         _context = context;
+        _timeSegments = [NSMutableDictionary dictionaryWithCapacity:1];
+        _timePointSet = [NSMutableSet set];
         [self buildVideoEngine];
         [self buildFilterLayers];
     }
@@ -97,33 +100,58 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
         BBZFilterLayer *layer = self.filterLayers[@(i)];
         if(i == BBZFilterLayerTypeVideo || i == BBZFilterLayerTypeTransition) {
             BBZActionBuilderResult *currentResult = [layer buildTimelineNodes:builerResult];
-            [self addTimePointFrom:currentResult];
+            layer.builderResult = currentResult;
             builerResult = currentResult;
-            self.intDuration = builerResult.startTime;
         } else {
             BBZActionBuilderResult *currentResult = [layer buildTimelineNodes:builerResult];
+            layer.builderResult = currentResult;
             [self addTimePointFrom:currentResult];
         }
     }
+    [self addTimePointFrom:builerResult];
+    self.intDuration = builerResult.startTime;
 }
 
 - (void)buildVideoEngine {
     self.director = [[BBZCompositonDirector alloc] init];
     self.schedule = [BBZSchedule scheduleWithMode:self.context.scheduleMode];
     self.schedule.observer = self.director;
-    self.filterMixer = [[BBZFilterMixer alloc] init];
 }
 
+
+- (void)prepareForStart {
+    if(!self.director.timePointsArray) {
+        NSMutableArray *mutableArray =  [NSMutableArray arrayWithArray:self.timePointSet.allObjects];
+        [mutableArray sortUsingComparator:^NSComparisonResult(NSNumber  *obj1, NSNumber *obj2) {
+            return (obj1.unsignedIntegerValue < obj2.unsignedIntegerValue) ? NSOrderedAscending : NSOrderedDescending;
+        }];
+        self.director.timePointsArray = mutableArray;
+    }
+    //进行滤镜链时间区间创建
+    
+    //进行滤镜链合并 , 创建实例实例filterAction;
+}
+
+#pragma mark - Public
+
+
 - (BOOL)start {
-    return [self.director start];
+    [self prepareForStart];
+    [self.director start];
+    [self.schedule startTimeline];
+    return YES;
 }
 
 - (BOOL)pause {
-    return  [self.director pause];
+    [self.director pause];
+    [self.schedule pauseTimeline];
+    return YES;
 }
 
 - (BOOL)cancel {
-    return  [self.director cancel];
+    [self.director cancel];
+    [self.schedule stopTimeline];
+    return YES;
 }
 
 - (CGFloat)videoModelCombinedDuration {
@@ -147,13 +175,41 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
     
 }
 
+#pragma mark - BBZSegmentActionDelegate
+
+- (NSArray *)layerActionTreesBeforeTimePoint:(NSUInteger)timePoint {
+    
+    return nil;
+}
+
 
 #pragma mark - Private
 
 #pragma mark - TimePoint
 
 - (void)addTimePointFrom:(BBZActionBuilderResult *)result {
+    for (BBZActionTree *tree in result.groupActions) {
+        for (BBZAction *action in tree.allActions) {
+            [self.timePointSet addObject:@(action.startTime)];
+            [self.timePointSet addObject:@(action.endTime)];
+        }
+    }
+}
+
+#pragma mark - Schedule
+
+- (void)updateWithTime:(CMTime)time{
+    //to do check time 是否超出
+}
+
+- (void)didSeekToTime:(CMTime)time{
     
 }
+
+- (void)didReachEndTime{
+    //到达结束两种情形 1.updateWithTime 2.读取资源失败并且接近尾声，
+    //读取资源失败未接近尾声的时候可以通过纠错的方式来修正，比如返回一个黑帧或者返回上一帧画面(视频画面拉长或者视频将播放时长大于媒体时长，但是在action正常时常范围内)
+}
+
 
 @end

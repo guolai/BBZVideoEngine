@@ -20,8 +20,8 @@
 - (instancetype)init {
     if(self = [super init]) {
         _repeatCount = 1;
-        _startTime = 0.0;
-        _duration = 1.0;
+        _startTime = 0;
+        _duration = 0;
         _referenceCountingDisabled = NO;
         _referenceCount = 0;
     }
@@ -49,7 +49,7 @@
         return;
     }
     
-    _repeatCount++;
+    _referenceCount++;
 }
 
 - (void)unlock {
@@ -57,9 +57,9 @@
         return;
     }
     
-    NSAssert(_repeatCount > 0, @"some thing wrong");
- 
-    if (_repeatCount < 1) {
+    NSAssert(_referenceCount > 0, @"some thing wrong");
+    _referenceCount++;
+    if (_referenceCount < 1) {
         [self destroySomething];
     }
 }
@@ -79,7 +79,7 @@
 }
 
 - (NSUInteger)endTime {
-    return self.startTime + self.duration;
+    return self.startTime + self.duration * self.repeatCount;
 }
 
 @end

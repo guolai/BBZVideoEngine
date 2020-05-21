@@ -30,6 +30,7 @@
 @property (nonatomic, strong, readonly) BBZVideoModel *model;
 @property (nonatomic, strong, readonly) BBZEngineContext *context;
 @property (nonatomic, weak) id<BBZFilterLayerProtocol> layerDelegate;
+@property (nonatomic, strong) BBZActionBuilderResult *builderResult;
 
 - (instancetype)initWithModel:(BBZVideoModel *)model context:(BBZEngineContext *)context;
 - (BBZActionBuilderResult *)buildTimelineNodes:(BBZActionBuilderResult *)inputBuilder;

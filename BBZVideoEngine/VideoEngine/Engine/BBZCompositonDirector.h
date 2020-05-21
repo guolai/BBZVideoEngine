@@ -10,9 +10,18 @@
 #import "BBZVideoModel.h"
 #import "BBZEngineSetting.h"
 #import "BBZSchedule.h"
+#import "BBZFilterMixer.h"
+
+@protocol BBZSegmentActionDelegate <NSObject>
+
+- (NSArray *)layerActionTreesBeforeTimePoint:(NSUInteger)timePoint;
+
+@end
+
 
 @interface BBZCompositonDirector : BBZTask <BBZScheduleObserver>
-
+@property (nonatomic, weak) id<BBZSegmentActionDelegate> segmentDelegate;
+@property (nonatomic, strong) NSArray *timePointsArray;
 
 @end
 
