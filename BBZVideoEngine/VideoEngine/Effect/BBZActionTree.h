@@ -36,6 +36,8 @@
 
 - (BBZActionTree *)mergeWithOtherTree:(BBZActionTree *)otherTree;
 
+- (BBZActionTree *)subTreeFromTime:(NSUInteger)startTime endTime:(NSUInteger)endTime;
+
 
 @end
 

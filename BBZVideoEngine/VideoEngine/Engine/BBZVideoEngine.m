@@ -128,7 +128,21 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
         self.director.timePointsArray = mutableArray;
     }
     //进行滤镜链时间区间创建
-    
+    NSUInteger startTime = 0;
+    NSUInteger endTime = 0;
+    for (int timeIndex = 0; timeIndex < self.director.timePointsArray.count; timeIndex++) {
+        startTime = endTime;
+        NSNumber *number = [self.director.timePointsArray objectAtIndex:timeIndex];
+        endTime = [number unsignedIntegerValue];
+        if(timeIndex == 0) {
+            NSAssert(endTime == 0, @"first time should be Zero");
+            continue;
+        }
+        for (int layerIndex = BBZFilterLayerTypeVideo; layerIndex < BBZFilterLayerTypeMax; layerIndex++) {
+            BBZFilterLayer *layer = self.filterLayers[@(layerIndex)];
+          
+        }
+    }
     //进行滤镜链合并 , 创建实例实例filterAction;
 }
 

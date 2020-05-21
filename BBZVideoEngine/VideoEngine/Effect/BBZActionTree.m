@@ -112,6 +112,11 @@
     return nil;
 }
 
+
+- (BBZActionTree *)subTreeFromTime:(NSUInteger)startTime endTime:(NSUInteger)endTime {
+    return nil;
+}
+
 - (NSString *)debugDescription {
     NSMutableString *mtblString = [NSMutableString  string];
     [mtblString appendString:[NSString stringWithFormat:@"Action:%@\n", self.arrayActions]];
