@@ -20,6 +20,8 @@ extern const int BBZScheduleTimeScale;
 @property (nonatomic, assign) NSUInteger duration;
 @property (nonatomic, assign) NSInteger repeatCount;
 @property (nonatomic, assign) NSInteger order;
+@property (nonatomic, assign, readonly) CMTime startCMTime;
+@property (nonatomic, assign, readonly) CMTime durationCMTime;
 
 @property (nonatomic, strong, readonly) BBZNode *node;
 

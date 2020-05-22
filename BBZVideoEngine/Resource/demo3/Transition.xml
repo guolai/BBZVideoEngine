@@ -1,17 +1,17 @@
 <!-- 新老引擎的分发通过miniVersion来判定 -->
 <root miniVersion="1.0">
-    <inputGroup duration="2.00" order="1">
+    <inputGroup duration="0.3" order="1">
         <input index="0">
-            <action begin="0.0" end="2.0" name="scale" order="1">
-                <animation begin="0.0" end="2.0">
+            <action begin="0.0" end="0.3" name="scale" order="1">
+                <animation begin="0.0" end="0.3">
                     <param_begin param1="1.15"/>
                     <param_end   param1="1.0"/>
                 </animation>
             </action>
         </input>
         <input index="1">
-             <action begin="0.0" end="2.0" name="scale" order="1">
-                <animation begin="0.0" end="2.0">
+             <action begin="0.0" end="0.3" name="scale" order="1">
+                <animation begin="0.0" end="0.3">
                     <param_begin param1="1.15"/>
                     <param_end   param1="1.0"/>
                 </animation>

@@ -82,6 +82,14 @@
     return self.startTime + self.duration * self.repeatCount;
 }
 
+- (CMTime)startCMTime {
+    return CMTimeMake(self.startTime * BBZVideoDurationScale, BBZVideoDurationScale);
+}
+
+- (CMTime)durationCMTime {
+    return CMTimeMake((self.endTime - self.startTime) * BBZVideoDurationScale, BBZVideoDurationScale);
+}
+
 - (NSString *)debugDescription {
     NSString *retString = [NSString stringWithFormat:@"starttime:%lu, endTime:%lu, duration:%lu, repeat:%ld, refcount:%ld,disableRef:%d", self.startTime, self.endTime, self.duration, self.repeatCount, _referenceCount, _referenceCountingDisabled];
     return retString;

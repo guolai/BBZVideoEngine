@@ -120,13 +120,13 @@
             sourceAction.startTime = builder.startTime;
             sourceAction.duration = playDuration;
             
-            BBZActionTree *actionTree = [BBZActionTree createActionTreeWithAction:sourceAction];
+            BBZActionTree *sourceActionTree = [BBZActionTree createActionTreeWithAction:sourceAction];
             
             BBZInputFilterAction *filterAction = [[BBZInputFilterAction alloc] init];
             filterAction.startTime = sourceAction.startTime;
             filterAction.duration = sourceAction.duration;
             BBZActionTree *filterTree = [BBZActionTree createActionTreeWithAction:filterAction];
-            [filterTree addSubTree:actionTree];
+            [filterTree addSubTree:sourceActionTree];
             
             BBZActionTree *inputActionTree = [self actionTreeWithInputNode:input duration:playDuration startTime:builder.startTime];
             [inputActionTree addSubTree:filterTree];

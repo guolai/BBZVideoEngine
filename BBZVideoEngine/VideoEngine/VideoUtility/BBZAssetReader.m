@@ -211,12 +211,6 @@
              AVLinearPCMIsFloatKey: @(NO)};
 }
 
-- (void)releaseSampleBuffer:(CMSampleBufferRef)sampleBuffer {
-    if (sampleBuffer) {
-        CFRelease(sampleBuffer);
-    }
-}
-
 @end
 
 
@@ -230,7 +224,6 @@
 
 - (void)cleanup {
     [super cleanup];
-    [self releaseSampleBuffer:self.currentSampleBuffer];
     self.currentSampleBuffer = NULL;
     self.providerOutput = nil;
 }
@@ -253,9 +246,19 @@
         }
     }
     CMSampleBufferRef sampleBuffer = [self nextSampleBufferForProviderOutput:self.providerOutput];
-    CFRetain(sampleBuffer);
     self.currentSampleBuffer = sampleBuffer;
     return sampleBuffer;
+}
+
+- (void)setCurrentSampleBuffer:(CMSampleBufferRef)currentSampleBuffer {
+    if(currentSampleBuffer) {
+        CFRetain(currentSampleBuffer);
+    }
+    if(_currentSampleBuffer) {
+        CFRelease(_currentSampleBuffer);
+        _currentSampleBuffer = nil;
+    }
+    _currentSampleBuffer = currentSampleBuffer;
 }
 
 @end
@@ -274,8 +277,6 @@
 - (void)cleanup {
     [super cleanup];
     self.readerTimeRange = kCMTimeRangeInvalid;
-    [self releaseSampleBuffer:self.currentSampleBuffer];
-    [self releaseSampleBuffer:self.nextSampleBuffer];
     self.currentSampleBuffer = NULL;
     self.nextSampleBuffer = NULL;
     self.providerOutput = nil;
@@ -333,11 +334,9 @@
     }
     
     if ((fabs(cDiff) > fabs(nDiff)) && (fabs(nDiff) < (1.0 / 60.0))) {
-        [self releaseSampleBuffer:self.currentSampleBuffer];
         self.currentSampleBuffer = self.nextSampleBuffer;
         self.nextSampleBuffer = NULL;
     }
-    
     return self.currentSampleBuffer;
 }
 
@@ -361,13 +360,12 @@
         if (tmpSampleBuffer == NULL) {
             break;
         }
-  
-        [self releaseSampleBuffer:secondSampleBuffer];
         secondSampleBuffer = firstSampleBuffer;
         firstSampleBuffer = tmpSampleBuffer;
         firstSampleBufferTime = CMSampleBufferGetOutputPresentationTimeStamp(firstSampleBuffer);
     }
-    
+    CFRetain(firstSampleBuffer);
+    CFRetain(secondSampleBuffer);
     if (CMTimeCompare(firstSampleBufferTime, targetTime) > 0) {
         if (secondSampleBuffer) {
             self.nextSampleBuffer = firstSampleBuffer;
@@ -377,11 +375,11 @@
             self.currentSampleBuffer = firstSampleBuffer;
         }
     } else {
-        [self releaseSampleBuffer:secondSampleBuffer];
         self.nextSampleBuffer = NULL;
         self.currentSampleBuffer = firstSampleBuffer;
     }
-
+    CFRelease(firstSampleBuffer);
+    CFRelease(secondSampleBuffer);
     CMTime time = CMSampleBufferGetOutputPresentationTimeStamp(self.currentSampleBuffer);
     BBZINFO(@"[Prepare] current {v=%lli s=%i}", time.value, time.timescale);
     time = CMSampleBufferGetOutputPresentationTimeStamp(self.nextSampleBuffer);
@@ -400,10 +398,29 @@
         }
     }
     CMSampleBufferRef sampleBuffer = [self findSampleBufferAtTime:targetTime];
-    if (sampleBuffer) {
-        CFRetain(sampleBuffer);
-    }
     return sampleBuffer;
+}
+
+- (void)setCurrentSampleBuffer:(CMSampleBufferRef)currentSampleBuffer {
+    if(currentSampleBuffer) {
+        CFRetain(currentSampleBuffer);
+    }
+    if(_currentSampleBuffer) {
+        CFRelease(_currentSampleBuffer);
+        _currentSampleBuffer = nil;
+    }
+    _currentSampleBuffer = currentSampleBuffer;
+}
+
+- (void)setNextSampleBuffer:(CMSampleBufferRef)nextSampleBuffer {
+    if(nextSampleBuffer) {
+        CFRetain(nextSampleBuffer);
+    }
+    if(_nextSampleBuffer) {
+        CFRelease(_nextSampleBuffer);
+        _nextSampleBuffer = nil;
+    }
+    _nextSampleBuffer = nextSampleBuffer;
 }
 
 @end

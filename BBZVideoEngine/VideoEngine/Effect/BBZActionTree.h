@@ -21,6 +21,10 @@
 @property (nonatomic, assign, readonly) NSUInteger endTime;
 @property (nonatomic, assign, readonly) NSUInteger offset;
 
+@property (nonatomic, assign, readonly) CMTime startCMTime;
+@property (nonatomic, assign, readonly) CMTime durationCMTime;
+
++ (BBZActionTree *)createActionWithBeginTime:(NSUInteger)beginTime endTime:(NSUInteger)endTime;
 + (BBZActionTree *)createActionTreeWithAction:(BBZAction *)action;
 
 - (void)addSubTree:(BBZActionTree *)subTree;
@@ -37,6 +41,9 @@
 - (BBZActionTree *)mergeWithOtherTree:(BBZActionTree *)otherTree;
 
 - (BBZActionTree *)subTreeFromTime:(NSUInteger)startTime endTime:(NSUInteger)endTime;
+
+- (BOOL)isValidTree;
+- (BOOL)shouldSplit;
 
 
 @end

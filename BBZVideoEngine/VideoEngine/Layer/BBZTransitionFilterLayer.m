@@ -57,10 +57,12 @@
         }
     
         BBZTransitionGroupNode *transition = [self.model.transitonModel.transitionGroups objectAtIndex:transionIndex];
-        NSUInteger transionDuration = transition.duration;
+        NSUInteger transionDuration = transition.duration * BBZVideoDurationScale;
         builder.startTime -= transionDuration;
         NSAssert(builder.startTime > 0, @"transionStartTime error");
         NSAssert((spliceTree.beginTime - transionDuration > 0), @"transionStartTime error");
+        [spliceTree updateOffsetTime:transionDuration];
+        
     }
     
     builder.groupActions = retArray;
