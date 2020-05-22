@@ -37,7 +37,7 @@
     [retArray addObject:maskTree];
     builder.groupIndex++;
     builder.assetIndex++;
-
+    maskTree.groupIndex = builder.groupIndex;
     builder.groupActions = retArray;
     return builder;
 }

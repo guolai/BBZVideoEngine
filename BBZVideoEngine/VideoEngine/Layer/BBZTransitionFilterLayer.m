@@ -74,6 +74,7 @@
         builder.startTime += (beforeTree.endTime - beforeTree.beginTime);
         builder.groupIndex++;
         builder.assetIndex++;
+        transitionTree.groupIndex = builder.groupIndex;
     }
     
     builder.groupActions = retArray;

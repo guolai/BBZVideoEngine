@@ -138,13 +138,43 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
             NSAssert(endTime == 0, @"first time should be Zero");
             continue;
         }
-        for (int layerIndex = BBZFilterLayerTypeVideo; layerIndex < BBZFilterLayerTypeMax; layerIndex++) {
-            BBZFilterLayer *layer = self.filterLayers[@(layerIndex)];
-          
+        BBZActionTree *buildrTree = nil;
+        NSArray *videoLayerArray = [self actionTreeFromLayer:self.filterLayers[@(BBZFilterLayerTypeVideo)] startTime:startTime endTime:endTime];
+        NSArray *transitionLayerArray = [self actionTreeFromLayer:self.filterLayers[@(BBZFilterLayerTypeTransition)] startTime:startTime endTime:endTime];
+        NSArray *maskLayerArray = [self actionTreeFromLayer:self.filterLayers[@(BBZFilterLayerTypeMask)] startTime:startTime endTime:endTime];
+        NSArray *outputLayerArray = [self actionTreeFromLayer:self.filterLayers[@(BBZFilterLayerTypeOutput)] startTime:startTime endTime:endTime];
+        
+        BOOL bHaveTranstion = NO;
+        if(transitionLayerArray.count > 0 ) {
+            BBZActionTree *trantionTree = [transitionLayerArray objectAtIndex:0];
+            if(transitionLayerArray.count > 1 || trantionTree.subTrees.count != videoLayerArray.count) {
+                BBZERROR(@"action tree error");
+                NSAssert(false, @"action tree error");
+            } else {
+                bHaveTranstion = YES;
+                
+            }
+            
         }
+        
+        
     }
     //进行滤镜链合并 , 创建实例实例filterAction;
 }
+
+- (NSArray *)actionTreeFromLayer:(BBZFilterLayer *)layer startTime:(NSUInteger)startTime endTime:(NSUInteger)endTime {
+    NSMutableArray *array = [NSMutableArray arrayWithCapacity:2];
+    for (BBZActionTree *tree in layer.builderResult.groupActions) {
+        BBZActionTree *subTree = [tree subTreeFromTime:startTime endTime:endTime];
+        if(subTree) {
+            [array addObject:subTree];
+        } else {
+            break;
+        }
+    }
+    return array;
+}
+
 
 #pragma mark - Public
 

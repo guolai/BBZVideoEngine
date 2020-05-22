@@ -42,6 +42,9 @@
 }
 
 - (void)addSubTree:(BBZActionTree *)subTree {
+    if(!subTree) {
+        return;
+    }
     if(subTree.beginTime > self.beginTime || subTree.endTime < self.endTime) {
         BBZERROR(@"segment error %u, %u, %u, %u", subTree.beginTime, subTree.endTime, self.beginTime, self.endTime);
         NSAssert(false, @"segment error");
@@ -68,6 +71,9 @@
 }
 
 - (void)addAction:(BBZAction *)action {
+    if(!action) {
+        return;
+    }
     if(action.startTime < self.beginTime || action.endTime > self.endTime) {
         BBZERROR(@"segment error %u, %u, %u, %u", action.startTime, action.endTime, self.beginTime, self.endTime);
         NSAssert(false, @"segment error");
@@ -118,6 +124,31 @@
     [self.arrayNodes removeAllObjects];
 }
 
+- (BBZActionTree *)subTreeAtIndex:(NSUInteger)index {
+    BBZActionTree *tree = nil;
+    if(self.arrayNodes.count > index) {
+        tree = [self.arrayNodes objectAtIndex:index];
+    }
+    return tree;
+}
+
+- (BOOL)addSubTreeToLeftTerminal:(BBZActionTree *)subTree {
+    BOOL bAdd = NO;
+    BBZActionTree *leftTree = [self subTreeAtIndex:0];
+    if([leftTree isSingleChain]) {
+        [leftTree addSubTree:subTree];
+    }
+    return bAdd;
+}
+- (BOOL)addSubTreeToRightTerminal:(BBZActionTree *)subTree {
+    BOOL bAdd = YES;
+    BBZActionTree *rightTree = [self subTreeAtIndex:1];
+    if([rightTree isSingleChain]) {
+        [rightTree addSubTree:subTree];
+    }
+    return bAdd;
+}
+
 
 //- (BBZActionTree *)mergeWithOtherTree:(BBZActionTree *)otherTree {
 //    BBZActionTree *parentTree = [[BBZActionTree alloc] init];
@@ -134,7 +165,10 @@
             [subTree addAction:action];
         }
     }
-    if(subTree.actions.count == 0) {
+    for (BBZActionTree *tree in self.subTrees) {
+        [subTree addSubTree:[tree subTreeFromTime:startTime endTime:endTime]];
+    }
+    if(subTree.allActions.count == 0) {
         subTree = nil;
     }
     return subTree;
@@ -239,6 +273,18 @@
         }
     }
     return bSplit;
+}
+
+- (BOOL)isSingleChain {
+    BOOL bSingleChain = YES;
+    if(self.arrayNodes.count > 1) {
+        bSingleChain = NO;
+    }
+    BBZActionTree *subTree = [self subTreeAtIndex:0];
+    if(bSingleChain && subTree) {
+        bSingleChain = [subTree isSingleChain];
+    }
+    return bSingleChain;
 }
 
 - (CMTime)startCMTime {

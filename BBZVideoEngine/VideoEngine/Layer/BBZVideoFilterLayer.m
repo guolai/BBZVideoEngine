@@ -51,7 +51,7 @@
         filterAction.duration = action.duration;
         BBZActionTree *filterTree = [BBZActionTree createActionTreeWithAction:filterAction];
         [filterTree addSubTree:actionTree];
-        
+        filterTree.groupIndex = builder.groupIndex;
         [retArray addObject:filterTree];
     }
     builder.groupActions = retArray;
@@ -114,6 +114,7 @@
         }
 
         BBZActionTree *spliceTree = [self actionTreeWithSpliceNode:splice.spliceNode duration:playDuration startTime:builder.startTime];
+        
         int i = 0;
         for (BBZInputNode *input in splice.inputNodes) {
             BBZSourceAction *sourceAction = [sourceArray objectAtIndex:i];
@@ -139,12 +140,11 @@
             i++;
         }
         [retArray addObject:spliceTree];
-    
-        
+
         builder.startTime += playDuration;
         builder.groupIndex++;
         builder.assetIndex += splice.inputNodes.count;
-
+        spliceTree.groupIndex = builder.groupIndex;
         spliceIndex ++;
     }
 

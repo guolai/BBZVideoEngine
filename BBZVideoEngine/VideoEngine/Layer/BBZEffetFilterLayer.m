@@ -37,9 +37,9 @@
             [retArray addObject:effectTree];
             builder.groupIndex++;
             builder.assetIndex++;
+            effectTree.groupIndex = builder.groupIndex;
         }
     }
-    
     builder.groupActions = retArray;
     return builder;
  

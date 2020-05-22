@@ -21,6 +21,8 @@
 @property (nonatomic, assign, readonly) NSUInteger endTime;
 @property (nonatomic, assign, readonly) NSUInteger offset;
 
+@property (nonatomic, assign) NSInteger groupIndex;
+
 @property (nonatomic, assign, readonly) CMTime startCMTime;
 @property (nonatomic, assign, readonly) CMTime durationCMTime;
 
@@ -30,10 +32,11 @@
 - (void)addSubTree:(BBZActionTree *)subTree;
 //- (void)removeSubTree:(BBZActionTree *)subTree;
 - (BOOL)containsChildTree:(BBZActionTree *)subTree;
-
 - (void)addAction:(BBZAction *)action;
-
 - (void)remoeAllSubTrees;
+- (BBZActionTree *)subTreeAtIndex:(NSUInteger)index;
+- (BOOL)addSubTreeToLeftTerminal:(BBZActionTree *)subTree;//如果当前树的左子树有分叉则添加失败，需要跳过
+- (BOOL)addSubTreeToRightTerminal:(BBZActionTree *)subTree;//如果当前树的右子有分叉则添加失败，需要跳过
 
 - (void)updateOffsetTime:(NSUInteger)time;
 - (NSUInteger)duration;
@@ -44,6 +47,7 @@
 
 - (BOOL)isValidTree;
 - (BOOL)shouldSplit;
+- (BOOL)isSingleChain;
 
 
 @end
