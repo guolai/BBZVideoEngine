@@ -42,7 +42,7 @@
 }
 
 - (void)addSubTree:(BBZActionTree *)subTree {
-    if(subTree.beginTime != self.beginTime || subTree.endTime != self.endTime) {
+    if(subTree.beginTime > self.beginTime || subTree.endTime < self.endTime) {
         BBZERROR(@"segment error %u, %u, %u, %u", subTree.beginTime, subTree.endTime, self.beginTime, self.endTime);
         NSAssert(false, @"segment error");
     }
@@ -119,12 +119,12 @@
 }
 
 
-- (BBZActionTree *)mergeWithOtherTree:(BBZActionTree *)otherTree {
-    BBZActionTree *parentTree = [[BBZActionTree alloc] init];
-    [parentTree addSubTree:self];
-    [parentTree addSubTree:otherTree];
-    return parentTree;
-}
+//- (BBZActionTree *)mergeWithOtherTree:(BBZActionTree *)otherTree {
+//    BBZActionTree *parentTree = [[BBZActionTree alloc] init];
+//    [parentTree addSubTree:self];
+//    [parentTree addSubTree:otherTree];
+//    return parentTree;
+//}
 
 
 - (BBZActionTree *)subTreeFromTime:(NSUInteger)startTime endTime:(NSUInteger)endTime {

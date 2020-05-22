@@ -26,20 +26,6 @@
 
 
 - (BBZActionBuilderResult *)buildTranstionTimeLine:(BBZActionBuilderResult *)inputBuilderResult {
-//    BBZActionBuilderResult *builder = [[BBZActionBuilderResult alloc] init];
-//    builder.startTime = 0;
-//    builder.groupIndex = 0;
-//    NSMutableArray *retArray = [NSMutableArray array];
-//    NSInteger transionIndex = 0;
-//    BBZActionTree *beforeTree = nil;
-//    for (BBZTransitionGroupNode *transition in self.model.transitonModel.transitionGroups) {
-//        BBZActionTree *transtionTree = [self actionTreeWithTransitionNode:transition.transitionNode duration:transition.duration startTime:builder.startTime];
-//
-//        BBZInputNode *leftInputNode = [transition.inputNodes objectAtIndex:0];
-//        BBZActionTree *leftInputTree = [self actionTreeWithInputNode:leftInputNode duration:0 startTime:0];
-//    }
-//
-    
     BBZActionBuilderResult *builder = [[BBZActionBuilderResult alloc] init];
     builder.startTime = 0;
     builder.groupIndex = 0;
@@ -63,6 +49,29 @@
         NSAssert((spliceTree.beginTime - transionDuration > 0), @"transionStartTime error");
         [spliceTree updateOffsetTime:transionDuration];
         
+        BBZActionTree *transitionTree = [self actionTreeWithTransitionNode:transition.transitionNode duration:transionDuration startTime:builder.startTime];
+        
+        BBZInputNode *input1 = [transition.inputNodes objectAtIndex:0];
+        BBZActionTree *inputActionTree1 = [self actionTreeWithInputNode:input1 duration:transionDuration startTime:builder.startTime];
+        if(!inputActionTree1) {
+            [transitionTree addSubTree:beforeTree];
+        } else {
+            [inputActionTree1 addSubTree:beforeTree];
+            [transitionTree addSubTree:inputActionTree1];
+        }
+        
+        BBZInputNode *input2 = [transition.inputNodes objectAtIndex:0];
+        BBZActionTree *inputActionTree2= [self actionTreeWithInputNode:input2 duration:transionDuration startTime:builder.startTime];
+        if(!inputActionTree2) {
+            [transitionTree addSubTree:spliceTree];
+        } else {
+            [inputActionTree2 addSubTree:spliceTree];
+            [transitionTree addSubTree:inputActionTree2];
+        }
+        
+        [retArray addObject:transitionTree];
+        beforeTree = spliceTree;
+        builder.startTime += (beforeTree.endTime - beforeTree.beginTime);
     }
     
     builder.groupActions = retArray;
@@ -75,12 +84,15 @@
 - (BBZActionTree *)actionTreeWithInputNode:(BBZInputNode *)inputNode
                                   duration:(NSUInteger)duration
                                  startTime:(NSUInteger)startTime{
-    BBZActionTree *inputTree = [[BBZActionTree alloc] init];
+    BBZActionTree *inputTree = [BBZActionTree createActionWithBeginTime:startTime endTime:startTime+duration];
     for (BBZNode *node in inputNode.actions) {
         BBZFilterAction *filterAction = [[BBZFilterAction alloc] initWithNode:node];
         filterAction.startTime = startTime;
         filterAction.duration = duration;
         [inputTree addAction:filterAction];
+    }
+    if(inputTree.actions.count == 0) {
+        inputTree = nil;
     }
     return inputTree;
 }
@@ -89,15 +101,15 @@
 - (BBZActionTree *)actionTreeWithTransitionNode:(BBZTransitionNode *)transitionNode
                                        duration:(NSUInteger)duration
                                       startTime:(NSUInteger)startTime{
-    BBZActionTree *spliceTree = [[BBZActionTree alloc] init];
+    BBZActionTree *transitionTree = [BBZActionTree createActionWithBeginTime:startTime endTime:startTime+duration];
     for (BBZNode *node in transitionNode.actions) {
         BBZFilterAction *filterAction = [[BBZFilterAction alloc] initWithNode:node];
         filterAction.startTime = startTime;
         filterAction.duration = duration;
-        [spliceTree addAction:filterAction];
+        [transitionTree addAction:filterAction];
     }
-    
-    return spliceTree;
+    NSAssert(transitionTree.actions.count > 0, @"transitionTree action cannot be nil");
+    return transitionTree;
 }
 
 @end

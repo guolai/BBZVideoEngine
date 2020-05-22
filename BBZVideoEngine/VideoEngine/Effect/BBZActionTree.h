@@ -38,7 +38,7 @@
 - (void)updateOffsetTime:(NSUInteger)time;
 - (NSUInteger)duration;
 
-- (BBZActionTree *)mergeWithOtherTree:(BBZActionTree *)otherTree;
+//- (BBZActionTree *)mergeWithOtherTree:(BBZActionTree *)otherTree;
 
 - (BBZActionTree *)subTreeFromTime:(NSUInteger)startTime endTime:(NSUInteger)endTime;
 

@@ -129,8 +129,13 @@
             [filterTree addSubTree:sourceActionTree];
             
             BBZActionTree *inputActionTree = [self actionTreeWithInputNode:input duration:playDuration startTime:builder.startTime];
-            [inputActionTree addSubTree:filterTree];
-            [spliceTree addSubTree:inputActionTree];
+            if(!inputActionTree) {
+                [spliceTree addSubTree:filterTree];
+            } else {
+                [inputActionTree addSubTree:filterTree];
+                [spliceTree addSubTree:inputActionTree];
+            }
+           
             i++;
         }
         [retArray addObject:spliceTree];
@@ -173,26 +178,29 @@
 - (BBZActionTree *)actionTreeWithSpliceNode:(BBZSpliceNode *)spliceNode
                                    duration:(NSUInteger)duration
                                   startTime:(NSUInteger)startTime{
-    BBZActionTree *spliceTree = [[BBZActionTree alloc] init];
+    BBZActionTree *spliceTree = [BBZActionTree createActionWithBeginTime:startTime endTime:startTime+duration];
     for (BBZNode *node in spliceNode.actions) {
         BBZFilterAction *filterAction = [[BBZFilterAction alloc] initWithNode:node];
         filterAction.startTime = startTime;
         filterAction.duration = duration;
         [spliceTree addAction:filterAction];
     }
-   
+    NSAssert(spliceTree.actions.count > 0, @"splieTree action cannot be nil");
     return spliceTree;
 }
 
 - (BBZActionTree *)actionTreeWithInputNode:(BBZInputNode *)inputNode
                                   duration:(NSUInteger)duration
                                  startTime:(NSUInteger)startTime{
-    BBZActionTree *inputTree = [[BBZActionTree alloc] init];
+    BBZActionTree *inputTree = [BBZActionTree createActionWithBeginTime:startTime endTime:startTime+duration];
     for (BBZNode *node in inputNode.actions) {
         BBZFilterAction *filterAction = [[BBZFilterAction alloc] initWithNode:node];
         filterAction.startTime = startTime;
         filterAction.duration = duration;
         [inputTree addAction:filterAction];
+    }
+    if(inputTree.actions.count == 0) {
+        inputTree = nil;
     }
     return inputTree;
 }
