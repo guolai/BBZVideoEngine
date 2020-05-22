@@ -7,9 +7,9 @@
 //
 
 #import "BBZVistualFilterAction.h"
-
+#import "BBZMultiImageFilter.h"
 
 @interface BBZFilterAction : BBZVistualFilterAction
-
+@property (nonatomic, strong) BBZMultiImageFilter *filter;
 @end
 

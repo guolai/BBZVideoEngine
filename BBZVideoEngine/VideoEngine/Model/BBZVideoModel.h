@@ -23,7 +23,7 @@
 @property (nonatomic, assign, readonly) CGFloat duration;
 @property (nonatomic, strong, readonly) NSString *videoResourceDir;
 
-@property (nonatomic, strong) BBZImageAsset *bgImageAsset;
+@property (nonatomic, strong) UIImage *bgImage;
 
 //asset
 - (BOOL)addVideoSource:(NSString *)filePath;

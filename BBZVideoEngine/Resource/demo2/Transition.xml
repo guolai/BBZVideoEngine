@@ -1,42 +1,36 @@
 <!-- 新老引擎的分发通过miniVersion来判定 -->
 <root miniVersion="1.0">
-    <inputGroup duration="2.00" order="1">
+    <inputGroup duration="0.3" order="1">
         <input index="0">
-            <action begin="0.0" end="2.0" name="scale" order="1">
-                <param>
-                    <animation begin="0.0" end="2.0">
-                        <param_begin param1="1.15"/>
-                        <param_end   param1="1.0"/>
-                    </animation>
-                </param>
+            <action begin="0.0" end="0.3" name="scale" order="1">
+                <animation begin="0.0" end="0.3">
+                    <param_begin param1="1.15"/>
+                    <param_end   param1="1.0"/>
+                </animation>
             </action>
         </input>
         <input index="1">
-             <action begin="0.0" end="2.0" name="scale" order="1">
-                <param>
-                    <animation begin="0.0" end="2.0">
-                        <param_begin param1="1.15"/>
-                        <param_end   param1="1.0"/>
-                    </animation>
-                </param>
+             <action begin="0.0" end="0.3" name="scale" order="1">
+                <animation begin="0.0" end="0.3">
+                    <param_begin param1="1.15"/>
+                    <param_end   param1="1.0"/>
+                </animation>
             </action>
         </input>
-        <transition timestamp="0.00" duration="0.3" repeat="true" order="2">
-            <action begin="0.000" end="0.3" name="image" fragment_shader="heichang.glsl" animated="1">
-                <param x="0.047" y="0.153" anchorX="0.0" anchorY="0.0" width="0.668">
-                    <animation begin="0.0" end="0.13">
-                        <param_begin param1="1.0" param2="0" param3="0.0"/>
-                        <param_end   param1="0.0" param2="0" param3="0.0"/>
-                    </animation>
-                    <animation begin="0.13" end="0.17">
-                        <param_begin param1="0.0" param2="1" param3="0.0"/>
-                        <param_end   param1="0.0" param2="1" param3="0.0"/>
-                    </animation>
-                    <animation begin="0.17" end="0.30">
-                        <param_begin param1="0.0" param2="0" param3="0.0"/>
-                        <param_end   param1="0.0" param2="0" param3="1.0"/>
-                    </animation>
-                </param>
+        <transition timestamp="0.00" duration="0.3" repeat="1" order="2">
+            <action begin="0.000" end="0.3" name="image" fShader="heichang.glsl">
+                <animation begin="0.0" end="0.13">
+                    <param_begin param1="1.0" param2="0" param3="0.0"/>
+                    <param_end   param1="0.0" param2="0" param3="0.0"/>
+                </animation>
+                <animation begin="0.13" end="0.17">
+                    <param_begin param1="0.0" param2="1" param3="0.0"/>
+                    <param_end   param1="0.0" param2="1" param3="0.0"/>
+                </animation>
+                <animation begin="0.17" end="0.30">
+                    <param_begin param1="0.0" param2="0" param3="0.0"/>
+                    <param_end   param1="0.0" param2="0" param3="1.0"/>
+                </animation>
             </action>
         </transition>
     </inputGroup>

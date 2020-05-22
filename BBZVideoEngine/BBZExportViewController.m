@@ -50,8 +50,9 @@
     [videoModel addFilterGroup:path];
     
     path = [[NSBundle mainBundle] pathForResource:@"IMG_7305" ofType:@"HEIC" inDirectory:@"Resource"];
-    BBZImageAsset *imageAsset = [BBZImageAsset assetWithFilePath:path];
-    videoModel.bgImageAsset = imageAsset;
+    NSData *data = [NSData dataWithContentsOfFile:path];
+    UIImage *bgImage = [UIImage imageWithData:data];
+    videoModel.bgImage = bgImage;
     
     BBZExportTask *task = [BBZExportTask taskWithModel:videoModel];
     [task start];

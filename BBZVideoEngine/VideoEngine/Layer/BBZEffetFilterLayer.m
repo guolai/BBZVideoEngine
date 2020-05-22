@@ -50,7 +50,7 @@
                                  startTime:(NSUInteger)startTime{
     BBZActionTree *effectTree = [BBZActionTree createActionWithBeginTime:startTime endTime:startTime+duration];
     for (BBZNode *node in filterNode.actions) {
-        BBZFilterAction *filterAction = [[BBZFilterAction alloc] initWithNode:node];
+        BBZVistualFilterAction *filterAction = [[BBZVistualFilterAction alloc] initWithNode:node];
         filterAction.startTime = startTime + node.begin * BBZVideoDurationScale;
         filterAction.duration = MIN(duration, (node.end - node.begin) * node.repeat * BBZVideoDurationScale);
         [effectTree addAction:filterAction];

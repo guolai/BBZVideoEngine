@@ -180,7 +180,7 @@
                                   startTime:(NSUInteger)startTime{
     BBZActionTree *spliceTree = [BBZActionTree createActionWithBeginTime:startTime endTime:startTime+duration];
     for (BBZNode *node in spliceNode.actions) {
-        BBZFilterAction *filterAction = [[BBZFilterAction alloc] initWithNode:node];
+        BBZVistualFilterAction *filterAction = [[BBZVistualFilterAction alloc] initWithNode:node];
         filterAction.startTime = startTime + node.begin * BBZVideoDurationScale;
         filterAction.duration = MIN(duration, (node.end - node.begin) * node.repeat * BBZVideoDurationScale);
         [spliceTree addAction:filterAction];
@@ -194,7 +194,7 @@
                                  startTime:(NSUInteger)startTime{
     BBZActionTree *inputTree = [BBZActionTree createActionWithBeginTime:startTime endTime:startTime+duration];
     for (BBZNode *node in inputNode.actions) {
-        BBZFilterAction *filterAction = [[BBZFilterAction alloc] initWithNode:node];
+        BBZVistualFilterAction *filterAction = [[BBZVistualFilterAction alloc] initWithNode:node];
         filterAction.startTime = startTime + node.begin * BBZVideoDurationScale;
         filterAction.duration = MIN(duration, (node.end - node.begin) * node.repeat * BBZVideoDurationScale);
         [inputTree addAction:filterAction];
