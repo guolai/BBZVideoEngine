@@ -62,6 +62,7 @@
         self.fShader = [dic stringValueForKey:@"fShader" default:nil];
         self.vShader = [dic stringValueForKey:@"vShader" default:nil];
         self.scale_mode = [dic stringValueForKey:@"scale_mode" default:nil];
+        self.repeat = [dic intValueForKey:@"repeat" default:1];
         id animationObj = [dic objectForKey:@"animation"];
         NSMutableArray *array = [NSMutableArray array];
         if ([animationObj isKindOfClass:[NSDictionary class]]) {

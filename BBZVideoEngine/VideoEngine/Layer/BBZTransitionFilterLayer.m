@@ -72,6 +72,8 @@
         [retArray addObject:transitionTree];
         beforeTree = spliceTree;
         builder.startTime += (beforeTree.endTime - beforeTree.beginTime);
+        builder.groupIndex++;
+        builder.assetIndex++;
     }
     
     builder.groupActions = retArray;
@@ -87,8 +89,8 @@
     BBZActionTree *inputTree = [BBZActionTree createActionWithBeginTime:startTime endTime:startTime+duration];
     for (BBZNode *node in inputNode.actions) {
         BBZFilterAction *filterAction = [[BBZFilterAction alloc] initWithNode:node];
-        filterAction.startTime = startTime;
-        filterAction.duration = duration;
+        filterAction.startTime = startTime + node.begin * BBZVideoDurationScale;
+        filterAction.duration = MIN(duration, (node.end - node.begin) * node.repeat * BBZVideoDurationScale);
         [inputTree addAction:filterAction];
     }
     if(inputTree.actions.count == 0) {
@@ -104,8 +106,8 @@
     BBZActionTree *transitionTree = [BBZActionTree createActionWithBeginTime:startTime endTime:startTime+duration];
     for (BBZNode *node in transitionNode.actions) {
         BBZFilterAction *filterAction = [[BBZFilterAction alloc] initWithNode:node];
-        filterAction.startTime = startTime;
-        filterAction.duration = duration;
+        filterAction.startTime = startTime + node.begin * BBZVideoDurationScale;
+        filterAction.duration = MIN(duration, (node.end - node.begin) * node.repeat * BBZVideoDurationScale);
         [transitionTree addAction:filterAction];
     }
     NSAssert(transitionTree.actions.count > 0, @"transitionTree action cannot be nil");

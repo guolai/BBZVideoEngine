@@ -12,10 +12,10 @@
 @implementation BBZFilterNode
 -(instancetype)initWithDictionary:(NSDictionary *)dic {
     if (self = [super init]) {
-        self.timestamp = [dic floatValueForKey:@"timestamp" default:0.0];
+        self.begin = [dic floatValueForKey:@"begin" default:0.0];
         self.duration = [dic floatValueForKey:@"duration" default:0.0];
-        self.index = [dic intValueForKey:@"" default:0];
-        self.repeat = [dic intValueForKey:@"duration" default:0];
+        self.index = [dic intValueForKey:@"index" default:0];
+//        self.repeat = [dic intValueForKey:@"repeat" default:1];
         id Obj = [dic objectForKey:@"action"];
         NSMutableArray *array = [NSMutableArray array];
         if ([Obj isKindOfClass:[NSDictionary class]]) {
@@ -30,6 +30,11 @@
         self.actions = array;
     }
     return self;
+}
+
+
+- (BOOL)bPlayFromEnd {
+    return self.begin < 0.0;
 }
 
 @end

@@ -17,13 +17,14 @@
  4.最后一段才出现 片尾
  
  timestamp 相对时间
- <filter index="0" timestamp="0.00"  duration="100.0" repeat="1">
+ <filter index="0" begin="0.00"  duration="100.0" repeat="1">
  */
 @interface BBZFilterNode : NSObject
-@property (nonatomic, assign) CGFloat timestamp;
+@property (nonatomic, assign) CGFloat begin;
 @property (nonatomic, assign) CGFloat duration;
 @property (nonatomic, assign) NSInteger index;
-@property (nonatomic, assign) NSInteger repeat;
+@property (nonatomic, assign, readonly) BOOL bPlayFromEnd;
+//@property (nonatomic, assign) NSInteger repeat;
 @property (nonatomic, strong) NSArray<BBZNode *> *actions;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dic;

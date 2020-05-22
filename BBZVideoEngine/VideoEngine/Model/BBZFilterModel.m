@@ -51,7 +51,7 @@
     NSData *data = [NSData  dataWithContentsOfFile:strFilterFile];
     NSDictionary *dic = [NSDictionary dictionaryWithXML:data];
     if(dic) {
-        self.duration = [[dic objectForKey:@"duration"] floatValue];
+//        self.duration = [[dic objectForKey:@"duration"] floatValue];
         self.minVersion = [[dic objectForKey:@"miniVersion"] floatValue];
         id inputGroup = dic[@"filter"];
         if ([inputGroup isKindOfClass:[NSArray class]]) {

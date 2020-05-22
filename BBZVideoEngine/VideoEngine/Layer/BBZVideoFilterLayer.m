@@ -181,8 +181,8 @@
     BBZActionTree *spliceTree = [BBZActionTree createActionWithBeginTime:startTime endTime:startTime+duration];
     for (BBZNode *node in spliceNode.actions) {
         BBZFilterAction *filterAction = [[BBZFilterAction alloc] initWithNode:node];
-        filterAction.startTime = startTime;
-        filterAction.duration = duration;
+        filterAction.startTime = startTime + node.begin * BBZVideoDurationScale;
+        filterAction.duration = MIN(duration, (node.end - node.begin) * node.repeat * BBZVideoDurationScale);
         [spliceTree addAction:filterAction];
     }
     NSAssert(spliceTree.actions.count > 0, @"splieTree action cannot be nil");
@@ -195,8 +195,8 @@
     BBZActionTree *inputTree = [BBZActionTree createActionWithBeginTime:startTime endTime:startTime+duration];
     for (BBZNode *node in inputNode.actions) {
         BBZFilterAction *filterAction = [[BBZFilterAction alloc] initWithNode:node];
-        filterAction.startTime = startTime;
-        filterAction.duration = duration;
+        filterAction.startTime = startTime + node.begin * BBZVideoDurationScale;
+        filterAction.duration = MIN(duration, (node.end - node.begin) * node.repeat * BBZVideoDurationScale);
         [inputTree addAction:filterAction];
     }
     if(inputTree.actions.count == 0) {
