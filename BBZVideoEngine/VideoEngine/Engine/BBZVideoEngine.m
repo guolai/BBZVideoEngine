@@ -138,28 +138,52 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
             NSAssert(endTime == 0, @"first time should be Zero");
             continue;
         }
-        BBZActionTree *buildrTree = nil;
-        NSArray *videoLayerArray = [self actionTreeFromLayer:self.filterLayers[@(BBZFilterLayerTypeVideo)] startTime:startTime endTime:endTime];
-        NSArray *transitionLayerArray = [self actionTreeFromLayer:self.filterLayers[@(BBZFilterLayerTypeTransition)] startTime:startTime endTime:endTime];
-        NSArray *maskLayerArray = [self actionTreeFromLayer:self.filterLayers[@(BBZFilterLayerTypeMask)] startTime:startTime endTime:endTime];
-        NSArray *outputLayerArray = [self actionTreeFromLayer:self.filterLayers[@(BBZFilterLayerTypeOutput)] startTime:startTime endTime:endTime];
-        
-        BOOL bHaveTranstion = NO;
-        if(transitionLayerArray.count > 0 ) {
-            BBZActionTree *trantionTree = [transitionLayerArray objectAtIndex:0];
-            if(transitionLayerArray.count > 1 || trantionTree.subTrees.count != videoLayerArray.count) {
-                BBZERROR(@"action tree error");
-                NSAssert(false, @"action tree error");
-            } else {
-                bHaveTranstion = YES;
-                
+        BBZActionTree *builderTree = [self builderChainFromLayer:BBZFilterLayerTypeVideo toLayer:BBZFilterLayerTypeTransition startTime:startTime endTime:endTime];
+        for (int layerIndex = BBZFilterLayerTypeEffect; layerIndex < BBZFilterLayerTypeMax; layerIndex++) {
+            if(layerIndex == BBZFilterLayerTypeAudio) {
+                continue;
             }
-            
+            builderTree = [self builderChainFrom:builderTree layer:(BBZFilterLayerType)layerIndex startTime:startTime endTime:endTime];
         }
-        
-        
+        [self.timeSegments setObject:builderTree forKey:@(endTime)];
     }
-    //进行滤镜链合并 , 创建实例实例filterAction;
+}
+
+- (BBZActionTree *)builderChainFrom:(BBZActionTree *)fromTree
+                              layer:(BBZFilterLayerType)layerType
+                          startTime:(NSUInteger)startTime
+                            endTime:(NSUInteger)endTime {
+    BBZActionTree *builderTree = nil;
+    NSArray *layerArray = [self actionTreeFromLayer:self.filterLayers[@(layerType)] startTime:startTime endTime:endTime];
+    if(layerArray.count > 0) {
+        builderTree = [layerArray objectAtIndex:0];
+        [builderTree addSubTree:fromTree];
+    } else  {
+        builderTree = fromTree;
+    }
+    return builderTree;
+}
+
+- (BBZActionTree *)builderChainFromLayer:(BBZFilterLayerType )fromLayer
+                              toLayer:(BBZFilterLayerType)toLayer
+                          startTime:(NSUInteger)startTime
+                            endTime:(NSUInteger)endTime {
+    BBZActionTree *builderTree = nil;
+    NSArray *fromLayerArray = [self actionTreeFromLayer:self.filterLayers[@(fromLayer)] startTime:startTime endTime:endTime];
+    NSArray *toLayerArray = [self actionTreeFromLayer:self.filterLayers[@(toLayer)] startTime:startTime endTime:endTime];
+    if(toLayerArray.count > 0 ) {
+        builderTree = [toLayerArray objectAtIndex:0];
+        if(toLayerArray.count > 1 || builderTree.subTrees.count != fromLayerArray.count) {
+            BBZERROR(@"action tree error");
+            NSAssert(false, @"action tree error");
+        } else {
+            [[builderTree subTreeAtIndex:0] addSubTree:[fromLayerArray objectAtIndex:0]];
+            [[builderTree subTreeAtIndex:1] addSubTree:[fromLayerArray objectAtIndex:1]];
+        }
+    } else {
+        builderTree = (BBZActionTree *)[fromLayerArray objectAtIndex:0];
+    }
+    return builderTree;
 }
 
 - (NSArray *)actionTreeFromLayer:(BBZFilterLayer *)layer startTime:(NSUInteger)startTime endTime:(NSUInteger)endTime {
@@ -222,8 +246,10 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
 #pragma mark - BBZSegmentActionDelegate
 
 - (NSArray *)layerActionTreesBeforeTimePoint:(NSUInteger)timePoint {
-    
-    return nil;
+    //进行滤镜链合并 , 创建实例实例filterAction;
+    BBZActionTree *actonTree = [self.timeSegments objectForKey:@(timePoint)];
+    NSArray *array = [self.filterMixer combineFiltersFromActionTree:actonTree];
+    return array;
 }
 
 
