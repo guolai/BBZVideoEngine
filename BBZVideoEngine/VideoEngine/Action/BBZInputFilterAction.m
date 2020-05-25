@@ -38,7 +38,7 @@
     runAsynchronouslyOnVideoProcessingQueue(^{
         [self.multiFilter removeAllCacheFrameBuffer];
         if(self.firstInputSource) {
-            BBZOutputSourceParam *outputParam = [self.firstInputSource outputSourceAtTime:time];
+            BBZInputSourceParam *outputParam = [self.firstInputSource inputSourceAtTime:time];
             for (GPUImageFramebuffer *fb in outputParam.arrayFrameBuffer) {
                 [self.multiFilter addFrameBuffer:fb];
             }
@@ -47,7 +47,7 @@
             }
         }
         if(self.secondInputSource) {
-            BBZOutputSourceParam *outputParam = [self.secondInputSource outputSourceAtTime:time];
+            BBZInputSourceParam *outputParam = [self.secondInputSource inputSourceAtTime:time];
             for (GPUImageFramebuffer *fb in outputParam.arrayFrameBuffer) {
                 [self.multiFilter addFrameBuffer:fb];
             }

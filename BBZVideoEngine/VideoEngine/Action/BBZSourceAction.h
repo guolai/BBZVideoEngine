@@ -12,20 +12,20 @@
 #import "GPUImageFramebuffer.h"
 #import "GPUImageFilter.h"
 
-@interface BBZOutputSourceParam : NSObject
+@interface BBZInputSourceParam : NSObject
 @property (nonatomic, strong) NSArray *arrayFrameBuffer;
 @property (nonatomic, assign) BOOL bVideoSource;
 @property (nonatomic, assign) GPUMatrix3x3 mat33ParamValue;
 @property (nonatomic, assign) GPUVector4 vector4ParamValue;
 @end
 
-@protocol BBZOutputSourceProtocol <NSObject>
+@protocol BBZInputSourceProtocol <NSObject>
 
-- (BBZOutputSourceParam *)outputSourceAtTime:(CMTime)time;
+- (BBZInputSourceParam *)inputSourceAtTime:(CMTime)time;
 
 @end
 
-@interface BBZSourceAction : BBZAction<BBZOutputSourceProtocol>
+@interface BBZSourceAction : BBZAction<BBZInputSourceProtocol>
 
 @property (nonatomic, strong) BBZBaseAsset *asset;
 @property (nonatomic, assign) CGSize renderSize;

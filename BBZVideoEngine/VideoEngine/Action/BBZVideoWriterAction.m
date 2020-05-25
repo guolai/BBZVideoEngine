@@ -105,6 +105,7 @@
     [self.writer writeSyncVideoPixelBuffer:outputFramebuffer.pixelBuffer withPresentationTime:time];
 }
 
+
 - (void)didWriteVideoFrame {
     if([self.writerControl respondsToSelector:@selector(didWriteVideoFrame)]) {
         [self.writerControl didWriteVideoFrame];

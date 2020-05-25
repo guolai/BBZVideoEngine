@@ -8,7 +8,12 @@
 
 #import "BBZAction.h"
 #import "BBZBaseAsset.h"
+#import "GPUImageFramebuffer.h"
 
-@interface BBZOutputAction : BBZAction
+//@protocol BBZOutputSourceProtocol <NSObject>
+//- (void)outputFrameBuffer:(GPUImageFramebuffer *)outputFramebuffer atTime:(CMTime)time;
+//@end
+
+@interface BBZOutputAction : BBZAction /*<BBZOutputSourceProtocol>*/
 @end
 

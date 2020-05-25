@@ -9,5 +9,7 @@
 #import "BBZOutputAction.h"
 
 @implementation BBZOutputAction
-
+//- (void)outputFrameBuffer:(GPUImageFramebuffer *)outputFramebuffer atTime:(CMTime)time {
+//    
+//}
 @end

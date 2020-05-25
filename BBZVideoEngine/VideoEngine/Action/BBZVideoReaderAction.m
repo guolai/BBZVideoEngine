@@ -15,7 +15,7 @@
 @interface BBZVideoReaderAction ()
 @property (nonatomic, strong) BBZAssetReader *reader;
 @property (nonatomic, strong) BBZAssetReaderSequentialAccessVideoOutput *videoOutPut;
-@property (nonatomic, strong) BBZOutputSourceParam *outputSourceParam;
+@property (nonatomic, strong) BBZInputSourceParam *inputSourceParam;
 @end
 
 
@@ -44,14 +44,14 @@
     CMTime lastSamplePresentationTime = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
     lastSamplePresentationTime = CMTimeSubtract(lastSamplePresentationTime, self.reader.timeRange.start);
     NSTimeInterval nDiff = CMTimeGetSeconds(CMTimeSubtract(lastSamplePresentationTime, time));
-    if(nDiff > 0.001 && self.outputSourceParam) {
+    if(nDiff > 0.001 && self.inputSourceParam) {
         BBZINFO(@"use last samplebuffer");
         return;
     }
-    if(!self.outputSourceParam) {
+    if(!self.inputSourceParam) {
         sampleBuffer = [self.videoOutPut nextSampleBuffer];
-        self.outputSourceParam = [[BBZOutputSourceParam alloc] init];
-        self.outputSourceParam.bVideoSource = YES;
+        self.inputSourceParam = [[BBZInputSourceParam alloc] init];
+        self.inputSourceParam.bVideoSource = YES;
     }
    
     GLfloat *preferredConversion;
@@ -69,12 +69,12 @@
     }
     NSArray *array = [GPUImageFramebuffer BBZ_YUVFrameBufferWithCVPixelBuffer:movieFrame];
     NSAssert(array.count == 2, @"error");
-    self.outputSourceParam.mat33ParamValue = *((GPUMatrix3x3 *)preferredConversion);
+    self.inputSourceParam.mat33ParamValue = *((GPUMatrix3x3 *)preferredConversion);
 }
 
 
-- (BBZOutputSourceParam *)outputSourceAtTime:(CMTime)time {
-    return self.outputSourceParam;
+- (BBZInputSourceParam *)inputSourceAtTime:(CMTime)time {
+    return self.inputSourceParam;
 }
 
 - (void)lock {

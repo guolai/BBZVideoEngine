@@ -8,7 +8,7 @@
 
 #import "BBZSourceAction.h"
 
-@implementation BBZOutputSourceParam
+@implementation BBZInputSourceParam
 @end
 
 
@@ -23,7 +23,7 @@
     return self;
 }
 
-- (BBZOutputSourceParam *)outputSourceAtTime:(CMTime)time {
+- (BBZInputSourceParam *)inputSourceAtTime:(CMTime)time {
     return nil;
 }
 

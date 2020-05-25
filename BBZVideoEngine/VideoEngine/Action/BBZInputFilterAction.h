@@ -10,10 +10,10 @@
 #import "BBZSourceAction.h"
 
 @interface BBZInputFilterAction : BBZFilterAction
-@property (nonatomic, weak) id<BBZOutputSourceProtocol> firstInputSource;
-@property (nonatomic, weak) id<BBZOutputSourceProtocol> secondInputSource;
-//@property (nonatomic, weak) id<BBZOutputSourceProtocol> thirdInputSource;
-//@property (nonatomic, weak) id<BBZOutputSourceProtocol> fourthInputSource;
+@property (nonatomic, weak) id<BBZInputSourceProtocol> firstInputSource;
+@property (nonatomic, weak) id<BBZInputSourceProtocol> secondInputSource;
+//@property (nonatomic, weak) id<BBZInputSourceProtocol> thirdInputSource;
+//@property (nonatomic, weak) id<BBZInputSourceProtocol> fourthInputSource;
 
 - (void)processAVSourceAtTime:(CMTime)time;
 
