@@ -7,6 +7,7 @@
 //
 
 #import "BBZFilterMixer.h"
+#import "BBZFilterAction.h"
 
 @interface BBZFilterMixer ()
 
@@ -39,8 +40,24 @@
 }
 
 - (NSArray *)combineFiltersActionNodeTree:(BBZActionTree *)actionTree {
+    BBZAction *headAction = nil;
+    BBZAction *tailAction = nil;
+    NSMutableArray *array = [NSMutableArray array];
+    for (BBZAction *action in actionTree.actions) {
+        BBZAction *tmpAction = action;
+        if([tmpAction isKindOfClass:[BBZVistualFilterAction class]]) {
+            tmpAction = [BBZFilterAction createWithVistualAction:(BBZVistualFilterAction *)tmpAction];
+        }
+        if(!headAction) {
+            headAction = tmpAction;
+        } else {
+//            headAction.
+        }
+        tailAction = tmpAction;
+    }
     
-    return nil;
+    
+    return array;
 }
 
 - (NSArray *)combineFiltersActionFullTrees:(BBZActionTree *)actionTree {

@@ -10,7 +10,7 @@
 
 
 @interface BBZVideoSourceAction : BBZSourceAction
-- (CMSampleBufferRef)samplebufferAtTime:(CMTime)time;
+
 @end
 
 

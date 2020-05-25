@@ -8,6 +8,10 @@
 
 #import "BBZSourceAction.h"
 
+@implementation BBZOutputSourceParam
+@end
+
+
 @implementation BBZSourceAction
 @synthesize asset = _asset;
 
@@ -19,7 +23,17 @@
     return self;
 }
 
+- (BBZOutputSourceParam *)outputSourceAtTime:(CMTime)time {
+    return nil;
+}
 
+- (void)updateWithTime:(CMTime)time {
+    
+}
+
+- (void)newFrameAtTime:(CMTime)time {
+    
+}
 
 
 @end

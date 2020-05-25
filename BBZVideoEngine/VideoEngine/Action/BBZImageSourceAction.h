@@ -10,5 +10,5 @@
 
 
 @interface BBZImageSourceAction : BBZSourceAction
-- (GPUImageFramebuffer *)frameBufferAtTime:(CMTime)time;
+
 @end

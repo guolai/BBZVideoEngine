@@ -47,7 +47,7 @@
 
 - (BOOL)isValidTree;
 - (BOOL)shouldSplit;
-- (BOOL)isSingleChain;
+- (BOOL)isSingleChain;//单链判断
 
 
 @end

@@ -31,3 +31,4 @@ typedef NS_ENUM(NSInteger, BBZEngineScheduleMode) {
 - (void)newFrameAtTime:(CMTime)time;
 
 @end
+

@@ -9,10 +9,13 @@
 #import "BBZVideoReaderAction.h"
 #import "BBZAssetReader.h"
 #import "BBZVideoAsset.h"
+#import "GPUImageColorConversion.h"
+#import "GPUImageFramebuffer+BBZ.h"
 
 @interface BBZVideoReaderAction ()
 @property (nonatomic, strong) BBZAssetReader *reader;
 @property (nonatomic, strong) BBZAssetReaderSequentialAccessVideoOutput *videoOutPut;
+@property (nonatomic, strong) BBZOutputSourceParam *outputSourceParam;
 @end
 
 
@@ -34,7 +37,44 @@
 }
 
 - (void)newFrameAtTime:(CMTime)time {
-    
+    CMSampleBufferRef sampleBuffer = self.videoOutPut.currentSampleBuffer;
+    if(!sampleBuffer) {
+        sampleBuffer = [self.videoOutPut nextSampleBuffer];
+    }
+    CMTime lastSamplePresentationTime = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
+    lastSamplePresentationTime = CMTimeSubtract(lastSamplePresentationTime, self.reader.timeRange.start);
+    NSTimeInterval nDiff = CMTimeGetSeconds(CMTimeSubtract(lastSamplePresentationTime, time));
+    if(nDiff > 0.001 && self.outputSourceParam) {
+        BBZINFO(@"use last samplebuffer");
+        return;
+    }
+    if(!self.outputSourceParam) {
+        sampleBuffer = [self.videoOutPut nextSampleBuffer];
+        self.outputSourceParam = [[BBZOutputSourceParam alloc] init];
+        self.outputSourceParam.bVideoSource = YES;
+    }
+   
+    GLfloat *preferredConversion;
+    CVPixelBufferRef movieFrame = (CVPixelBufferRef)CMSampleBufferGetImageBuffer(sampleBuffer);
+    CFTypeRef colorAttachments = CVBufferGetAttachment(movieFrame, kCVImageBufferYCbCrMatrixKey, NULL);
+    if (colorAttachments != NULL) {
+        if(CFStringCompare(colorAttachments, kCVImageBufferYCbCrMatrix_ITU_R_601_4, 0) == kCFCompareEqualTo) {
+            preferredConversion = kColorConversion601FullRange;
+        } else {
+            preferredConversion = kColorConversion709;
+        }
+    } else {
+        
+        preferredConversion = kColorConversion601FullRange;
+    }
+    NSArray *array = [GPUImageFramebuffer BBZ_YUVFrameBufferWithCVPixelBuffer:movieFrame];
+    NSAssert(array.count == 2, @"error");
+    self.outputSourceParam.mat33ParamValue = *((GPUMatrix3x3 *)preferredConversion);
+}
+
+
+- (BBZOutputSourceParam *)outputSourceAtTime:(CMTime)time {
+    return self.outputSourceParam;
 }
 
 - (void)lock {

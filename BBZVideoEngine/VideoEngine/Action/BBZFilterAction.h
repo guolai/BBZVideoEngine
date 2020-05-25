@@ -9,7 +9,14 @@
 #import "BBZVistualFilterAction.h"
 #import "BBZMultiImageFilter.h"
 
-@interface BBZFilterAction : BBZVistualFilterAction
-@property (nonatomic, strong) BBZMultiImageFilter *filter;
+@interface BBZFilterAction : BBZAction
+@property (nonatomic, strong, readonly) GPUImageFilter *filter;
+
++ (BBZFilterAction *)createWithVistualAction:(BBZVistualFilterAction *)vistualAction;
+
+- (void) addVistualAction:(BBZVistualFilterAction *)vistualAction;
+
+- (void)createImageFilter;
+
 @end
 

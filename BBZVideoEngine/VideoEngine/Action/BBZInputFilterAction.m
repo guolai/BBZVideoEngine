@@ -10,11 +10,28 @@
 #import "BBZVideoInputFilter.h"
 
 @interface BBZInputFilterAction ()
-@property (nonatomic, strong) BBZVideoInputFilter *filter;
-
+@property (nonatomic, strong) BBZMultiImageFilter *multiFilter;
 @end
 
 
 @implementation BBZInputFilterAction
+
+- (void)createImageFilter {
+    self.multiFilter = [[BBZMultiImageFilter alloc] init];
+}
+
+- (BBZMultiImageFilter *)filter {
+    return self.multiFilter;
+}
+
+
+- (void)updateWithTime:(CMTime)time {
+    
+}
+
+- (void)newFrameAtTime:(CMTime)time {
+    
+}
+
 
 @end

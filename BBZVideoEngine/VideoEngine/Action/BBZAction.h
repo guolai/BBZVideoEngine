@@ -15,6 +15,8 @@ extern const int BBZVideoDurationScale;
 extern const int BBZScheduleTimeScale;
 
 
+
+
 @interface BBZAction : NSObject <BBZPlayActionProtocol>
 @property (nonatomic, assign) NSUInteger startTime;
 @property (nonatomic, assign) NSUInteger duration;//单次时长，如果可以循环计算时长需要使用endtime - startTime

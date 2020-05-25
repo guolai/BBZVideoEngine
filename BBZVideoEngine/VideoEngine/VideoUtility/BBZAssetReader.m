@@ -193,7 +193,7 @@
 }
 
 - (NSDictionary *)defaultVideoOutputSettings {
-    return @{(id)kCVPixelBufferPixelFormatTypeKey: @(kCVPixelFormatType_32BGRA)};
+    return @{(id)kCVPixelBufferPixelFormatTypeKey: @(kCVPixelFormatType_420YpCbCr8BiPlanarFullRange)};
 }
 
 - (NSDictionary *)defaultAudioOutputSettings {

@@ -9,8 +9,6 @@
 #import "BBZVideoSourceAction.h"
 
 @implementation BBZVideoSourceAction
-- (CMSampleBufferRef)samplebufferAtTime:(CMTime)time {
-    return nil;
-}
+
 
 @end

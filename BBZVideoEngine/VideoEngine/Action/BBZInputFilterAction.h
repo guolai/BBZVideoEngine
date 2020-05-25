@@ -7,9 +7,14 @@
 //
 
 #import "BBZFilterAction.h"
+#import "BBZSourceAction.h"
 
-
-@interface BBZInputFilterAction : BBZFilterAction
+@interface BBZInputFilterAction : BBZAction
+@property (nonatomic, strong, readonly) GPUImageFilter *filter;
+@property (nonatomic, weak) id<BBZOutputSourceProtocol> firstInputSource;
+@property (nonatomic, weak) id<BBZOutputSourceProtocol> secondInputSource;
+//@property (nonatomic, weak) id<BBZOutputSourceProtocol> thirdInputSource;
+//@property (nonatomic, weak) id<BBZOutputSourceProtocol> fourthInputSource;
 
 @end
 
