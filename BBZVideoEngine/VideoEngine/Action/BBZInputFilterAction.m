@@ -16,6 +16,7 @@
 
 @implementation BBZInputFilterAction
 
+
 - (void)createImageFilter {
     self.multiFilter = [[BBZMultiImageFilter alloc] init];
 }
@@ -25,12 +26,44 @@
 }
 
 
-- (void)updateWithTime:(CMTime)time {
-    
+//- (void)updateWithTime:(CMTime)time {
+//
+//}
+//
+//- (void)newFrameAtTime:(CMTime)time {
+//
+//}
+
+- (void)processAVSourceAtTime:(CMTime)time {
+    runAsynchronouslyOnVideoProcessingQueue(^{
+        [self.multiFilter removeAllCacheFrameBuffer];
+        if(self.firstInputSource) {
+            BBZOutputSourceParam *outputParam = [self.firstInputSource outputSourceAtTime:time];
+            for (GPUImageFramebuffer *fb in outputParam.arrayFrameBuffer) {
+                [self.multiFilter addFrameBuffer:fb];
+            }
+            if(outputParam.bVideoSource) {
+                self.multiFilter.mat33ParamValue = outputParam.mat33ParamValue;
+            }
+        }
+        if(self.secondInputSource) {
+            BBZOutputSourceParam *outputParam = [self.secondInputSource outputSourceAtTime:time];
+            for (GPUImageFramebuffer *fb in outputParam.arrayFrameBuffer) {
+                [self.multiFilter addFrameBuffer:fb];
+            }
+            if(outputParam.bVideoSource) {
+                self.multiFilter.mat33ParamValue = outputParam.mat33ParamValue;
+            }
+        }
+        [self.multiFilter newFrameReadyAtTime:time atIndex:0];
+    });
 }
 
-- (void)newFrameAtTime:(CMTime)time {
-    
+- (void)destroySomething {
+    runSynchronouslyOnVideoProcessingQueue(^{
+        [self.multiFilter removeAllCacheFrameBuffer];
+        self.multiFilter = nil;
+    });
 }
 
 

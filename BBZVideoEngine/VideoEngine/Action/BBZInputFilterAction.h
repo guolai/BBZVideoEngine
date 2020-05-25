@@ -9,12 +9,13 @@
 #import "BBZFilterAction.h"
 #import "BBZSourceAction.h"
 
-@interface BBZInputFilterAction : BBZAction
-@property (nonatomic, strong, readonly) GPUImageFilter *filter;
+@interface BBZInputFilterAction : BBZFilterAction
 @property (nonatomic, weak) id<BBZOutputSourceProtocol> firstInputSource;
 @property (nonatomic, weak) id<BBZOutputSourceProtocol> secondInputSource;
 //@property (nonatomic, weak) id<BBZOutputSourceProtocol> thirdInputSource;
 //@property (nonatomic, weak) id<BBZOutputSourceProtocol> fourthInputSource;
+
+- (void)processAVSourceAtTime:(CMTime)time;
 
 @end
 
