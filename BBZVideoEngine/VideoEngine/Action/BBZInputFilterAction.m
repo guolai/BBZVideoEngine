@@ -21,6 +21,8 @@
     self.multiFilter = [[BBZMultiImageFilter alloc] init];
 }
 
+
+
 //- (void)updateWithTime:(CMTime)time {
 //
 //}

@@ -45,19 +45,21 @@
  */
 
 @interface BBZTransitionNode : NSObject
+@property (nonatomic, strong, readonly) NSString *filePath;
 @property (nonatomic, assign) double timestamp;
 @property (nonatomic, assign) double duration;
 @property (nonatomic, assign) NSInteger order;
 @property (nonatomic, assign) NSInteger repeat;
 @property (nonatomic, strong) NSArray<BBZNode *> *actions;
-- (instancetype)initWithDictionary:(NSDictionary *)dic;
+- (instancetype)initWithDictionary:(NSDictionary *)dic withFilePath:(NSString *)filePath;
 @end
 
 
 @interface BBZTransitionGroupNode : NSObject
+@property (nonatomic, strong, readonly) NSString *filePath;
 @property (nonatomic, assign) double duration;
 @property (nonatomic, assign) NSInteger order;
 @property (nonatomic, strong) NSArray<BBZInputNode *> *inputNodes;
 @property (nonatomic, strong) BBZTransitionNode *transitionNode;
-- (instancetype)initWithDictionary:(NSDictionary *)dic;
+- (instancetype)initWithDictionary:(NSDictionary *)dic withFilePath:(NSString *)filePath;
 @end

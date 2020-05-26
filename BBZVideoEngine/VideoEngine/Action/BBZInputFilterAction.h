@@ -10,6 +10,7 @@
 #import "BBZSourceAction.h"
 
 @interface BBZInputFilterAction : BBZFilterAction
+@property (nonatomic, assign) BOOL bRGBTexture;
 @property (nonatomic, weak) id<BBZInputSourceProtocol> firstInputSource;
 @property (nonatomic, weak) id<BBZInputSourceProtocol> secondInputSource;
 //@property (nonatomic, weak) id<BBZInputSourceProtocol> thirdInputSource;

@@ -10,8 +10,9 @@
 #import "NSDictionary+YYAdd.h"
 
 @implementation BBZFilterNode
--(instancetype)initWithDictionary:(NSDictionary *)dic {
+- (instancetype)initWithDictionary:(NSDictionary *)dic withFilePath:(NSString *)filePath {
     if (self = [super init]) {
+        _filePath = filePath;
         self.begin = [dic floatValueForKey:@"begin" default:0.0];
         self.duration = [dic floatValueForKey:@"duration" default:0.0];
         self.index = [dic intValueForKey:@"index" default:0];
@@ -19,11 +20,11 @@
         id Obj = [dic objectForKey:@"action"];
         NSMutableArray *array = [NSMutableArray array];
         if ([Obj isKindOfClass:[NSDictionary class]]) {
-            BBZNode *node = [[BBZNode alloc] initWithDictionary:Obj];
+            BBZNode *node = [[BBZNode alloc] initWithDictionary:Obj withFilePath:self.filePath];
             [array addObject:node];
         } else if ([Obj isKindOfClass:[NSArray class]]) {
             for (NSDictionary *subDic in Obj) {
-                BBZNode *node = [[BBZNode alloc] initWithDictionary:subDic];
+                BBZNode *node = [[BBZNode alloc] initWithDictionary:subDic withFilePath:self.filePath];
                 [array addObject:node];
             }
         }

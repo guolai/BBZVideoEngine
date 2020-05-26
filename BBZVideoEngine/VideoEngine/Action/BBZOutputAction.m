@@ -12,4 +12,13 @@
 //- (void)outputFrameBuffer:(GPUImageFramebuffer *)outputFramebuffer atTime:(CMTime)time {
 //    
 //}
+
+- (id)filter {
+    return nil;
+}
+
+- (void)connectToAction:(id<BBZActionChainProtocol>)toAction {
+    
+}
+
 @end

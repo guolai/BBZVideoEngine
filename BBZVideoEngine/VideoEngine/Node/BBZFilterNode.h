@@ -23,10 +23,11 @@
 @property (nonatomic, assign) CGFloat begin;
 @property (nonatomic, assign) CGFloat duration;
 @property (nonatomic, assign) NSInteger index;
+@property (nonatomic, strong, readonly) NSString *filePath;
 @property (nonatomic, assign, readonly) BOOL bPlayFromEnd;
 //@property (nonatomic, assign) NSInteger repeat;
 @property (nonatomic, strong) NSArray<BBZNode *> *actions;
 
-- (instancetype)initWithDictionary:(NSDictionary *)dic;
+- (instancetype)initWithDictionary:(NSDictionary *)dic withFilePath:(NSString *)filePath;
 
 @end

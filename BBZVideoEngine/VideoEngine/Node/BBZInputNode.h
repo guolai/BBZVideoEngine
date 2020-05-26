@@ -15,13 +15,14 @@
  */
 
 @interface BBZInputNode : NSObject
+@property (nonatomic, strong, readonly) NSString *filePath;
 @property (nonatomic, assign) NSInteger index;
 @property (nonatomic, assign) NSInteger playOrder;
 @property (nonatomic, assign) NSInteger assetOrder;
 @property (nonatomic, assign) CGFloat scale;
 @property (nonatomic, strong) NSArray<BBZNode *> *actions;
 
-- (instancetype)initWithDictionary:(NSDictionary *)dic;
+- (instancetype)initWithDictionary:(NSDictionary *)dic withFilePath:(NSString *)filePath;
 @end
 
 

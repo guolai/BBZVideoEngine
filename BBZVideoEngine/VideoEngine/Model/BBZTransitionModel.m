@@ -50,11 +50,11 @@
             id inputGroup = dic[@"inputGroup"];
             if ([inputGroup isKindOfClass:[NSArray class]]) {
                 for (NSDictionary *item in inputGroup) {
-                    BBZSpliceGroupNode *node = [[BBZSpliceGroupNode alloc] initWithDictionary:item];
+                    BBZSpliceGroupNode *node = [[BBZSpliceGroupNode alloc] initWithDictionary:item withFilePath:self.filePath];
                     [array addObject:node];
                 }
             } else if ([inputGroup isKindOfClass:[NSDictionary class]]) {
-                BBZSpliceGroupNode *node = [[BBZSpliceGroupNode alloc] initWithDictionary:inputGroup];
+                BBZSpliceGroupNode *node = [[BBZSpliceGroupNode alloc] initWithDictionary:inputGroup withFilePath:self.filePath];
                 [array addObject:node];
             }
             [array sortUsingComparator:^NSComparisonResult(BBZSpliceGroupNode *obj1, BBZSpliceGroupNode *obj2) {
@@ -76,11 +76,11 @@
             id inputGroup = dic[@"inputGroup"];
             if ([inputGroup isKindOfClass:[NSArray class]]) {
                 for (NSDictionary *item in inputGroup) {
-                    BBZTransitionGroupNode *node = [[BBZTransitionGroupNode alloc] initWithDictionary:item];
+                    BBZTransitionGroupNode *node = [[BBZTransitionGroupNode alloc] initWithDictionary:item withFilePath:self.filePath];
                     [array addObject:node];
                 }
             } else if ([inputGroup isKindOfClass:[NSDictionary class]]) {
-                BBZTransitionGroupNode *node = [[BBZTransitionGroupNode alloc] initWithDictionary:inputGroup];
+                BBZTransitionGroupNode *node = [[BBZTransitionGroupNode alloc] initWithDictionary:inputGroup withFilePath:self.filePath];
                 [array addObject:node];
             }
             [array sortUsingComparator:^NSComparisonResult(BBZTransitionGroupNode *obj1, BBZTransitionGroupNode *obj2) {

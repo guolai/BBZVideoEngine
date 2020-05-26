@@ -33,7 +33,6 @@
 /*
  <action begin="0.00" end="10.00" name="blend" blend_type="3" repeat="1" attenment="mask.mp4" order="1"/>
  <action begin="0.000" end="0.3" name="image" fragment_shader="heichang.glsl" animated="1">
- 
 */
 @property (nonatomic, assign) double begin;
 @property (nonatomic, assign) double end;
@@ -42,9 +41,12 @@
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *fShader;
 @property (nonatomic, strong) NSString *vShader;
+@property (nonatomic, strong, readonly) NSString *vShaderString;
+@property (nonatomic, strong, readonly) NSString *fShaderString;
 @property (nonatomic, strong) NSString *scale_mode;
+@property (nonatomic, strong, readonly) NSString *filePath;
 @property (nonatomic, strong) NSArray<BBZNodeAnimation *> *animations;
-- (instancetype)initWithDictionary:(NSDictionary *)dic;
+- (instancetype)initWithDictionary:(NSDictionary *)dic withFilePath:(NSString *)filePath;
 @end
 
 

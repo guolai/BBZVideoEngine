@@ -39,5 +39,13 @@
     
 }
 
+- (id)filter {
+    return nil;
+}
+
+- (void)connectToAction:(id<BBZActionChainProtocol>)toAction {
+    
+}
+
 
 @end

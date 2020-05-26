@@ -56,11 +56,11 @@
         id inputGroup = dic[@"filter"];
         if ([inputGroup isKindOfClass:[NSArray class]]) {
             for (NSDictionary *item in inputGroup) {
-                BBZFilterNode *node = [[BBZFilterNode alloc] initWithDictionary:item];
+                BBZFilterNode *node = [[BBZFilterNode alloc] initWithDictionary:item withFilePath:self.filePath];
                 [array addObject:node];
             }
         } else if ([inputGroup isKindOfClass:[NSDictionary class]]) {
-            BBZFilterNode *node = [[BBZFilterNode alloc] initWithDictionary:inputGroup];
+            BBZFilterNode *node = [[BBZFilterNode alloc] initWithDictionary:inputGroup withFilePath:self.filePath];
             [array addObject:node];
         }
         _filterGroups = array;

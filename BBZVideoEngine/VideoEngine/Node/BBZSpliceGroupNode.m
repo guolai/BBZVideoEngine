@@ -10,16 +10,17 @@
 #import "NSDictionary+YYAdd.h"
 
 @implementation BBZSpliceNode
--(instancetype)initWithDictionary:(NSDictionary *)dic {
+-(instancetype)initWithDictionary:(NSDictionary *)dic withFilePath:(NSString *)filePath {
     if (self = [super init]) {
+        _filePath = filePath;
         id Obj = [dic objectForKey:@"action"];
         NSMutableArray *array = [NSMutableArray array];
         if ([Obj isKindOfClass:[NSDictionary class]]) {
-            BBZNode *node = [[BBZNode alloc] initWithDictionary:Obj];
+            BBZNode *node = [[BBZNode alloc] initWithDictionary:Obj withFilePath:self.filePath];
             [array addObject:node];
         } else if ([Obj isKindOfClass:[NSArray class]]) {
             for (NSDictionary *subDic in Obj) {
-                BBZNode *node = [[BBZNode alloc] initWithDictionary:subDic];
+                BBZNode *node = [[BBZNode alloc] initWithDictionary:subDic withFilePath:self.filePath];
                 [array addObject:node];
             }
         }
@@ -35,13 +36,13 @@
 
 
 @implementation BBZSpliceGroupNode
--(instancetype)initWithDictionary:(NSDictionary *)dic {
+-(instancetype)initWithDictionary:(NSDictionary *)dic withFilePath:(NSString *)filePath {
     if (self = [super init]) {
         self.minDuration = [dic floatValueForKey:@"duration" default:0.0];
         self.order = [dic intValueForKey:@"order" default:0];
         id Obj = [dic objectForKey:@"splice"];
         if ([Obj isKindOfClass:[NSDictionary class]]) {
-            BBZSpliceNode *node = [[BBZSpliceNode alloc] initWithDictionary:Obj];
+            BBZSpliceNode *node = [[BBZSpliceNode alloc] initWithDictionary:Obj withFilePath:self.filePath];
             self.spliceNode = node;
         } else if ([Obj isKindOfClass:[NSArray class]]) {
             NSAssert(false, @"not support");
@@ -50,11 +51,11 @@
         Obj = [dic objectForKey:@"input"];
         NSMutableArray *array = [NSMutableArray array];
         if ([Obj isKindOfClass:[NSDictionary class]]) {
-            BBZInputNode *node = [[BBZInputNode alloc] initWithDictionary:Obj];
+            BBZInputNode *node = [[BBZInputNode alloc] initWithDictionary:Obj withFilePath:self.filePath];
             [array addObject:node];
         } else if ([Obj isKindOfClass:[NSArray class]]) {
             for (NSDictionary *subDic in Obj) {
-                BBZInputNode *node = [[BBZInputNode alloc] initWithDictionary:subDic];
+                BBZInputNode *node = [[BBZInputNode alloc] initWithDictionary:subDic withFilePath:self.filePath];
                 [array addObject:node];
             }
         }

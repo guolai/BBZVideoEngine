@@ -29,14 +29,16 @@
 */
 
 @interface BBZSpliceNode : NSObject
+@property (nonatomic, strong, readonly) NSString *filePath;
 @property (nonatomic, strong) NSArray<BBZNode *> *actions;
-- (instancetype)initWithDictionary:(NSDictionary *)dic;
+- (instancetype)initWithDictionary:(NSDictionary *)dic withFilePath:(NSString *)filePath;
 @end
 
 @interface BBZSpliceGroupNode : NSObject
+@property (nonatomic, strong, readonly) NSString *filePath;
 @property (nonatomic, assign) double minDuration;
 @property (nonatomic, assign) NSInteger order;
 @property (nonatomic, strong) NSArray<BBZInputNode *> *inputNodes;
 @property (nonatomic, strong) BBZSpliceNode *spliceNode;
-- (instancetype)initWithDictionary:(NSDictionary *)dic;
+- (instancetype)initWithDictionary:(NSDictionary *)dic withFilePath:(NSString *)filePath;
 @end

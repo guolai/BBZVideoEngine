@@ -53,8 +53,9 @@
 
 @implementation BBZNode
 
-- (instancetype)initWithDictionary:(NSDictionary *)dic {
+- (instancetype)initWithDictionary:(NSDictionary *)dic withFilePath:(NSString *)filePath {
     if (self = [super init]) {
+        _filePath = filePath;
         self.begin = [dic floatValueForKey:@"begin" default:0.0];
         self.end = [dic floatValueForKey:@"end" default:0.0];
         self.order = [dic intValueForKey:@"order" default:0];
@@ -78,6 +79,31 @@
     }
     return self;
 }
+
+- (NSString *)vShaderString {
+    NSError *error;
+    NSString *shaderFilePath = [NSString stringWithFormat:@"%@/%@", self.filePath, self.vShader];
+    NSString *shaderString = [NSString stringWithContentsOfFile:shaderFilePath encoding:NSUTF8StringEncoding error:&error];
+    if (!shaderString)
+    {
+        NSLog(@"Error: loading shader file:%@  %@",shaderFilePath, error.localizedDescription);
+        return nil;
+    }
+    return shaderString;
+}
+
+- (NSString *)fShaderString {
+    NSError *error;
+    NSString *shaderFilePath = [NSString stringWithFormat:@"%@/%@", self.filePath, self.fShader];
+    NSString *shaderString = [NSString stringWithContentsOfFile:shaderFilePath encoding:NSUTF8StringEncoding error:&error];
+    if (!shaderString)
+    {
+        NSLog(@"Error: loading shader file:%@  %@",shaderFilePath, error.localizedDescription);
+        return nil;
+    }
+    return shaderString;
+}
+
 
 @end
 

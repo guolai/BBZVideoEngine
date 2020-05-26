@@ -14,8 +14,9 @@
 //@property (nonatomic, assign) NSInteger order;
 //@property (nonatomic, assign) NSInteger repeat;
 @implementation BBZTransitionNode
--(instancetype)initWithDictionary:(NSDictionary *)dic {
+-(instancetype)initWithDictionary:(NSDictionary *)dic withFilePath:(NSString *)filePath {
     if (self = [super init]) {
+        _filePath = filePath;
         self.timestamp = [dic floatValueForKey:@"timestamp" default:0.0];
         self.duration = [dic floatValueForKey:@"duration" default:0.0];
         self.order = [dic intValueForKey:@"order" default:0];
@@ -23,11 +24,11 @@
         id Obj = [dic objectForKey:@"action"];
         NSMutableArray *array = [NSMutableArray array];
         if ([Obj isKindOfClass:[NSDictionary class]]) {
-            BBZNode *node = [[BBZNode alloc] initWithDictionary:Obj];
+            BBZNode *node = [[BBZNode alloc] initWithDictionary:Obj withFilePath:self.filePath];
             [array addObject:node];
         } else if ([Obj isKindOfClass:[NSArray class]]) {
             for (NSDictionary *subDic in Obj) {
-                BBZNode *node = [[BBZNode alloc] initWithDictionary:subDic];
+                BBZNode *node = [[BBZNode alloc] initWithDictionary:subDic withFilePath:self.filePath];
                 [array addObject:node];
             }
         }
@@ -43,13 +44,14 @@
 
 
 @implementation BBZTransitionGroupNode
--(instancetype)initWithDictionary:(NSDictionary *)dic {
+-(instancetype)initWithDictionary:(NSDictionary *)dic  withFilePath:(NSString *)filePath{
     if (self = [super init]) {
+        _filePath = filePath;
         self.duration = [dic floatValueForKey:@"duration" default:0.0];
         self.order = [dic intValueForKey:@"order" default:0];
         id Obj = [dic objectForKey:@"splice"];
         if ([Obj isKindOfClass:[NSDictionary class]]) {
-            BBZTransitionNode *node = [[BBZTransitionNode alloc] initWithDictionary:Obj];
+            BBZTransitionNode *node = [[BBZTransitionNode alloc] initWithDictionary:Obj withFilePath:self.filePath];
             self.transitionNode = node;
         } else if ([Obj isKindOfClass:[NSArray class]]) {
             NSAssert(false, @"not support");
@@ -58,11 +60,11 @@
         Obj = [dic objectForKey:@"input"];
         NSMutableArray *array = [NSMutableArray array];
         if ([Obj isKindOfClass:[NSDictionary class]]) {
-            BBZInputNode *node = [[BBZInputNode alloc] initWithDictionary:Obj];
+            BBZInputNode *node = [[BBZInputNode alloc] initWithDictionary:Obj withFilePath:self.filePath];
             [array addObject:node];
         } else if ([Obj isKindOfClass:[NSArray class]]) {
             for (NSDictionary *subDic in Obj) {
-                BBZInputNode *node = [[BBZInputNode alloc] initWithDictionary:subDic];
+                BBZInputNode *node = [[BBZInputNode alloc] initWithDictionary:subDic withFilePath:self.filePath];
                 [array addObject:node];
             }
         }
