@@ -39,6 +39,8 @@ extern const int BBZScheduleTimeScale;
 
 - (NSUInteger)endTime;
 
+- (void)removeConnects;
+
 @end
 
 

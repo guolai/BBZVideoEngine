@@ -7,6 +7,7 @@
 //
 
 #import "BBZFilterAction.h"
+#import "BBZMultiImageFilter.h"
 
 @interface BBZFilterAction ()
 @property (nonatomic, strong) BBZMultiImageFilter *multiFilter;
@@ -23,7 +24,10 @@
 }
 
 + (BBZFilterAction *)createWithVistualAction:(BBZVistualFilterAction *)vistualAction {
-    BBZFilterAction *fitlerAction = [[BBZFilterAction alloc] init];
+    if(vistualAction.filterAction) {
+        return vistualAction.filterAction;
+    }
+    BBZFilterAction *fitlerAction = [[BBZFilterAction alloc] initWithNode:vistualAction.node];
     fitlerAction.repeatCount = vistualAction.repeatCount;
     fitlerAction.startTime = vistualAction.startTime;
     fitlerAction.duration = vistualAction.duration;
@@ -42,12 +46,22 @@
 }
 
 
-- (BBZMultiImageFilter *)filter {
-    return self.multiFilter;
-}
 
 - (void)createImageFilter {
     self.multiFilter = [[BBZMultiImageFilter alloc] init];
+}
+
+- (void)removeConnects {
+    [self.multiFilter removeAllTargets];
+}
+
+- (id)filter {
+    return self.multiFilter;
+}
+
+
+- (void)connectToAction:(id<BBZActionChainProtocol>)toAction {
+    [self.multiFilter addTarget:toAction.fitler];
 }
 
 @end

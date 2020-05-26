@@ -9,7 +9,7 @@
 #import "BBZOutputAction.h"
 #import "BBZEngineSetting.h"
 
-@interface BBZVideoWriterAction : BBZOutputAction
+@interface BBZVideoWriterAction : BBZOutputAction 
 
 @property (nonatomic, weak) id<BBZVideoWriteControl> writerControl;
 @property (nonatomic, copy) void (^completionBlock)(NSString *outputFile, NSError *error);

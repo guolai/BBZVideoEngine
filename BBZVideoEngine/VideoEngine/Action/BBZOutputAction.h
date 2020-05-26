@@ -8,12 +8,14 @@
 
 #import "BBZAction.h"
 #import "BBZBaseAsset.h"
-#import "GPUImageFramebuffer.h"
+//#import "GPUImageFramebuffer.h"
+//#import "GPUImageFilter.h"
 
 //@protocol BBZOutputSourceProtocol <NSObject>
 //- (void)outputFrameBuffer:(GPUImageFramebuffer *)outputFramebuffer atTime:(CMTime)time;
 //@end
 
-@interface BBZOutputAction : BBZAction /*<BBZOutputSourceProtocol>*/
+@interface BBZOutputAction : BBZAction<BBZActionChainProtocol>
+//@property (nonatomic, strong, readonly) GPUImageFilter *filter;
 @end
 

@@ -7,7 +7,17 @@
 //
 
 #import "BBZVistualFilterAction.h"
+#import "BBZFilterAction.h"
 
 @implementation BBZVistualFilterAction
+
+
+- (void)destroySomething {
+    self.filterAction = nil;
+}
+
+- (void)removeConnects {
+    [self.filterAction removeConnects];
+}
 
 @end

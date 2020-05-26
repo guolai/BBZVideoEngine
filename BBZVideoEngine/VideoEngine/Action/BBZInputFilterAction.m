@@ -21,11 +21,6 @@
     self.multiFilter = [[BBZMultiImageFilter alloc] init];
 }
 
-- (BBZMultiImageFilter *)filter {
-    return self.multiFilter;
-}
-
-
 //- (void)updateWithTime:(CMTime)time {
 //
 //}
@@ -66,5 +61,19 @@
     });
 }
 
+- (void)removeConnects {
+    [self.multiFilter removeAllTargets];
+    self.firstInputSource = nil;
+    self.secondInputSource = nil;
+}
+
+- (id)filter {
+    return self.multiFilter;
+}
+
+
+- (void)connectToAction:(id<BBZActionChainProtocol>)toAction {
+    [self.multiFilter addTarget:toAction.fitler];
+}
 
 @end

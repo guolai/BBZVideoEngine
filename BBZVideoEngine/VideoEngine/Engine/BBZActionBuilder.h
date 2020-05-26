@@ -7,11 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "BBZAction.h"
+#import "BBZActionTree.h"
 
-NS_ASSUME_NONNULL_BEGIN
 
 @interface BBZActionBuilder : NSObject
 
++ (void)connectAction:(BBZAction *)headAction toAction:(BBZAction *)tailAction;
++ (NSArray *)connectActionTree:(BBZActionTree *)actionTree toAction:(BBZAction *)toAction;
++ (NSArray *)connectActionsInTree:(BBZActionTree *)actionTree;
+//+ (void)clearActionsConnect:(BBZActionTree *)actionTree;
+
 @end
 
-NS_ASSUME_NONNULL_END

@@ -117,4 +117,16 @@
     }
 }
 
+- (void)removeConnects {
+    [self.outputFilter removeAllTargets];
+}
+
+- (id)filter {
+    return self.outputFilter;
+}
+
+- (void)connectToAction:(id<BBZActionChainProtocol>)toAction {
+    [self.outputFilter addTarget:toAction.fitler];
+}
+
 @end

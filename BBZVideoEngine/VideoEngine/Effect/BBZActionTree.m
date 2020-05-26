@@ -97,6 +97,11 @@
     return [NSArray arrayWithArray:self.arrayNodes];
 }
 
+- (NSArray<BBZAction *> *)actions {
+    return [NSArray arrayWithArray:self.arrayActions];
+}
+
+
 - (NSArray<BBZActionTree *> *)allNodes {
     NSMutableArray *mtblArray = [NSMutableArray array];
     for (BBZActionTree *tmpTree in self.arrayNodes) {
@@ -115,9 +120,7 @@
     return mtblArray;
 }
 
-- (NSArray<BBZAction *> *)actions {
-    return [NSArray arrayWithArray:self.arrayActions];
-}
+
 
 
 - (void)remoeAllSubTrees {
