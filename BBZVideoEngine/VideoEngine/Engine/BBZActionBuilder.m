@@ -48,31 +48,29 @@
 
 
 + (NSArray *)connectActionTree:(BBZActionTree *)actionTree toAction:(BBZAction *)toAction {
+  
     BBZAction *headAction = nil;
-    BBZAction *tailAction = nil;
+    BBZAction *tailAction = toAction;
     [BBZActionBuilder clearActionsConnect:actionTree];
     NSMutableArray *mularray = [NSMutableArray array];
-    for (BBZAction *action in actionTree.actions) {
-        BBZAction *tmpAction = action;
+    for (NSInteger index = actionTree.actions.count - 1; index >= 0 ; index--) {
+        BBZAction *tmpAction = [actionTree.actions objectAtIndex:index];
         if([tmpAction isKindOfClass:[BBZVistualFilterAction class]]) {
             tmpAction = [BBZFilterAction createWithVistualAction:(BBZVistualFilterAction *)tmpAction];
         }
-        if(!headAction) {
-            headAction = tmpAction;
+        headAction = tmpAction;
+        if(!tailAction) {//根结点
+            tailAction = tmpAction;
+            BBZINFO(@"tailAction is %@", tailAction);
+            [mularray addObject:tailAction];
+            continue;
         }
+       
         [BBZActionBuilder connectAction:headAction toAction:tailAction];
-        tailAction = tmpAction;
-        [mularray addObject:tailAction];
+        tailAction = headAction;
+        [mularray addObject:headAction];
     }
-    if(toAction) {
-        [BBZActionBuilder connectAction:tailAction toAction:toAction];
-        tailAction = toAction;
-    } else {
-        BBZINFO(@"tailAction is %@", tailAction);
-    }
-    if(!headAction) {
-        headAction = tailAction;
-    }
+
     for (BBZActionTree *subTree in actionTree.subTrees) {
        [mularray addObjectsFromArray:[BBZActionBuilder connectActionTree:subTree toAction:headAction]];
     }

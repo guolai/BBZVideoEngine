@@ -42,6 +42,8 @@
 
 - (NSArray *)combineFiltersActionNodeTree:(BBZActionTree *)actionTree {
     NSArray *array = [BBZActionBuilder connectActionsInTree:actionTree];
+    //action 是从根节点到叶子的 所以使用的时候要反过来
+    array = [[array reverseObjectEnumerator] allObjects];
     return array;
 }
 
