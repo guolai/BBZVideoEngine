@@ -126,7 +126,7 @@
 }
 
 - (void)connectToAction:(id<BBZActionChainProtocol>)toAction {
-    [self.outputFilter addTarget:toAction.fitler];
+    [self.outputFilter addTarget:[toAction filter]];
 }
 
 @end

@@ -34,7 +34,7 @@ typedef NS_ENUM(NSInteger, BBZEngineScheduleMode) {
 
 @protocol BBZActionChainProtocol <NSObject>
 
-@property (nonatomic, strong) id fitler;
+- (id)filter;
 - (void)connectToAction:(id<BBZActionChainProtocol>)toAction;
 
 @end

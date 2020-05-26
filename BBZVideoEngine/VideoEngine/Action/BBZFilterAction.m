@@ -61,7 +61,8 @@
 
 
 - (void)connectToAction:(id<BBZActionChainProtocol>)toAction {
-    [self.multiFilter addTarget:toAction.fitler];
+    [self.multiFilter addTarget:[toAction filter]];
 }
+
 
 @end
