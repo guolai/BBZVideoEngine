@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <Photos/Photos.h>
 
+extern const int BBZMinVideoTime;
 extern const int BBZVideoTimeScale;
 extern const int BBZVideoDurationScale;
 extern const int BBZScheduleTimeScale;

@@ -30,8 +30,6 @@
     runSynchronouslyOnVideoProcessingQueue(^{
         [GPUImageContext useImageProcessingContext];
         self->_uniformTextures[0] = self->filterInputTextureUniform;
-        GLint tmpIndex = [self->filterProgram uniformIndex:@"inputImageTexture2"];
-        NSLog(@"bob -- tmpIndex :%d", tmpIndex);
         for (int i = 1; i < self->_maxIndex; i++) {
             NSString *uniformName = [NSString stringWithFormat:@"inputImageTexture%d", i+1];
             GLint uniformTexture = [self->filterProgram uniformIndex:uniformName];
@@ -44,6 +42,17 @@
             self->_uniformMat33 = uniformIndex;
             NSLog(@"bob -- _uniformMat33 :%d", uniformIndex);
         }
+        {
+            NSString *uniformName  = @"matParam441";
+            GLint uniformIndex = [self->filterProgram uniformIndex:uniformName];
+            self->_uniformMat441 = uniformIndex;
+            NSLog(@"bob -- _uniformMat441 :%d", uniformIndex);
+            
+            uniformName  = @"matParam442";
+            uniformIndex = [self->filterProgram uniformIndex:uniformName];
+            self->_uniformMat442 = uniformIndex;
+            NSLog(@"bob -- _uniformMat442 :%d", uniformIndex);
+        }
         
         for (int i = 0; i < 2; i++) {
             NSString *uniformName = [NSString stringWithFormat:@"v4Param%d", i+1];
@@ -51,7 +60,6 @@
             self->_uniformV4[i] = uniformTexture;
             NSLog(@"bob -- _uniformV4 %d :%d", i, uniformTexture);
         }
-        NSLog(@"bob -- tmpIndex :%d", tmpIndex);
     });
     return self;
 }
@@ -164,6 +172,12 @@
     }
     if(_uniformMat33 >= 0) {
         glUniformMatrix3fv(_uniformMat33, 1, GL_FALSE, (GLfloat *)(&_mat33ParamValue));
+    }
+    if(_uniformMat441 >= 0) {
+        glUniformMatrix4fv(_uniformMat441, 1, GL_FALSE, (GLfloat *)(&_mat44ParamValue1));
+    }
+    if(_uniformMat442 >= 0) {
+        glUniformMatrix4fv(_uniformMat442, 1, GL_FALSE, (GLfloat *)(&_mat44ParamValue2));
     }
     if(_uniformV4[0] >= 0) {
         glUniform4fv(_uniformV4[0], 1, (GLfloat *)&_vector4ParamValue1);

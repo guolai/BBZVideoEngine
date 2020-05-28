@@ -11,6 +11,7 @@
 #import "BBZImageSourceAction.h"
 #import "BBZInputFilterAction.h"
 #import "BBZVideoReaderAction.h"
+#import "BBZTransformSourceNode.h"
 
 
 @implementation BBZVideoFilterLayer
@@ -33,10 +34,13 @@
     NSMutableArray *retArray = [NSMutableArray array];
     for (BBZBaseAsset *baseAsset in self.model.assetItems) {
         BBZSourceAction *action = nil;
+        BBZTransformSourceNode *tranformNode = nil;
         if(baseAsset.mediaType == BBZBaseAssetMediaTypeImage) {
             action = [self imageActionWithAsset:(BBZImageAsset *)baseAsset];
+            tranformNode = [[BBZTransformSourceNode alloc] initWithRGBShader:(self.model.bgImage?YES:NO)];
         } else if(baseAsset.mediaType == BBZBaseAssetMediaTypeVideo) {
             action = [self videoActionWithAsset:(BBZVideoAsset *)baseAsset];
+            tranformNode = [[BBZTransformSourceNode alloc] initWithYUVShader:(self.model.bgImage?YES:NO)];
         }
         action.startTime = builder.startTime;
         action.order = builder.groupIndex;
@@ -46,7 +50,8 @@
         builder.assetIndex++;
         BBZActionTree *actionTree = [BBZActionTree createActionTreeWithAction:action];
         
-        BBZInputFilterAction *filterAction = [[BBZInputFilterAction alloc] init];
+        
+        BBZInputFilterAction *filterAction = [[BBZInputFilterAction alloc] initWithNode:tranformNode];
         filterAction.startTime = action.startTime;
         filterAction.duration = action.duration;
         BBZActionTree *filterTree = [BBZActionTree createActionTreeWithAction:filterAction];
@@ -123,7 +128,14 @@
             
             BBZActionTree *sourceActionTree = [BBZActionTree createActionTreeWithAction:sourceAction];
             
-            BBZInputFilterAction *filterAction = [[BBZInputFilterAction alloc] init];
+            BBZTransformSourceNode *tranformNode = nil;
+            if([sourceAction isKindOfClass:[BBZImageSourceAction class]]) {
+                tranformNode = [[BBZTransformSourceNode alloc] initWithRGBShader:NO];
+            } else {
+                tranformNode = [[BBZTransformSourceNode alloc] initWithYUVShader:NO];
+            }
+            
+            BBZInputFilterAction *filterAction = [[BBZInputFilterAction alloc] initWithNode:tranformNode];
             filterAction.startTime = sourceAction.startTime;
             filterAction.duration = sourceAction.duration;
             BBZActionTree *filterTree = [BBZActionTree createActionTreeWithAction:filterAction];
@@ -157,7 +169,7 @@
     BBZImageSourceAction *imageAction = [[BBZImageSourceAction alloc] init];
     imageAction.asset = asset;
     imageAction.renderSize = asset.sourceSize;
-    imageAction.duration = asset.playDuration;
+    imageAction.duration = MAX(asset.playDuration, BBZMinVideoTime * BBZVideoTimeScale);
     return imageAction;
 }
 
@@ -171,7 +183,7 @@
     }
     videoAction.asset = asset;
     videoAction.renderSize = self.context.renderSize;
-    videoAction.duration = asset.playDuration;
+    videoAction.duration = MAX(asset.playDuration, BBZMinVideoTime * BBZVideoTimeScale);
     return videoAction;
 }
 

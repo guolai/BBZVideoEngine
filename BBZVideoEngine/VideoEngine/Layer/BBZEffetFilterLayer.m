@@ -32,7 +32,15 @@
         if(filterNode.bPlayFromEnd) {
             startTime = MAX(inputBuilderResult.startTime - filterNode.duration, 0);
         }
-        BBZActionTree *effectTree = [self actionTreeWithFilterNode:filterNode duration:filterNode.duration startTime:startTime];
+        startTime = MIN(startTime, inputBuilderResult.startTime);
+        CGFloat duration = filterNode.duration;
+        duration = MIN(duration, inputBuilderResult.startTime - (startTime + duration));
+        duration = MAX(duration, 0);
+        if(fabs(duration) < 0.01) {
+            BBZERROR(@"duration is zero");
+            continue;
+        }
+        BBZActionTree *effectTree = [self actionTreeWithFilterNode:filterNode duration:duration startTime:startTime];
         if(effectTree) {
             [retArray addObject:effectTree];
             builder.groupIndex++;
