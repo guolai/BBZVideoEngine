@@ -30,6 +30,8 @@
         self.videoSettings = videoSetting.videoOutputSettings;
         self.audioSettings = videoSetting.audioOutputSettings;
         self.strOutputFile = strOutputFile;
+        self.outputFilter = [[BBZVideoOutputFilter alloc] init];
+        self.outputFilter.delegate = self;
     }
     return self;
 }
@@ -48,8 +50,7 @@
         return [self didFinishWritingVideoWithError:[NSError errorWithDomain:@"无效的分辨率" code:-1 userInfo:nil] async:YES];
     }
     
-    self.outputFilter = [[BBZVideoOutputFilter alloc] init];
-    self.outputFilter.delegate = self;
+  
     self.writer = [[BBZAssetWriter alloc] initWithOutputFile:self.strOutputFile size:videoSize fileType:AVFileTypeMPEG4];
     self.writer.videoOutputSettings = self.videoSettings;
     self.writer.audioOutputSettings = self.audioSettings;

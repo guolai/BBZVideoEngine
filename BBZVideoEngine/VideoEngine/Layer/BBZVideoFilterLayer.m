@@ -34,13 +34,16 @@
     NSMutableArray *retArray = [NSMutableArray array];
     for (BBZBaseAsset *baseAsset in self.model.assetItems) {
         BBZSourceAction *action = nil;
-        BBZTransformSourceNode *tranformNode = nil;
+        BBZTransformSourceNode *tranformNode = [[BBZTransformSourceNode alloc] init];
+        tranformNode.image = self.model.bgImage;
         if(baseAsset.mediaType == BBZBaseAssetMediaTypeImage) {
             action = [self imageActionWithAsset:(BBZImageAsset *)baseAsset];
-            tranformNode = [[BBZTransformSourceNode alloc] initWithRGBShader:(self.model.bgImage?YES:NO)];
+//            tranformNode = [[BBZTransformSourceNode alloc] initWithRGBShader:(self.model.bgImage?YES:NO)];
+            tranformNode.bRGB = YES;
         } else if(baseAsset.mediaType == BBZBaseAssetMediaTypeVideo) {
             action = [self videoActionWithAsset:(BBZVideoAsset *)baseAsset];
-            tranformNode = [[BBZTransformSourceNode alloc] initWithYUVShader:(self.model.bgImage?YES:NO)];
+//            tranformNode = [[BBZTransformSourceNode alloc] initWithYUVShader:(self.model.bgImage?YES:NO)];
+            tranformNode.bRGB = YES;
         }
         action.startTime = builder.startTime;
         action.order = builder.groupIndex;
@@ -128,11 +131,13 @@
             
             BBZActionTree *sourceActionTree = [BBZActionTree createActionTreeWithAction:sourceAction];
             
-            BBZTransformSourceNode *tranformNode = nil;
+            BBZTransformSourceNode *tranformNode = [[BBZTransformSourceNode alloc] init];
             if([sourceAction isKindOfClass:[BBZImageSourceAction class]]) {
-                tranformNode = [[BBZTransformSourceNode alloc] initWithRGBShader:NO];
+//                tranformNode = [[BBZTransformSourceNode alloc] initWithRGBShader:NO];
+                tranformNode.bRGB = YES;
             } else {
-                tranformNode = [[BBZTransformSourceNode alloc] initWithYUVShader:NO];
+//                tranformNode = [[BBZTransformSourceNode alloc] initWithYUVShader:NO];
+                tranformNode.bRGB = NO;
             }
             
             BBZInputFilterAction *filterAction = [[BBZInputFilterAction alloc] initWithNode:tranformNode];

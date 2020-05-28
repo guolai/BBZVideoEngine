@@ -16,8 +16,8 @@
 
 @implementation BBZFilterAction
 
-- (instancetype)init {
-    if(self = [super init]) {
+- (instancetype)initWithNode:(BBZNode *)node {
+    if(self = [super initWithNode:node]) {
         [self createImageFilter];
     }
     return self;
@@ -48,7 +48,7 @@
 
 
 - (void)createImageFilter {
-    self.multiFilter = [[BBZMultiImageFilter alloc] init];
+    self.multiFilter = [[BBZMultiImageFilter alloc] initWithVertexShaderFromString:self.node.vShaderString fragmentShaderFromString:self.node.fShaderString];
 }
 
 - (void)removeConnects {

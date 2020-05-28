@@ -144,18 +144,23 @@
         return;
     }
     
-    [GPUImageContext setActiveShaderProgram:filterProgram];
+    
     
     outputFramebuffer = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:[self sizeOfFBO] textureOptions:self.outputTextureOptions onlyTexture:NO];
+    
+     [self willBeginRender];
+    
     [outputFramebuffer activateFramebuffer];
     if (usingNextFrameForImageCapture) {
         [outputFramebuffer lock];
     }
     
+    [GPUImageContext setActiveShaderProgram:filterProgram];
     [self setUniformsForProgramAtIndex:0];
-    
-    glClearColor(backgroundColorRed, backgroundColorGreen, backgroundColorBlue, backgroundColorAlpha);
-    glClear(GL_COLOR_BUFFER_BIT);
+    if(self.shouldClearBackGround) {
+        glClearColor(backgroundColorRed, backgroundColorGreen, backgroundColorBlue, backgroundColorAlpha);
+        glClear(GL_COLOR_BUFFER_BIT);
+    }
     
     glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, [firstInputFramebuffer texture]);
@@ -191,9 +196,8 @@
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     
     [firstInputFramebuffer unlock];
-    //    for (GPUImageFramebuffer *fb in self.frameBufferArray) {
-    //        [fb unlock];
-    //    }
+    
+    [self willEndRender];
     
     if (usingNextFrameForImageCapture) {
         dispatch_semaphore_signal(imageCaptureSemaphore);
@@ -211,6 +215,15 @@
 - (NSArray<GPUImageFramebuffer *> *)frameBuffers {
     return self.frameBufferArray;
 }
+
+- (void)willBeginRender {
+    
+}
+
+- (void)willEndRender {
+    
+}
+
 
 @end
 

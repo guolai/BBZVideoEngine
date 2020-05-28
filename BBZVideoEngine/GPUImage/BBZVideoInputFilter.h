@@ -8,10 +8,10 @@
 
 #import "BBZMultiImageFilter.h"
 
-typedef NS_ENUM(NSInteger, BBZVideoInputType) {
-    BBZVideoInputTypeImage,
-    BBZVideoInputTypeVideo,
-};
+//typedef NS_ENUM(NSInteger, BBZVideoInputType) {
+//    BBZVideoInputTypeImage,
+//    BBZVideoInputTypeVideo,
+//};
 
 /*
  使用transform有三种场景
@@ -20,17 +20,16 @@ typedef NS_ENUM(NSInteger, BBZVideoInputType) {
  */
 @interface BBZVideoInputFilter : BBZMultiImageFilter
 
-- (instancetype)initWithTransfromType:(BBZVideoInputType)type;
 @property (nonatomic, assign) BOOL bUseBackGroundImage;
 @property (nonatomic, strong) GPUImageFramebuffer *bgFrameBuffer;
-@property (nonatomic, assign, readonly) BBZVideoInputType type;
+//@property (nonatomic, assign) BBZVideoInputType type;
 @property (nonatomic, assign) CGSize renderSize;
 @property (nonatomic, assign) CGAffineTransform affineTransform;
 @property (nonatomic, assign) CATransform3D transform3D;
 @property (nonatomic, assign) BOOL ignoreAspectRatio;
 
-- (void)renderVideo:(CMSampleBufferRef)sampleBuffer atTime:(CMTime)time;
-- (void)renderImage:(GPUImageFramebuffer *)imageFrameBuffer atTime:(CMTime)time;
+//- (void)renderVideo:(CMSampleBufferRef)sampleBuffer atTime:(CMTime)time;
+//- (void)renderImage:(GPUImageFramebuffer *)imageFrameBuffer atTime:(CMTime)time;
 
 
 @end

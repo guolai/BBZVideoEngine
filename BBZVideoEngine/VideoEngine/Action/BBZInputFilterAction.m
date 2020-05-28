@@ -8,17 +8,47 @@
 
 #import "BBZInputFilterAction.h"
 #import "BBZVideoInputFilter.h"
+#import "BBZTransformSourceNode.h"
+#import "BBZShader.h"
 
 @interface BBZInputFilterAction ()
-@property (nonatomic, strong) BBZMultiImageFilter *multiFilter;
+@property (nonatomic, strong) BBZVideoInputFilter *multiFilter;
+@property (nonatomic, strong, readwrite) BBZTransformSourceNode *node;
 @end
 
 
 @implementation BBZInputFilterAction
 
 
+- (BBZTransformSourceNode *)node {
+    return self.node;
+}
+
 - (void)createImageFilter {
-    self.multiFilter = [[BBZMultiImageFilter alloc] init];
+    NSString *vertexShader = self.node.vShaderString;
+    NSString *framgmentShader = self.node.fShaderString;
+    BOOL bUseLastFB = NO;
+    if(self.node.image) {
+        bUseLastFB = YES;
+    }
+    if(self.node.bRGB) {
+        if(bUseLastFB) {
+            vertexShader = [BBZShader vertextTransfromShader];
+            framgmentShader = [BBZShader fragmentFBFectchYUV420FTransfromShader];
+        } else {
+            vertexShader = [BBZShader vertextTransfromShader];
+            framgmentShader = [BBZShader fragmentRGBTransfromShader];
+        }
+    } else {
+        if(bUseLastFB) {
+            vertexShader = [BBZShader vertextTransfromShader];
+            framgmentShader = [BBZShader fragmentFBFectchRGBTransfromShader];
+        } else {
+            vertexShader = [BBZShader vertextTransfromShader];
+            framgmentShader = [BBZShader fragmentYUV420FTransfromShader];
+        }
+    }
+    self.multiFilter = [[BBZVideoInputFilter alloc] initWithVertexShaderFromString:vertexShader fragmentShaderFromString:framgmentShader];
 }
 
 

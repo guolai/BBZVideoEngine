@@ -8,62 +8,15 @@
 
 #import "BBZVideoInputFilter.h"
 #import "GPUImageColorConversion.h"
-
-
-
-
-NSString *const kBBZVideoRenderTransformVertexShaderString = SHADER_STRING
-(
- attribute vec4 position;
- attribute vec4 inputTextureCoordinate;
- 
- uniform mat4 transformMatrix;
- uniform mat4 orthographicMatrix;
- 
- varying vec2 textureCoordinate;
- 
- void main()
- {
-     gl_Position = transformMatrix * vec4(position.xy, 1.0, 1.0) * orthographicMatrix;
-     textureCoordinate = inputTextureCoordinate.xy;
- }
- );
-
-
-NSString *const kBBZVideoRenderFragmentShaderString = SHADER_STRING
-(
- varying highp vec2 textureCoordinate;
- 
- uniform sampler2D inputImageTexture;
- uniform sampler2D inputImageTexture2;
- uniform mediump mat3 matParam;
- 
- void main()
- {
-     mediump vec3 yuv;
-     lowp vec3 rgb;
-     yuv.x = texture2D(inputImageTexture, textureCoordinate).r;
-     yuv.yz = texture2D(inputImageTexture2, textureCoordinate).ra - vec2(0.5, 0.5);
-     rgb = matParam * yuv;
-
-     gl_FragColor = vec4(rgb, 1.0);
- }
- );
+#import "BBZShader.h"
 
 
 @interface BBZVideoInputFilter () {
-    GLint _transformMatrixUniform;
-    GLint _orthographicMatrixUniform;
-    GPUMatrix4x4 _orthographicMatrix;
-    GPUMatrix4x4 _transformMatrix;
-    BOOL _isFullYUVRange;
-    const GLfloat *_preferredConversion;
-    
     GLint _bgfilterPositionAttribute, _bgfilterTextureCoordinateAttribute;
     GLint _bgfilterInputTextureUniform;
 }
 
-@property (nonatomic, assign, readwrite) BBZVideoInputType type;
+//@property (nonatomic, assign, readwrite) BBZVideoInputType type;
 @property (nonatomic, strong) GLProgram *bgFilterProgram;
 
 @end
@@ -77,22 +30,16 @@ NSString *const kBBZVideoRenderFragmentShaderString = SHADER_STRING
     BBZINFO(@"BBZVideoInputFilter dealloc");
 }
 
-- (instancetype)initWithTransfromType:(BBZVideoInputType)type {
-    _type = type;
-    if(_type == BBZVideoInputTypeImage) {
-        self = [super initWithVertexShaderFromString:kBBZVideoRenderTransformVertexShaderString fragmentShaderFromString:kGPUImagePassthroughFragmentShaderString];
-    } else {
-        self = [super initWithVertexShaderFromString:kBBZVideoRenderTransformVertexShaderString fragmentShaderFromString:kBBZVideoRenderFragmentShaderString];
-        
-        runSynchronouslyOnVideoProcessingQueue(^{
-            self->_transformMatrixUniform = [self->filterProgram uniformIndex:@"transformMatrix"];
-            self->_orthographicMatrixUniform = [self->filterProgram uniformIndex:@"orthographicMatrix"];
-        });
+- (instancetype)initWithVertexShaderFromString:(NSString *)vertexShaderString fragmentShaderFromString:(NSString *)fragmentShaderString {
+    if(self = [super initWithVertexShaderFromString:vertexShaderString fragmentShaderFromString:fragmentShaderString]) {
+        _transform3D = CATransform3DIdentity;
+        _preferredConversion = kColorConversion709;
     }
-    _transform3D = CATransform3DIdentity;
-    _preferredConversion = kColorConversion709;
     return self;
 }
+
+
+
 
 - (void)buildBackGroundParams {
     [GPUImageContext useImageProcessingContext];
@@ -122,8 +69,8 @@ NSString *const kBBZVideoRenderFragmentShaderString = SHADER_STRING
     _bgfilterTextureCoordinateAttribute = [self.bgFilterProgram attributeIndex:@"inputTextureCoordinate"];
     _bgfilterInputTextureUniform = [self.bgFilterProgram uniformIndex:@"inputImageTexture"];
     
-    
 }
+
 
 - (void)setBUseBackGroundImage:(BOOL)bUseBackGroundImage {
     _bUseBackGroundImage = bUseBackGroundImage;
@@ -163,7 +110,7 @@ NSString *const kBBZVideoRenderFragmentShaderString = SHADER_STRING
 
 - (void)drawBackGroundImage {
     [GPUImageContext setActiveShaderProgram:self.bgFilterProgram];
-    outputFramebuffer = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:[self sizeOfFBO] textureOptions:self.outputTextureOptions onlyTexture:NO];
+//    outputFramebuffer = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:[self sizeOfFBO] textureOptions:self.outputTextureOptions onlyTexture:NO];
     [outputFramebuffer activateFramebuffer];
     glClearColor(0.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -195,247 +142,259 @@ NSString *const kBBZVideoRenderFragmentShaderString = SHADER_STRING
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
 
-- (void)renderVideo:(CMSampleBufferRef)sampleBuffer atTime:(CMTime)time {
-    runSynchronouslyOnVideoProcessingQueue(^{
-        [self drawVideo:sampleBuffer atTime:time];
-    });
-}
-
-- (void)drawVideo:(CMSampleBufferRef)sampleBuffer atTime:(CMTime)time {
-    
-    BOOL bDrawBackGround = NO;
+- (void)willBeginRender {
     if(self.bUseBackGroundImage && self.bgFrameBuffer) {
         [self drawBackGroundImage];
-        bDrawBackGround = YES;
     }
     
-    [GPUImageContext setActiveShaderProgram:filterProgram];
-    if (!_ignoreAspectRatio) {
-        [self loadOrthoMatrix:(GLfloat *)&_orthographicMatrix left:-1.0 right:1.0 bottom:(-1.0 * self.renderSize.height / self.renderSize.width) top:(1.0 * self.renderSize.height / self.renderSize.width) near:-1.0 far:1.0];
-    } else {
-        [self loadOrthoMatrix:(GLfloat *)&_orthographicMatrix left:-1.0 right:1.0 bottom:-1.0 top:1.0 near:-1.0 far:1.0];
-    }
-    [self convert3DTransform:&_transform3D toMatrix:&_transformMatrix];
-    
-    if(!bDrawBackGround) {
-        outputFramebuffer = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:[self sizeOfFBO] textureOptions:self.outputTextureOptions onlyTexture:NO];
-    }
-    
-    [outputFramebuffer activateFramebuffer];
-    if (usingNextFrameForImageCapture) {
-        [outputFramebuffer lock];
-    }
-    
-    
-    CGFloat _imageBufferWidth = 0.0;
-    CGFloat _imageBufferHeight = 0.0;
-    GLuint _luminanceTexture;
-    GLuint _chrominanceTexture;
-    
-    CVPixelBufferRef movieFrame = (CVPixelBufferRef)CMSampleBufferGetImageBuffer(sampleBuffer);
-    int bufferHeight = (int) CVPixelBufferGetHeight(movieFrame);
-    int bufferWidth = (int) CVPixelBufferGetWidth(movieFrame);
-    
-    CFTypeRef colorAttachments = CVBufferGetAttachment(movieFrame, kCVImageBufferYCbCrMatrixKey, NULL);
-    if (colorAttachments != NULL) {
-        if(CFStringCompare(colorAttachments, kCVImageBufferYCbCrMatrix_ITU_R_601_4, 0) == kCFCompareEqualTo) {
-            if (_isFullYUVRange) {
-                _preferredConversion = kColorConversion601FullRange;
-            } else {
-                _preferredConversion = kColorConversion601;
-            }
-        } else {
-            _preferredConversion = kColorConversion709;
-        }
-    } else {
-        if (_isFullYUVRange) {
-            _preferredConversion = kColorConversion601FullRange;
-        } else {
-            _preferredConversion = kColorConversion601;
-        }
-        
-    }
-    
-    CVOpenGLESTextureRef luminanceTextureRef = NULL;
-    CVOpenGLESTextureRef chrominanceTextureRef = NULL;
-    
-    if (CVPixelBufferGetPlaneCount(movieFrame) > 0) {// Check for YUV planar inputs to do RGB conversion
-        CVPixelBufferLockBaseAddress(movieFrame,0);
-        if ( (_imageBufferWidth != bufferWidth) && (_imageBufferHeight != bufferHeight) ) {
-            _imageBufferWidth = bufferWidth;
-            _imageBufferHeight = bufferHeight;
-        }
-        
-        CVReturn err;
-        // Y-plane
-        glActiveTexture(GL_TEXTURE4);
-        err = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault, [[GPUImageContext sharedImageProcessingContext] coreVideoTextureCache], movieFrame, NULL, GL_TEXTURE_2D, GL_LUMINANCE, bufferWidth, bufferHeight, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0, &luminanceTextureRef);
-        
-        
-        if(err) {
-            NSLog(@"Error at CVOpenGLESTextureCacheCreateTextureFromImage %d", err);
-        }
-        
-        
-        _luminanceTexture = CVOpenGLESTextureGetName(luminanceTextureRef);
-        
-        glBindTexture(GL_TEXTURE_2D, _luminanceTexture);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        
-        // UV-plane
-        glActiveTexture(GL_TEXTURE5);
-        
-        err = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault, [[GPUImageContext sharedImageProcessingContext] coreVideoTextureCache], movieFrame, NULL, GL_TEXTURE_2D, GL_LUMINANCE_ALPHA, bufferWidth/2, bufferHeight/2, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 1, &chrominanceTextureRef);
-        
-        if (err) {
-            NSLog(@"Error at CVOpenGLESTextureCacheCreateTextureFromImage %d", err);
-        }
-        
-        
-        _chrominanceTexture = CVOpenGLESTextureGetName(chrominanceTextureRef);
-        
-        glBindTexture(GL_TEXTURE_2D, _chrominanceTexture);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        
-        CGFloat normalizedHeight = _imageBufferHeight / _imageBufferWidth;
-        GLfloat adjustedVertices[] = {
-            -1.0f, -normalizedHeight,
-            1.0f, -normalizedHeight,
-            -1.0f,  normalizedHeight,
-            1.0f,  normalizedHeight,
-        };
-        
-        static const GLfloat textureCoordinates[] = {
-            0.0f, 0.0f,
-            1.0f, 0.0f,
-            0.0f, 1.0f,
-            1.0f, 1.0f,
-        };
-        
-        glActiveTexture(GL_TEXTURE4);
-        glBindTexture(GL_TEXTURE_2D, _luminanceTexture);
-        glUniform1i(filterInputTextureUniform, 4);
-        
-        NSInteger uniformIndex = 1;
-        GLint textureIndex = 1;
-        glActiveTexture(GL_TEXTURE4 + textureIndex);
-        glBindTexture(GL_TEXTURE_2D, _chrominanceTexture);
-        glUniform1i(_uniformTextures[uniformIndex], 4 + textureIndex);
-        
-        self.mat33ParamValue =  *((GPUMatrix3x3 *)_preferredConversion);
-        if(_uniformMat33 >= 0) {
-            GPUMatrix3x3 tmpMat33ParamValue = self.mat33ParamValue;
-            glUniformMatrix3fv(_uniformMat33, 1, GL_FALSE, (GLfloat *)(&tmpMat33ParamValue));
-        }
-        if(_uniformV4[0] >= 0) {
-            GPUVector4 tmpVector4ParamValue1 = self.vector4ParamValue1;
-            glUniform4fv(_uniformV4[0], 1, (GLfloat *)&tmpVector4ParamValue1);
-        }
-        if(_uniformV4[1] >= 0) {
-            GPUVector4 tmpVector4ParamValue2 = self.vector4ParamValue2;
-            glUniform4fv(_uniformV4[1], 1, (GLfloat *)&tmpVector4ParamValue2);
-        }
-        
-        glUniformMatrix4fv(_transformMatrixUniform, 1, GL_FALSE, (GLfloat *)&_transformMatrix);
-        glUniformMatrix4fv(_orthographicMatrixUniform, 1, GL_FALSE, (GLfloat *)&_orthographicMatrix);
-        
-        glVertexAttribPointer(filterPositionAttribute, 2, GL_FLOAT, 0, 0, adjustedVertices);
-        glVertexAttribPointer(filterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, textureCoordinates);
-        
-        glEnableVertexAttribArray(filterPositionAttribute);
-        glEnableVertexAttribArray(filterTextureCoordinateAttribute);
-        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-        
-        CVPixelBufferUnlockBaseAddress(movieFrame, 0);
-        CFRelease(luminanceTextureRef);
-        CFRelease(chrominanceTextureRef);
-    }
-    [self informTargetsAboutNewFrameAtTime:time];
 }
 
-- (void)renderImage:(GPUImageFramebuffer *)imageFrameBuffer atTime:(CMTime)time {
-    runSynchronouslyOnVideoProcessingQueue(^{
-        [self drawImage:imageFrameBuffer atTime:time];
-    });
+- (void)willEndRender {
+    
 }
 
-- (void)drawImage:(GPUImageFramebuffer *)imageFrameBuffer atTime:(CMTime)time {
-    BOOL bDrawBackGround = NO;
-    if(self.bUseBackGroundImage && self.bgFrameBuffer) {
-        [self drawBackGroundImage];
-        bDrawBackGround = YES;
-    }
-    
-    [GPUImageContext setActiveShaderProgram:filterProgram];
-    if (!_ignoreAspectRatio) {
-        [self loadOrthoMatrix:(GLfloat *)&_orthographicMatrix left:-1.0 right:1.0 bottom:(-1.0 * self.renderSize.height / self.renderSize.width) top:(1.0 * self.renderSize.height / self.renderSize.width) near:-1.0 far:1.0];
-    } else {
-        [self loadOrthoMatrix:(GLfloat *)&_orthographicMatrix left:-1.0 right:1.0 bottom:-1.0 top:1.0 near:-1.0 far:1.0];
-    }
-    [self convert3DTransform:&_transform3D toMatrix:&_transformMatrix];
-    
-    if(!bDrawBackGround) {
-        outputFramebuffer = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:[self sizeOfFBO] textureOptions:self.outputTextureOptions onlyTexture:NO];
-    }
-    
-    [outputFramebuffer activateFramebuffer];
-    if (usingNextFrameForImageCapture) {
-        [outputFramebuffer lock];
-    }
-    
-    static const GLfloat normalVertices[] = {
-        -1.0f, -1.0f,
-        1.0f, -1.0f,
-        -1.0f,  1.0f,
-        1.0f,  1.0f,
-    };
-    
-    static const GLfloat normalTextureCoordinates[] = {
-        0.0f, 0.0f,
-        1.0f, 0.0f,
-        0.0f, 1.0f,
-        1.0f, 1.0f,
-    };
-    
-    glActiveTexture(GL_TEXTURE2);
-    glBindTexture(GL_TEXTURE_2D, [imageFrameBuffer texture]);
-    glUniform1i(filterInputTextureUniform, 2);
-    
-    NSInteger uniformIndex = 1;
-    GLint textureIndex = 1;
-    for (GPUImageFramebuffer *fb in self.frameBuffers) {
-        glActiveTexture(GL_TEXTURE2 + textureIndex);
-        glBindTexture(GL_TEXTURE_2D, [fb texture]);
-        glUniform1i(_uniformTextures[uniformIndex], 2 + textureIndex);
-        uniformIndex++;
-        textureIndex++;
-    }
-    if(_uniformMat33 >= 0) {
-        GPUMatrix3x3 tmpMat33ParamValue = self.mat33ParamValue;
-        glUniformMatrix3fv(_uniformMat33, 1, GL_FALSE, (GLfloat *)(&tmpMat33ParamValue));
-    }
-    if(_uniformV4[0] >= 0) {
-        GPUVector4 tmpVector4ParamValue1 = self.vector4ParamValue1;
-        glUniform4fv(_uniformV4[0], 1, (GLfloat *)&tmpVector4ParamValue1);
-    }
-    if(_uniformV4[1] >= 0) {
-        GPUVector4 tmpVector4ParamValue2 = self.vector4ParamValue2;
-        glUniform4fv(_uniformV4[1], 1, (GLfloat *)&tmpVector4ParamValue2);
-    }
-    
-    glVertexAttribPointer(filterPositionAttribute, 2, GL_FLOAT, 0, 0, normalVertices);
-    glVertexAttribPointer(filterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, normalTextureCoordinates);
-    
-    glEnableVertexAttribArray(filterPositionAttribute);
-    glEnableVertexAttribArray(filterTextureCoordinateAttribute);
-    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-    
-    [imageFrameBuffer unlock];
-    
-    [self informTargetsAboutNewFrameAtTime:time];
-}
+
+//- (void)renderVideo:(CMSampleBufferRef)sampleBuffer atTime:(CMTime)time {
+//    runSynchronouslyOnVideoProcessingQueue(^{
+//        [self drawVideo:sampleBuffer atTime:time];
+//    });
+//}
+//
+//- (void)drawVideo:(CMSampleBufferRef)sampleBuffer atTime:(CMTime)time {
+//    
+//    BOOL bDrawBackGround = NO;
+//    if(self.bUseBackGroundImage && self.bgFrameBuffer) {
+//        [self drawBackGroundImage];
+//        bDrawBackGround = YES;
+//    }
+//    
+//    [GPUImageContext setActiveShaderProgram:filterProgram];
+//    if (!_ignoreAspectRatio) {
+//        [self loadOrthoMatrix:(GLfloat *)&_orthographicMatrix left:-1.0 right:1.0 bottom:(-1.0 * self.renderSize.height / self.renderSize.width) top:(1.0 * self.renderSize.height / self.renderSize.width) near:-1.0 far:1.0];
+//    } else {
+//        [self loadOrthoMatrix:(GLfloat *)&_orthographicMatrix left:-1.0 right:1.0 bottom:-1.0 top:1.0 near:-1.0 far:1.0];
+//    }
+//    [self convert3DTransform:&_transform3D toMatrix:&_transformMatrix];
+//    
+//    if(!bDrawBackGround) {
+//        outputFramebuffer = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:[self sizeOfFBO] textureOptions:self.outputTextureOptions onlyTexture:NO];
+//    }
+//    
+//    [outputFramebuffer activateFramebuffer];
+//    if (usingNextFrameForImageCapture) {
+//        [outputFramebuffer lock];
+//    }
+//    
+//    
+//    CGFloat _imageBufferWidth = 0.0;
+//    CGFloat _imageBufferHeight = 0.0;
+//    GLuint _luminanceTexture;
+//    GLuint _chrominanceTexture;
+//    
+//    CVPixelBufferRef movieFrame = (CVPixelBufferRef)CMSampleBufferGetImageBuffer(sampleBuffer);
+//    int bufferHeight = (int) CVPixelBufferGetHeight(movieFrame);
+//    int bufferWidth = (int) CVPixelBufferGetWidth(movieFrame);
+//    
+//    CFTypeRef colorAttachments = CVBufferGetAttachment(movieFrame, kCVImageBufferYCbCrMatrixKey, NULL);
+//    if (colorAttachments != NULL) {
+//        if(CFStringCompare(colorAttachments, kCVImageBufferYCbCrMatrix_ITU_R_601_4, 0) == kCFCompareEqualTo) {
+//            if (_isFullYUVRange) {
+//                _preferredConversion = kColorConversion601FullRange;
+//            } else {
+//                _preferredConversion = kColorConversion601;
+//            }
+//        } else {
+//            _preferredConversion = kColorConversion709;
+//        }
+//    } else {
+//        if (_isFullYUVRange) {
+//            _preferredConversion = kColorConversion601FullRange;
+//        } else {
+//            _preferredConversion = kColorConversion601;
+//        }
+//        
+//    }
+//    
+//    CVOpenGLESTextureRef luminanceTextureRef = NULL;
+//    CVOpenGLESTextureRef chrominanceTextureRef = NULL;
+//    
+//    if (CVPixelBufferGetPlaneCount(movieFrame) > 0) {// Check for YUV planar inputs to do RGB conversion
+//        CVPixelBufferLockBaseAddress(movieFrame,0);
+//        if ( (_imageBufferWidth != bufferWidth) && (_imageBufferHeight != bufferHeight) ) {
+//            _imageBufferWidth = bufferWidth;
+//            _imageBufferHeight = bufferHeight;
+//        }
+//        
+//        CVReturn err;
+//        // Y-plane
+//        glActiveTexture(GL_TEXTURE4);
+//        err = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault, [[GPUImageContext sharedImageProcessingContext] coreVideoTextureCache], movieFrame, NULL, GL_TEXTURE_2D, GL_LUMINANCE, bufferWidth, bufferHeight, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0, &luminanceTextureRef);
+//        
+//        
+//        if(err) {
+//            NSLog(@"Error at CVOpenGLESTextureCacheCreateTextureFromImage %d", err);
+//        }
+//        
+//        
+//        _luminanceTexture = CVOpenGLESTextureGetName(luminanceTextureRef);
+//        
+//        glBindTexture(GL_TEXTURE_2D, _luminanceTexture);
+//        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+//        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+//        
+//        // UV-plane
+//        glActiveTexture(GL_TEXTURE5);
+//        
+//        err = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault, [[GPUImageContext sharedImageProcessingContext] coreVideoTextureCache], movieFrame, NULL, GL_TEXTURE_2D, GL_LUMINANCE_ALPHA, bufferWidth/2, bufferHeight/2, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 1, &chrominanceTextureRef);
+//        
+//        if (err) {
+//            NSLog(@"Error at CVOpenGLESTextureCacheCreateTextureFromImage %d", err);
+//        }
+//        
+//        
+//        _chrominanceTexture = CVOpenGLESTextureGetName(chrominanceTextureRef);
+//        
+//        glBindTexture(GL_TEXTURE_2D, _chrominanceTexture);
+//        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+//        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+//        
+//        CGFloat normalizedHeight = _imageBufferHeight / _imageBufferWidth;
+//        GLfloat adjustedVertices[] = {
+//            -1.0f, -normalizedHeight,
+//            1.0f, -normalizedHeight,
+//            -1.0f,  normalizedHeight,
+//            1.0f,  normalizedHeight,
+//        };
+//        
+//        static const GLfloat textureCoordinates[] = {
+//            0.0f, 0.0f,
+//            1.0f, 0.0f,
+//            0.0f, 1.0f,
+//            1.0f, 1.0f,
+//        };
+//        
+//        glActiveTexture(GL_TEXTURE4);
+//        glBindTexture(GL_TEXTURE_2D, _luminanceTexture);
+//        glUniform1i(filterInputTextureUniform, 4);
+//        
+//        NSInteger uniformIndex = 1;
+//        GLint textureIndex = 1;
+//        glActiveTexture(GL_TEXTURE4 + textureIndex);
+//        glBindTexture(GL_TEXTURE_2D, _chrominanceTexture);
+//        glUniform1i(_uniformTextures[uniformIndex], 4 + textureIndex);
+//        
+//        self.mat33ParamValue =  *((GPUMatrix3x3 *)_preferredConversion);
+//        if(_uniformMat33 >= 0) {
+//            GPUMatrix3x3 tmpMat33ParamValue = self.mat33ParamValue;
+//            glUniformMatrix3fv(_uniformMat33, 1, GL_FALSE, (GLfloat *)(&tmpMat33ParamValue));
+//        }
+//        if(_uniformV4[0] >= 0) {
+//            GPUVector4 tmpVector4ParamValue1 = self.vector4ParamValue1;
+//            glUniform4fv(_uniformV4[0], 1, (GLfloat *)&tmpVector4ParamValue1);
+//        }
+//        if(_uniformV4[1] >= 0) {
+//            GPUVector4 tmpVector4ParamValue2 = self.vector4ParamValue2;
+//            glUniform4fv(_uniformV4[1], 1, (GLfloat *)&tmpVector4ParamValue2);
+//        }
+//        
+//        glUniformMatrix4fv(_transformMatrixUniform, 1, GL_FALSE, (GLfloat *)&_transformMatrix);
+//        glUniformMatrix4fv(_orthographicMatrixUniform, 1, GL_FALSE, (GLfloat *)&_orthographicMatrix);
+//        
+//        glVertexAttribPointer(filterPositionAttribute, 2, GL_FLOAT, 0, 0, adjustedVertices);
+//        glVertexAttribPointer(filterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, textureCoordinates);
+//        
+//        glEnableVertexAttribArray(filterPositionAttribute);
+//        glEnableVertexAttribArray(filterTextureCoordinateAttribute);
+//        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+//        
+//        CVPixelBufferUnlockBaseAddress(movieFrame, 0);
+//        CFRelease(luminanceTextureRef);
+//        CFRelease(chrominanceTextureRef);
+//    }
+//    [self informTargetsAboutNewFrameAtTime:time];
+//}
+//
+//- (void)renderImage:(GPUImageFramebuffer *)imageFrameBuffer atTime:(CMTime)time {
+//    runSynchronouslyOnVideoProcessingQueue(^{
+//        [self drawImage:imageFrameBuffer atTime:time];
+//    });
+//}
+//
+//- (void)drawImage:(GPUImageFramebuffer *)imageFrameBuffer atTime:(CMTime)time {
+//    BOOL bDrawBackGround = NO;
+//    if(self.bUseBackGroundImage && self.bgFrameBuffer) {
+//        [self drawBackGroundImage];
+//        bDrawBackGround = YES;
+//    }
+//    
+//    [GPUImageContext setActiveShaderProgram:filterProgram];
+//    if (!_ignoreAspectRatio) {
+//        [self loadOrthoMatrix:(GLfloat *)&_orthographicMatrix left:-1.0 right:1.0 bottom:(-1.0 * self.renderSize.height / self.renderSize.width) top:(1.0 * self.renderSize.height / self.renderSize.width) near:-1.0 far:1.0];
+//    } else {
+//        [self loadOrthoMatrix:(GLfloat *)&_orthographicMatrix left:-1.0 right:1.0 bottom:-1.0 top:1.0 near:-1.0 far:1.0];
+//    }
+//    [self convert3DTransform:&_transform3D toMatrix:&_transformMatrix];
+//    
+//    if(!bDrawBackGround) {
+//        outputFramebuffer = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:[self sizeOfFBO] textureOptions:self.outputTextureOptions onlyTexture:NO];
+//    }
+//    
+//    [outputFramebuffer activateFramebuffer];
+//    if (usingNextFrameForImageCapture) {
+//        [outputFramebuffer lock];
+//    }
+//    
+//    static const GLfloat normalVertices[] = {
+//        -1.0f, -1.0f,
+//        1.0f, -1.0f,
+//        -1.0f,  1.0f,
+//        1.0f,  1.0f,
+//    };
+//    
+//    static const GLfloat normalTextureCoordinates[] = {
+//        0.0f, 0.0f,
+//        1.0f, 0.0f,
+//        0.0f, 1.0f,
+//        1.0f, 1.0f,
+//    };
+//    
+//    glActiveTexture(GL_TEXTURE2);
+//    glBindTexture(GL_TEXTURE_2D, [imageFrameBuffer texture]);
+//    glUniform1i(filterInputTextureUniform, 2);
+//    
+//    NSInteger uniformIndex = 1;
+//    GLint textureIndex = 1;
+//    for (GPUImageFramebuffer *fb in self.frameBuffers) {
+//        glActiveTexture(GL_TEXTURE2 + textureIndex);
+//        glBindTexture(GL_TEXTURE_2D, [fb texture]);
+//        glUniform1i(_uniformTextures[uniformIndex], 2 + textureIndex);
+//        uniformIndex++;
+//        textureIndex++;
+//    }
+//    if(_uniformMat33 >= 0) {
+//        GPUMatrix3x3 tmpMat33ParamValue = self.mat33ParamValue;
+//        glUniformMatrix3fv(_uniformMat33, 1, GL_FALSE, (GLfloat *)(&tmpMat33ParamValue));
+//    }
+//    if(_uniformV4[0] >= 0) {
+//        GPUVector4 tmpVector4ParamValue1 = self.vector4ParamValue1;
+//        glUniform4fv(_uniformV4[0], 1, (GLfloat *)&tmpVector4ParamValue1);
+//    }
+//    if(_uniformV4[1] >= 0) {
+//        GPUVector4 tmpVector4ParamValue2 = self.vector4ParamValue2;
+//        glUniform4fv(_uniformV4[1], 1, (GLfloat *)&tmpVector4ParamValue2);
+//    }
+//    
+//    glVertexAttribPointer(filterPositionAttribute, 2, GL_FLOAT, 0, 0, normalVertices);
+//    glVertexAttribPointer(filterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, normalTextureCoordinates);
+//    
+//    glEnableVertexAttribArray(filterPositionAttribute);
+//    glEnableVertexAttribArray(filterTextureCoordinateAttribute);
+//    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+//    
+//    [imageFrameBuffer unlock];
+//    
+//    [self informTargetsAboutNewFrameAtTime:time];
+//}
 
 #pragma mark  - Conversion from matrix formats
 

@@ -46,6 +46,11 @@
 @property (nonatomic, strong) NSString *scale_mode;
 @property (nonatomic, strong, readonly) NSString *filePath;
 @property (nonatomic, strong) NSArray<BBZNodeAnimation *> *animations;
+
+//
+@property (nonatomic, assign) BOOL bRGB;
+@property (nonatomic, strong) UIImage *image;
+
 - (instancetype)initWithDictionary:(NSDictionary *)dic withFilePath:(NSString *)filePath;
 @end
 

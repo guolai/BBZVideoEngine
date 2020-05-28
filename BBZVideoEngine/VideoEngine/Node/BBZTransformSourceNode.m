@@ -7,7 +7,7 @@
 //
 
 #import "BBZTransformSourceNode.h"
-#import "BBZShader.h"
+//#import "BBZShader.h"
 
 @interface BBZTransformSourceNode ()
 @property (nonatomic, strong) NSString *vertexShader;
@@ -15,33 +15,39 @@
 @end
 
 @implementation BBZTransformSourceNode
-- (instancetype)initWithYUVShader:(BOOL)bUseLastFB {
-    if(self = [super init]) {
-        if(bUseLastFB) {
-            _vertexShader = [BBZShader vertextTransfromShader];
-            _fragmentShader = [BBZShader fragmentFBFectchYUV420FTransfromShader];
-        } else {
-            _vertexShader = [BBZShader vertextTransfromShader];
-            _fragmentShader = [BBZShader fragmentYUV420FTransfromShader];
-        }
-        [self initParams];
-    }
-    return self;
-}
-- (instancetype)initWithRGBShader:(BOOL)bUseLastFB {
-    if (self = [super init]) {
-        if(bUseLastFB) {
-            _vertexShader = [BBZShader vertextTransfromShader];
-            _fragmentShader = [BBZShader fragmentFBFectchRGBTransfromShader];
-        } else {
-            _vertexShader = [BBZShader vertextTransfromShader];
-            _fragmentShader = [BBZShader fragmentRGBTransfromShader];
-        }
-        [self initParams];
-    }
-    return self;
-}
+//- (instancetype)initWithYUVShader:(BOOL)bUseLastFB {
+//    if(self = [super init]) {
+//        if(bUseLastFB) {
+//            _vertexShader = [BBZShader vertextTransfromShader];
+//            _fragmentShader = [BBZShader fragmentFBFectchYUV420FTransfromShader];
+//        } else {
+//            _vertexShader = [BBZShader vertextTransfromShader];
+//            _fragmentShader = [BBZShader fragmentYUV420FTransfromShader];
+//        }
+//        self.name = @"transfrom";
+//    }
+//    return self;
+//}
+//- (instancetype)initWithRGBShader:(BOOL)bUseLastFB {
+//    if (self = [super init]) {
+//        if(bUseLastFB) {
+//            _vertexShader = [BBZShader vertextTransfromShader];
+//            _fragmentShader = [BBZShader fragmentFBFectchRGBTransfromShader];
+//        } else {
+//            _vertexShader = [BBZShader vertextTransfromShader];
+//            _fragmentShader = [BBZShader fragmentRGBTransfromShader];
+//        }
+//        self.name = @"transfrom";
+//    }
+//    return self;
+//}
 
+- (instancetype)init {
+    if(self = [super init]) {
+        self.name = @"transfrom";
+    }
+    return self;
+}
 
 
 - (NSString *)vShaderString {

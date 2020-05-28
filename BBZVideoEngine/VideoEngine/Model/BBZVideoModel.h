@@ -24,6 +24,7 @@
 @property (nonatomic, strong, readonly) NSString *videoResourceDir;
 
 @property (nonatomic, strong) UIImage *bgImage;
+@property (nonatomic, strong) UIImage *maskImage;
 
 //asset
 - (BOOL)addVideoSource:(NSString *)filePath;

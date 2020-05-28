@@ -20,6 +20,7 @@
 @property (nonatomic, assign) GPUVector4 vector4ParamValue2;
 @property (nonatomic, assign) GPUMatrix4x4 mat44ParamValue1;
 @property (nonatomic, assign) GPUMatrix4x4 mat44ParamValue2;
+@property (nonatomic, assign) BOOL shouldClearBackGround;
 
 - (NSInteger)addImageTexture:(UIImage *)image;
 - (BOOL)removeImageTexture:(UIImage *)image;
@@ -33,5 +34,10 @@
 - (NSArray<GPUImageFramebuffer *> *)frameBuffers;
 - (GLfloat *)adjustVertices:(GLfloat *)vertices;
 - (GLfloat *)adjustTextureCoordinates:(GLfloat *)textureCoordinates;
+
+
+- (void)willBeginRender;
+- (void)willEndRender;
+
 
 @end

@@ -14,7 +14,7 @@
 - (BBZActionBuilderResult *)buildTimelineNodes:(BBZActionBuilderResult *)inputBuilder {
     NSAssert(self.model.assetItems.count > 0, @"must have at least one asset");
     BBZActionBuilderResult *builder = nil;
-    if(self.model.bgImage) {
+    if(self.model.maskImage) {
         builder = [self buildEffectTimeLine:inputBuilder];
     }
     return builder;
