@@ -172,6 +172,7 @@
 		14F6AD18244F034100A908E8 /* Resource in Resources */ = {isa = PBXBuildFile; fileRef = 14F6AD17244F034000A908E8 /* Resource */; };
 		14F6AD1B244F1A5A00A908E8 /* BBZTaskFlow.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F6AD1A244F1A5A00A908E8 /* BBZTaskFlow.m */; };
 		184F0948244FF52F00C82BD1 /* BBZQueueManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 184F0947244FF52F00C82BD1 /* BBZQueueManager.m */; };
+		184F8C3F2480FAB600017CDB /* BBZNode+Local.m in Sources */ = {isa = PBXBuildFile; fileRef = 184F8C3E2480FAB600017CDB /* BBZNode+Local.m */; };
 		186CE3ED24574A49006222F7 /* BBZEngineContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 186CE3EC24574A49006222F7 /* BBZEngineContext.m */; };
 		18B80E162451F59300B3B376 /* BBZSpliceGroupNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B80E152451F59300B3B376 /* BBZSpliceGroupNode.m */; };
 		18B80E192451F5A600B3B376 /* BBZTransitionGroupNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B80E182451F5A600B3B376 /* BBZTransitionGroupNode.m */; };
@@ -510,6 +511,8 @@
 		14F6AD1A244F1A5A00A908E8 /* BBZTaskFlow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZTaskFlow.m; sourceTree = "<group>"; };
 		184F0946244FF52F00C82BD1 /* BBZQueueManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZQueueManager.h; sourceTree = "<group>"; };
 		184F0947244FF52F00C82BD1 /* BBZQueueManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZQueueManager.m; sourceTree = "<group>"; };
+		184F8C3D2480FAB500017CDB /* BBZNode+Local.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BBZNode+Local.h"; sourceTree = "<group>"; };
+		184F8C3E2480FAB600017CDB /* BBZNode+Local.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "BBZNode+Local.m"; sourceTree = "<group>"; };
 		186CE3EB24574A49006222F7 /* BBZEngineContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZEngineContext.h; sourceTree = "<group>"; };
 		186CE3EC24574A49006222F7 /* BBZEngineContext.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZEngineContext.m; sourceTree = "<group>"; };
 		18B80E142451F59300B3B376 /* BBZSpliceGroupNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZSpliceGroupNode.h; sourceTree = "<group>"; };
@@ -1070,6 +1073,8 @@
 				18B80E182451F5A600B3B376 /* BBZTransitionGroupNode.m */,
 				1484CF8A247F9E8800B2245B /* BBZTransformSourceNode.h */,
 				1484CF8B247F9E8800B2245B /* BBZTransformSourceNode.m */,
+				184F8C3D2480FAB500017CDB /* BBZNode+Local.h */,
+				184F8C3E2480FAB600017CDB /* BBZNode+Local.m */,
 			);
 			path = Node;
 			sourceTree = "<group>";
@@ -1316,6 +1321,7 @@
 				1431FA56244CB75D00AA2F65 /* NSFileManager+BBZTools.m in Sources */,
 				14183F8A2450511D00D03057 /* UITextField+YYAdd.m in Sources */,
 				142F0C752459A6630005AA8A /* BBZAction.m in Sources */,
+				184F8C3F2480FAB600017CDB /* BBZNode+Local.m in Sources */,
 				14183F9D2450511D00D03057 /* NSThread+YYAdd.m in Sources */,
 				14183F992450511D00D03057 /* NSNumber+YYAdd.m in Sources */,
 				14183F782450511D00D03057 /* YYTextContainerView.m in Sources */,
