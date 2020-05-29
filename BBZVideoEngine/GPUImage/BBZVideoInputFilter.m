@@ -33,12 +33,9 @@
 - (instancetype)initWithVertexShaderFromString:(NSString *)vertexShaderString fragmentShaderFromString:(NSString *)fragmentShaderString {
     if(self = [super initWithVertexShaderFromString:vertexShaderString fragmentShaderFromString:fragmentShaderString]) {
         _transform3D = CATransform3DIdentity;
-        _preferredConversion = kColorConversion709;
     }
     return self;
 }
-
-
 
 
 - (void)buildBackGroundParams {
@@ -71,7 +68,6 @@
     
 }
 
-
 - (void)setBUseBackGroundImage:(BOOL)bUseBackGroundImage {
     _bUseBackGroundImage = bUseBackGroundImage;
     runAsynchronouslyOnVideoProcessingQueue(^{
@@ -97,6 +93,37 @@
 
 - (void)setTransform3D:(CATransform3D)newValue {
     _transform3D = newValue;
+    runAsynchronouslyOnVideoProcessingQueue(^{
+        GPUMatrix4x4 matrix;
+        [self convert3DTransform:&self->_transform3D toMatrix:&matrix];
+        self.mat44ParamValue2 = matrix;
+    });
+}
+
+- (void)setRenderSize:(CGSize)renderSize {
+    _renderSize = renderSize;
+    runAsynchronouslyOnVideoProcessingQueue(^{
+        GPUMatrix4x4 matrix;
+        if (!self.ignoreAspectRatio) {
+            [self loadOrthoMatrix:(GLfloat *)&matrix left:-1.0 right:1.0 bottom:(-1.0 * self.renderSize.height / self.renderSize.width) top:(1.0 * self.renderSize.height / self.renderSize.width) near:-1.0 far:1.0];
+        } else {
+            [self loadOrthoMatrix:(GLfloat *)&matrix left:-1.0 right:1.0 bottom:-1.0 top:1.0 near:-1.0 far:1.0];
+        }
+        self.mat44ParamValue1 = matrix;
+    });
+}
+
+- (void)setIgnoreAspectRatio:(BOOL)ignoreAspectRatio {
+    _ignoreAspectRatio = ignoreAspectRatio;
+    runAsynchronouslyOnVideoProcessingQueue(^{
+        GPUMatrix4x4 matrix;
+        if (!self.ignoreAspectRatio) {
+            [self loadOrthoMatrix:(GLfloat *)&matrix left:-1.0 right:1.0 bottom:(-1.0 * self.renderSize.height / self.renderSize.width) top:(1.0 * self.renderSize.height / self.renderSize.width) near:-1.0 far:1.0];
+        } else {
+            [self loadOrthoMatrix:(GLfloat *)&matrix left:-1.0 right:1.0 bottom:-1.0 top:1.0 near:-1.0 far:1.0];
+        }
+        self.mat44ParamValue1 = matrix;
+    });
 }
 
 
@@ -146,7 +173,6 @@
     if(self.bUseBackGroundImage && self.bgFrameBuffer) {
         [self drawBackGroundImage];
     }
-    
 }
 
 - (void)willEndRender {

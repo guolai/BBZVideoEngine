@@ -217,7 +217,6 @@
 }
 
 - (void)willBeginRender {
-    
 }
 
 - (void)willEndRender {
