@@ -57,6 +57,7 @@
         BBZInputFilterAction *filterAction = [[BBZInputFilterAction alloc] initWithNode:tranformNode];
         filterAction.startTime = action.startTime;
         filterAction.duration = action.duration;
+        filterAction.renderSize = self.context.renderSize;
         BBZActionTree *filterTree = [BBZActionTree createActionTreeWithAction:filterAction];
         [filterTree addSubTree:actionTree];
         filterTree.groupIndex = builder.groupIndex;
@@ -143,6 +144,7 @@
             BBZInputFilterAction *filterAction = [[BBZInputFilterAction alloc] initWithNode:tranformNode];
             filterAction.startTime = sourceAction.startTime;
             filterAction.duration = sourceAction.duration;
+            filterAction.renderSize = self.context.renderSize;
             BBZActionTree *filterTree = [BBZActionTree createActionTreeWithAction:filterAction];
             [filterTree addSubTree:sourceActionTree];
             

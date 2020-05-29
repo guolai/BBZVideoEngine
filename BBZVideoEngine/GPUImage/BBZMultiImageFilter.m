@@ -144,8 +144,6 @@
         return;
     }
     
-    
-    
     outputFramebuffer = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:[self sizeOfFBO] textureOptions:self.outputTextureOptions onlyTexture:NO];
     
      [self willBeginRender];

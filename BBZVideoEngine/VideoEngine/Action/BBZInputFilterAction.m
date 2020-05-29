@@ -10,18 +10,19 @@
 #import "BBZVideoInputFilter.h"
 #import "BBZTransformSourceNode.h"
 #import "BBZShader.h"
+#import "GPUImageFramebuffer+BBZ.h"
 
 @interface BBZInputFilterAction ()
 @property (nonatomic, strong) BBZVideoInputFilter *multiFilter;
-@property (nonatomic, strong, readwrite) BBZTransformSourceNode *node;
+//@property (nonatomic, strong, readwrite) BBZTransformSourceNode *node;
 @end
 
 
 @implementation BBZInputFilterAction
 
-
-- (BBZTransformSourceNode *)node {
-    return self.node;
+- (void)dealloc {
+    [self.multiFilter removeAllCacheFrameBuffer];
+    self.multiFilter = nil;
 }
 
 - (void)createImageFilter {
@@ -49,9 +50,16 @@
         }
     }
     self.multiFilter = [[BBZVideoInputFilter alloc] initWithVertexShaderFromString:vertexShader fragmentShaderFromString:framgmentShader];
+    self.multiFilter.renderSize = self.renderSize;
+    self.multiFilter.bUseBackGroundImage = bUseLastFB;
+    self.multiFilter.bgFrameBuffer = [GPUImageFramebuffer BBZ_frameBufferWithImage:self.node.image.CGImage];
+    [self.multiFilter.bgFrameBuffer disableReferenceCounting];
 }
 
-
+- (void)setRenderSize:(CGSize)renderSize {
+    _renderSize = renderSize;
+    self.multiFilter.renderSize = renderSize;
+}
 
 //- (void)updateWithTime:(CMTime)time {
 //
@@ -66,9 +74,16 @@
         [self.multiFilter removeAllCacheFrameBuffer];
         if(self.firstInputSource) {
             BBZInputSourceParam *outputParam = [self.firstInputSource inputSourceAtTime:time];
+            GPUImageFramebuffer *firstFB = outputParam.arrayFrameBuffer[0];
+            [self.multiFilter setInputFramebuffer:firstFB atIndex:0];
             for (GPUImageFramebuffer *fb in outputParam.arrayFrameBuffer) {
-                [self.multiFilter addFrameBuffer:fb];
+                if(fb == firstFB) {
+                    continue;
+                } else {
+                    [self.multiFilter addFrameBuffer:fb];
+                }
             }
+           
             if(outputParam.bVideoSource) {
                 self.multiFilter.mat33ParamValue = outputParam.mat33ParamValue;
             }

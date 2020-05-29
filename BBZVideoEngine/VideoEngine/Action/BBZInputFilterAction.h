@@ -11,6 +11,7 @@
 
 @interface BBZInputFilterAction : BBZFilterAction
 @property (nonatomic, assign) BOOL bRGBTexture;
+@property (nonatomic, assign) CGSize renderSize;
 @property (nonatomic, weak) id<BBZInputSourceProtocol> firstInputSource;
 @property (nonatomic, weak) id<BBZInputSourceProtocol> secondInputSource;
 //@property (nonatomic, weak) id<BBZInputSourceProtocol> thirdInputSource;
