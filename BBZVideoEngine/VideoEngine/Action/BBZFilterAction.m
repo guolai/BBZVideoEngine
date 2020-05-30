@@ -40,10 +40,10 @@
 }
 
 
-- (BBZNode *)node {
-    NSAssert(false, @"BBZFilterAction no node");
-    return nil;
-}
+//- (BBZNode *)node {
+//    NSAssert(false, @"BBZFilterAction no node");
+//    return nil;
+//}
 
 
 

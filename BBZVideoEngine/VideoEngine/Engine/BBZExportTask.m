@@ -55,6 +55,7 @@
                 self.videoSetting = [[BBZEngineSetting alloc] buildVideoSettings:self.videoModel];
             }
             BBZEngineContext *context = [BBZEngineContext contextWithVideoSettings:self.videoSetting];
+            context.scheduleMode = BBZEngineScheduleModeExport;
             self.context = context;
             BBZRunAsynchronouslyOnExportQueue(^{
                 self.videoEngine = [BBZVideoEngine videoEngineWithModel:self.videoModel context:self.context outputFile:self.outputFile];

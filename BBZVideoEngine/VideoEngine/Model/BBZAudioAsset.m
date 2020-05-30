@@ -20,6 +20,7 @@
 //- (instancetype)initWithAVAsset:(AVAsset *)avAsset {
 //    if([self init]) {
 //        _avAsset = avAsset;
+//        self.mediaType = BBZBaseAssetMediaTypeAudio;
 //        self.filePath = nil;
 //        CMTime sourceTimeDuration = [BBZVideoTools durationOfAsset:_avAsset timeRange:CMTimeRangeMake(kCMTimeZero, kCMTimePositiveInfinity)];
 //        self.sourceTimeRange = CMTimeRangeMake(kCMTimeZero, sourceTimeDuration); ///针对某些特殊视频这样取时间区间还会有问题 后面再看要不要改吧

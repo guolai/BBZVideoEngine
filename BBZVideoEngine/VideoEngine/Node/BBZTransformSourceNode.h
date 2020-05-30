@@ -10,6 +10,7 @@
 
 
 @interface BBZTransformSourceNode : BBZNode
+
 //@property (nonatomic, assign) BOOL bRGB;
 //@property (nonatomic, strong) UIImage *image;
 //- (instancetype)initWithYUVShader:(BOOL)bUseLastFB;

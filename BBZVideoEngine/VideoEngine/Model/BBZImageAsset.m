@@ -27,7 +27,7 @@
 
 - (instancetype)init {
     if (self = [super init]) {
-        
+        self.mediaType = BBZBaseAssetMediaTypeImage;
         self.sourceTimeRange = CMTimeRangeMake(kCMTimeZero, CMTimeMake(2 * BBZVideoTimeScale, BBZVideoTimeScale));
         self.playTimeRange = self.sourceTimeRange;
     }
