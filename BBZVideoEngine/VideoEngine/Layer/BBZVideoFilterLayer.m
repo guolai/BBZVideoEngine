@@ -12,6 +12,7 @@
 #import "BBZInputFilterAction.h"
 #import "BBZVideoReaderAction.h"
 #import "BBZTransformSourceNode.h"
+#import "BBZNode+Local.h"
 
 
 @implementation BBZVideoFilterLayer
@@ -34,16 +35,15 @@
     NSMutableArray *retArray = [NSMutableArray array];
     for (BBZBaseAsset *baseAsset in self.model.assetItems) {
         BBZSourceAction *action = nil;
-        BBZTransformSourceNode *tranformNode = [[BBZTransformSourceNode alloc] init];
-        tranformNode.image = self.model.bgImage;
+        BOOL bRGB = NO;
         if(baseAsset.mediaType == BBZBaseAssetMediaTypeImage) {
             action = [self imageActionWithAsset:(BBZImageAsset *)baseAsset];
 //            tranformNode = [[BBZTransformSourceNode alloc] initWithRGBShader:(self.model.bgImage?YES:NO)];
-            tranformNode.bRGB = YES;
+            bRGB = YES;
         } else if(baseAsset.mediaType == BBZBaseAssetMediaTypeVideo) {
             action = [self videoActionWithAsset:(BBZVideoAsset *)baseAsset];
 //            tranformNode = [[BBZTransformSourceNode alloc] initWithYUVShader:(self.model.bgImage?YES:NO)];
-            tranformNode.bRGB = YES;
+            bRGB = YES;
         }
         action.startTime = builder.startTime;
         action.order = builder.groupIndex;
@@ -53,6 +53,8 @@
         builder.assetIndex++;
         BBZActionTree *actionTree = [BBZActionTree createActionTreeWithAction:action];
         
+        BBZNode *tranformNode = [BBZNode createLocalNode:BBZNodeTransformSource beginTime:action.startTime endTime:action.endTime];
+        tranformNode.image = self.model.bgImage;
         
         BBZInputFilterAction *filterAction = [[BBZInputFilterAction alloc] initWithNode:tranformNode];
         filterAction.startTime = action.startTime;
@@ -132,7 +134,7 @@
             
             BBZActionTree *sourceActionTree = [BBZActionTree createActionTreeWithAction:sourceAction];
             
-            BBZTransformSourceNode *tranformNode = [[BBZTransformSourceNode alloc] init];
+            BBZNode *tranformNode = [BBZNode createLocalNode:BBZNodeTransformSource beginTime:sourceAction.startTime endTime:sourceAction.endTime];
             if([sourceAction isKindOfClass:[BBZImageSourceAction class]]) {
 //                tranformNode = [[BBZTransformSourceNode alloc] initWithRGBShader:NO];
                 tranformNode.bRGB = YES;

@@ -22,6 +22,10 @@ typedef NS_ENUM(NSInteger, BBZNodeType) {
 
 @interface BBZNode (Local)
 
-+ (instancetype)createLocalNode:(BBZNodeType)type;
++ (instancetype)createLocalNode:(BBZNodeType)type beginTime:(double)beginTime endTime:(double)endTime;
+
+- (void)buildBlendFrame:(CGRect)frame;
 
 @end
+
+

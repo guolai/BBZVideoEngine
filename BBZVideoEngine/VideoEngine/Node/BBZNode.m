@@ -25,6 +25,19 @@
     return self;
 }
 
+- (id)copyWithZone:(nullable NSZone *)zone {
+    BBZNodeAnimationParams *copy = [[BBZNodeAnimationParams allocWithZone:zone] init];
+    copy.param1 = self.param1;
+    copy.param2 = self.param2;
+    copy.param3 = self.param3;
+    copy.param4 = self.param4;
+    copy.param5 = self.param5;
+    copy.param6 = self.param6;
+    copy.param7 = self.param7;
+    copy.param8 = self.param8;
+    return copy;
+}
+
 @end
 
 @implementation BBZNodeAnimation
@@ -119,6 +132,47 @@
     return shaderString;
 }
 
+- (BBZNodeAnimationParams *)paramsAtTime:(double)time {
+    BBZNodeAnimation *nodeAnimation = [self.animations objectAtIndex:0];
+    BBZNodeAnimationParams *currentTimeParam = [nodeAnimation.param_begin copy];
+    if(self.begin > time) {
+        NSCParameterAssert(false);
+        return currentTimeParam;
+    }
+    if(self.end < time) {
+        nodeAnimation = self.animations.lastObject;
+        currentTimeParam = [nodeAnimation.param_end copy];
+        NSCParameterAssert(false);
+        return currentTimeParam;
+    }
+    for (int i = 0; i < self.animations.count; i++) {
+        nodeAnimation = [self.animations objectAtIndex:i];
+        if(time >= self.begin + nodeAnimation.begin && time <= self.begin + nodeAnimation.end) {
+            break;
+        }
+    }
+    BBZNodeAnimationParams *beginParam = nodeAnimation.param_begin;
+    BBZNodeAnimationParams *endParam = nodeAnimation.param_end;
+    double currentTime = time - self.begin - nodeAnimation.begin;
+    double progress = currentTime / (nodeAnimation.end - nodeAnimation.begin);
+    currentTimeParam = [[BBZNodeAnimationParams alloc] init];
+    currentTimeParam.param1 = [self valueAtProgress:progress fromValue:beginParam.param1 toValue:endParam.param1];
+    currentTimeParam.param2 = [self valueAtProgress:progress fromValue:beginParam.param2 toValue:endParam.param2];
+    currentTimeParam.param3 = [self valueAtProgress:progress fromValue:beginParam.param3 toValue:endParam.param3];
+    currentTimeParam.param4 = [self valueAtProgress:progress fromValue:beginParam.param4 toValue:endParam.param4];
+    currentTimeParam.param5 = [self valueAtProgress:progress fromValue:beginParam.param5 toValue:endParam.param5];
+    currentTimeParam.param6 = [self valueAtProgress:progress fromValue:beginParam.param6 toValue:endParam.param6];
+    currentTimeParam.param7 = [self valueAtProgress:progress fromValue:beginParam.param7 toValue:endParam.param7];
+    currentTimeParam.param8 = [self valueAtProgress:progress fromValue:beginParam.param8 toValue:endParam.param8];
+    return currentTimeParam;
+}
+
+- (double)valueAtProgress:(double)progress fromValue:(double)fromValue toValue:(double)toValue {
+    progress = MIN(1.0, progress);
+    progress = MAX(0.0, progress);
+    double retValue = fromValue + (toValue - fromValue) * progress;
+    return retValue;
+}
 
 @end
 

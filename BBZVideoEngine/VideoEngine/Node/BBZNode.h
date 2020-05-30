@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface BBZNodeAnimationParams : NSObject
+@interface BBZNodeAnimationParams : NSObject <NSCopying>
 @property (nonatomic, assign) CGFloat param1;
 @property (nonatomic, assign) CGFloat param2;
 @property (nonatomic, assign) CGFloat param3;
@@ -26,7 +26,11 @@
 @property (nonatomic, assign) double end;
 @property (nonatomic, strong) BBZNodeAnimationParams *param_begin;
 @property (nonatomic, strong) BBZNodeAnimationParams *param_end;
+
 - (instancetype)initWithDictionary:(NSDictionary *)dic;
+
+
+
 @end
 
 @interface BBZNode : NSObject
@@ -47,11 +51,16 @@
 @property (nonatomic, strong, readonly) NSString *filePath;
 @property (nonatomic, strong) NSArray<BBZNodeAnimation *> *animations;
 
+
+
 //
 @property (nonatomic, assign) BOOL bRGB;
 @property (nonatomic, strong) UIImage *image;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dic withFilePath:(NSString *)filePath;
+
+- (BBZNodeAnimationParams *)paramsAtTime:(double)time;
+
 @end
 
 

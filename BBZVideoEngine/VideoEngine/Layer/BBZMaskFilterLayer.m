@@ -8,6 +8,7 @@
 
 #import "BBZMaskFilterLayer.h"
 #import "BBZFilterAction.h"
+#import "BBZNode+Local.h"
 
 
 @implementation BBZMaskFilterLayer
@@ -29,7 +30,10 @@
     NSMutableArray *retArray = [NSMutableArray array];
     BBZActionTree *maskTree = [BBZActionTree createActionWithBeginTime:0  endTime:inputBuilderResult.startTime];
   
-    BBZVistualFilterAction *filterAction = [[BBZVistualFilterAction alloc] init];
+    BBZNode *node = [BBZNode createLocalNode:BBZNodeBlendImage beginTime:0 endTime:inputBuilderResult.startTime];
+    [node buildBlendFrame:CGRectMake(20.0, 20.0, 40.0, 40.0)];
+    node.image = self.model.maskImage;
+    BBZVistualFilterAction *filterAction = [[BBZVistualFilterAction alloc] initWithNode:node];
     filterAction.startTime = 0;
     filterAction.duration = inputBuilderResult.startTime;
     [maskTree addAction:filterAction];
