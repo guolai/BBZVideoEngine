@@ -33,14 +33,14 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
 @interface BBZVideoEngine ()<BBZVideoWriteControl, BBZSegmentActionDelegate>
 @property (nonatomic, strong) BBZVideoModel *videoModel;
 @property (nonatomic, strong) BBZEngineContext *context;
-@property (nonatomic, strong) NSString *outputFile;
+//@property (nonatomic, strong) NSString *outputFile;
 @property (nonatomic, strong) BBZFilterMixer *filterMixer;
 @property (nonatomic, strong) BBZSchedule *schedule;
 @property (nonatomic, strong) BBZCompositonDirector *director;
 @property (nonatomic, strong) NSMutableDictionary *filterLayers; //@(BBZFilterLayerType):BBZFilterLayer
 @property (nonatomic, strong) NSMutableSet *timePointSet;
 @property (nonatomic, assign) NSUInteger intDuration;
-@property (nonatomic, assign) NSMutableDictionary *timeSegments; // @(time): ActionTree
+@property (nonatomic, strong) NSMutableDictionary *timeSegments; // @(time): ActionTree
 
 
 
@@ -50,12 +50,14 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
 @implementation BBZVideoEngine
 
 - (instancetype)initWithModel:(BBZVideoModel *)videoModel
-                context:(BBZEngineContext *)context {
+                context:(BBZEngineContext *)context
+                   outputFile:(NSString *)outputFile {
     if(self = [super init]) {
         _videoModel = videoModel;
         _context = context;
-        _timeSegments = [NSMutableDictionary dictionaryWithCapacity:1];
+        _timeSegments = [NSMutableDictionary dictionary];
         _timePointSet = [NSMutableSet set];
+        _outputFile = outputFile;
         [self buildVideoEngine];
         [self buildFilterLayers];
     }
@@ -66,8 +68,7 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
 + (instancetype)videoEngineWithModel:(BBZVideoModel *)model
                              context:(BBZEngineContext *)context
                           outputFile:(NSString *)outputFile {
-    BBZVideoEngine *videoEngine = [[BBZVideoEngine alloc] initWithModel:model context:context];
-    videoEngine.outputFile = outputFile;
+    BBZVideoEngine *videoEngine = [[BBZVideoEngine alloc] initWithModel:model context:context outputFile:outputFile];
     return videoEngine;
 }
 
@@ -93,6 +94,7 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
     
     BBZOutputFilterLayer *outputLayer = [[BBZOutputFilterLayer alloc] initWithModel:self.videoModel context:self.context];
     self.filterLayers[@(BBZFilterLayerTypeOutput)] = outputLayer;
+    outputLayer.outputFile = self.outputFile;
     outputLayer.writerControl = self;
     
     BBZActionBuilderResult *builerResult = nil;
@@ -101,7 +103,9 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
         if(i == BBZFilterLayerTypeVideo || i == BBZFilterLayerTypeTransition) {
             BBZActionBuilderResult *currentResult = [layer buildTimelineNodes:builerResult];
             layer.builderResult = currentResult;
-            builerResult = currentResult;
+            if(currentResult) {
+                builerResult = currentResult;
+            }
         } else {
             BBZActionBuilderResult *currentResult = [layer buildTimelineNodes:builerResult];
             layer.builderResult = currentResult;
@@ -192,8 +196,8 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
         BBZActionTree *subTree = [tree subTreeFromTime:startTime endTime:endTime];
         if(subTree) {
             [array addObject:subTree];
-        } else {
-            break;
+//        } else {
+//            break;
         }
     }
     return array;
@@ -265,6 +269,5 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
         }
     }
 }
-
 
 @end

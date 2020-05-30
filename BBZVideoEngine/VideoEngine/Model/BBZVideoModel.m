@@ -35,7 +35,7 @@
 
 #pragma mark - Asset
 - (BOOL)addVideoSource:(NSString *)filePath {
-    AVURLAsset *avAsset = [[AVURLAsset alloc] initWithURL:[NSURL URLWithString:filePath] options:nil];
+    AVURLAsset *avAsset = [[AVURLAsset alloc] initWithURL:[NSURL fileURLWithPath:filePath] options:nil];
     BBZVideoAsset *videoAsset = [BBZVideoAsset assetWithAVAsset:avAsset];
     [self.interAssetItems addObject:videoAsset];
     return YES;

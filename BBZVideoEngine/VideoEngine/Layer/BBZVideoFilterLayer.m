@@ -83,7 +83,8 @@
     return builder;
 }
 
-- (BBZActionBuilderResult *)buildTimeLineWithSpliceNodes {
+- (BBZActionBuilderResult *)
+buildTimeLineWithSpliceNodes {
     BBZActionBuilderResult *builder = [[BBZActionBuilderResult alloc] init];
     builder.startTime = 0;
     builder.groupIndex = 0;

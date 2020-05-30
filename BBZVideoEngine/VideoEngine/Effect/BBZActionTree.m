@@ -23,6 +23,7 @@
 - (instancetype)init {
     if(self = [super init]) {
         _arrayNodes = [NSMutableArray arrayWithCapacity:2];
+        _arrayActions = [NSMutableArray array];
     }
     return self;
 }

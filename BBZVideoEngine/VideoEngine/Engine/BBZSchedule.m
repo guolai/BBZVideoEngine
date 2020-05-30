@@ -88,8 +88,10 @@
             self.displayLink.paused = NO;
         }
     }
-    
-    BBZINFO(@"timeline start");
+    CMTime tmpTime = CMTimeMake(self.currentTime * BBZScheduleTimeScale, BBZScheduleTimeScale);
+    BBZINFO(@" currentTime = %.4f,%.4f", self.currentTime, CMTimeGetSeconds(tmpTime));
+    [self.observer updateWithTime:tmpTime];
+    BBZINFO(@"BBZSchedule startTimeline");
 }
 
 - (void)setBPaused:(BOOL)bPaused {
@@ -106,7 +108,7 @@
 
 - (void)pauseTimeline {
     self.bPaused = YES;
-    BBZINFO(@"pauseTimeline");
+    BBZINFO(@"BBZSchedule pauseTimeline");
 }
 
 - (void)stopTimeline {
@@ -115,7 +117,7 @@
         [self.displayLink invalidate];
         self.displayLink = nil;
     }
-    BBZINFO(@"resetTimeline");
+    BBZINFO(@"BBZSchedule resetTimeline");
 }
 
 - (void)seekTimelineToTime:(CMTime)time {

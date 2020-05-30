@@ -16,9 +16,7 @@
 - (BBZActionBuilderResult *)buildTimelineNodes:(BBZActionBuilderResult *)inputBuilder {
     NSAssert(self.model.assetItems.count > 0, @"must have at least one asset");
     BBZActionBuilderResult *builder = nil;
-    if(self.model.transitonModel.transitionGroups.count == 0) {
-        builder = inputBuilder;
-    } else {
+    if(self.model.transitonModel.transitionGroups.count > 0) {
         builder = [self buildTranstionTimeLine:inputBuilder];
     }
     return builder;

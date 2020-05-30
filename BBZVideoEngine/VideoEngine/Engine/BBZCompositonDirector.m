@@ -10,6 +10,7 @@
 #import "BBZSourceAction.h"
 #import "BBZFilterAction.h"
 #import "BBZOutputAction.h"
+#import "BBZInputFilterAction.h"
 
 @interface BBZCompositonDirector ()
 @property (nonatomic, strong) BBZFilterMixer *filterMixer;
@@ -60,6 +61,14 @@
             [action lock];
         }
         [action updateWithTime:time];
+    }
+    for (BBZAction *action in self.actions) {
+        [action newFrameAtTime:time];
+    }
+    for (BBZAction *action in self.actions) {
+        if([action isKindOfClass:[BBZInputFilterAction class]]) {
+            [((BBZInputFilterAction *)action) processAVSourceAtTime:time];
+        }
     }
     self.bLocked = YES;
 }
