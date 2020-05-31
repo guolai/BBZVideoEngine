@@ -51,7 +51,7 @@
             }
             self.state = BBZTaskStateRunning;
             bRet = YES;
-            if(self.videoSetting) {
+            if(!self.videoSetting) {
                 self.videoSetting = [[BBZEngineSetting alloc] buildVideoSettings:self.videoModel];
             }
             BBZEngineContext *context = [BBZEngineContext contextWithVideoSettings:self.videoSetting];

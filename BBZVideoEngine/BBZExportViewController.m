@@ -13,9 +13,15 @@
 
 @interface BBZExportViewController ()
 @property (nonatomic, strong) UILabel *lblProgress;
+@property (nonatomic, strong) BBZExportTask *task;
 @end
 
 @implementation BBZExportViewController
+
+- (void)dealloc {
+    [self.task cancel];
+    self.task = nil;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -56,7 +62,7 @@
     
     BBZExportTask *task = [BBZExportTask taskWithModel:videoModel];
     [task start];
-    
+    self.task = task;
 }
 
 @end

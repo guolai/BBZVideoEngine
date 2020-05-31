@@ -80,6 +80,9 @@
         NSTimeInterval deltaTime = (now - self.lastTime) * self.rate;
         self.currentTime = self.currentTime + deltaTime;
         self.lastTime = now;
+        CMTime tmpTime = CMTimeMake(self.currentTime * BBZScheduleTimeScale, BBZScheduleTimeScale);
+        BBZINFO(@" currentTime = %.4f,%.4f", self.currentTime, CMTimeGetSeconds(tmpTime));
+        [self.observer updateWithTime:tmpTime];
     } else {
         if (self.displayLink == nil) {
             self.displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(onTimer:)];
@@ -88,9 +91,7 @@
             self.displayLink.paused = NO;
         }
     }
-    CMTime tmpTime = CMTimeMake(self.currentTime * BBZScheduleTimeScale, BBZScheduleTimeScale);
-    BBZINFO(@" currentTime = %.4f,%.4f", self.currentTime, CMTimeGetSeconds(tmpTime));
-    [self.observer updateWithTime:tmpTime];
+    
     BBZINFO(@"BBZSchedule startTimeline");
 }
 

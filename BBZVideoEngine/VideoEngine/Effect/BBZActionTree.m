@@ -75,15 +75,15 @@
     if(!action) {
         return;
     }
-    if(action.startTime < self.beginTime || action.endTime > self.endTime) {
-        BBZERROR(@"segment error %u, %u, %u, %u", action.startTime, action.endTime, self.beginTime, self.endTime);
-        NSAssert(false, @"segment error");
-    }
+//    if(action.startTime < self.beginTime || action.endTime > self.endTime) {
+//        BBZERROR(@"segment error %u, %u, %u, %u", action.startTime, action.endTime, self.beginTime, self.endTime);
+//        NSAssert(false, @"segment error");
+//    }
  
     BOOL bAdd = NO;
     for (int i = 0; i < self.arrayActions.count; i++) {
         BBZAction *tmpaction = [self.arrayActions objectAtIndex:i];
-        if(tmpaction.startTime > action.startTime) {
+        if(tmpaction.order > action.order) {
             [self.arrayActions insertObject:action atIndex:i];
             bAdd = YES;
             break;

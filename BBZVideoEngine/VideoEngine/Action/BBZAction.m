@@ -22,6 +22,7 @@
         _repeatCount = 1;
         _startTime = 0;
         _duration = 0;
+        _order = 88888;
         _referenceCountingDisabled = NO;
         _referenceCount = 0;
     }
@@ -76,6 +77,17 @@
 
 - (void)destroySomething {
     
+}
+
+- (NSInteger)order {
+    if(_order == 88888) {
+        if(self.node) {
+            return self.node.order;
+        } else {
+            return 0;
+        }
+    }
+    return _order;
 }
 
 - (NSUInteger)endTime {

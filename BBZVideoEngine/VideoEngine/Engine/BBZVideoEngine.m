@@ -20,13 +20,13 @@
 
 
 typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
-    BBZFilterLayerTypeVideo,//视频 图片 背景图 拼接
-    BBZFilterLayerTypeAudio,//音频
-    BBZFilterLayerTypeTransition,//转场
-    BBZFilterLayerTypeEffect,//特效
-    BBZFilterLayerTypeMask,//水印
-    BBZFilterLayerTypeOutput,//输出
-    BBZFilterLayerTypeMax,
+    BBZFilterLayerTypeVideo = 0,//视频 图片 背景图 拼接
+    BBZFilterLayerTypeAudio = 1,//音频
+    BBZFilterLayerTypeTransition = 2,//转场
+    BBZFilterLayerTypeEffect = 3,//特效
+    BBZFilterLayerTypeMask = 4,//水印
+    BBZFilterLayerTypeOutput = 5,//输出
+    BBZFilterLayerTypeMax = 6,
 };
 
 
@@ -118,8 +118,10 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
 
 - (void)buildVideoEngine {
     self.director = [[BBZCompositonDirector alloc] init];
+    self.director.segmentDelegate = self;
     self.schedule = [BBZSchedule scheduleWithMode:self.context.scheduleMode];
     self.schedule.observer = self.director;
+    self.filterMixer = [[BBZFilterMixer alloc] init];
 }
 
 

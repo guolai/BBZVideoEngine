@@ -16,7 +16,7 @@
 
 @implementation BBZActionBuilder
 + (void)connectAction:(BBZAction *)fromAction toAction:(BBZAction *)toAction {
-    if(fromAction || toAction) {
+    if(!fromAction || !toAction) {
         BBZINFO(@"contains Nil in headAction: %@, tailAction:%@", fromAction, toAction);
         return;
     }

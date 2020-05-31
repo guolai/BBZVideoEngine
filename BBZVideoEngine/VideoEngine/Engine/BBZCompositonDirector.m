@@ -17,7 +17,7 @@
 
 // 当前区间
 @property (nonatomic, strong) NSArray *actions;
-@property (nonatomic, assign) BOOL bLocked;
+//@property (nonatomic, assign) BOOL bLocked;
 @property (nonatomic, assign) NSUInteger currentTimePoint;
 @property (nonatomic, assign) NSUInteger currentIndex;
 @end
@@ -36,30 +36,30 @@
 #pragma mark - Schedule
 
 - (void)updateWithTime:(CMTime)time{
-    //首次进入
-    if(self.currentTimePoint == 0 && ![self findNextTimePoint]) {
-        [self didReachEndTime];
-        return;
-    }
+//    //首次进入
+//    if(self.currentTimePoint == 0 && ![self findNextTimePoint]) {
+//        [self didReachEndTime];
+//        return;
+//    }
     //to do 需要进行时间换算，和误差处理
-    if(CMTimeGetSeconds(time) >= self.currentTimePoint) {
+    NSTimeInterval realTimePoint = self.currentTimePoint/(BBZVideoDurationScale * 1.0);
+    if(CMTimeGetSeconds(time) >= realTimePoint) {
         if(![self findNextTimePoint]) {
             [self didReachEndTime];
             return;
         } else {
             NSArray *actons = self.actions;
             self.actions = [self.segmentDelegate layerActionTreesBeforeTimePoint:self.currentTimePoint];
-            self.bLocked = NO;
-            [self updateWithTime:time];
+            for (BBZAction *action in self.actions) {
+                [action lock];
+            }
             for (BBZAction *action in actons) {
                 [action unlock];
             }
         }
     }
+    
     for (BBZAction *action in self.actions) {
-        if(!self.bLocked) {
-            [action lock];
-        }
         [action updateWithTime:time];
     }
     for (BBZAction *action in self.actions) {
@@ -70,7 +70,7 @@
             [((BBZInputFilterAction *)action) processAVSourceAtTime:time];
         }
     }
-    self.bLocked = YES;
+
 }
 
 - (void)didSeekToTime:(CMTime)time{

@@ -192,7 +192,7 @@
     glVertexAttribPointer(filterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, textureCoordinates);
     
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-    
+//    glFinish();
     [firstInputFramebuffer unlock];
     
     [self willEndRender];

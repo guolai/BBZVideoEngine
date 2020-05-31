@@ -37,23 +37,34 @@
 }
 
 - (void)newFrameAtTime:(CMTime)time {
-    CMSampleBufferRef sampleBuffer = self.videoOutPut.currentSampleBuffer;
-    if(!sampleBuffer) {
-        sampleBuffer = [self.videoOutPut nextSampleBuffer];
-    }
-    CMTime lastSamplePresentationTime = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
-    lastSamplePresentationTime = CMTimeSubtract(lastSamplePresentationTime, self.reader.timeRange.start);
-    NSTimeInterval nDiff = CMTimeGetSeconds(CMTimeSubtract(lastSamplePresentationTime, time));
-    if(nDiff > 0.001 && self.inputSourceParam) {
-        BBZINFO(@"use last samplebuffer");
-        return;
-    }
+    runAsynchronouslyOnVideoProcessingQueue(^{
+        CMSampleBufferRef sampleBuffer = self.videoOutPut.currentSampleBuffer;
+        if(!sampleBuffer) {
+            sampleBuffer = [self.videoOutPut nextSampleBuffer];
+            [self buildInputParam];
+        } else {
+            CMTime lastSamplePresentationTime = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
+            lastSamplePresentationTime = CMTimeSubtract(lastSamplePresentationTime, self.reader.timeRange.start);
+            NSTimeInterval nDiff = CMTimeGetSeconds(CMTimeSubtract(lastSamplePresentationTime, time));
+            if(nDiff > 0.001) {
+                if(!self.inputSourceParam) {
+                    [self buildInputParam];
+                }
+            } else {
+                sampleBuffer = [self.videoOutPut nextSampleBuffer];
+                [self buildInputParam];
+            }
+        }
+    });
+}
+
+
+- (void)buildInputParam {
     if(!self.inputSourceParam) {
-        sampleBuffer = [self.videoOutPut nextSampleBuffer];
         self.inputSourceParam = [[BBZInputSourceParam alloc] init];
         self.inputSourceParam.bVideoSource = YES;
     }
-   
+    CMSampleBufferRef sampleBuffer = self.videoOutPut.currentSampleBuffer;
     GLfloat *preferredConversion;
     CVPixelBufferRef movieFrame = (CVPixelBufferRef)CMSampleBufferGetImageBuffer(sampleBuffer);
     CFTypeRef colorAttachments = CVBufferGetAttachment(movieFrame, kCVImageBufferYCbCrMatrixKey, NULL);
@@ -69,8 +80,10 @@
     }
     NSArray *array = [GPUImageFramebuffer BBZ_YUVFrameBufferWithCVPixelBuffer:movieFrame];
     NSAssert(array.count == 2, @"error");
+    self.inputSourceParam.arrayFrameBuffer = array;
     self.inputSourceParam.mat33ParamValue = *((GPUMatrix3x3 *)preferredConversion);
 }
+
 
 
 - (BBZInputSourceParam *)inputSourceAtTime:(CMTime)time {

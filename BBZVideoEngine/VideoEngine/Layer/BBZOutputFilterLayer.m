@@ -35,6 +35,7 @@
     } else {
         NSAssert(false, @"error");
     }
+    builder.groupActions = retArray;
     return builder;
 }
 
