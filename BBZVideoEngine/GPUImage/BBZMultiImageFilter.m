@@ -27,6 +27,7 @@
     _frameBufferArray = [NSMutableArray array];
     _maxIndex = 5;
     _index = 1;
+    _shouldClearBackGround = YES;
     runSynchronouslyOnVideoProcessingQueue(^{
         [GPUImageContext useImageProcessingContext];
         self->_uniformTextures[0] = self->filterInputTextureUniform;
@@ -130,11 +131,11 @@
 
 #pragma mark - BBZGPUFilter
 
-- (GLfloat *)adjustVertices:(GLfloat *)vertices {
+- (const GLfloat *)adjustVertices:(const GLfloat *)vertices {
     return vertices;
 }
 
-- (GLfloat *)adjustTextureCoordinates:(GLfloat *)textureCoordinates {
+- (const GLfloat *)adjustTextureCoordinates:(const GLfloat *)textureCoordinates {
     return textureCoordinates;
 }
 
@@ -189,10 +190,10 @@
         glUniform4fv(_uniformV4[1], 1, (GLfloat *)&_vector4ParamValue2);
     }
     glVertexAttribPointer(filterPositionAttribute, 2, GL_FLOAT, 0, 0, [self adjustVertices:vertices]);
-    glVertexAttribPointer(filterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, textureCoordinates);
+    glVertexAttribPointer(filterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, [self adjustTextureCoordinates:textureCoordinates]);
     
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-//    glFinish();
+    glFinish();
     [firstInputFramebuffer unlock];
     
     [self willEndRender];

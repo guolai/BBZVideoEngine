@@ -40,6 +40,7 @@
 }
 
 - (void)completeWithError:(NSError *)error {
+    self.state = BBZTaskStateFinish;
     if (self.scheduler) {
         [self.scheduler task:self didCompleteWithError:error];
     }

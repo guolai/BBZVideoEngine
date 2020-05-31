@@ -16,6 +16,8 @@
 //@end
 
 @interface BBZOutputAction : BBZAction<BBZActionChainProtocol>
+
+- (void)didReachEndTime;
 //@property (nonatomic, strong, readonly) GPUImageFilter *filter;
 @end
 

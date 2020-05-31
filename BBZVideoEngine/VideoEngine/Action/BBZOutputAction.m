@@ -21,4 +21,8 @@
     
 }
 
+- (void)didReachEndTime {
+    
+}
+
 @end

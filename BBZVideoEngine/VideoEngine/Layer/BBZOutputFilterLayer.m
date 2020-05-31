@@ -10,6 +10,7 @@
 #import "BBZVideoWriterAction.h"
 
 @interface BBZOutputFilterLayer ()<BBZVideoWriteControl>
+@property (nonatomic, weak) BBZOutputAction *outputAction;
 
 @end
 
@@ -30,7 +31,7 @@
         builder.groupIndex++;
         builder.assetIndex++;
         BBZActionTree *actionTree = [BBZActionTree createActionTreeWithAction:action];
-        
+        self.outputAction = action;
         [retArray addObject:actionTree];
     } else {
         NSAssert(false, @"error");
@@ -49,6 +50,10 @@
     if([self.writerControl respondsToSelector:@selector(didWriteAudioFrame)]) {
         [self.writerControl didWriteAudioFrame];
     }
+}
+
+- (void)didReachEndTime {
+    [self.outputAction didReachEndTime];
 }
 
 @end

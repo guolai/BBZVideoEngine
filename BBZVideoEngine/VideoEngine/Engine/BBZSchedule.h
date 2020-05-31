@@ -13,8 +13,8 @@
 @required
 - (void)updateWithTime:(CMTime)time;
 - (void)didSeekToTime:(CMTime)time;
-@optional
-- (void)didReachEndTime;
+//@optional
+//- (void)didReachEndTime;
 @end
 
 @interface BBZSchedule : NSObject

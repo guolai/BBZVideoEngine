@@ -247,6 +247,10 @@
     }
     CMSampleBufferRef sampleBuffer = [self nextSampleBufferForProviderOutput:self.providerOutput];
     self.currentSampleBuffer = sampleBuffer;
+    if(sampleBuffer) {
+        CFRelease(sampleBuffer);
+    }
+    
     return sampleBuffer;
 }
 

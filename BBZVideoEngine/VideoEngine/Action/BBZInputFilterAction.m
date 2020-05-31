@@ -35,7 +35,7 @@
     if(self.node.bRGB) {
         if(bUseLastFB) {
             vertexShader = [BBZShader vertextTransfromShader];
-            framgmentShader = [BBZShader fragmentFBFectchYUV420FTransfromShader];
+            framgmentShader = [BBZShader fragmentFBFectchRGBTransfromShader];
         } else {
             vertexShader = [BBZShader vertextTransfromShader];
             framgmentShader = [BBZShader fragmentRGBTransfromShader];
@@ -43,12 +43,14 @@
     } else {
         if(bUseLastFB) {
             vertexShader = [BBZShader vertextTransfromShader];
-            framgmentShader = [BBZShader fragmentFBFectchRGBTransfromShader];
+            framgmentShader = [BBZShader fragmentFBFectchYUV420FTransfromShader];
         } else {
             vertexShader = [BBZShader vertextTransfromShader];
             framgmentShader = [BBZShader fragmentYUV420FTransfromShader];
         }
     }
+//    vertexShader = [BBZShader vertextShader];
+//    framgmentShader = [BBZShader fragmentPassthroughShader];
     self.multiFilter = [[BBZVideoInputFilter alloc] initWithVertexShaderFromString:vertexShader fragmentShaderFromString:framgmentShader];
     self.multiFilter.renderSize = self.renderSize;
     self.multiFilter.bUseBackGroundImage = bUseLastFB;

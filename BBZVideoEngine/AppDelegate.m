@@ -23,7 +23,7 @@
     self.window.backgroundColor = [UIColor whiteColor];
     
     [[BBZErrorMonitor shareInstance] addErrorBlock:^(NSError *error) {
-        NSSet *ignoredErrors = [NSSet setWithObjects:@(401), nil];
+        NSSet *ignoredErrors = [NSSet setWithObjects:@(401), @(4097),@(2),@(260), nil];
         if (error && ![ignoredErrors containsObject:@(error.code)]) {
             BBZINFO(@"%@", [NSString stringWithFormat:@"%@:%ld",error.domain,(long)error.code]);
         }

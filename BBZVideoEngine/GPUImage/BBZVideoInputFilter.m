@@ -33,7 +33,7 @@
 
 - (instancetype)initWithVertexShaderFromString:(NSString *)vertexShaderString fragmentShaderFromString:(NSString *)fragmentShaderString {
     if(self = [super initWithVertexShaderFromString:vertexShaderString fragmentShaderFromString:fragmentShaderString]) {
-        _transform3D = CATransform3DIdentity;
+        self.transform3D = CATransform3DIdentity;
     }
     return self;
 }
@@ -73,6 +73,8 @@
         runAsynchronouslyOnVideoProcessingQueue(^{
             [self buildBackGroundParams];
         });
+    } else {
+        self.shouldClearBackGround = YES;
     }
 }
 
@@ -128,7 +130,7 @@
 }
 
 
-- (GLfloat *)adjustVertices:(GLfloat *)vertices {
+- (const GLfloat *)adjustVertices:(const GLfloat *)vertices {
     CGSize size = firstInputFramebuffer.size;
     if(CGSizeEqualToSize(size, CGSizeZero)) {
         size = self.renderSize;
@@ -145,7 +147,7 @@
     return _imageVertices;
 }
 
-- (GLfloat *)adjustTextureCoordinates:(GLfloat *)textureCoordinates {
+- (const GLfloat *)adjustTextureCoordinates:(const GLfloat *)textureCoordinates {
     return textureCoordinates;
 }
 

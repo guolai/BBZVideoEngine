@@ -16,6 +16,8 @@
 
 - (NSArray *)layerActionTreesBeforeTimePoint:(NSUInteger)timePoint;
 
+- (void)didReachEndTime;
+
 @end
 
 

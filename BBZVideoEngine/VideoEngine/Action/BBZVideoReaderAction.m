@@ -16,6 +16,7 @@
 @property (nonatomic, strong) BBZAssetReader *reader;
 @property (nonatomic, strong) BBZAssetReaderSequentialAccessVideoOutput *videoOutPut;
 @property (nonatomic, strong) BBZInputSourceParam *inputSourceParam;
+@property (nonatomic, assign) CMSampleBufferRef sampleBuffer;
 @end
 
 
@@ -39,9 +40,15 @@
 - (void)newFrameAtTime:(CMTime)time {
     runAsynchronouslyOnVideoProcessingQueue(^{
         CMSampleBufferRef sampleBuffer = self.videoOutPut.currentSampleBuffer;
+        if(sampleBuffer) {
+            self.sampleBuffer = sampleBuffer;
+        }
         if(!sampleBuffer) {
             sampleBuffer = [self.videoOutPut nextSampleBuffer];
-            [self buildInputParam];
+            if(sampleBuffer) {
+                self.sampleBuffer = sampleBuffer;
+                [self buildInputParam];
+            }
         } else {
             CMTime lastSamplePresentationTime = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
             lastSamplePresentationTime = CMTimeSubtract(lastSamplePresentationTime, self.reader.timeRange.start);
@@ -52,7 +59,10 @@
                 }
             } else {
                 sampleBuffer = [self.videoOutPut nextSampleBuffer];
-                [self buildInputParam];
+                if(sampleBuffer) {
+                    self.sampleBuffer = sampleBuffer;
+                    [self buildInputParam];
+                }
             }
         }
     });
@@ -96,7 +106,22 @@
     [self.videoOutPut startProcessing];
 }
 
+- (void)setSampleBuffer:(CMSampleBufferRef)sampleBuffer {
+    if(sampleBuffer &&  _sampleBuffer == sampleBuffer) {
+        return;
+    }
+    if(sampleBuffer) {
+        CFRetain(sampleBuffer);
+    }
+    if(_sampleBuffer) {
+        CFRelease(_sampleBuffer);
+        _sampleBuffer = nil;
+    }
+    _sampleBuffer = sampleBuffer;
+}
+
 - (void)destroySomething{
+    self.sampleBuffer = nil;
     [self.videoOutPut endProcessing];
     [self.reader removeOutput:self.videoOutPut];
     self.videoOutPut = nil;

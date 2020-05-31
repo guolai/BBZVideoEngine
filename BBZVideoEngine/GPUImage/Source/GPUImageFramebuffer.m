@@ -45,7 +45,7 @@
         NSInteger count2 = 0;
         NSInteger count3 = 0;
         NSMutableString *string = [NSMutableString string];
-        BOOL bShouldLog = ((self.lastIndex % 60) == 56);
+        BOOL bShouldLog = ((self.lastIndex % 30) == 29);
         NSArray *allCachedFBs = nil;//[[GPUImageContext sharedFramebufferCache] allCachedFrameBuffers];
         for (GPUImageFBWeakObject *weakObject in self.fbWeakObjectArray) {
             if(weakObject.object)

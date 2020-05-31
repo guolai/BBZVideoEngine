@@ -86,6 +86,7 @@
 }
 
 - (void)didFinishWritingVideoWithError:(NSError *)error async:(BOOL)async {
+    BBZINFO(@"-----------%@", self.strOutputFile);
     if (async) {
         BBZRunAsynchronouslyOnTaskQueue(^{
             if (self.completionBlock) {
@@ -99,6 +100,10 @@
             }
         });
     }
+}
+
+- (void)didReachEndTime {
+    [self.writer finishWriting];
 }
 
 #pragma mark - Delegate

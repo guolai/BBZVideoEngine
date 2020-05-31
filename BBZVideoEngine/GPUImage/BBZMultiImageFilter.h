@@ -32,8 +32,8 @@
 
 
 - (NSArray<GPUImageFramebuffer *> *)frameBuffers;
-- (GLfloat *)adjustVertices:(GLfloat *)vertices;
-- (GLfloat *)adjustTextureCoordinates:(GLfloat *)textureCoordinates;
+- (const GLfloat *)adjustVertices:(const GLfloat *)vertices;
+- (const GLfloat *)adjustTextureCoordinates:(const GLfloat *)textureCoordinates;
 
 
 - (void)willBeginRender;

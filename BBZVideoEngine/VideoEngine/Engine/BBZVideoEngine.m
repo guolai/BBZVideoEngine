@@ -228,6 +228,11 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
     return YES;
 }
 
+- (void)completeWithError:(NSError *)error {
+    [super completeWithError:error];
+    [self.schedule stopTimeline];
+}
+
 - (CGFloat)videoModelCombinedDuration {
     CGFloat duration  = self.intDuration / BBZVideoDurationScale;
     return duration;
@@ -256,6 +261,12 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
     BBZActionTree *actonTree = [self.timeSegments objectForKey:@(timePoint)];
     NSArray *array = [self.filterMixer combineFiltersFromActionTree:actonTree];
     return array;
+}
+
+- (void)didReachEndTime {
+    [self completeWithError:nil];
+    BBZOutputFilterLayer *outputLayer = self.filterLayers[@(BBZFilterLayerTypeOutput)];
+    [outputLayer didReachEndTime];
 }
 
 
