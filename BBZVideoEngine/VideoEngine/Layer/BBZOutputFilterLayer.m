@@ -56,4 +56,9 @@
     [self.outputAction didReachEndTime];
 }
 
+- (void)setCompletionBlock:(void (^)(BOOL, NSError *))completionBlock {
+    _completionBlock = [completionBlock copy];
+    self.outputAction.completionBlock = _completionBlock;
+}
+
 @end

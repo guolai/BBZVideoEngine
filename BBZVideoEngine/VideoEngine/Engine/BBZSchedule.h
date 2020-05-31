@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "BBZVideoControl.h"
 
+
+
 @protocol BBZScheduleObserver <NSObject>
 @required
 - (void)updateWithTime:(CMTime)time;

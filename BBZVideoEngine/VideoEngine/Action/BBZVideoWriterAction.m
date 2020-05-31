@@ -72,17 +72,26 @@
 
 - (void)lock {
     [super lock];
-    NSError *error;
-    if ([[NSFileManager defaultManager] fileExistsAtPath:self.strOutputFile]){
-        [[NSFileManager defaultManager] removeItemAtPath:self.strOutputFile error:&error];
-    }
-    [self buildWriter];
-    [self.writer startWriting];
+    runAsynchronouslyOnVideoProcessingQueue(^{
+        if(!self.writer) {
+            NSError *error;
+            if ([[NSFileManager defaultManager] fileExistsAtPath:self.strOutputFile]){
+                [[NSFileManager defaultManager] removeItemAtPath:self.strOutputFile error:&error];
+            }
+            [self buildWriter];
+            [self.writer startWriting];
+        }
+    });
+   
+    
 }
 
 - (void)destroySomething{
-    [self.writer cancleWriting];
-    self.writer = nil;
+    runAsynchronouslyOnVideoProcessingQueue(^{
+        [self.writer cancleWriting];
+        self.writer = nil;
+    });
+   
 }
 
 - (void)didFinishWritingVideoWithError:(NSError *)error async:(BOOL)async {
@@ -90,25 +99,30 @@
     if (async) {
         BBZRunAsynchronouslyOnTaskQueue(^{
             if (self.completionBlock) {
-                self.completionBlock((error ? nil : self.strOutputFile), error);
+                self.completionBlock((error ? NO : YES), error);
             }
         });
     }  else {
         BBZRunSynchronouslyOnTaskQueue(^{
             if (self.completionBlock) {
-                self.completionBlock((error ? nil : self.strOutputFile), error);
+                self.completionBlock((error ? NO : YES), error);
             }
         });
     }
 }
 
 - (void)didReachEndTime {
-    [self.writer finishWriting];
+    runAsynchronouslyOnVideoProcessingQueue(^{
+        [self.writer finishWriting];
+    });
 }
 
 #pragma mark - Delegate
 - (void)didDrawFrameBuffer:(GPUImageFramebuffer *)outputFramebuffer time:(CMTime)time{
-    [self.writer writeSyncVideoPixelBuffer:outputFramebuffer.pixelBuffer withPresentationTime:time];
+    runSynchronouslyOnVideoProcessingQueue(^{
+        [self.writer writeSyncVideoPixelBuffer:outputFramebuffer.pixelBuffer withPresentationTime:time];
+    });
+    
 }
 
 

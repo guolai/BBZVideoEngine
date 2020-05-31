@@ -9,6 +9,7 @@
 #import "BBZExportViewController.h"
 #import "BBZExportTask.h"
 #import "BBZVideoModel.h"
+#import <Photos/Photos.h>
 
 
 @interface BBZExportViewController ()
@@ -75,10 +76,37 @@
 //    NSData *data = [NSData dataWithContentsOfFile:path];
 //    UIImage *bgImage = [UIImage imageWithData:data];
 //    videoModel.bgImage = bgImage;
-    
+    NSString *tmpDir =  [NSString stringWithFormat:@"%@/tmp", videoModel.videoResourceDir];
+    [NSFileManager removeFileIfExist:tmpDir];
     BBZExportTask *task = [BBZExportTask taskWithModel:videoModel];
-    [task start];
     self.task = task;
+    __weak typeof(self) weakSelf = self;
+    task.completionBlock = ^(BOOL sucess, NSError *error) {
+        __strong typeof(self) strongSelf = weakSelf;
+        if(sucess && 1) {
+            NSURL *movieURL = [NSURL fileURLWithPath:strongSelf.task.outputFile];
+            [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^(void)
+             {
+                 PHAssetChangeRequest *request = [PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:movieURL];
+                 request.creationDate = [NSDate date];
+             }
+            completionHandler:^(BOOL success, NSError *error)
+             {
+                 dispatch_async(dispatch_get_main_queue(), ^(void)
+                                {
+                                    if (error != nil)
+                                    {
+                                        NSLog(@"[SaveTask] save video failed! error: %@", error);
+                                    }
+                                    
+                                    NSLog(@"视频保存本地成功");
+                                    
+                                });
+             }];
+        }
+    };
+    [task start];
+    
 }
 
 @end

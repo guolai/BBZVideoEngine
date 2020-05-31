@@ -121,8 +121,13 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
     self.director.segmentDelegate = self;
     self.schedule = [BBZSchedule scheduleWithMode:self.context.scheduleMode];
     self.schedule.observer = self.director;
+    if(self.context.videoSettings.videoFrameRate > 0) {
+        self.schedule.preferredFramesPerSecond = self.context.videoSettings.videoFrameRate;
+    }
     self.filterMixer = [[BBZFilterMixer alloc] init];
 }
+
+
 
 
 - (void)prepareForStart {
@@ -236,6 +241,12 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
 - (CGFloat)videoModelCombinedDuration {
     CGFloat duration  = self.intDuration / BBZVideoDurationScale;
     return duration;
+}
+
+- (void)setCompletionBlock:(void (^)(BOOL, NSError *))completionBlock {
+    _completionBlock = [completionBlock copy];
+    BBZOutputFilterLayer *outputLayer = self.filterLayers[@(BBZFilterLayerTypeOutput)];
+    outputLayer.completionBlock = _completionBlock;
 }
 
 #pragma mark - WriteControl Delegate

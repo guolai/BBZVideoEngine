@@ -12,7 +12,7 @@
 @interface BBZVideoWriterAction : BBZOutputAction 
 
 @property (nonatomic, weak) id<BBZVideoWriteControl> writerControl;
-@property (nonatomic, copy) void (^completionBlock)(NSString *outputFile, NSError *error);
+
 
 - (instancetype)initWithVideoSetting:(BBZEngineSetting *)videoSetting outputFile:(NSString *)strOutputFile;
 

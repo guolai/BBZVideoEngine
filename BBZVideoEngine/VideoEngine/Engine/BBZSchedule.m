@@ -46,7 +46,7 @@
     self.currentTime = self.currentTime + deltaTime;
     self.lastTime = now;
     CMTime tmpTime = CMTimeMake(self.currentTime * BBZScheduleTimeScale, BBZScheduleTimeScale);
-    BBZINFO(@" currentTime = %.4f,%.4f", self.currentTime, CMTimeGetSeconds(tmpTime));
+//    BBZINFO(@" currentTime = %.4f,%.4f", self.currentTime, CMTimeGetSeconds(tmpTime));
     [self.observer updateWithTime:tmpTime];
 }
 
@@ -59,13 +59,14 @@
             self.displayLink.frameInterval = self.preferredFramesPerSecond;
         }
     }
-    self.targetFrameDuration = CMTimeMake(BBZVideoDurationScale/_preferredFramesPerSecond, BBZVideoDurationScale);
-    self.minimumFrameDuration = CMTimeMake(BBZVideoDurationScale * 2 /_preferredFramesPerSecond, BBZVideoDurationScale);
+    self.targetFrameDuration = CMTimeMake(BBZScheduleTimeScale/_preferredFramesPerSecond, BBZScheduleTimeScale);
+    self.minimumFrameDuration = CMTimeMake(BBZScheduleTimeScale * 2 /_preferredFramesPerSecond, BBZScheduleTimeScale);
 }
 
 
 - (void)setPreferredFramesPerSecond:(NSInteger)preferredFramesPerSecond {
     _preferredFramesPerSecond = preferredFramesPerSecond;
+    BBZINFO(@"schedule  FramesPerSecond %zd", preferredFramesPerSecond);
     [self updateFrameIntervalForDisplayLink];
 }
 

@@ -17,6 +17,7 @@
 @property (nonatomic, strong) BBZAssetReaderSequentialAccessVideoOutput *videoOutPut;
 @property (nonatomic, strong) BBZInputSourceParam *inputSourceParam;
 @property (nonatomic, assign) CMSampleBufferRef sampleBuffer;
+@property (nonatomic, assign) CMTime lastTime;
 @end
 
 
@@ -53,7 +54,10 @@
             CMTime lastSamplePresentationTime = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
             lastSamplePresentationTime = CMTimeSubtract(lastSamplePresentationTime, self.reader.timeRange.start);
             NSTimeInterval nDiff = CMTimeGetSeconds(CMTimeSubtract(lastSamplePresentationTime, time));
-            if(nDiff > 0.001) {
+            NSTimeInterval minDuration = CMTimeGetSeconds(CMTimeSubtract(time, self.lastTime));
+            minDuration = fabs(minDuration / 2.0);
+            if(nDiff > minDuration) {
+                BBZERROR(@"newFrameAtTime use lastSamplebuffer dif:%f sample time:%@, realtime:%@", nDiff,[NSValue valueWithCMTime:lastSamplePresentationTime], [NSValue valueWithCMTime:time]);
                 if(!self.inputSourceParam) {
                     [self buildInputParam];
                 }
@@ -64,7 +68,10 @@
                     [self buildInputParam];
                 }
             }
+            lastSamplePresentationTime = CMSampleBufferGetPresentationTimeStamp(self.sampleBuffer);
+             BBZINFO(@"sample time:%@, realtime:%@", [NSValue valueWithCMTime:lastSamplePresentationTime], [NSValue valueWithCMTime:time]);
         }
+        self.lastTime = time;
     });
 }
 
@@ -102,8 +109,10 @@
 
 - (void)lock {
     [super lock];
-    [self buildReader];
-    [self.videoOutPut startProcessing];
+    if(!self.reader) {
+        [self buildReader];
+        [self.videoOutPut startProcessing];
+    }
 }
 
 - (void)setSampleBuffer:(CMSampleBufferRef)sampleBuffer {

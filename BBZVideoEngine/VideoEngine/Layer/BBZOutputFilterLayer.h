@@ -11,6 +11,7 @@
 @interface BBZOutputFilterLayer : BBZFilterLayer
 @property (nonatomic, weak) id<BBZVideoWriteControl> writerControl;
 @property (nonatomic, strong) NSString *outputFile;
+@property (nonatomic, copy) void(^completionBlock)(BOOL sucess, NSError *error);
 
 - (void)didReachEndTime;
 @end

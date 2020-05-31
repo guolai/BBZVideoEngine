@@ -16,6 +16,7 @@
 @property (nonatomic, strong, readonly) BBZVideoModel *videoModel;
 @property (nonatomic, strong, readonly) BBZEngineContext *context;
 @property (nonatomic, strong, readonly) NSString *outputFile;
+@property (nonatomic, copy) void(^completionBlock)(BOOL sucess, NSError *error);
 
 + (instancetype)videoEngineWithModel:(BBZVideoModel *)model
                       context:(BBZEngineContext *)context

@@ -18,6 +18,7 @@
 @interface BBZOutputAction : BBZAction<BBZActionChainProtocol>
 
 - (void)didReachEndTime;
+@property (nonatomic, copy) void(^completionBlock)(BOOL sucess, NSError *error);
 //@property (nonatomic, strong, readonly) GPUImageFilter *filter;
 @end
 

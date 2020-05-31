@@ -13,7 +13,7 @@
 
 @interface BBZAssetWriter ()
 
-@property (nonatomic, strong) dispatch_queue_t inputQueue;
+//@property (nonatomic, strong) dispatch_queue_t inputQueue;
 @property (nonatomic, strong) AVAssetWriter *assetWriter;
 @property (nonatomic, strong) AVAssetWriterInput *videoInput;
 @property (nonatomic, strong) AVAssetWriterInputPixelBufferAdaptor *videoPixelBufferAdaptor;
@@ -47,9 +47,10 @@
             return nil;
         }
         _assetWriter.shouldOptimizeForNetworkUse = YES;
-        _assetWriter.movieFragmentInterval = CMTimeMakeWithSeconds(1.0, 1000);
-        NSString *strQueue = [NSString stringWithFormat:@"VideoEncoderInputQueue-%p",self];
-        self.inputQueue = dispatch_queue_create([strQueue UTF8String], GPUImageDefaultQueueAttribute());
+//        _assetWriter.movieFragmentInterval = CMTimeMakeWithSeconds(1.0, 1000);
+        _assetWriter.movieFragmentInterval = kCMTimeInvalid;
+//        NSString *strQueue = [NSString stringWithFormat:@"VideoEncoderInputQueue-%p",self];
+//        self.inputQueue = dispatch_queue_create([strQueue UTF8String], GPUImageDefaultQueueAttribute());
         _startTime = kCMTimeInvalid;
         _previousFrameTime = kCMTimeNegativeInfinity;
         _previousAudioTime = kCMTimeNegativeInfinity;
@@ -58,13 +59,13 @@
 }
 
 - (void)startWriting {
-    dispatch_async(self.inputQueue, ^{
+//    dispatch_async(self.inputQueue, ^{
         [self creatVideoInput];
         if(self.hasAudioTrack) {
             [self createAudioInput];
         }
         [self.assetWriter  startWriting];
-    });
+//    });
 }
 
 - (void)creatVideoInput {
@@ -109,17 +110,17 @@
 }
 
 - (void)writeVideoPixelBuffer:(CVPixelBufferRef)pixelBuffer withPresentationTime:(CMTime)time {
-    dispatch_async(self.inputQueue, ^{
+//    dispatch_async(self.inputQueue, ^{
         CFRetain(pixelBuffer);
         [self processVideoPixelBuffer:pixelBuffer withPresentationTime:time];
         CFRelease(pixelBuffer);
-    });
+//    });
 }
 
 - (void)writeSyncVideoPixelBuffer:(CVPixelBufferRef)pixelBuffer withPresentationTime:(CMTime)time {
-    dispatch_sync(self.inputQueue, ^{
+//    dispatch_sync(self.inputQueue, ^{
         [self processVideoPixelBuffer:pixelBuffer withPresentationTime:time];
-    });
+//    });
 }
 
 - (void)processVideoPixelBuffer:(CVPixelBufferRef)pixelBuffer withPresentationTime:(CMTime)frameTime {
@@ -137,7 +138,7 @@
             return;
         }
         
-        usleep(100000);
+        usleep(10000);
         BBZINFO(@"sleep on writing video");
     }
     BOOL bAdd = YES;
@@ -150,6 +151,8 @@
             bAdd = NO;
             BBZERROR(@" appendPixelBuffer error, %@", self.assetWriter.error);
         }
+    }else {
+        BBZINFO(@"status :%d", self.assetWriter.status);
     }
     if(!bAdd && self.assetWriter.status == AVAssetWriterStatusFailed) {
         if (self.completionBlock) {
@@ -168,9 +171,9 @@
     if(!self.audioInput) {
         return;
     }
-    dispatch_sync(self.inputQueue, ^{
+//    dispatch_sync(self.inputQueue, ^{
         [self processAudioBuffer:frameBuffer];
-    });
+//    });
 }
 
 - (void)processAudioBuffer:(CMSampleBufferRef)audioBuffer {
@@ -225,9 +228,9 @@
 }
 
 - (void)cancleWriting {
-    dispatch_async(self.inputQueue, ^{
+//    dispatch_async(self.inputQueue, ^{
         [self asyncCancleWriting];
-    });
+//    });
 }
 
 - (void)asyncCancleWriting {
@@ -248,9 +251,9 @@
 }
 
 - (void)finishWriting {
-    dispatch_async(self.inputQueue, ^{
+//    dispatch_async(self.inputQueue, ^{
         [self asyncfinishWriting];
-    });
+//    });
 }
 
 - (void)asyncfinishWriting {

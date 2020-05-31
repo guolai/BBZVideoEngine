@@ -26,7 +26,10 @@
 
 - (void)lock {
     [super lock];
-    [((BBZImageAsset *)self.asset) loadImageWithCompletion:nil];
+    if(!((BBZImageAsset *)self.asset).asset) {
+        [((BBZImageAsset *)self.asset) loadImageWithCompletion:nil];
+    }
+    
 }
 
 - (void)updateWithTime:(CMTime)time {
