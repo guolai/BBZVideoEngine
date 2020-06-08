@@ -17,6 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface GPUImageFramebuffer (BBZ)
 + (GPUImageFramebuffer *)BBZ_frameBufferWithImage:(CGImageRef)inputImage;
 
++ (GPUImageFramebuffer *)BBZ_frameBufferWithImage2:(CGImageRef)inputImage;
+
 
 + (GPUImageFramebuffer *)BBZ_frameBufferWithImageData:(void *)data width:(int)width height:(int)height;
 

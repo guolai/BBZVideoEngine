@@ -34,6 +34,7 @@
 - (instancetype)initWithVertexShaderFromString:(NSString *)vertexShaderString fragmentShaderFromString:(NSString *)fragmentShaderString {
     if(self = [super initWithVertexShaderFromString:vertexShaderString fragmentShaderFromString:fragmentShaderString]) {
         self.transform3D = CATransform3DIdentity;
+        self.fillType = BBZVideoFillModeePreserveAspectRatio;
     }
     return self;
 }
@@ -103,48 +104,40 @@
     });
 }
 
-- (void)setRenderSize:(CGSize)renderSize {
-    _renderSize = renderSize;
-    runAsynchronouslyOnVideoProcessingQueue(^{
-        GPUMatrix4x4 matrix;
-        if (!self.ignoreAspectRatio) {
-            [self loadOrthoMatrix:(GLfloat *)&matrix left:-1.0 right:1.0 bottom:(-1.0 * self.renderSize.height / self.renderSize.width) top:(1.0 * self.renderSize.height / self.renderSize.width) near:-1.0 far:1.0];
-        } else {
-            [self loadOrthoMatrix:(GLfloat *)&matrix left:-1.0 right:1.0 bottom:-1.0 top:1.0 near:-1.0 far:1.0];
-        }
-        self.mat44ParamValue1 = matrix;
-    });
-}
 
-- (void)setIgnoreAspectRatio:(BOOL)ignoreAspectRatio {
-    _ignoreAspectRatio = ignoreAspectRatio;
-    runAsynchronouslyOnVideoProcessingQueue(^{
+- (void)updateFillType {
+    
         GPUMatrix4x4 matrix;
-        if (!self.ignoreAspectRatio) {
-            [self loadOrthoMatrix:(GLfloat *)&matrix left:-1.0 right:1.0 bottom:(-1.0 * self.renderSize.height / self.renderSize.width) top:(1.0 * self.renderSize.height / self.renderSize.width) near:-1.0 far:1.0];
-        } else {
+        if (self.fillType == BBZVideoFillModeStretch) {
             [self loadOrthoMatrix:(GLfloat *)&matrix left:-1.0 right:1.0 bottom:-1.0 top:1.0 near:-1.0 far:1.0];
+//            _imageVertices[0] = -1.0;
+//            _imageVertices[1] = -1.0;
+//            _imageVertices[2] = 1.0;
+//            _imageVertices[3] = -1.0;
+//            _imageVertices[4] = -1.0;
+//            _imageVertices[5] = 1.0;
+//            _imageVertices[6] = 1.0;
+//            _imageVertices[7] = 1.0;
+        } else {
+            CGFloat renderScale = self.renderSize.width / self.renderSize.height;
+            CGSize textureSize = firstInputFramebuffer.size;
+            CGFloat textureScale = textureSize.width / textureSize.height;
+            
+            if(self.fillType == BBZVideoFillModeePreserveAspectRatio) {
+                
+            } else {
+                
+            }
+             [self loadOrthoMatrix:(GLfloat *)&matrix left:-1.0 right:1.0 bottom:(-1.0 * self.renderSize.height / self.renderSize.width) top:(1.0 * self.renderSize.height / self.renderSize.width) near:-1.0 far:1.0];
         }
         self.mat44ParamValue1 = matrix;
-    });
+    
+    
 }
 
 
 - (const GLfloat *)adjustVertices:(const GLfloat *)vertices {
-    CGSize size = firstInputFramebuffer.size;
-    if(CGSizeEqualToSize(size, CGSizeZero)) {
-        size = self.renderSize;
-    }
-    CGFloat normalizedHeight = size.height / size.width;
-    _imageVertices[0] = -1.0;
-    _imageVertices[1] = -normalizedHeight;
-    _imageVertices[2] = 1.0;
-    _imageVertices[3] = -normalizedHeight;
-    _imageVertices[4] = -1.0;
-    _imageVertices[5] = normalizedHeight;
-    _imageVertices[6] = 1.0;
-    _imageVertices[7] = normalizedHeight;
-    return _imageVertices;
+    return vertices;
 }
 
 - (const GLfloat *)adjustTextureCoordinates:(const GLfloat *)textureCoordinates {

@@ -27,6 +27,7 @@
     _frameBufferArray = [NSMutableArray array];
     _maxIndex = 5;
     _index = 1;
+    backgroundColorAlpha = 1.0;
     _shouldClearBackGround = YES;
     runSynchronouslyOnVideoProcessingQueue(^{
         [GPUImageContext useImageProcessingContext];
@@ -157,7 +158,7 @@
     [GPUImageContext setActiveShaderProgram:filterProgram];
     [self setUniformsForProgramAtIndex:0];
     if(self.shouldClearBackGround) {
-        glClearColor(backgroundColorRed, backgroundColorGreen, backgroundColorBlue, backgroundColorAlpha);
+        glClearColor(backgroundColorRed, backgroundColorGreen, backgroundColorBlue, 1.0);
         glClear(GL_COLOR_BUFFER_BIT);
     }
     

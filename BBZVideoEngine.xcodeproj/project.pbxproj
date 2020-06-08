@@ -26,6 +26,7 @@
 		1409D1F0244959850053CFA4 /* GPUImageLookupFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1409D1DB244959850053CFA4 /* GPUImageLookupFilter.m */; };
 		1409D1F1244959850053CFA4 /* GPUImageFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1409D1DD244959850053CFA4 /* GPUImageFilter.m */; };
 		1409D1F4244959D40053CFA4 /* GPUImageFramebuffer+BBZ.m in Sources */ = {isa = PBXBuildFile; fileRef = 1409D1F3244959D40053CFA4 /* GPUImageFramebuffer+BBZ.m */; };
+		14135F42248E2410004CB001 /* UIImage+BBZ.m in Sources */ = {isa = PBXBuildFile; fileRef = 14135F41248E2410004CB001 /* UIImage+BBZ.m */; };
 		14183CA724503AA400D03057 /* BBZFilterModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 14183CA624503AA400D03057 /* BBZFilterModel.m */; };
 		14183DAB24504A4100D03057 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 14183DAA24504A4100D03057 /* libxml2.tbd */; };
 		14183F632450511D00D03057 /* YYDiskCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 14183EB42450511D00D03057 /* YYDiskCache.m */; };
@@ -227,6 +228,8 @@
 		1409D1DF244959850053CFA4 /* GLProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLProgram.h; sourceTree = "<group>"; };
 		1409D1F2244959D40053CFA4 /* GPUImageFramebuffer+BBZ.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GPUImageFramebuffer+BBZ.h"; sourceTree = "<group>"; };
 		1409D1F3244959D40053CFA4 /* GPUImageFramebuffer+BBZ.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "GPUImageFramebuffer+BBZ.m"; sourceTree = "<group>"; };
+		14135F40248E2410004CB001 /* UIImage+BBZ.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+BBZ.h"; sourceTree = "<group>"; };
+		14135F41248E2410004CB001 /* UIImage+BBZ.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+BBZ.m"; sourceTree = "<group>"; };
 		14183CA524503AA400D03057 /* BBZFilterModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZFilterModel.h; sourceTree = "<group>"; };
 		14183CA624503AA400D03057 /* BBZFilterModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZFilterModel.m; sourceTree = "<group>"; };
 		14183DAA24504A4100D03057 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
@@ -1034,6 +1037,8 @@
 				14B562942462BF2300A5B2B4 /* BBZAssetReader.m */,
 				14982D53246EA95D00ADBB58 /* BBZAssetWriter.h */,
 				14982D54246EA95D00ADBB58 /* BBZAssetWriter.m */,
+				14135F40248E2410004CB001 /* UIImage+BBZ.h */,
+				14135F41248E2410004CB001 /* UIImage+BBZ.m */,
 			);
 			path = VideoUtility;
 			sourceTree = "<group>";
@@ -1318,6 +1323,7 @@
 				14183F632450511D00D03057 /* YYDiskCache.m in Sources */,
 				14183F822450511D00D03057 /* YYTextUtilities.m in Sources */,
 				14183F952450511D00D03057 /* UIImage+YYAdd.m in Sources */,
+				14135F42248E2410004CB001 /* UIImage+BBZ.m in Sources */,
 				1431FA7E244D981900AA2F65 /* BBZTransitionModel.m in Sources */,
 				1431FA88244D9FB300AA2F65 /* BBZNode.m in Sources */,
 				1426D708243D82BE008BEB86 /* main.m in Sources */,

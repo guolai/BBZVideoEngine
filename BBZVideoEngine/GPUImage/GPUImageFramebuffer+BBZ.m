@@ -11,7 +11,62 @@
 #import "GPUImage.h"
 
 
+
 @implementation GPUImageFramebuffer (BBZ)
+
+
++ (CVPixelBufferRef)BBZ_pixelBufferWithCGImage:(CGImageRef)image{
+
+    int width = (int)CGImageGetWidth(image);
+    int height = (int)CGImageGetHeight(image);
+    if ((width == 0) || (height == 0))
+    {
+        return NULL;
+    }
+    
+    NSDictionary *attributes;
+    if ([UIDevice currentDevice].systemVersion.floatValue>=9.0)
+    {
+        attributes = @{(id)kCVPixelBufferPixelFormatTypeKey: @(kCVPixelFormatType_32BGRA),
+                       (id)kCVPixelBufferWidthKey: @(width),
+                       (id)kCVPixelBufferHeightKey: @(height),
+                       (id)kCVPixelBufferOpenGLESTextureCacheCompatibilityKey: @(YES),
+                       (id)kCVPixelBufferIOSurfacePropertiesKey: @{},
+                       @"IOSurfaceOpenGLESTextureCompatibility": @(YES),
+                       @"IOSurfaceOpenGLESFBOCompatibility": @(YES)};
+    }
+    else
+    {
+        attributes = @{(id)kCVPixelBufferPixelFormatTypeKey: @(kCVPixelFormatType_32BGRA),
+                       (id)kCVPixelBufferWidthKey: @(width),
+                       (id)kCVPixelBufferHeightKey: @(height),
+                       @"OpenGLESTextureCacheCompatibility": @(YES),
+                       (id)kCVPixelBufferIOSurfacePropertiesKey: @{},
+                       @"IOSurfaceOpenGLESTextureCompatibility": @(YES),
+                       @"IOSurfaceOpenGLESFBOCompatibility": @(YES)};
+    }
+    
+    CVPixelBufferRef pixelBuffer = NULL;
+    CVReturn result = CVPixelBufferCreate(kCFAllocatorDefault, width, height, kCVPixelFormatType_32BGRA, (__bridge CFDictionaryRef)attributes, &pixelBuffer);
+    if (result != noErr)
+    {
+        return NULL;
+    }
+    
+    CVPixelBufferLockBaseAddress(pixelBuffer, 0);
+    
+    void *data = CVPixelBufferGetBaseAddress(pixelBuffer);
+    CGColorSpaceRef rgbColorSpace = CGColorSpaceCreateDeviceRGB();
+    CGContextRef context = CGBitmapContextCreate(data, width, height, 8, CVPixelBufferGetBytesPerRow(pixelBuffer), rgbColorSpace, ((CGBitmapInfo)kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst));
+    
+    CGContextDrawImage(context, CGContextGetClipBoundingBox(context), image);
+    CGColorSpaceRelease(rgbColorSpace);
+    CGContextRelease(context);
+    
+    CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
+    
+    return pixelBuffer;
+}
 
 
 + (GPUImageFramebuffer *)BBZ_frameBufferWithImage:(CGImageRef)inputImage {
@@ -43,6 +98,12 @@
         
         return frameBuffer;
     }
+}
+
++ (GPUImageFramebuffer *)BBZ_frameBufferWithImage2:(CGImageRef)inputImage {
+    CVPixelBufferRef pixelBuffer = [GPUImageFramebuffer BBZ_pixelBufferWithCGImage:inputImage];
+    GPUImageFramebuffer *frameBuffer = [GPUImageFramebuffer BBZ_frameBufferWithCVPixelBuffer:pixelBuffer];
+    return frameBuffer;
 }
 
 + (GPUImageFramebuffer *)BBZ_frameBufferWithImageData:(void *)data width:(int)width height:(int)height {

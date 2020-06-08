@@ -55,8 +55,10 @@
         
         BBZNode *tranformNode = [BBZNode createLocalNode:BBZNodeTransformSource beginTime:action.startTime endTime:action.endTime];
         tranformNode.image = self.model.bgImage;
+        tranformNode.bRGB = bRGB;
         
         BBZInputFilterAction *filterAction = [[BBZInputFilterAction alloc] initWithNode:tranformNode];
+        
         filterAction.startTime = action.startTime;
         filterAction.duration = action.duration;
         filterAction.renderSize = self.context.renderSize;
@@ -178,7 +180,7 @@ buildTimeLineWithSpliceNodes {
 - (BBZImageSourceAction *)imageActionWithAsset:(BBZImageAsset *)asset {
     BBZImageSourceAction *imageAction = [[BBZImageSourceAction alloc] init];
     imageAction.asset = asset;
-    imageAction.renderSize = asset.sourceSize;
+    imageAction.renderSize = self.context.renderSize;
     imageAction.duration = MAX(asset.playDuration, BBZMinVideoTime * BBZVideoTimeScale);
     return imageAction;
 }

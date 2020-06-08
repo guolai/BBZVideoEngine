@@ -13,6 +13,13 @@
 //    BBZVideoInputTypeVideo,
 //};
 
+
+typedef NS_ENUM(NSUInteger, BBZVideoFillModeType) {
+    BBZVideoFillModeStretch,
+    BBZVideoFillModeePreserveAspectRatio,
+    BBZVideoFillModePreserveAspectRatioAndFill
+};
+
 /*
  使用transform有三种场景
  1.视频输入
@@ -26,7 +33,8 @@
 @property (nonatomic, assign) CGSize renderSize;
 @property (nonatomic, assign) CGAffineTransform affineTransform;
 @property (nonatomic, assign) CATransform3D transform3D;
-@property (nonatomic, assign) BOOL ignoreAspectRatio;
+@property (nonatomic, assign) BBZVideoFillModeType fillType;
+
 
 //- (void)renderVideo:(CMSampleBufferRef)sampleBuffer atTime:(CMTime)time;
 //- (void)renderImage:(GPUImageFramebuffer *)imageFrameBuffer atTime:(CMTime)time;

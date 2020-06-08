@@ -39,6 +39,9 @@
         } else {
             vertexShader = [BBZShader vertextTransfromShader];
             framgmentShader = [BBZShader fragmentRGBTransfromShader];
+//            vertexShader = [BBZShader vertextShader];
+//            framgmentShader = [BBZShader fragmentPassthroughShader];
+
         }
     } else {
         if(bUseLastFB) {
@@ -56,6 +59,7 @@
     self.multiFilter.bUseBackGroundImage = bUseLastFB;
     self.multiFilter.bgFrameBuffer = [GPUImageFramebuffer BBZ_frameBufferWithImage:self.node.image.CGImage];
     [self.multiFilter.bgFrameBuffer disableReferenceCounting];
+    self.multiFilter.shouldClearBackGround = YES;
 }
 
 - (void)setRenderSize:(CGSize)renderSize {

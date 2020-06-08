@@ -10,6 +10,7 @@
 #import "BBZPhotoKit.h"
 #import "BBZVideoTools.h"
 #import "BBZEngineSetting.h"
+#import "UIImage+BBZ.h"
 
 @interface BBZImageAsset ()
 @property (nonatomic, strong) UIImage *sourceimage;
@@ -78,7 +79,16 @@
     if (self.filePath != nil) {
         NSData *data = [NSData dataWithContentsOfFile:self.filePath];
         _sourceimage = [UIImage imageWithData:data];
-        _bFullResolution = YES;
+        if(!self.bUserOriginalSize) {
+            CGSize size = _sourceimage.size;
+            NSInteger limit = [BBZEngineSetting perfectResolutionForImage];
+            size = [BBZVideoTools resolutionForVideoSize:size limitedByResolution:limit];
+            _bFullResolution = NO;
+            _sourceimage = [UIImage imageWithData:data toSize:size];
+        } else {
+            _bFullResolution = NO;
+        }
+       
         if (completion) {
             completion(self);
         }
@@ -116,8 +126,16 @@
     if(!self.sourceimage) {
         if (self.filePath != nil)  {
             NSData *data = [NSData dataWithContentsOfFile:self.filePath];
-            self.sourceimage = [UIImage imageWithData:data];
-            self.bFullResolution = YES;
+            _sourceimage = [UIImage imageWithData:data];
+            if(!self.bUserOriginalSize) {
+                CGSize size = _sourceimage.size;
+                NSInteger limit = [BBZEngineSetting perfectResolutionForImage];
+                size = [BBZVideoTools resolutionForVideoSize:size limitedByResolution:limit];
+                _bFullResolution = NO;
+                _sourceimage = [UIImage imageWithData:data toSize:size];
+            } else {
+                _bFullResolution = NO;
+            }
             NSAssert(_sourceimage, @"filtpath exsit, image is lost");
         }
     }
