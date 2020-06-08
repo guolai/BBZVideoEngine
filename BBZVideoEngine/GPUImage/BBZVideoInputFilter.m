@@ -34,7 +34,7 @@
 - (instancetype)initWithVertexShaderFromString:(NSString *)vertexShaderString fragmentShaderFromString:(NSString *)fragmentShaderString {
     if(self = [super initWithVertexShaderFromString:vertexShaderString fragmentShaderFromString:fragmentShaderString]) {
         self.transform3D = CATransform3DIdentity;
-        self.fillType = BBZVideoFillModeePreserveAspectRatio;
+        self.fillType = BBZVideoFillModePreserveAspectRatio;
     }
     return self;
 }
@@ -107,37 +107,66 @@
 
 - (void)updateFillType {
     
-        GPUMatrix4x4 matrix;
-        if (self.fillType == BBZVideoFillModeStretch) {
-            [self loadOrthoMatrix:(GLfloat *)&matrix left:-1.0 right:1.0 bottom:-1.0 top:1.0 near:-1.0 far:1.0];
-//            _imageVertices[0] = -1.0;
-//            _imageVertices[1] = -1.0;
-//            _imageVertices[2] = 1.0;
-//            _imageVertices[3] = -1.0;
-//            _imageVertices[4] = -1.0;
-//            _imageVertices[5] = 1.0;
-//            _imageVertices[6] = 1.0;
-//            _imageVertices[7] = 1.0;
-        } else {
-            CGFloat renderScale = self.renderSize.width / self.renderSize.height;
-            CGSize textureSize = firstInputFramebuffer.size;
-            CGFloat textureScale = textureSize.width / textureSize.height;
-            
-            if(self.fillType == BBZVideoFillModeePreserveAspectRatio) {
-                
-            } else {
-                
-            }
-             [self loadOrthoMatrix:(GLfloat *)&matrix left:-1.0 right:1.0 bottom:(-1.0 * self.renderSize.height / self.renderSize.width) top:(1.0 * self.renderSize.height / self.renderSize.width) near:-1.0 far:1.0];
-        }
-        self.mat44ParamValue1 = matrix;
+    CGFloat heightScaling, widthScaling;
+    CGSize textureSize = firstInputFramebuffer.size;
+    CGRect bounds = CGRectMake(0, 0, self.renderSize.width, self.renderSize.height);
+    CGRect insetRect = AVMakeRectWithAspectRatioInsideRect(textureSize, bounds);
     
-    
+    switch(self.fillType) {
+        case BBZVideoFillModeStretch: {
+            widthScaling = 1.0;
+            heightScaling = 1.0;
+        }; break;
+        case BBZVideoFillModePreserveAspectRatio: {
+            widthScaling = insetRect.size.width / self.renderSize.width;
+            heightScaling = insetRect.size.height / self.renderSize.height;
+        }; break;
+        case BBZVideoFillModePreserveAspectRatioAndFill: {
+            widthScaling = self.renderSize.height / insetRect.size.height;
+            heightScaling = self.renderSize.width / insetRect.size.width;
+        }; break;
+    }
+    GPUMatrix4x4 matrix;
+    if(fabs(widthScaling - 1.0) < 0.00001 && fabs(heightScaling - 1.0) < 0.00001) {
+        [self loadOrthoMatrix:(GLfloat *)&matrix left:-1.0 right:1.0 bottom:-1.0 top:1.0 near:-1.0 far:1.0];
+        _imageVertices[0] = -1.0;
+        _imageVertices[1] = -1.0;
+        _imageVertices[2] = 1.0;
+        _imageVertices[3] = -1.0;
+        _imageVertices[4] = -1.0;
+        _imageVertices[5] = 1.0;
+        _imageVertices[6] = 1.0;
+        _imageVertices[7] = 1.0;
+    } else if(fabs(widthScaling - 1.0) < 0.00001) {
+        [self loadOrthoMatrix:(GLfloat *)&matrix left:-1.0 * (self.renderSize.width / self.renderSize.height) right:1.0 * (self.renderSize.width / self.renderSize.height) bottom:-1.0  top:1.0 near:-1.0 far:1.0];
+        CGFloat normalizedWidth = textureSize.width / textureSize.height;
+        _imageVertices[0] = -1.0 * normalizedWidth;
+        _imageVertices[1] = -1.0;
+        _imageVertices[2] = 1.0 * normalizedWidth;
+        _imageVertices[3] = -1.0;
+        _imageVertices[4] = -1.0 * normalizedWidth;
+        _imageVertices[5] = 1.0;
+        _imageVertices[6] = 1.0 * normalizedWidth;
+        _imageVertices[7] = 1.0;
+        
+    } else {
+        [self loadOrthoMatrix:(GLfloat *)&matrix left:-1.0 right:1.0 bottom:(-1.0 * self.renderSize.height / self.renderSize.width) top:(1.0 * self.renderSize.height / self.renderSize.width) near:-1.0 far:1.0];
+        CGFloat normalizedHeight = textureSize.height / textureSize.width;
+        _imageVertices[0] = -1.0;
+        _imageVertices[1] = -1.0 * normalizedHeight;
+        _imageVertices[2] = 1.0;
+        _imageVertices[3] = -1.0 * normalizedHeight;
+        _imageVertices[4] = -1.0;
+        _imageVertices[5] = 1.0 * normalizedHeight;
+        _imageVertices[6] = 1.0;
+        _imageVertices[7] = 1.0 * normalizedHeight;
+    }
+    self.mat44ParamValue1 = matrix;
 }
 
 
 - (const GLfloat *)adjustVertices:(const GLfloat *)vertices {
-    return vertices;
+    return _imageVertices;
 }
 
 - (const GLfloat *)adjustTextureCoordinates:(const GLfloat *)textureCoordinates {
@@ -151,11 +180,19 @@
     glClearColor(0.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
     //draw bg
-    static const GLfloat normalVertices[] = {
-        -1.0f, -1.0f,
-        1.0f, -1.0f,
-        -1.0f,  1.0f,
-        1.0f,  1.0f,
+    CGFloat heightScaling, widthScaling;
+    CGSize textureSize = self.bgFrameBuffer.size;
+    CGRect bounds = CGRectMake(0, 0, self.renderSize.width, self.renderSize.height);
+    CGRect insetRect = AVMakeRectWithAspectRatioInsideRect(textureSize, bounds);
+
+    widthScaling = self.renderSize.height / insetRect.size.height;
+    heightScaling = self.renderSize.width / insetRect.size.width;
+
+    GLfloat normalVertices[] = {
+        -1.0f * widthScaling, -1.0f * heightScaling,
+        1.0f * widthScaling, -1.0f * heightScaling,
+        -1.0f * widthScaling,  1.0f * heightScaling,
+        1.0f * widthScaling,  1.0f * heightScaling,
     };
     
     static const GLfloat normalTextureCoordinates[] = {
@@ -182,6 +219,7 @@
     if(self.bUseBackGroundImage && self.bgFrameBuffer) {
         [self drawBackGroundImage];
     }
+    [self updateFillType];
     BOOL bAntiAliasing = [self checkRotated];
     CGFloat fWidth = 0.0;
     if(bAntiAliasing){

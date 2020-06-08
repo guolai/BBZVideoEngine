@@ -16,7 +16,7 @@
 
 typedef NS_ENUM(NSUInteger, BBZVideoFillModeType) {
     BBZVideoFillModeStretch,
-    BBZVideoFillModeePreserveAspectRatio,
+    BBZVideoFillModePreserveAspectRatio,
     BBZVideoFillModePreserveAspectRatioAndFill
 };
 
