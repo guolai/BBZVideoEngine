@@ -138,18 +138,6 @@
         _imageVertices[6] = 1.0;
         _imageVertices[7] = 1.0;
     } else if(fabs(widthScaling - 1.0) < 0.00001) {
-        [self loadOrthoMatrix:(GLfloat *)&matrix left:-1.0 * (self.renderSize.width / self.renderSize.height) right:1.0 * (self.renderSize.width / self.renderSize.height) bottom:-1.0  top:1.0 near:-1.0 far:1.0];
-        CGFloat normalizedWidth = textureSize.width / textureSize.height;
-        _imageVertices[0] = -1.0 * normalizedWidth;
-        _imageVertices[1] = -1.0;
-        _imageVertices[2] = 1.0 * normalizedWidth;
-        _imageVertices[3] = -1.0;
-        _imageVertices[4] = -1.0 * normalizedWidth;
-        _imageVertices[5] = 1.0;
-        _imageVertices[6] = 1.0 * normalizedWidth;
-        _imageVertices[7] = 1.0;
-        
-    } else {
         [self loadOrthoMatrix:(GLfloat *)&matrix left:-1.0 right:1.0 bottom:(-1.0 * self.renderSize.height / self.renderSize.width) top:(1.0 * self.renderSize.height / self.renderSize.width) near:-1.0 far:1.0];
         CGFloat normalizedHeight = textureSize.height / textureSize.width;
         _imageVertices[0] = -1.0;
@@ -160,6 +148,18 @@
         _imageVertices[5] = 1.0 * normalizedHeight;
         _imageVertices[6] = 1.0;
         _imageVertices[7] = 1.0 * normalizedHeight;
+    } else {
+       
+        [self loadOrthoMatrix:(GLfloat *)&matrix left:-1.0 * (self.renderSize.width / self.renderSize.height) right:1.0 * (self.renderSize.width / self.renderSize.height) bottom:-1.0  top:1.0 near:-1.0 far:1.0];
+        CGFloat normalizedWidth = textureSize.width / textureSize.height;
+        _imageVertices[0] = -1.0 * normalizedWidth;
+        _imageVertices[1] = -1.0;
+        _imageVertices[2] = 1.0 * normalizedWidth;
+        _imageVertices[3] = -1.0;
+        _imageVertices[4] = -1.0 * normalizedWidth;
+        _imageVertices[5] = 1.0;
+        _imageVertices[6] = 1.0 * normalizedWidth;
+        _imageVertices[7] = 1.0;
     }
     self.mat44ParamValue1 = matrix;
 }
