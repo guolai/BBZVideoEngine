@@ -172,6 +172,8 @@
 		14F6AD16244EF43800A908E8 /* BBZVideoModel+Source.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F6AD15244EF43800A908E8 /* BBZVideoModel+Source.m */; };
 		14F6AD18244F034100A908E8 /* Resource in Resources */ = {isa = PBXBuildFile; fileRef = 14F6AD17244F034000A908E8 /* Resource */; };
 		14F6AD1B244F1A5A00A908E8 /* BBZTaskFlow.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F6AD1A244F1A5A00A908E8 /* BBZTaskFlow.m */; };
+		1849444B248FF29C00E0912C /* BBZAudioAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 1849444A248FF29C00E0912C /* BBZAudioAction.m */; };
+		1849444E248FF2B700E0912C /* BBZAudioReaderAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 1849444D248FF2B700E0912C /* BBZAudioReaderAction.m */; };
 		184F0948244FF52F00C82BD1 /* BBZQueueManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 184F0947244FF52F00C82BD1 /* BBZQueueManager.m */; };
 		184F8C3F2480FAB600017CDB /* BBZNode+Local.m in Sources */ = {isa = PBXBuildFile; fileRef = 184F8C3E2480FAB600017CDB /* BBZNode+Local.m */; };
 		186CE3ED24574A49006222F7 /* BBZEngineContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 186CE3EC24574A49006222F7 /* BBZEngineContext.m */; };
@@ -513,6 +515,10 @@
 		14F6AD17244F034000A908E8 /* Resource */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Resource; sourceTree = "<group>"; };
 		14F6AD19244F1A5A00A908E8 /* BBZTaskFlow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZTaskFlow.h; sourceTree = "<group>"; };
 		14F6AD1A244F1A5A00A908E8 /* BBZTaskFlow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZTaskFlow.m; sourceTree = "<group>"; };
+		18494449248FF29C00E0912C /* BBZAudioAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZAudioAction.h; sourceTree = "<group>"; };
+		1849444A248FF29C00E0912C /* BBZAudioAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZAudioAction.m; sourceTree = "<group>"; };
+		1849444C248FF2B700E0912C /* BBZAudioReaderAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZAudioReaderAction.h; sourceTree = "<group>"; };
+		1849444D248FF2B700E0912C /* BBZAudioReaderAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZAudioReaderAction.m; sourceTree = "<group>"; };
 		184F0946244FF52F00C82BD1 /* BBZQueueManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZQueueManager.h; sourceTree = "<group>"; };
 		184F0947244FF52F00C82BD1 /* BBZQueueManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZQueueManager.m; sourceTree = "<group>"; };
 		184F8C3D2480FAB500017CDB /* BBZNode+Local.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BBZNode+Local.h"; sourceTree = "<group>"; };
@@ -963,6 +969,10 @@
 				142F0C8C2459A7690005AA8A /* BBZVideoWriterAction.m */,
 				1476D5A724608010002AA4BA /* BBZInputFilterAction.h */,
 				1476D5A824608010002AA4BA /* BBZInputFilterAction.m */,
+				18494449248FF29C00E0912C /* BBZAudioAction.h */,
+				1849444A248FF29C00E0912C /* BBZAudioAction.m */,
+				1849444C248FF2B700E0912C /* BBZAudioReaderAction.h */,
+				1849444D248FF2B700E0912C /* BBZAudioReaderAction.m */,
 			);
 			path = Action;
 			sourceTree = "<group>";
@@ -1313,6 +1323,7 @@
 				14183F6F2450511D00D03057 /* UIImageView+YYWebImage.m in Sources */,
 				1431FA2A244B58B300AA2F65 /* BBZImageAsset.m in Sources */,
 				14183FAA2450511D00D03057 /* YYThreadSafeDictionary.m in Sources */,
+				1849444E248FF2B700E0912C /* BBZAudioReaderAction.m in Sources */,
 				1431FA53244C994700AA2F65 /* BBZAVAssetExportSession.m in Sources */,
 				14183FAC2450511D00D03057 /* YYTransaction.m in Sources */,
 				14183F6B2450511D00D03057 /* YYImageCoder.m in Sources */,
@@ -1393,6 +1404,7 @@
 				14183CA724503AA400D03057 /* BBZFilterModel.m in Sources */,
 				1426D6FA243D82BD008BEB86 /* AppDelegate.m in Sources */,
 				14183F8D2450511D00D03057 /* UIDevice+YYAdd.m in Sources */,
+				1849444B248FF29C00E0912C /* BBZAudioAction.m in Sources */,
 				1493807B24697EB300051DFC /* BBZVideoOutputFilter.m in Sources */,
 				1484CF8F247FA2C300B2245B /* BBZShader.m in Sources */,
 				14B562952462BF2300A5B2B4 /* BBZAssetReader.m in Sources */,
