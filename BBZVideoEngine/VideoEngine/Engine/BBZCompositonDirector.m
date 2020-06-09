@@ -13,7 +13,7 @@
 #import "BBZInputFilterAction.h"
 
 @interface BBZCompositonDirector ()
-@property (nonatomic, strong) BBZFilterMixer *filterMixer;
+//@property (nonatomic, strong) BBZFilterMixer *filterMixer;
 
 // 当前区间
 @property (nonatomic, strong) NSArray *actions;
@@ -27,7 +27,7 @@
 
 - (instancetype)init {
     if(self = [super init]) {
-        _filterMixer = [[BBZFilterMixer alloc] init];
+//        _filterMixer = [[BBZFilterMixer alloc] init];
         _currentIndex = 0;
     }
     return self;
