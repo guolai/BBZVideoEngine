@@ -106,7 +106,6 @@
 
 
 - (void)updateFillType {
-    
     CGFloat heightScaling, widthScaling;
     CGSize textureSize = firstInputFramebuffer.size;
     CGRect bounds = CGRectMake(0, 0, self.renderSize.width, self.renderSize.height);
@@ -127,7 +126,7 @@
         }; break;
     }
     GPUMatrix4x4 matrix;
-    if(fabs(widthScaling - 1.0) < 0.00001 && fabs(heightScaling - 1.0) < 0.00001) {
+    if(self.fillType == BBZVideoFillModeStretch) {
         [self loadOrthoMatrix:(GLfloat *)&matrix left:-1.0 right:1.0 bottom:-1.0 top:1.0 near:-1.0 far:1.0];
         _imageVertices[0] = -1.0;
         _imageVertices[1] = -1.0;
