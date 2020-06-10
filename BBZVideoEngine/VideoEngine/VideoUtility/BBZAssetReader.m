@@ -435,6 +435,7 @@
 @interface BBZAssetReaderAudioOutput ()
 @property (nonatomic, assign) CMTime seekingTime;
 @property (nonatomic, strong) AVAssetReaderOutput *providerOutput;
+@property (nonatomic, assign) CMSampleBufferRef currentSampleBuffer;
 @end
 
 @implementation BBZAssetReaderAudioOutput
@@ -449,6 +450,7 @@
 - (void)cleanup {
     [super cleanup];
     self.providerOutput = nil;
+    self.currentSampleBuffer = nil;
 }
 
 - (void)restartProvider {
@@ -477,12 +479,29 @@
     if (!self.providerOutput) {
         [self restartProvider];
     }
-    return [self nextSampleBufferForProviderOutput:self.providerOutput];
+    CMSampleBufferRef sampleBuffer = [self nextSampleBufferForProviderOutput:self.providerOutput];
+    self.currentSampleBuffer = sampleBuffer;
+    if(sampleBuffer) {
+        CFRelease(sampleBuffer);
+    }
+    return sampleBuffer;
 }
 
 - (void)seekToTime:(CMTime)time {
     self.seekingTime = time;
     [self cleanup];
 }
+
+- (void)setCurrentSampleBuffer:(CMSampleBufferRef)currentSampleBuffer {
+    if(currentSampleBuffer) {
+        CFRetain(currentSampleBuffer);
+    }
+    if(_currentSampleBuffer) {
+        CFRelease(_currentSampleBuffer);
+        _currentSampleBuffer = nil;
+    }
+    _currentSampleBuffer = currentSampleBuffer;
+}
+
 
 @end

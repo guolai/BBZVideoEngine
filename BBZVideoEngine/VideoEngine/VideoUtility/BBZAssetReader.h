@@ -53,6 +53,7 @@
 
 
 @interface BBZAssetReaderAudioOutput : BBZAssetReaderOutput
+@property (nonatomic, assign, readonly) CMSampleBufferRef currentSampleBuffer;
 @property (nonatomic, readonly) BOOL isReadingToEndTime;
 
 - (CMSampleBufferRef)nextSampleBuffer;
