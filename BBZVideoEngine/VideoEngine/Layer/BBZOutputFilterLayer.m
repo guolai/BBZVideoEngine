@@ -10,7 +10,7 @@
 #import "BBZVideoWriterAction.h"
 
 @interface BBZOutputFilterLayer ()<BBZVideoWriteControl>
-@property (nonatomic, weak) BBZOutputAction *outputAction;
+
 
 @end
 

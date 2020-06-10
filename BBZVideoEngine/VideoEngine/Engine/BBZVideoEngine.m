@@ -158,6 +158,7 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
         }
         [self.timeSegments setObject:builderTree forKey:@(endTime)];
     }
+    [self buildAudioInputChainToOutput];
 }
 
 - (BBZActionTree *)builderChainFrom:(BBZActionTree *)fromTree
@@ -208,6 +209,12 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
         }
     }
     return array;
+}
+
+- (void)buildAudioInputChainToOutput {
+    BBZOutputFilterLayer *outputLayer = self.filterLayers[@(BBZFilterLayerTypeOutput)];
+    BBZAudioFilterLayer *audioLayer = self.filterLayers[@(BBZFilterLayerTypeAudio)];
+    outputLayer.outputAction.inputAudioProtocol = audioLayer.audioAction;
 }
 
 

@@ -7,7 +7,8 @@
 //
 
 #import "BBZFilterLayer.h"
+#import "BBZAudioAction.h"
 
 @interface BBZAudioFilterLayer : BBZFilterLayer
-
+@property (nonatomic, strong) BBZAudioAction *audioAction;
 @end

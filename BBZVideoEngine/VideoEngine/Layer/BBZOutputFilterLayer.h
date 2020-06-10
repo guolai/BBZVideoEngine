@@ -7,8 +7,10 @@
 //
 
 #import "BBZFilterLayer.h"
+#import "BBZOutputAction.h"
 
 @interface BBZOutputFilterLayer : BBZFilterLayer
+@property (nonatomic, weak) BBZOutputAction *outputAction;
 @property (nonatomic, weak) id<BBZVideoWriteControl> writerControl;
 @property (nonatomic, strong) NSString *outputFile;
 @property (nonatomic, copy) void(^completionBlock)(BOOL sucess, NSError *error);

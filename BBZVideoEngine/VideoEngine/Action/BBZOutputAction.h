@@ -8,6 +8,8 @@
 
 #import "BBZAction.h"
 #import "BBZBaseAsset.h"
+#import "BBZAudioAction.h"
+
 //#import "GPUImageFramebuffer.h"
 //#import "GPUImageFilter.h"
 
@@ -16,7 +18,7 @@
 //@end
 
 @interface BBZOutputAction : BBZAction<BBZActionChainProtocol>
-
+@property (nonatomic, weak) id<BBZInputAudioProtocol> inputAudioProtocol;
 - (void)didReachEndTime;
 @property (nonatomic, copy) void(^completionBlock)(BOOL sucess, NSError *error);
 //@property (nonatomic, strong, readonly) GPUImageFilter *filter;
