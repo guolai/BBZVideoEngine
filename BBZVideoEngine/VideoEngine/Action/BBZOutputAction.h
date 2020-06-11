@@ -19,6 +19,7 @@
 
 @interface BBZOutputAction : BBZAction<BBZActionChainProtocol>
 @property (nonatomic, weak) id<BBZInputAudioProtocol> inputAudioProtocol;
+@property (nonatomic, assign) BOOL hasAudioTrack;
 - (void)didReachEndTime;
 @property (nonatomic, copy) void(^completionBlock)(BOOL sucess, NSError *error);
 //@property (nonatomic, strong, readonly) GPUImageFilter *filter;

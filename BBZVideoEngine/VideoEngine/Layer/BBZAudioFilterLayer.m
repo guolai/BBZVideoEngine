@@ -40,8 +40,10 @@
     AVMutableAudioMix *audioMix = [AVMutableAudioMix audioMix];
     AVMutableComposition *composition = [AVMutableComposition composition];
     NSMutableArray *audioInputParameters = [NSMutableArray array];
+    BOOL bHaveAudio = NO;
     for (BBZAction *action in actions) {
         if([action isKindOfClass:[BBZVideoSourceAction class]]) {
+            bHaveAudio = YES;
             BBZVideoSourceAction *videoAction = (BBZVideoSourceAction *)action;
             BBZVideoAsset *videoAsset = ((BBZVideoAsset *)videoAction.asset);
             AVAsset *sourceAsset = videoAsset.asset;
@@ -60,9 +62,6 @@
             [trackParam setVolume:1.0 atTime:kCMTimeZero];
             trackParam.audioTimePitchAlgorithm = AVAudioTimePitchAlgorithmVarispeed;
             [audioInputParameters addObject:trackParam];
-            
-            
-            
         }
     }
     audioMix.inputParameters = audioInputParameters;
@@ -74,8 +73,9 @@
     audioComposition.audioMix = audioMix;
     audioComposition.audioSetting = self.context.videoSettings.audioOutputSettings;
     audioComposition.playTimeRange = CMTimeRangeMake(kCMTimeZero, CMTimeMake(duration, BBZVideoDurationScale));
-    self.audioAction = readerAction;
-    
+    if(bHaveAudio) {
+        self.audioAction = readerAction;
+    }
 }
 
 @end

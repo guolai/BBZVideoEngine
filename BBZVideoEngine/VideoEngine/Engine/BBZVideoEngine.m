@@ -99,6 +99,7 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
     
     BBZActionBuilderResult *builerResult = nil;
     BBZActionBuilderResult *sourceBuilderResult = nil;
+    BOOL bHaveAudioTrack = YES;
     for (int i = BBZFilterLayerTypeVideo; i < BBZFilterLayerTypeMax; i++) {
         BBZFilterLayer *layer = self.filterLayers[@(i)];
         if(i == BBZFilterLayerTypeVideo || i == BBZFilterLayerTypeTransition) {
@@ -113,9 +114,19 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
         } else if(i == BBZFilterLayerTypeAudio) {
             BBZActionBuilderResult *currentResult = [layer buildTimelineNodes:sourceBuilderResult];
             layer.builderResult = currentResult;
+            BBZAudioFilterLayer *audioLayer = (BBZAudioFilterLayer *)layer;
+            if(audioLayer.audioAction) {
+                bHaveAudioTrack = YES;
+            } else  {
+                bHaveAudioTrack = NO;
+            }
         } else {
             BBZActionBuilderResult *currentResult = [layer buildTimelineNodes:builerResult];
             layer.builderResult = currentResult;
+            if(i == BBZFilterLayerTypeOutput) {
+                BBZOutputFilterLayer *outputLayer =  (BBZOutputFilterLayer *)layer;
+                outputLayer.outputAction.hasAudioTrack = bHaveAudioTrack;
+            }
             [self addTimePointFrom:currentResult];
         }
     }

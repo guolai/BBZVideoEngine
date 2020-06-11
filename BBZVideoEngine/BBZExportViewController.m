@@ -106,9 +106,16 @@
     [NSFileManager removeFileIfExist:tmpDir];
     BBZExportTask *task = [BBZExportTask taskWithModel:videoModel];
     self.task = task;
+    NSDate *date = [NSDate date];
+    NSLog(@"视频保存 开始");
+    
     __weak typeof(self) weakSelf = self;
     task.completionBlock = ^(BOOL sucess, NSError *error) {
         __strong typeof(self) strongSelf = weakSelf;
+        if (error)  {
+            NSLog(@"视频保存Asset失败：%@",error);
+        }
+        NSLog(@"视频保存 Asset cost time %f", [[NSDate date] timeIntervalSinceDate:date]);
         if(sucess && 1) {
             NSURL *movieURL = [NSURL fileURLWithPath:strongSelf.task.outputFile];
             [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^(void)
