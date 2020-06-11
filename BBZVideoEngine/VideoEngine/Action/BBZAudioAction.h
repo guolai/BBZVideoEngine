@@ -8,6 +8,14 @@
 
 #import "BBZAction.h"
 
+@interface BBZAudioCompostion : NSObject
+@property (nonatomic, strong) AVComposition *asset;
+@property (nonatomic, assign) CMTimeRange playTimeRange;
+@property (nonatomic, strong) NSDictionary *audioSetting;
+@property (nonatomic, strong) AVAudioMix *audioMix;
+@end
+
+
 @interface BBZInputAudioParam : NSObject
 @property (nonatomic, assign) CMSampleBufferRef sampleBuffer;
 @property (nonatomic, assign) CMTime time;
@@ -20,8 +28,6 @@
 @end
 
 @interface BBZAudioAction : BBZAction<BBZInputAudioProtocol>
-@property (nonatomic, strong) AVComposition *asset;
-@property (nonatomic, assign) CMTimeRange playTimeRange;
-@property (nonatomic, strong) NSDictionary *audioSetting;
+@property (nonatomic, strong) BBZAudioCompostion *audioCompostion;
 
 @end

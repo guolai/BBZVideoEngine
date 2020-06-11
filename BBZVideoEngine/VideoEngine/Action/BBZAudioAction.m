@@ -7,6 +7,13 @@
 //
 
 #import "BBZAudioAction.h"
+
+@implementation BBZAudioCompostion
+
+
+@end
+
+
 @implementation BBZInputAudioParam
 - (void)setSampleBuffer:(CMSampleBufferRef)sampleBuffer {
     if(sampleBuffer &&  _sampleBuffer == sampleBuffer) {

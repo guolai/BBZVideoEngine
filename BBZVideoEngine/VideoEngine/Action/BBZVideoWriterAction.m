@@ -54,7 +54,7 @@
     self.writer = [[BBZAssetWriter alloc] initWithOutputFile:self.strOutputFile size:videoSize fileType:AVFileTypeMPEG4];
     self.writer.videoOutputSettings = self.videoSettings;
     self.writer.audioOutputSettings = self.audioSettings;
-//    self.writer.hasAudioTrack = YES;
+    self.writer.hasAudioTrack = YES;
     self.writer.writeControl = self;
     __weak typeof(self) weakSelf = self;
     self.writer.completionBlock = ^(BOOL sucess, NSError *error) {
@@ -68,6 +68,17 @@
 
 - (void)updateWithTime:(CMTime)time {
     self.updateTime = time;
+}
+
+- (void)newFrameAtTime:(CMTime)time {
+    runAsynchronouslyOnVideoProcessingQueue(^{
+        if(self.inputAudioProtocol) {
+            BBZInputAudioParam *inputAudio = [self.inputAudioProtocol inputAudioAtTime:time];
+            if(inputAudio.sampleBuffer) {
+                [self.writer writeAudioFrameBuffer:inputAudio.sampleBuffer];
+            }
+        }
+    });
 }
 
 - (void)lock {

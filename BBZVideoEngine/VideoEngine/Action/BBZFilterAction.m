@@ -40,13 +40,6 @@
 }
 
 
-//- (BBZNode *)node {
-//    NSAssert(false, @"BBZFilterAction no node");
-//    return nil;
-//}
-
-
-
 - (void)createImageFilter {
     self.multiFilter = [[BBZMultiImageFilter alloc] initWithVertexShaderFromString:self.node.vShaderString fragmentShaderFromString:self.node.fShaderString];
 }
@@ -64,5 +57,22 @@
     [self.multiFilter addTarget:[toAction filter]];
 }
 
+
+#pragma mark - time
+- (void)updateWithTime:(CMTime)time {
+ /*
+  time 为真实时间
+  node里面 时间为放大了100倍的时间，需要进行换算 ，然后计算 node当前值
+  */
+    BBZNodeAnimationParams *params = [self.node paramsAtTime:CMTimeGetSeconds(time)];
+    if(params) {
+         //to do
+    }
+    //to do
+}
+
+- (void)newFrameAtTime:(CMTime)time {
+    
+}
 
 @end

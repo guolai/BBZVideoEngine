@@ -98,6 +98,7 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
     outputLayer.writerControl = self;
     
     BBZActionBuilderResult *builerResult = nil;
+    BBZActionBuilderResult *sourceBuilderResult = nil;
     for (int i = BBZFilterLayerTypeVideo; i < BBZFilterLayerTypeMax; i++) {
         BBZFilterLayer *layer = self.filterLayers[@(i)];
         if(i == BBZFilterLayerTypeVideo || i == BBZFilterLayerTypeTransition) {
@@ -106,6 +107,12 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
             if(currentResult) {
                 builerResult = currentResult;
             }
+            if(i == BBZFilterLayerTypeVideo) {
+                sourceBuilderResult = currentResult;
+            }
+        } else if(i == BBZFilterLayerTypeAudio) {
+            BBZActionBuilderResult *currentResult = [layer buildTimelineNodes:sourceBuilderResult];
+            layer.builderResult = currentResult;
         } else {
             BBZActionBuilderResult *currentResult = [layer buildTimelineNodes:builerResult];
             layer.builderResult = currentResult;
@@ -278,6 +285,12 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
     //进行滤镜链合并 , 创建实例实例filterAction;
     BBZActionTree *actonTree = [self.timeSegments objectForKey:@(timePoint)];
     NSArray *array = [self.filterMixer combineFiltersFromActionTree:actonTree];
+    BBZAudioFilterLayer *audioLayer = self.filterLayers[@(BBZFilterLayerTypeAudio)];
+    if(audioLayer.audioAction) { //音频特殊处理
+        NSMutableArray *mulArray = [NSMutableArray arrayWithArray:array];
+        [mulArray addObject:audioLayer.audioAction];
+        array = mulArray;
+    }
     return array;
 }
 

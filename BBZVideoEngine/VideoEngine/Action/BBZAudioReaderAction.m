@@ -23,9 +23,9 @@
 
 - (void)buildReader {
     if(!self.reader) {
-        self.reader = [[BBZAssetReader alloc] initWithAsset:self.asset];
-        self.reader.timeRange = self.playTimeRange;
-        self.audioOutPut = [[BBZAssetReaderAudioOutput alloc] initWithOutputSettings:self.audioSetting];
+        self.reader = [[BBZAssetReader alloc] initWithAsset:self.audioCompostion.asset videoComposition:nil audioMix:self.audioCompostion.audioMix];
+        self.reader.timeRange = self.audioCompostion.playTimeRange;
+        self.audioOutPut = [[BBZAssetReaderAudioOutput alloc] initWithOutputSettings:self.audioCompostion.audioSetting];
         [self.reader addOutput:self.audioOutPut];
         self.inputAudioParam = [[BBZInputAudioParam alloc] init];
     }
