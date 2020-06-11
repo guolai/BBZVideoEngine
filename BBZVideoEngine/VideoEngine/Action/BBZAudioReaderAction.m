@@ -48,8 +48,9 @@
         }
         CMTime lastSamplePresentationTime = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
         lastSamplePresentationTime = CMTimeSubtract(lastSamplePresentationTime, self.reader.timeRange.start);
+//        BBZINFO(@"audio sample time1:%@, realtime:%@", [NSValue valueWithCMTime:lastSamplePresentationTime], [NSValue valueWithCMTime:time]);
         NSTimeInterval nDiff = CMTimeGetSeconds(CMTimeSubtract(lastSamplePresentationTime, time));
-        NSTimeInterval minDuration = 0.3;
+        NSTimeInterval minDuration = 1.;
         if(nDiff > minDuration) {
             BBZERROR(@"newFrameAtTime skip dif:%f sample time:%@, realtime:%@", nDiff,[NSValue valueWithCMTime:lastSamplePresentationTime], [NSValue valueWithCMTime:time]);
             self.sampleBuffer = sampleBuffer;
@@ -62,7 +63,7 @@
         self.inputAudioParam.time = time;
         self.sampleBuffer = nil;
         lastSamplePresentationTime = CMSampleBufferGetPresentationTimeStamp(self.inputAudioParam.sampleBuffer);
-        BBZINFO(@"audio sample time:%@, realtime:%@", [NSValue valueWithCMTime:lastSamplePresentationTime], [NSValue valueWithCMTime:time]);
+//        BBZINFO(@"audio sample time2:%@, realtime:%@", [NSValue valueWithCMTime:lastSamplePresentationTime], [NSValue valueWithCMTime:time]);
     
         
     });

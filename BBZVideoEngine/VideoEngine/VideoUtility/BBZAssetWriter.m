@@ -147,9 +147,12 @@
             BBZERROR(@" write video frame with invalid presentation time");
             return;
         }
+        
         if (![(AVAssetWriterInputPixelBufferAdaptor*)self.videoPixelBufferAdaptor appendPixelBuffer:pixelBuffer withPresentationTime:frameTime]) {
             bAdd = NO;
             BBZERROR(@" appendPixelBuffer error, %@", self.assetWriter.error);
+        } else {
+             BBZINFO(@"video appendPixelBuffer %@", [NSValue valueWithCMTime:frameTime]);
         }
     }else {
         BBZINFO(@"status :%d", self.assetWriter.status);

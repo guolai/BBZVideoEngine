@@ -176,7 +176,7 @@
     AVAssetReaderTrackOutput *output;
     AVAssetTrack *track = [self.reader.asset tracksWithMediaType:AVMediaTypeAudio].firstObject;
     if (track) {
-        output = [AVAssetReaderTrackOutput assetReaderTrackOutputWithTrack:track outputSettings:outputSettings];
+        output = [AVAssetReaderTrackOutput assetReaderTrackOutputWithTrack:track outputSettings:nil];
     }
     return output;
 }
@@ -186,7 +186,7 @@
     AVAssetReaderAudioMixOutput *output;
     NSArray *tracks = [self.reader.asset tracksWithMediaType:AVMediaTypeAudio];
     if (tracks.count > 0) {
-        output = [AVAssetReaderAudioMixOutput assetReaderAudioMixOutputWithAudioTracks:tracks audioSettings:outputSettings];
+        output = [AVAssetReaderAudioMixOutput assetReaderAudioMixOutputWithAudioTracks:tracks audioSettings:nil];
         output.audioMix = self.reader.audioMix;
     }
     return output;

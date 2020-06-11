@@ -10,10 +10,10 @@
 #import <Photos/Photos.h>
 
 extern const int BBZMinVideoTime;
-extern const int BBZVideoTimeScale;
+//extern const int BBZVideoTimeScale;
 extern const int BBZVideoDurationScale;
 extern const int BBZScheduleTimeScale;
-extern const int BBZActionTimeToScheduleTime;
+//extern const int BBZActionTimeToScheduleTime;
 
 typedef NS_ENUM(NSInteger, BBZBaseAssetMediaType) {
     BBZBaseAssetMediaTypeUnknown = 0,

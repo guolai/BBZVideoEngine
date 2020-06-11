@@ -43,7 +43,7 @@
         } else if(baseAsset.mediaType == BBZBaseAssetMediaTypeVideo) {
             action = [self videoActionWithAsset:(BBZVideoAsset *)baseAsset];
 //            tranformNode = [[BBZTransformSourceNode alloc] initWithYUVShader:(self.model.bgImage?YES:NO)];
-            bRGB = YES;
+            bRGB = NO;
         }
         action.startTime = builder.startTime;
         action.order = builder.groupIndex;
@@ -181,7 +181,7 @@ buildTimeLineWithSpliceNodes {
     BBZImageSourceAction *imageAction = [[BBZImageSourceAction alloc] init];
     imageAction.asset = asset;
     imageAction.renderSize = self.context.renderSize;
-    imageAction.duration = MAX(asset.playDuration, BBZMinVideoTime * BBZVideoTimeScale);
+    imageAction.duration = MAX(asset.playDuration, BBZMinVideoTime * BBZVideoDurationScale);
     return imageAction;
 }
 
@@ -195,7 +195,7 @@ buildTimeLineWithSpliceNodes {
     }
     videoAction.asset = asset;
     videoAction.renderSize = self.context.renderSize;
-    videoAction.duration = MAX(asset.playDuration, BBZMinVideoTime * BBZVideoTimeScale);
+    videoAction.duration = MAX(asset.playDuration, BBZMinVideoTime * BBZVideoDurationScale);
     return videoAction;
 }
 

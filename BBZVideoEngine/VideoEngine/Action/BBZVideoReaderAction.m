@@ -69,7 +69,7 @@
                 }
             }
             lastSamplePresentationTime = CMSampleBufferGetPresentationTimeStamp(self.sampleBuffer);
-             BBZINFO(@"sample time:%@, realtime:%@", [NSValue valueWithCMTime:lastSamplePresentationTime], [NSValue valueWithCMTime:time]);
+//             BBZINFO(@"sample time:%@, realtime:%@", [NSValue valueWithCMTime:lastSamplePresentationTime], [NSValue valueWithCMTime:time]);
         }
         self.lastTime = time;
     });

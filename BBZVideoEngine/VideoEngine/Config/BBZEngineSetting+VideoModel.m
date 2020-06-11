@@ -28,7 +28,7 @@
         }
     }
     BBZEngineSetting *videoSettings = [[BBZEngineSetting alloc] init];
-    videoSettings.audioSampleRate = [BBZEngineSetting perfectAudioBitRate];
+    videoSettings.audioSampleRate = 48000;
     videoSettings.audioBitRate = [BBZEngineSetting audioBitRateForVideoSettingsArray:array];
     videoSettings.videoBitRate = [BBZEngineSetting videoBitRateForVideoSettingsArray:array];
     videoSettings.videoFrameRate = [BBZEngineSetting videoFrameRateForVideoSettingsArray:array];

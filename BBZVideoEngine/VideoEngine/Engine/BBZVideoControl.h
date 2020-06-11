@@ -8,7 +8,7 @@
 
 #import "BBZTask.h"
 
-extern const int BBZVideoTimeScale;
+//extern const int BBZVideoTimeScale;
 extern const int BBZVideoDurationScale;
 extern const int BBZScheduleTimeScale;
 

@@ -57,6 +57,10 @@
                 [action unlock];
             }
         }
+        if(self.actions.count == 0) {
+            [self didReachEndTime];
+            return;
+        }
     }
     
     for (BBZAction *action in self.actions) {
@@ -91,7 +95,8 @@
 - (BOOL)findNextTimePoint {
     BOOL bFind = YES;
     self.currentIndex++;
-    if(self.currentIndex >= self.timePointsArray.count - 1) {
+    
+    if(self.currentIndex >= self.timePointsArray.count) {
         bFind = NO;
         return bFind;
     }

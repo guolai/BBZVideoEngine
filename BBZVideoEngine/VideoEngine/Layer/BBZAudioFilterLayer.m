@@ -14,9 +14,7 @@
 - (BBZActionBuilderResult *)buildTimelineNodes:(BBZActionBuilderResult *)inputBuilder {
     NSAssert(self.model.assetItems.count > 0, @"must have at least one asset");
     BBZActionBuilderResult *builder = nil;
-    if(self.model.filterModel.filterGroups.count > 0) {
-        builder = [self buildAudioTimeLine:inputBuilder];
-    }
+    builder = [self buildAudioTimeLine:inputBuilder];
     return builder;
 }
 
@@ -47,13 +45,13 @@
             BBZVideoSourceAction *videoAction = (BBZVideoSourceAction *)action;
             BBZVideoAsset *videoAsset = ((BBZVideoAsset *)videoAction.asset);
             AVAsset *sourceAsset = videoAsset.asset;
-            NSUInteger duration  = MIN(videoAction.endTime - videoAction.startTime, videoAsset.playDuration);
-            if(duration < 10) {
+            NSUInteger tmpDuration  = MIN(videoAction.endTime - videoAction.startTime, videoAsset.playDuration);
+            if(tmpDuration < 10) {
                 continue;
             }
-            CMTimeRange timeRange = CMTimeRangeMake(videoAsset.playTimeRange.start, CMTimeMake(duration, BBZVideoDurationScale));
+            CMTimeRange timeRange = CMTimeRangeMake(videoAsset.playTimeRange.start, CMTimeMake(tmpDuration, BBZVideoDurationScale));
             CMTime startTime = CMTimeMake(videoAction.startTime, BBZVideoDurationScale);
-            
+            NSLog(@"audio track count :%d", [sourceAsset tracksWithMediaType:AVMediaTypeAudio].count);
             AVAssetTrack *audioTrack = [[sourceAsset tracksWithMediaType:AVMediaTypeAudio] firstObject];
              AVMutableCompositionTrack *compositionAudioTrack = [composition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
             [compositionAudioTrack insertTimeRange:timeRange ofTrack:audioTrack atTime:startTime error:nil];
@@ -62,13 +60,18 @@
             [trackParam setVolume:1.0 atTime:kCMTimeZero];
             trackParam.audioTimePitchAlgorithm = AVAudioTimePitchAlgorithmVarispeed;
             [audioInputParameters addObject:trackParam];
+            
+            
+            
         }
     }
     audioMix.inputParameters = audioInputParameters;
     BBZAudioReaderAction *readerAction = [[BBZAudioReaderAction alloc] init];
+    readerAction.startTime = 0;
+    readerAction.duration = duration;
     readerAction.audioCompostion = audioComposition;
     audioComposition.asset = composition;
-//    audioComposition.audioMix = audioMix;
+    audioComposition.audioMix = audioMix;
     audioComposition.audioSetting = self.context.videoSettings.audioOutputSettings;
     audioComposition.playTimeRange = CMTimeRangeMake(kCMTimeZero, CMTimeMake(duration, BBZVideoDurationScale));
     self.audioAction = readerAction;
