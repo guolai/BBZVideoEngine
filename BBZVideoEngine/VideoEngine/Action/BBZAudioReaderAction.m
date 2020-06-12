@@ -51,7 +51,7 @@
         lastSamplePresentationTime = CMTimeSubtract(lastSamplePresentationTime, self.reader.timeRange.start);
 //        BBZINFO(@"audio sample time1:%@, realtime:%@", [NSValue valueWithCMTime:lastSamplePresentationTime], [NSValue valueWithCMTime:time]);
         NSTimeInterval nDiff = CMTimeGetSeconds(CMTimeSubtract(lastSamplePresentationTime, time));
-        NSTimeInterval minDuration = 5.0;
+        NSTimeInterval minDuration = 3.0;
         if(nDiff > minDuration) {
             BBZERROR(@"newFrameAtTime skip dif:%f sample time:%@, realtime:%@", nDiff,[NSValue valueWithCMTime:lastSamplePresentationTime], [NSValue valueWithCMTime:time]);
             self.sampleBuffer = sampleBuffer;

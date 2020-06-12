@@ -29,6 +29,7 @@
 @property (nonatomic, assign) CMTime previousAudioTime;
 @property (nonatomic, assign) BOOL audioEncodingIsFinished;
 @property (nonatomic, assign) BOOL videoEncodingIsFinished;
+@property (nonatomic, assign) BOOL encodingLiveVideo;
 @end
 
 
@@ -37,6 +38,7 @@
 
 - (instancetype)initWithOutputFile:(NSString *)strFilePath size:(CGSize)videoSize fileType:(NSString *)fileType {
     if(self = [super init]) {
+        _encodingLiveVideo = YES;
         _outputFile = strFilePath;
         _videoSize = videoSize;
         _fileType = fileType;
@@ -87,7 +89,7 @@
     }
     
     self.videoInput = [AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeVideo outputSettings:videoOutputSettings];
-    self.videoInput.expectsMediaDataInRealTime = NO;
+    self.videoInput.expectsMediaDataInRealTime = self.encodingLiveVideo;
     
     NSDictionary *attributes = @{(id)kCVPixelBufferWidthKey: @(((int)_videoSize.width)),
                                  (id)kCVPixelBufferHeightKey: @(((int)_videoSize.height)),
@@ -101,7 +103,7 @@
 - (void)createAudioInput {
     NSDictionary *audioOutputSettings = self.audioOutputSettings;
     self.audioInput = [AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeAudio outputSettings:audioOutputSettings];
-    self.audioInput.expectsMediaDataInRealTime = NO;
+    self.audioInput.expectsMediaDataInRealTime = self.encodingLiveVideo;
     [_assetWriter addInput:self.audioInput];
 }
 
@@ -134,17 +136,24 @@
         [self.assetWriter startSessionAtSourceTime:frameTime];
         self.startTime = frameTime;
     }
-    while (self.videoInput.readyForMoreMediaData == NO && ! self.videoEncodingIsFinished ) {
+    BOOL bShouldSkip = NO;
+    NSInteger retryCount = 0;
+    while (self.videoInput.readyForMoreMediaData == NO && !self.videoEncodingIsFinished && retryCount < 4) {
         if (self.assetWriter.status != AVAssetWriterStatusWriting)
         {
             return;
         }
-        
+        retryCount++;
         usleep(10000);
         BBZINFO(@"sleep on writing video");
     }
     BOOL bAdd = YES;
-    if (self.assetWriter.status == AVAssetWriterStatusWriting) {
+    if(retryCount >= 4 && self.videoInput.readyForMoreMediaData == NO) {
+        bShouldSkip = YES;
+        BBZERROR(@"video skip error");
+    }
+    
+    if (self.assetWriter.status == AVAssetWriterStatusWriting && !bShouldSkip) {
         if (CMTIME_IS_NUMERIC(frameTime) == NO)  {
             BBZERROR(@" write video frame with invalid presentation time");
             return;
@@ -198,28 +207,39 @@
 
     currentSampleTime = CMSampleBufferGetPresentationTimeStamp(audioBuffer);
     self.previousAudioTime = currentSampleTime;
-
-    while(!self.audioInput.readyForMoreMediaData && ! self.audioEncodingIsFinished ) {
+    
+    BOOL bShouldSkip = NO;
+    NSInteger retryCount = 0;
+    
+    while(!self.audioInput.readyForMoreMediaData && !self.audioEncodingIsFinished && retryCount < 4) {
         BBZINFO(@"audio waiting...");
+        retryCount++;
         usleep(100000);
     }
     BOOL bAdd = YES;
-    if (!self.audioInput.readyForMoreMediaData) {
-        BBZINFO(@"2: Had to drop an audio frame %@", CFBridgingRelease(CMTimeCopyDescription(kCFAllocatorDefault, currentSampleTime)));
-        bAdd = NO;
-    } else if(self.assetWriter.status == AVAssetWriterStatusWriting) {
-        if(![self.audioInput appendSampleBuffer:audioBuffer]) {
-             BBZINFO(@"Problem appending audio buffer at time: %@", CFBridgingRelease(CMTimeCopyDescription(kCFAllocatorDefault, currentSampleTime)));
-            bAdd = NO;
-        }else {
-            BBZINFO(@"audio appendSampleBuffer %@", [NSValue valueWithCMTime:currentSampleTime]);
-        }
-        
-    } else {
-        BBZINFO(@"Wrote an audio frame %@", CFBridgingRelease(CMTimeCopyDescription(kCFAllocatorDefault, currentSampleTime)));
-        bAdd = NO;
+    if(retryCount >= 4 && self.videoInput.readyForMoreMediaData == NO) {
+        bShouldSkip = YES;
+        bAdd = YES;
+        BBZERROR(@"audio skip error");
     }
-
+    if(!bShouldSkip) {
+        if (!self.audioInput.readyForMoreMediaData) {
+            BBZINFO(@"2: Had to drop an audio frame %@", CFBridgingRelease(CMTimeCopyDescription(kCFAllocatorDefault, currentSampleTime)));
+            bAdd = NO;
+        } else if(self.assetWriter.status == AVAssetWriterStatusWriting) {
+            if(![self.audioInput appendSampleBuffer:audioBuffer]) {
+                BBZINFO(@"Problem appending audio buffer at time: %@", CFBridgingRelease(CMTimeCopyDescription(kCFAllocatorDefault, currentSampleTime)));
+                bAdd = NO;
+            }else {
+                BBZINFO(@"audio appendSampleBuffer %@", [NSValue valueWithCMTime:currentSampleTime]);
+            }
+            
+        } else {
+            BBZINFO(@"Wrote an audio frame %@", CFBridgingRelease(CMTimeCopyDescription(kCFAllocatorDefault, currentSampleTime)));
+            bAdd = NO;
+        }
+    }
+    
     if (_shouldInvalidateAudioSampleWhenDone) {
         CMSampleBufferInvalidate(audioBuffer);
     }
