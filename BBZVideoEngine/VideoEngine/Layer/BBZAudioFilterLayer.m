@@ -41,6 +41,7 @@
     AVMutableComposition *composition = [AVMutableComposition composition];
     NSMutableArray *audioInputParameters = [NSMutableArray array];
     BOOL bHaveAudio = NO;
+    return;
 //    NSUInteger totalDuration = 0;
 //    CMTime playStart = kCMTimeZero;
     for (BBZAction *action in actions) {

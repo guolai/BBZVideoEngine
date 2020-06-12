@@ -79,7 +79,7 @@
 #pragma mark -  Helper
 
 + (NSInteger)perfectAudioBitRate {
-    return 256 * 1000;
+    return 128 * 1000;
 }
 
 + (NSInteger)perfectVideoBitRate {

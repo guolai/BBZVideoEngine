@@ -65,6 +65,8 @@
             [self createAudioInput];
         }
         [self.assetWriter  startWriting];
+    [self.assetWriter startSessionAtSourceTime:kCMTimeZero];
+    self.startTime = kCMTimeZero;
 //    });
 }
 

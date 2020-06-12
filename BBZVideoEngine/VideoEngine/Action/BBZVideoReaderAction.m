@@ -11,12 +11,13 @@
 #import "BBZVideoAsset.h"
 #import "GPUImageColorConversion.h"
 #import "GPUImageFramebuffer+BBZ.h"
-
+extern const int BBZActionTimeToScheduleTime;
 @interface BBZVideoReaderAction ()
 @property (nonatomic, strong) BBZAssetReader *reader;
 @property (nonatomic, strong) BBZAssetReaderSequentialAccessVideoOutput *videoOutPut;
 @property (nonatomic, strong) BBZInputSourceParam *inputSourceParam;
 @property (nonatomic, assign) CMSampleBufferRef sampleBuffer;
+@property (nonatomic, assign) CMSampleBufferRef usedSampleBuffer;
 @property (nonatomic, assign) CMTime lastTime;
 @end
 
@@ -39,40 +40,42 @@
 }
 
 - (void)newFrameAtTime:(CMTime)time {
-    runAsynchronouslyOnVideoProcessingQueue(^{
-        CMSampleBufferRef sampleBuffer = self.videoOutPut.currentSampleBuffer;
+    CMSampleBufferRef sampleBuffer = self.sampleBuffer;
+    if(!sampleBuffer) {
+        sampleBuffer = [self.videoOutPut nextSampleBuffer];
         if(sampleBuffer) {
             self.sampleBuffer = sampleBuffer;
         }
-        if(!sampleBuffer) {
-            sampleBuffer = [self.videoOutPut nextSampleBuffer];
-            if(sampleBuffer) {
-                self.sampleBuffer = sampleBuffer;
-                [self buildInputParam];
-            }
-        } else {
-            CMTime lastSamplePresentationTime = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
-            lastSamplePresentationTime = CMTimeSubtract(lastSamplePresentationTime, self.reader.timeRange.start);
-            NSTimeInterval nDiff = CMTimeGetSeconds(CMTimeSubtract(lastSamplePresentationTime, time));
-            NSTimeInterval minDuration = CMTimeGetSeconds(CMTimeSubtract(time, self.lastTime));
-            minDuration = fabs(minDuration / 2.0);
-            if(nDiff > minDuration) {
-                BBZERROR(@"newFrameAtTime use lastSamplebuffer dif:%f sample time:%@, realtime:%@", nDiff,[NSValue valueWithCMTime:lastSamplePresentationTime], [NSValue valueWithCMTime:time]);
-                if(!self.inputSourceParam) {
-                    [self buildInputParam];
-                }
-            } else {
-                sampleBuffer = [self.videoOutPut nextSampleBuffer];
-                if(sampleBuffer) {
-                    self.sampleBuffer = sampleBuffer;
-                    [self buildInputParam];
-                }
-            }
-            lastSamplePresentationTime = CMSampleBufferGetPresentationTimeStamp(self.sampleBuffer);
-//             BBZINFO(@"sample time:%@, realtime:%@", [NSValue valueWithCMTime:lastSamplePresentationTime], [NSValue valueWithCMTime:time]);
+        if(!self.sampleBuffer) {
+            BBZERROR(@"newFrameAtTime use lastfb");
+            self.sampleBuffer = self.videoOutPut.currentSampleBuffer;
         }
-        self.lastTime = time;
-    });
+        if(!self.sampleBuffer) {
+            BBZERROR(@"newFrameAtTime use usedfb");
+            self.sampleBuffer = self.usedSampleBuffer;
+        }
+    }
+    CMTime relativeTime = CMTimeSubtract(time, CMTimeMake(self.startTime * BBZActionTimeToScheduleTime, BBZScheduleTimeScale));
+    CMTime lastSamplePresentationTime = CMSampleBufferGetPresentationTimeStamp(self.sampleBuffer);
+    lastSamplePresentationTime = CMTimeSubtract(lastSamplePresentationTime, self.reader.timeRange.start);
+    NSTimeInterval nDiff = CMTimeGetSeconds(CMTimeSubtract(lastSamplePresentationTime, relativeTime));
+    NSTimeInterval minDuration = CMTimeGetSeconds(CMTimeSubtract(time, self.lastTime));
+    minDuration = fabs(minDuration / 2.0);
+    BBZINFO(@"newFrameAtTime  dif,rltime,stime,rtime: %.4f,%.4f,%.4f,%.4f", nDiff, CMTimeGetSeconds(relativeTime), CMTimeGetSeconds(lastSamplePresentationTime), CMTimeGetSeconds(time));
+    if(nDiff > 0.001 && nDiff > minDuration) {
+        //下一帧还需要复用
+        self.usedSampleBuffer = self.sampleBuffer;
+    } else {
+        
+        self.usedSampleBuffer = self.sampleBuffer;
+        self.sampleBuffer = nil;
+       
+    }
+    NSAssert(self.usedSampleBuffer, @"error nil samplebuffer");
+//    lastSamplePresentationTime = CMSampleBufferGetPresentationTimeStamp(self.usedSampleBuffer);
+//    BBZINFO(@"sample time:%@, realtime:%@", [NSValue valueWithCMTime:lastSamplePresentationTime], [NSValue valueWithCMTime:time]);
+//        }
+    self.lastTime = time;
 }
 
 
@@ -81,7 +84,7 @@
         self.inputSourceParam = [[BBZInputSourceParam alloc] init];
         self.inputSourceParam.bVideoSource = YES;
     }
-    CMSampleBufferRef sampleBuffer = self.videoOutPut.currentSampleBuffer;
+    CMSampleBufferRef sampleBuffer = self.usedSampleBuffer;
     GLfloat *preferredConversion;
     CVPixelBufferRef movieFrame = (CVPixelBufferRef)CMSampleBufferGetImageBuffer(sampleBuffer);
     CFTypeRef colorAttachments = CVBufferGetAttachment(movieFrame, kCVImageBufferYCbCrMatrixKey, NULL);
@@ -104,6 +107,7 @@
 
 
 - (BBZInputSourceParam *)inputSourceAtTime:(CMTime)time {
+    [self buildInputParam];
     return self.inputSourceParam;
 }
 
@@ -127,6 +131,20 @@
         _sampleBuffer = nil;
     }
     _sampleBuffer = sampleBuffer;
+}
+
+- (void)setUsedSampleBuffer:(CMSampleBufferRef)sampleBuffer {
+    if(sampleBuffer &&  _usedSampleBuffer == sampleBuffer) {
+        return;
+    }
+    if(sampleBuffer) {
+        CFRetain(sampleBuffer);
+    }
+    if(_usedSampleBuffer) {
+        CFRelease(_usedSampleBuffer);
+        _usedSampleBuffer = nil;
+    }
+    _usedSampleBuffer = sampleBuffer;
 }
 
 - (void)destroySomething{

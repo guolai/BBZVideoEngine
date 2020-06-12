@@ -164,6 +164,9 @@
 
 - (AVAssetReaderOutput *)videoCompositionOutputWithOutputSettings:(NSDictionary *)outputSettings {
     AVAssetReaderVideoCompositionOutput *output;
+    if(outputSettings) {
+        outputSettings = [self defaultVideoOutputSettings];
+    }
     NSArray *tracks = [self.reader.asset tracksWithMediaType:AVMediaTypeVideo];
     if (tracks.count > 0) {
         output = [AVAssetReaderVideoCompositionOutput assetReaderVideoCompositionOutputWithVideoTracks:tracks videoSettings:outputSettings];
@@ -246,8 +249,9 @@
         }
     }
     CMSampleBufferRef sampleBuffer = [self nextSampleBufferForProviderOutput:self.providerOutput];
-    self.currentSampleBuffer = sampleBuffer;
+   
     if(sampleBuffer) {
+        self.currentSampleBuffer = sampleBuffer;
         CFRelease(sampleBuffer);
     }
     
@@ -370,6 +374,10 @@
     }
     CFRetain(firstSampleBuffer);
     CFRetain(secondSampleBuffer);
+    if(tmpSampleBuffer) {
+        CFRelease(tmpSampleBuffer);
+    }
+    
     if (CMTimeCompare(firstSampleBufferTime, targetTime) > 0) {
         if (secondSampleBuffer) {
             self.nextSampleBuffer = firstSampleBuffer;

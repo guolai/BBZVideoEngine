@@ -36,21 +36,22 @@
 }
 
 - (void)newFrameAtTime:(CMTime)time {
-    runAsynchronouslyOnVideoProcessingQueue(^{
-        CMSampleBufferRef sampleBuffer = self.sampleBuffer;
-        if(!sampleBuffer) {
-            sampleBuffer = [self.audioOutPut nextSampleBuffer];
-        }
-        if(!sampleBuffer) {
-            self.inputAudioParam.sampleBuffer = nil;
-            self.inputAudioParam.time = time;
-            return ;
-        }
+    
+    CMSampleBufferRef sampleBuffer = self.sampleBuffer;
+    if(!sampleBuffer) {
+        sampleBuffer = [self.audioOutPut nextSampleBuffer];
+    }
+    if(!sampleBuffer) {
+        self.inputAudioParam.sampleBuffer = nil;
+        self.inputAudioParam.time = time;
+        return ;
+    }
+//    runAsynchronouslyOnVideoProcessingQueue(^{
         CMTime lastSamplePresentationTime = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
         lastSamplePresentationTime = CMTimeSubtract(lastSamplePresentationTime, self.reader.timeRange.start);
 //        BBZINFO(@"audio sample time1:%@, realtime:%@", [NSValue valueWithCMTime:lastSamplePresentationTime], [NSValue valueWithCMTime:time]);
         NSTimeInterval nDiff = CMTimeGetSeconds(CMTimeSubtract(lastSamplePresentationTime, time));
-        NSTimeInterval minDuration = 1.;
+        NSTimeInterval minDuration = 5.0;
         if(nDiff > minDuration) {
             BBZERROR(@"newFrameAtTime skip dif:%f sample time:%@, realtime:%@", nDiff,[NSValue valueWithCMTime:lastSamplePresentationTime], [NSValue valueWithCMTime:time]);
             self.sampleBuffer = sampleBuffer;
@@ -66,7 +67,7 @@
 //        BBZINFO(@"audio sample time2:%@, realtime:%@", [NSValue valueWithCMTime:lastSamplePresentationTime], [NSValue valueWithCMTime:time]);
     
         
-    });
+//    });
 }
 
 - (CMSampleBufferRef)adjustTime:(CMSampleBufferRef) sample by:(CMTime) offset {

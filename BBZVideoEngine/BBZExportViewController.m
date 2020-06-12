@@ -48,10 +48,10 @@
 
 - (void)beginExport {
     BBZVideoModel *videoModel = [[BBZVideoModel alloc] init];
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"IMG2" ofType:@"MOV" inDirectory:@"Resource"];
-    if(0) {
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"douyin1" ofType:@"mp4" inDirectory:@"Resource"];
+    if(1) {
         [videoModel addVideoSource:path];
-        path = [[NSBundle mainBundle] pathForResource:@"IMG_7316" ofType:@"MOV" inDirectory:@"Resource"];
+        path = [[NSBundle mainBundle] pathForResource:@"douyin2" ofType:@"mp4" inDirectory:@"Resource"];
         [videoModel addVideoSource:path];
     } else if(0) {
         path = [[NSBundle mainBundle] pathForResource:@"IMG_7305" ofType:@"HEIC" inDirectory:@"Resource"];
@@ -142,6 +142,7 @@
              }];
         }
     };
+
     [task start];
     
 }

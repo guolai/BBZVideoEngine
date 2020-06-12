@@ -73,19 +73,19 @@
     if(!self.hasAudioTrack) {
         return;
     }
-    runAsynchronouslyOnVideoProcessingQueue(^{
+//    runAsynchronouslyOnVideoProcessingQueue(^{
         if(self.inputAudioProtocol) {
             BBZInputAudioParam *inputAudio = [self.inputAudioProtocol inputAudioAtTime:time];
             if(inputAudio.sampleBuffer) {
                 [self.writer writeAudioFrameBuffer:inputAudio.sampleBuffer];
             }
         }
-    });
+//    });
 }
 
 - (void)lock {
     [super lock];
-    runAsynchronouslyOnVideoProcessingQueue(^{
+//    runAsynchronouslyOnVideoProcessingQueue(^{
         if(!self.writer) {
             NSError *error;
             if ([[NSFileManager defaultManager] fileExistsAtPath:self.strOutputFile]){
@@ -94,16 +94,16 @@
             [self buildWriter];
             [self.writer startWriting];
         }
-    });
+//    });
    
     
 }
 
 - (void)destroySomething{
-    runAsynchronouslyOnVideoProcessingQueue(^{
+//    runAsynchronouslyOnVideoProcessingQueue(^{
         [self.writer cancleWriting];
         self.writer = nil;
-    });
+//    });
    
 }
 
@@ -132,9 +132,9 @@
 
 #pragma mark - Delegate
 - (void)didDrawFrameBuffer:(GPUImageFramebuffer *)outputFramebuffer time:(CMTime)time{
-    runSynchronouslyOnVideoProcessingQueue(^{
+//    runSynchronouslyOnVideoProcessingQueue(^{
         [self.writer writeSyncVideoPixelBuffer:outputFramebuffer.pixelBuffer withPresentationTime:time];
-    });
+//    });
     
 }
 
