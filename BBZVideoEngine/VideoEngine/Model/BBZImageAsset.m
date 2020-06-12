@@ -12,6 +12,8 @@
 #import "BBZEngineSetting.h"
 #import "UIImage+BBZ.h"
 
+extern const int BBZDefaultImageTime;
+
 @interface BBZImageAsset ()
 @property (nonatomic, strong) UIImage *sourceimage;
 @property (nonatomic, assign) BOOL bFullResolution;
@@ -29,7 +31,7 @@
 - (instancetype)init {
     if (self = [super init]) {
         self.mediaType = BBZBaseAssetMediaTypeImage;
-        self.sourceTimeRange = CMTimeRangeMake(kCMTimeZero, CMTimeMake(2 * BBZVideoDurationScale, BBZVideoDurationScale));
+        self.sourceTimeRange = CMTimeRangeMake(kCMTimeZero, CMTimeMake(BBZDefaultImageTime * BBZVideoDurationScale, BBZVideoDurationScale));
         self.playTimeRange = self.sourceTimeRange;
     }
     return self;

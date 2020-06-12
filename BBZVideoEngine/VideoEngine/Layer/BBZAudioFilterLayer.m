@@ -41,9 +41,11 @@
     AVMutableComposition *composition = [AVMutableComposition composition];
     NSMutableArray *audioInputParameters = [NSMutableArray array];
     BOOL bHaveAudio = NO;
+//    NSUInteger totalDuration = 0;
+//    CMTime playStart = kCMTimeZero;
     for (BBZAction *action in actions) {
         if([action isKindOfClass:[BBZVideoSourceAction class]]) {
-            bHaveAudio = YES;
+            
             BBZVideoSourceAction *videoAction = (BBZVideoSourceAction *)action;
             BBZVideoAsset *videoAsset = ((BBZVideoAsset *)videoAction.asset);
             AVAsset *sourceAsset = videoAsset.asset;
@@ -51,13 +53,19 @@
             if(tmpDuration < 10) {
                 continue;
             }
+//            totalDuration+= tmpDuration;
             CMTimeRange timeRange = CMTimeRangeMake(videoAsset.playTimeRange.start, CMTimeMake(tmpDuration, BBZVideoDurationScale));
             CMTime startTime = CMTimeMake(videoAction.startTime, BBZVideoDurationScale);
-            NSLog(@"audio track count :%d", [sourceAsset tracksWithMediaType:AVMediaTypeAudio].count);
+//            if(!bHaveAudio) {
+//                playStart = startTime;
+//            }
+            bHaveAudio = YES;
+            
+            BBZINFO(@"audio track count :%d", [sourceAsset tracksWithMediaType:AVMediaTypeAudio].count);
             AVAssetTrack *audioTrack = [[sourceAsset tracksWithMediaType:AVMediaTypeAudio] firstObject];
              AVMutableCompositionTrack *compositionAudioTrack = [composition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
             [compositionAudioTrack insertTimeRange:timeRange ofTrack:audioTrack atTime:startTime error:nil];
-            
+            BBZINFO(@"AudioTrack insertTimeRange,startTime:%@,%@", [NSValue valueWithCMTimeRange:timeRange], [NSValue valueWithCMTime:startTime]);
             AVMutableAudioMixInputParameters *trackParam = [AVMutableAudioMixInputParameters audioMixInputParametersWithTrack:audioTrack];
             [trackParam setVolume:1.0 atTime:kCMTimeZero];
             trackParam.audioTimePitchAlgorithm = AVAudioTimePitchAlgorithmVarispeed;

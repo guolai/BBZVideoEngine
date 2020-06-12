@@ -209,6 +209,8 @@
         if(![self.audioInput appendSampleBuffer:audioBuffer]) {
              BBZINFO(@"Problem appending audio buffer at time: %@", CFBridgingRelease(CMTimeCopyDescription(kCFAllocatorDefault, currentSampleTime)));
             bAdd = NO;
+        }else {
+            BBZINFO(@"audio appendSampleBuffer %@", [NSValue valueWithCMTime:currentSampleTime]);
         }
         
     } else {

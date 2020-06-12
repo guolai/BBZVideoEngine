@@ -50,7 +50,6 @@
         return [self didFinishWritingVideoWithError:[NSError errorWithDomain:@"无效的分辨率" code:-1 userInfo:nil] async:YES];
     }
     
-  
     self.writer = [[BBZAssetWriter alloc] initWithOutputFile:self.strOutputFile size:videoSize fileType:AVFileTypeMPEG4];
     self.writer.videoOutputSettings = self.videoSettings;
     self.writer.audioOutputSettings = self.audioSettings;
