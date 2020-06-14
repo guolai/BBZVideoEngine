@@ -44,6 +44,42 @@
 //    return;
 //    NSUInteger totalDuration = 0;
 //    CMTime playStart = kCMTimeZero;
+    CGFloat volume = 1.0;
+    if(self.model.audioItems.count > 0) {
+        for (BBZAudioAsset *audioAsset in self.model.audioItems) {
+            AVAsset *sourceAsset = audioAsset.asset;
+            NSUInteger tmpDuration  =  MIN(audioAsset.playDuration, duration);
+            if(tmpDuration < 10) {
+                continue;
+            }
+            if(bHaveAudio) {
+                volume = 0.7;
+            }
+            //            totalDuration+= tmpDuration;
+            CMTimeRange timeRange = CMTimeRangeMake(audioAsset.playTimeRange.start, CMTimeMake(tmpDuration, BBZVideoDurationScale));
+            CMTime startTime = kCMTimeZero;
+            bHaveAudio = YES;
+            
+//            BBZINFO(@"audio track count :%d", [sourceAsset tracksWithMediaType:AVMediaTypeAudio].count);
+            NSAssert([sourceAsset tracksWithMediaType:AVMediaTypeAudio].count == 1, @"error");
+            AVAssetTrack *audioTrack = [[sourceAsset tracksWithMediaType:AVMediaTypeAudio] firstObject];
+            AVMutableCompositionTrack *compositionAudioTrack = [composition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
+            [compositionAudioTrack insertTimeRange:timeRange ofTrack:audioTrack atTime:startTime error:nil];
+            BBZINFO(@"AudioTrack insertTimeRange,startTime:%@,%@", [NSValue valueWithCMTimeRange:timeRange], [NSValue valueWithCMTime:startTime]);
+            AVMutableAudioMixInputParameters *trackParam = [AVMutableAudioMixInputParameters audioMixInputParametersWithTrack:audioTrack];
+            [trackParam setVolume:volume atTime:kCMTimeZero];
+            trackParam.audioTimePitchAlgorithm = AVAudioTimePitchAlgorithmVarispeed;
+            [audioInputParameters addObject:trackParam];
+        }
+        
+        
+        bHaveAudio = YES;
+        
+    }
+    
+    if(bHaveAudio) {
+        volume = 0.5;
+    }
     for (BBZAction *action in actions) {
         if([action isKindOfClass:[BBZVideoSourceAction class]]) {
             
@@ -68,7 +104,7 @@
             [compositionAudioTrack insertTimeRange:timeRange ofTrack:audioTrack atTime:startTime error:nil];
             BBZINFO(@"AudioTrack insertTimeRange,startTime:%@,%@", [NSValue valueWithCMTimeRange:timeRange], [NSValue valueWithCMTime:startTime]);
             AVMutableAudioMixInputParameters *trackParam = [AVMutableAudioMixInputParameters audioMixInputParametersWithTrack:audioTrack];
-            [trackParam setVolume:1.0 atTime:kCMTimeZero];
+            [trackParam setVolume:volume atTime:kCMTimeZero];
             trackParam.audioTimePitchAlgorithm = AVAudioTimePitchAlgorithmVarispeed;
             [audioInputParameters addObject:trackParam];
         }

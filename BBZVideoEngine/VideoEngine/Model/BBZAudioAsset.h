@@ -11,7 +11,8 @@
 
 
 @interface BBZAudioAsset : BBZBaseAsset
-
+@property (nonatomic, strong) AVAudioMix *audioMix;
+@property (nonatomic, strong, readonly) AVAsset *asset;
 @end
 
 

@@ -33,6 +33,8 @@
 - (BOOL)addImageSource:(NSString *)filePath;
 - (BOOL)addUIImage:(UIImage *)image;
 
+- (BOOL)addAudioSource:(NSString *)filePath;
+
 //filter
 - (void)addFilterGroup:(NSString *)strDirectory;
 - (void)addTransitionGroup:(NSString *)strDirectory;

@@ -79,7 +79,10 @@
         videoModel.maskImage = multiArray;
     }
     
-    
+    if(self.exportType == BBZExportTypeImagesAndVideosWithBGM || self.exportType == BBZExportTypeImagesAndVideosWithBGMTranstion || self.exportType == BBZExportTypeSpliceImagesAndVideosBGM || self.exportType == BBZExportTypeImagesBGMTransition) {
+        NSString *path = [[NSBundle mainBundle] pathForResource:@"jimoshazhouleng" ofType:@"mp3" inDirectory:@"Resource"];
+        [videoModel addAudioSource:path];
+    }
     
     NSString *path = [[NSBundle mainBundle] pathForResource:@"douyin1" ofType:@"mp4" inDirectory:@"Resource"];
     if(self.exportType == BBZExportTypeSingleVideoCostomParamas) {
@@ -159,6 +162,7 @@
         
         path = [[NSBundle mainBundle] pathForResource:@"IMG_7317" ofType:@"HEIC" inDirectory:@"Resource"];
         [videoModel addImageSource:path];
+        
     } else if (self.exportType == BBZExportTypeImagesAndVideosWithBGMTranstion) {
         path = [[NSBundle mainBundle] pathForResource:@"IMG_7305" ofType:@"HEIC" inDirectory:@"Resource"];
         [videoModel addImageSource:path];
@@ -210,8 +214,7 @@
         [videoModel addImageSource:path];
         
     } else if(self.exportType == BBZExportTypeImagesBGMTransition){
-        
-        [videoModel addVideoSource:path];
+
         
         path = [[NSBundle mainBundle] pathForResource:@"IMG_7311" ofType:@"HEIC" inDirectory:@"Resource"];
         [videoModel addImageSource:path];
@@ -222,11 +225,6 @@
         path = [[NSBundle mainBundle] pathForResource:@"IMG_7317" ofType:@"HEIC" inDirectory:@"Resource"];
         [videoModel addImageSource:path];
         
-        
-        path = [[NSBundle mainBundle] pathForResource:@"IMG_7315" ofType:@"MOV" inDirectory:@"Resource"];
-        [videoModel addVideoSource:path];
-        path = [[NSBundle mainBundle] pathForResource:@"IMG_7316" ofType:@"MOV" inDirectory:@"Resource"];
-        [videoModel addVideoSource:path];
         
         
         path = [[NSBundle mainBundle] pathForResource:@"IMG_7305" ofType:@"HEIC" inDirectory:@"Resource"];

@@ -32,7 +32,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 
-///helper 
+///helper
++ (NSInteger)minAudioBitRate;
++ (NSInteger)minVideoBitRate;
 + (NSInteger)perfectAudioBitRate;
 + (NSInteger)perfectVideoBitRate;
 + (CGSize)perfectRenderSize;

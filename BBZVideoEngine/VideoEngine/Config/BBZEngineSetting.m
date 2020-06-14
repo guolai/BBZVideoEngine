@@ -82,6 +82,15 @@
     return 128 * 1000;
 }
 
++ (NSInteger)minAudioBitRate {
+    return 64 * 1000;
+}
+
++ (NSInteger)minVideoBitRate {
+    return 600 * 1024;
+}
+
+
 + (NSInteger)perfectVideoBitRate {
     return 5 * 1024 * 1024;
 }

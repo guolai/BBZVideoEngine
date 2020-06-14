@@ -36,6 +36,10 @@
     
     videoSettings.videoBitRate = MIN(videoSettings.videoBitRate, [BBZEngineSetting perfectVideoBitRate]);
     videoSettings.audioBitRate = MIN(videoSettings.audioBitRate, [BBZEngineSetting perfectAudioBitRate]);
+    
+    videoSettings.videoBitRate = MAX(videoSettings.videoBitRate, [BBZEngineSetting minVideoBitRate]);
+    videoSettings.audioBitRate = MAX(videoSettings.audioBitRate, [BBZEngineSetting minAudioBitRate]);
+    
     return videoSettings;
 }
 
@@ -71,7 +75,7 @@
     } else {
         settings.videoSize = [BBZEngineSetting perfectImageSize];
     }
-    
+    settings.videoFrameRate = 24;
     return settings;
 }
 

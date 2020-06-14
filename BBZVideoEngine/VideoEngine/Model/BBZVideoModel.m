@@ -60,6 +60,13 @@
     return YES;
 }
 
+- (BOOL)addAudioSource:(NSString *)filePath {
+    BBZAudioAsset *audioAsset = [BBZAudioAsset assetWithFilePath:filePath];
+    [self.interAudioItems addObject:audioAsset];
+    return YES;
+}
+
+
 - (NSArray *)assetItems {
     return self.interAssetItems;
 }
