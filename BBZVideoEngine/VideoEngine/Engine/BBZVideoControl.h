@@ -19,6 +19,9 @@ typedef NS_ENUM(NSInteger, BBZEngineScheduleMode) {
     BBZEngineScheduleModeImageGenerator,
 };
 
+typedef void(^BBZExportProgressBlock)(CGFloat progress);
+typedef void(^BBZExportCompletionBlock)(BOOL sucess, NSError *error);
+
 
 @protocol BBZVideoWriteControl <NSObject>
 - (void)didWriteVideoFrame;

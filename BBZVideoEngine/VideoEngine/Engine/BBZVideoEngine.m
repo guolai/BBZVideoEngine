@@ -264,14 +264,14 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
 }
 
 - (CGFloat)videoModelCombinedDuration {
-    CGFloat duration  = self.intDuration / BBZVideoDurationScale;
+    CGFloat duration  = self.intDuration / (BBZVideoDurationScale * 1.0);
     return duration;
 }
 
-- (void)setCompletionBlock:(void (^)(BOOL, NSError *))completionBlock {
-    _completionBlock = [completionBlock copy];
+- (void)setCompleteBlock:(void (^)(BOOL, NSError *))completionBlock {
+    _completeBlock = [completionBlock copy];
     BBZOutputFilterLayer *outputLayer = self.filterLayers[@(BBZFilterLayerTypeOutput)];
-    outputLayer.completionBlock = _completionBlock;
+    outputLayer.completeBlock = _completeBlock;
 }
 
 #pragma mark - WriteControl Delegate
@@ -281,6 +281,10 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
         __weak typeof(self) weakSelf = self;
         BBZRunAsynchronouslyOnTaskQueue(^{
             __strong typeof(self) strongSelf = weakSelf;
+            if(strongSelf.progressBlock) {
+                CGFloat progress = strongSelf.schedule.currentTime/self.videoModelCombinedDuration;
+                self.progressBlock(progress);
+            }
             [strongSelf.schedule increaseTime];
         });
     }

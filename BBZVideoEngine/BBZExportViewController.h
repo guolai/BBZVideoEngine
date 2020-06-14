@@ -8,10 +8,21 @@
 
 #import <UIKit/UIKit.h>
 
-NS_ASSUME_NONNULL_BEGIN
+typedef NS_ENUM(NSInteger, BBZExportType) {
+    BBZExportTypeSingleVideoTransform = 0,
+    BBZExportTypeSingleVideoCostomParamas = 1,
+    BBZExportTypeVideos = 2,
+    BBZExportTypeImagesAndVideos = 3,
+    BBZExportTypeImagesAndVideosWithTransition = 4,
+    BBZExportTypeImagesAndVideosWithBGM = 5,
+    BBZExportTypeImagesAndVideosWithBGMTranstion = 6,
+    BBZExportTypeSpliceImagesAndVideosBGM = 7,
+    BBZExportTypeImagesBGMTransition = 8,
+
+};
 
 @interface BBZExportViewController : UIViewController
+@property (nonatomic, assign) BBZExportType exportType;
 
 @end
 
-NS_ASSUME_NONNULL_END

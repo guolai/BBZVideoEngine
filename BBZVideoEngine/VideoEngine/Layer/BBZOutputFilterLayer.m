@@ -57,8 +57,11 @@
 }
 
 - (void)setCompletionBlock:(void (^)(BOOL, NSError *))completionBlock {
-    _completionBlock = [completionBlock copy];
-    self.outputAction.completionBlock = _completionBlock;
+    self.outputAction.completeBlock = completionBlock;
+}
+
+- (BBZExportCompletionBlock)completeBlock {
+    return self.outputAction.completeBlock;
 }
 
 @end

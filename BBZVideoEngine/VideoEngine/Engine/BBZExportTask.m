@@ -59,13 +59,9 @@
             self.context = context;
             BBZRunAsynchronouslyOnExportQueue(^{
                 self.videoEngine = [BBZVideoEngine videoEngineWithModel:self.videoModel context:self.context outputFile:self.outputFile];
-                __weak typeof(self) weakself = self;
-                self.videoEngine.completionBlock = ^(BOOL sucess, NSError *error) {
-                    __strong typeof(self) strongSelf = weakself;
-                    if(strongSelf.completionBlock){
-                        strongSelf.completionBlock(sucess, error);
-                    }
-                };
+//                __weak typeof(self) weakself = self;
+                self.videoEngine.completeBlock = self.completeBlock;
+                self.videoEngine.progressBlock = self.progressBlock;
                 [self.videoEngine start];
             });
         }

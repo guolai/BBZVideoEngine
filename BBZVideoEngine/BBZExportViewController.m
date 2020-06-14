@@ -10,16 +10,20 @@
 #import "BBZExportTask.h"
 #import "BBZVideoModel.h"
 #import <Photos/Photos.h>
+#import "BBZAVAssetExportSession.h"
 
 
 @interface BBZExportViewController ()
 @property (nonatomic, strong) UILabel *lblProgress;
 @property (nonatomic, strong) BBZExportTask *task;
+@property (nonatomic, strong) BBZAVAssetExportSession *exportSesstion;
 @end
 
 @implementation BBZExportViewController
 
 - (void)dealloc {
+    [self.exportSesstion cancelExport];
+    self.exportSesstion = nil;
     [self.task cancel];
     self.task = nil;
 }
@@ -42,70 +46,190 @@
 
 
 - (void)btnPressed:(id)sender {
-    
-    [self beginExport];
+    if (self.exportType == BBZExportTypeSingleVideoTransform) {
+        [self beginSimpleExport];
+    } else {
+        [self benginVideoEngineExport];
+    }
 }
 
 - (void)beginExport {
+    
+    
+}
+
+- (void)benginVideoEngineExport {
     BBZVideoModel *videoModel = [[BBZVideoModel alloc] init];
     NSString *path = [[NSBundle mainBundle] pathForResource:@"douyin1" ofType:@"mp4" inDirectory:@"Resource"];
-    if(1) {
-//        [videoModel addVideoSource:path];
+    if(self.exportType == BBZExportTypeSingleVideoCostomParamas) {
+        [videoModel addVideoSource:path];
+    } else if(self.exportType == BBZExportTypeVideos) {
+        [videoModel addVideoSource:path];
         path = [[NSBundle mainBundle] pathForResource:@"douyin3" ofType:@"mp4" inDirectory:@"Resource"];
         [videoModel addVideoSource:path];
-    } else if(0) {
+    } else if(self.exportType == BBZExportTypeImagesAndVideos) {
         path = [[NSBundle mainBundle] pathForResource:@"IMG_7305" ofType:@"HEIC" inDirectory:@"Resource"];
         [videoModel addImageSource:path];
-    
+        
+        path = [[NSBundle mainBundle] pathForResource:@"douyin2" ofType:@"mp4" inDirectory:@"Resource"];
+        [videoModel addVideoSource:path];
+        
         path = [[NSBundle mainBundle] pathForResource:@"IMG_7306" ofType:@"HEIC" inDirectory:@"Resource"];
         [videoModel addImageSource:path];
-    
-//        path = [[NSBundle mainBundle] pathForResource:@"IMG_7311" ofType:@"HEIC" inDirectory:@"Resource"];
-//        [videoModel addImageSource:path];
-//
-//        path = [[NSBundle mainBundle] pathForResource:@"IMG_7312" ofType:@"HEIC" inDirectory:@"Resource"];
-//        [videoModel addImageSource:path];
-//
-//        path = [[NSBundle mainBundle] pathForResource:@"IMG_7317" ofType:@"HEIC" inDirectory:@"Resource"];
-//        [videoModel addImageSource:path];
-
-    } else if(1) {
-        
         
         path = [[NSBundle mainBundle] pathForResource:@"IMG_7311" ofType:@"HEIC" inDirectory:@"Resource"];
         [videoModel addImageSource:path];
-
+        
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7316" ofType:@"MOV" inDirectory:@"Resource"];
+        [videoModel addVideoSource:path];
+        
         path = [[NSBundle mainBundle] pathForResource:@"IMG_7312" ofType:@"HEIC" inDirectory:@"Resource"];
         [videoModel addImageSource:path];
-
+        
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7315" ofType:@"MOV" inDirectory:@"Resource"];
+        [videoModel addVideoSource:path];
+        
         path = [[NSBundle mainBundle] pathForResource:@"IMG_7317" ofType:@"HEIC" inDirectory:@"Resource"];
         [videoModel addImageSource:path];
         
+    } else if(self.exportType == BBZExportTypeImagesAndVideosWithTransition) {
         path = [[NSBundle mainBundle] pathForResource:@"IMG_7305" ofType:@"HEIC" inDirectory:@"Resource"];
         [videoModel addImageSource:path];
+        
+        path = [[NSBundle mainBundle] pathForResource:@"douyin2" ofType:@"mp4" inDirectory:@"Resource"];
+        [videoModel addVideoSource:path];
         
         path = [[NSBundle mainBundle] pathForResource:@"IMG_7306" ofType:@"HEIC" inDirectory:@"Resource"];
         [videoModel addImageSource:path];
         
-        path = [[NSBundle mainBundle] pathForResource:@"IMG2" ofType:@"MOV" inDirectory:@"Resource"];
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7311" ofType:@"HEIC" inDirectory:@"Resource"];
+        [videoModel addImageSource:path];
+        
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7316" ofType:@"MOV" inDirectory:@"Resource"];
+        [videoModel addVideoSource:path];
+        
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7312" ofType:@"HEIC" inDirectory:@"Resource"];
+        [videoModel addImageSource:path];
+        
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7315" ofType:@"MOV" inDirectory:@"Resource"];
+        [videoModel addVideoSource:path];
+        
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7317" ofType:@"HEIC" inDirectory:@"Resource"];
+        [videoModel addImageSource:path];
+    } else if(self.exportType == BBZExportTypeImagesAndVideosWithBGM) {
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7305" ofType:@"HEIC" inDirectory:@"Resource"];
+        [videoModel addImageSource:path];
+        
+        path = [[NSBundle mainBundle] pathForResource:@"douyin2" ofType:@"mp4" inDirectory:@"Resource"];
+        [videoModel addVideoSource:path];
+        
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7306" ofType:@"HEIC" inDirectory:@"Resource"];
+        [videoModel addImageSource:path];
+        
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7311" ofType:@"HEIC" inDirectory:@"Resource"];
+        [videoModel addImageSource:path];
+        
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7316" ofType:@"MOV" inDirectory:@"Resource"];
+        [videoModel addVideoSource:path];
+        
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7312" ofType:@"HEIC" inDirectory:@"Resource"];
+        [videoModel addImageSource:path];
+        
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7315" ofType:@"MOV" inDirectory:@"Resource"];
+        [videoModel addVideoSource:path];
+        
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7317" ofType:@"HEIC" inDirectory:@"Resource"];
+        [videoModel addImageSource:path];
+    } else if (self.exportType == BBZExportTypeImagesAndVideosWithBGMTranstion) {
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7305" ofType:@"HEIC" inDirectory:@"Resource"];
+        [videoModel addImageSource:path];
+        
+        path = [[NSBundle mainBundle] pathForResource:@"douyin2" ofType:@"mp4" inDirectory:@"Resource"];
+        [videoModel addVideoSource:path];
+        
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7306" ofType:@"HEIC" inDirectory:@"Resource"];
+        [videoModel addImageSource:path];
+        
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7311" ofType:@"HEIC" inDirectory:@"Resource"];
+        [videoModel addImageSource:path];
+        
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7316" ofType:@"MOV" inDirectory:@"Resource"];
+        [videoModel addVideoSource:path];
+        
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7312" ofType:@"HEIC" inDirectory:@"Resource"];
+        [videoModel addImageSource:path];
+        
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7315" ofType:@"MOV" inDirectory:@"Resource"];
+        [videoModel addVideoSource:path];
+        
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7317" ofType:@"HEIC" inDirectory:@"Resource"];
+        [videoModel addImageSource:path];
+    } else if(self.exportType == BBZExportTypeSpliceImagesAndVideosBGM){
+        
+        [videoModel addVideoSource:path];
+        
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7311" ofType:@"HEIC" inDirectory:@"Resource"];
+        [videoModel addImageSource:path];
+        
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7312" ofType:@"HEIC" inDirectory:@"Resource"];
+        [videoModel addImageSource:path];
+        
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7317" ofType:@"HEIC" inDirectory:@"Resource"];
+        [videoModel addImageSource:path];
+        
+        
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7315" ofType:@"MOV" inDirectory:@"Resource"];
         [videoModel addVideoSource:path];
         path = [[NSBundle mainBundle] pathForResource:@"IMG_7316" ofType:@"MOV" inDirectory:@"Resource"];
         [videoModel addVideoSource:path];
         
-
+        
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7305" ofType:@"HEIC" inDirectory:@"Resource"];
+        [videoModel addImageSource:path];
+        
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7306" ofType:@"HEIC" inDirectory:@"Resource"];
+        [videoModel addImageSource:path];
+        
+    } else if(self.exportType == BBZExportTypeImagesBGMTransition){
+        
+        [videoModel addVideoSource:path];
+        
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7311" ofType:@"HEIC" inDirectory:@"Resource"];
+        [videoModel addImageSource:path];
+        
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7312" ofType:@"HEIC" inDirectory:@"Resource"];
+        [videoModel addImageSource:path];
+        
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7317" ofType:@"HEIC" inDirectory:@"Resource"];
+        [videoModel addImageSource:path];
+        
+        
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7315" ofType:@"MOV" inDirectory:@"Resource"];
+        [videoModel addVideoSource:path];
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7316" ofType:@"MOV" inDirectory:@"Resource"];
+        [videoModel addVideoSource:path];
+        
+        
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7305" ofType:@"HEIC" inDirectory:@"Resource"];
+        [videoModel addImageSource:path];
+        
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7306" ofType:@"HEIC" inDirectory:@"Resource"];
+        [videoModel addImageSource:path];
         
     }
-   
     
-//    path = [NSString stringWithFormat:@"%@/Resource/demo3", [[NSBundle mainBundle] bundlePath]];
-//    [videoModel addTransitionGroup:path];
-//    [videoModel addFilterGroup:path];
-
-
-//    path = [[NSBundle mainBundle] pathForResource:@"IMG_7305" ofType:@"HEIC" inDirectory:@"Resource"];
-//    NSData *data = [NSData dataWithContentsOfFile:path];
-//    UIImage *bgImage = [UIImage imageWithData:data];
-//    videoModel.bgImage = bgImage;
+    
+    //    path = [NSString stringWithFormat:@"%@/Resource/demo3", [[NSBundle mainBundle] bundlePath]];
+    //    [videoModel addTransitionGroup:path];
+    //    [videoModel addFilterGroup:path];
+    
+    if(1) {
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7305" ofType:@"HEIC" inDirectory:@"Resource"];
+        NSData *data = [NSData dataWithContentsOfFile:path];
+        UIImage *bgImage = [UIImage imageWithData:data];
+        videoModel.bgImage = bgImage;
+    }
+  
     NSString *tmpDir =  [NSString stringWithFormat:@"%@/tmp", videoModel.videoResourceDir];
     [NSFileManager removeFileIfExist:tmpDir];
     BBZExportTask *task = [BBZExportTask taskWithModel:videoModel];
@@ -114,20 +238,23 @@
     NSLog(@"视频保存 开始");
     
     __weak typeof(self) weakSelf = self;
-    task.completionBlock = ^(BOOL sucess, NSError *error) {
+    task.completeBlock = ^(BOOL sucess, NSError *error) {
         __strong typeof(self) strongSelf = weakSelf;
         if (error)  {
             NSLog(@"视频保存Asset失败：%@",error);
         }
         NSLog(@"视频保存 Asset cost time %f", [[NSDate date] timeIntervalSinceDate:date]);
-        if(sucess && 1) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            strongSelf.lblProgress.text = [NSString stringWithFormat:@"100%%"];
+        });
+        if(sucess && 0) {
             NSURL *movieURL = [NSURL fileURLWithPath:strongSelf.task.outputFile];
             [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^(void)
              {
                  PHAssetChangeRequest *request = [PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:movieURL];
                  request.creationDate = [NSDate date];
              }
-            completionHandler:^(BOOL success, NSError *error)
+                                              completionHandler:^(BOOL success, NSError *error)
              {
                  dispatch_async(dispatch_get_main_queue(), ^(void)
                                 {
@@ -142,9 +269,130 @@
              }];
         }
     };
-
+    task.progressBlock = ^(CGFloat progress) {
+        __strong typeof(self) strongSelf = weakSelf;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            strongSelf.lblProgress.text = [NSString stringWithFormat:@"%d%%", (int)(progress * 100)];
+        });
+    };
     [task start];
-    
 }
 
+- (void)beginSimpleExport {
+    NSDate *date = [NSDate date];
+    NSLog(@"视频保存 开始");
+    //    NSURL *sampleURL = [[NSBundle mainBundle] URLForResource:@"IMG3" withExtension:@"MOV"];
+    NSURL *sampleURL = [[NSBundle mainBundle] URLForResource:@"douyin1" withExtension:@"mp4"];
+    NSString *pathToMovie = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie2.mp4"];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:pathToMovie]) {
+        [[NSFileManager defaultManager] removeItemAtPath:pathToMovie error:nil];
+    }
+    NSURL *movieURL = [NSURL fileURLWithPath:pathToMovie];
+    AVURLAsset *avAsset = [[AVURLAsset alloc] initWithURL:sampleURL options:nil];
+    NSLog(@"%@", pathToMovie);
+    
+    BBZAVAssetExportSession *exporter = [[BBZAVAssetExportSession alloc] initWithAsset:avAsset];
+    exporter.shouldOptimizeForNetworkUse = YES;
+    exporter.outputFileType = AVFileTypeMPEG4;
+    exporter.outputURL = movieURL;
+    exporter.videoSettings = [BBZExportViewController videoSettings:CGSizeMake(720, 1280)];
+    exporter.audioSettings = [BBZExportViewController audioSettings];
+    exporter.shouldPassThroughNatureSize = YES;
+    
+    __weak typeof(self) weakself = self;
+    exporter.exportProgressBlock = ^(CGFloat progress) {
+        __strong typeof(self) strongSelf = weakself;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            strongSelf.lblProgress.text = [NSString stringWithFormat:@"%d%%", (int)(progress * 100)];
+        });
+    };
+    
+    [exporter exportAsynchronouslyWithCompletionHandler:^(BBZAVAssetExportSession *exportSession){
+        if (exporter.error)  {
+            NSLog(@"视频保存Asset失败：%@", exporter.error);
+        }
+        NSLog(@"视频保存 Asset cost time %f", [[NSDate date] timeIntervalSinceDate:date]);
+        __strong typeof(self) strongSelf = weakself;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            strongSelf.lblProgress.text = [NSString stringWithFormat:@"100%%"];
+        });
+        __block NSString *localIdentifier = nil;
+        [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^(void)
+         {
+             PHAssetChangeRequest *request = [PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:movieURL];
+             request.creationDate = [NSDate date];
+             localIdentifier = request.placeholderForCreatedAsset.localIdentifier;
+         }
+                                          completionHandler:^(BOOL success, NSError *error)
+         {
+             dispatch_async(dispatch_get_main_queue(), ^(void)
+                            {
+                                if (error != nil)
+                                {
+                                    NSLog(@"[SaveTask] save video failed! error: %@", error);
+                                }
+                                
+                                NSLog(@"视频保存本地成功");
+                                
+                            });
+         }];
+        
+    }];
+    self.exportSesstion = exporter;
+}
++ (NSDictionary *)videoSettings:(CGSize)size
+{
+    //    NSInteger bitRate = fmin(size.width * size.height * 6.5f, 4194304); // 限制一下最大512kbps
+    //    return @{
+    //             AVVideoCodecKey: AVVideoCodecH264,
+    //             AVVideoWidthKey: [NSNumber numberWithFloat:size.width],
+    //             AVVideoHeightKey: [NSNumber numberWithFloat:size.height],
+    //             AVVideoCompressionPropertiesKey: @
+    //                 {
+    //                 AVVideoAverageBitRateKey: @(bitRate),// @1960000,
+    //                 AVVideoProfileLevelKey: AVVideoProfileLevelH264BaselineAutoLevel, // AVVideoProfileLevelH264Baseline31,
+    //                 AVVideoMaxKeyFrameIntervalKey: @25,
+    //                 },
+    //             };
+    NSDictionary *properties = @{ AVVideoAverageBitRateKey : @(1945748),
+                                  AVVideoExpectedSourceFrameRateKey : @(30),
+                                  AVVideoMaxKeyFrameIntervalKey : @(30),
+                                  AVVideoProfileLevelKey: AVVideoProfileLevelH264MainAutoLevel,
+                                  AVVideoAllowFrameReorderingKey : @(NO)
+                                  };
+    NSDictionary *videoSettings = @{
+                                    AVVideoCodecKey : AVVideoCodecH264,
+                                    AVVideoWidthKey : @(size.width),
+                                    AVVideoHeightKey : @(size.height),
+                                    AVVideoCompressionPropertiesKey : properties
+                                    };
+    return videoSettings;
+}
+
++ (NSDictionary *)audioSettings
+{
+    AudioChannelLayout acl;
+    bzero( &acl, sizeof(acl));
+    acl.mChannelLayoutTag = kAudioChannelLayoutTag_Stereo;
+    NSData *channelLayoutAsData = [NSData dataWithBytes:&acl length:sizeof(acl)];
+    
+    return @{AVFormatIDKey: @(kAudioFormatMPEG4AAC),
+             AVSampleRateKey: @(48000),
+             AVEncoderBitRateKey: @(128000),
+             AVChannelLayoutKey: channelLayoutAsData,
+             AVNumberOfChannelsKey: @(2)};
+    //    return @{
+    //             AVFormatIDKey: @(kAudioFormatMPEG4AAC),
+    //             AVNumberOfChannelsKey: @2,
+    //             AVSampleRateKey: @48000,
+    //             AVEncoderBitRateKey: @128000,
+    //             };
+}
+
+//视频格式
+//使用Base Media version 2
++ (NSString *)outputFileType
+{
+    return AVFileTypeMPEG4;
+}
 @end

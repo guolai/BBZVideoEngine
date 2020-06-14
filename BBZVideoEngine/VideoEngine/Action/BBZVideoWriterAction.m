@@ -111,14 +111,14 @@
     BBZINFO(@"-----------%@", self.strOutputFile);
     if (async) {
         BBZRunAsynchronouslyOnTaskQueue(^{
-            if (self.completionBlock) {
-                self.completionBlock((error ? NO : YES), error);
+            if (self.completeBlock) {
+                self.completeBlock((error ? NO : YES), error);
             }
         });
     }  else {
         BBZRunSynchronouslyOnTaskQueue(^{
-            if (self.completionBlock) {
-                self.completionBlock((error ? NO : YES), error);
+            if (self.completeBlock) {
+                self.completeBlock((error ? NO : YES), error);
             }
         });
     }
