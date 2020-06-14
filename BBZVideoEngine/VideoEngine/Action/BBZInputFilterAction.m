@@ -13,7 +13,7 @@
 #import "GPUImageFramebuffer+BBZ.h"
 
 @interface BBZInputFilterAction ()
-@property (nonatomic, strong) BBZVideoInputFilter *multiFilter;
+@property (nonatomic, strong) BBZVideoInputFilter *videoMultiFilter;
 //@property (nonatomic, strong, readwrite) BBZTransformSourceNode *node;
 @end
 
@@ -28,8 +28,8 @@
 }
 
 - (void)dealloc {
-    [self.multiFilter removeAllCacheFrameBuffer];
-    self.multiFilter = nil;
+    [self.videoMultiFilter removeAllCacheFrameBuffer];
+    self.videoMultiFilter = nil;
 }
 
 - (void)createImageFilter {
@@ -61,22 +61,22 @@
     }
 //    vertexShader = [BBZShader vertextShader];
 //    framgmentShader = [BBZShader fragmentPassthroughShader];
-    self.multiFilter = [[BBZVideoInputFilter alloc] initWithVertexShaderFromString:vertexShader fragmentShaderFromString:framgmentShader];
-    self.multiFilter.renderSize = self.renderSize;
-    self.multiFilter.bUseBackGroundImage = bUseLastFB;
-    self.multiFilter.affineTransform = self.transform;
-    self.multiFilter.bgFrameBuffer = [GPUImageFramebuffer BBZ_frameBufferWithImage:self.node.image.CGImage];
-    [self.multiFilter.bgFrameBuffer disableReferenceCounting];
+    self.videoMultiFilter = [[BBZVideoInputFilter alloc] initWithVertexShaderFromString:vertexShader fragmentShaderFromString:framgmentShader];
+    self.videoMultiFilter.renderSize = self.renderSize;
+    self.videoMultiFilter.bUseBackGroundImage = bUseLastFB;
+    self.videoMultiFilter.affineTransform = self.transform;
+    self.videoMultiFilter.bgFrameBuffer = [GPUImageFramebuffer BBZ_frameBufferWithImage:self.node.image.CGImage];
+    [self.videoMultiFilter.bgFrameBuffer disableReferenceCounting];
 }
 
 - (void)setTransform:(CGAffineTransform)transform {
     _transform = transform;
-    self.multiFilter.affineTransform = transform;
+    self.videoMultiFilter.affineTransform = transform;
 }
 
 - (void)setRenderSize:(CGSize)renderSize {
     _renderSize = renderSize;
-    self.multiFilter.renderSize = renderSize;
+    self.videoMultiFilter.renderSize = renderSize;
 }
 
 //- (void)updateWithTime:(CMTime)time {
@@ -89,56 +89,56 @@
 
 - (void)processAVSourceAtTime:(CMTime)time {
     runAsynchronouslyOnVideoProcessingQueue(^{
-        [self.multiFilter removeAllCacheFrameBuffer];
+        [self.videoMultiFilter removeAllCacheFrameBuffer];
         if(self.firstInputSource) {
             BBZInputSourceParam *outputParam = [self.firstInputSource inputSourceAtTime:time];
             GPUImageFramebuffer *firstFB = outputParam.arrayFrameBuffer[0];
-            [self.multiFilter setInputFramebuffer:firstFB atIndex:0];
+            [self.videoMultiFilter setInputFramebuffer:firstFB atIndex:0];
             for (GPUImageFramebuffer *fb in outputParam.arrayFrameBuffer) {
                 if(fb == firstFB) {
                     continue;
                 } else {
-                    [self.multiFilter addFrameBuffer:fb];
+                    [self.videoMultiFilter addFrameBuffer:fb];
                 }
             }
            
             if(outputParam.bVideoSource) {
-                self.multiFilter.mat33ParamValue = outputParam.mat33ParamValue;
+                self.videoMultiFilter.mat33ParamValue = outputParam.mat33ParamValue;
             }
         }
         if(self.secondInputSource) {
             BBZInputSourceParam *outputParam = [self.secondInputSource inputSourceAtTime:time];
             for (GPUImageFramebuffer *fb in outputParam.arrayFrameBuffer) {
-                [self.multiFilter addFrameBuffer:fb];
+                [self.videoMultiFilter addFrameBuffer:fb];
             }
             if(outputParam.bVideoSource) {
-                self.multiFilter.mat33ParamValue = outputParam.mat33ParamValue;
+                self.videoMultiFilter.mat33ParamValue = outputParam.mat33ParamValue;
             }
         }
-        [self.multiFilter newFrameReadyAtTime:time atIndex:0];
+        [self.videoMultiFilter newFrameReadyAtTime:time atIndex:0];
     });
 }
 
 - (void)destroySomething {
     runSynchronouslyOnVideoProcessingQueue(^{
-        [self.multiFilter removeAllCacheFrameBuffer];
-        self.multiFilter = nil;
+        [self.videoMultiFilter removeAllCacheFrameBuffer];
+        self.videoMultiFilter = nil;
     });
 }
 
 - (void)removeConnects {
-    [self.multiFilter removeAllTargets];
+    [self.videoMultiFilter removeAllTargets];
     self.firstInputSource = nil;
     self.secondInputSource = nil;
 }
 
 - (id)filter {
-    return self.multiFilter;
+    return self.videoMultiFilter;
 }
 
 
 - (void)connectToAction:(id<BBZActionChainProtocol>)toAction {
-    [self.multiFilter addTarget:[toAction filter]];
+    [self.videoMultiFilter addTarget:[toAction filter]];
 }
 
 @end

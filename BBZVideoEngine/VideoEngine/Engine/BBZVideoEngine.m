@@ -9,7 +9,7 @@
 #import "BBZVideoEngine.h"
 #import "BBZCompositonDirector.h"
 #import "BBZFilterLayer.h"
-#import "BBZFilterMixer.h"
+#import "BBZActionMixer.h"
 #import "BBZVideoFilterLayer.h"
 #import "BBZAudioFilterLayer.h"
 #import "BBZEffetFilterLayer.h"
@@ -34,7 +34,7 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
 @property (nonatomic, strong) BBZVideoModel *videoModel;
 @property (nonatomic, strong) BBZEngineContext *context;
 //@property (nonatomic, strong) NSString *outputFile;
-@property (nonatomic, strong) BBZFilterMixer *filterMixer;
+@property (nonatomic, strong) BBZActionMixer *actionMixer;
 @property (nonatomic, strong) BBZSchedule *schedule;
 @property (nonatomic, strong) BBZCompositonDirector *director;
 @property (nonatomic, strong) NSMutableDictionary *filterLayers; //@(BBZFilterLayerType):BBZFilterLayer
@@ -142,7 +142,7 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
     if(self.context.videoSettings.videoFrameRate > 0) {
         self.schedule.preferredFramesPerSecond = self.context.videoSettings.videoFrameRate;
     }
-    self.filterMixer = [[BBZFilterMixer alloc] init];
+    self.actionMixer = [[BBZActionMixer alloc] init];
 }
 
 
@@ -303,7 +303,7 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
 - (NSArray *)layerActionTreesBeforeTimePoint:(NSUInteger)timePoint {
     //进行滤镜链合并 , 创建实例实例filterAction;
     BBZActionTree *actonTree = [self.timeSegments objectForKey:@(timePoint)];
-    NSArray *array = [self.filterMixer combineFiltersFromActionTree:actonTree];
+    NSArray *array = [self.actionMixer combineFiltersFromActionTree:actonTree];
     BBZAudioFilterLayer *audioLayer = self.filterLayers[@(BBZFilterLayerTypeAudio)];
     if(audioLayer.audioAction) { //音频特殊处理
         NSMutableArray *mulArray = [NSMutableArray arrayWithArray:array];

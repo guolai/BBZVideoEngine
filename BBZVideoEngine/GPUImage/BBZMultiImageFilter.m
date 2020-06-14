@@ -148,7 +148,7 @@
     
     outputFramebuffer = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:[self sizeOfFBO] textureOptions:self.outputTextureOptions onlyTexture:NO];
     
-     [self willBeginRender];
+    [self willBeginRender];
     
     [outputFramebuffer activateFramebuffer];
     if (usingNextFrameForImageCapture) {
@@ -190,14 +190,8 @@
     if(_uniformV4[1] >= 0) {
         glUniform4fv(_uniformV4[1], 1, (GLfloat *)&_vector4ParamValue2);
     }
-    static const GLfloat textureCoordinates2[] = {
-        0.0f, 0.0f,
-        1.0f, 0.0f,
-        0.0f, 1.0f,
-        1.0f, 1.0f,
-    };
     glVertexAttribPointer(filterPositionAttribute, 2, GL_FLOAT, 0, 0, [self adjustVertices:vertices]);
-    glVertexAttribPointer(filterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, textureCoordinates2);
+    glVertexAttribPointer(filterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, textureCoordinates);
     
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 //    glFinish();

@@ -7,13 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "BBZActionTree.h"
+
 
 
 @interface BBZFilterMixer : NSObject
-@property (nonatomic, assign) BOOL bOnlyMixActionsInCurrentNodeTree;
 
-- (NSArray *)combineFiltersFromActionTree:(BBZActionTree *)actionTree;
 @end
 
 
