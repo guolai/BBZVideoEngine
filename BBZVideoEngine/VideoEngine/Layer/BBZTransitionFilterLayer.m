@@ -88,6 +88,7 @@
     BBZActionTree *inputTree = [BBZActionTree createActionWithBeginTime:startTime endTime:startTime+duration];
     for (BBZNode *node in inputNode.actions) {
         BBZVistualFilterAction *filterAction = [[BBZVistualFilterAction alloc] initWithNode:node];
+        filterAction.renderSize = self.context.renderSize;
         filterAction.startTime = startTime + node.begin * BBZVideoDurationScale;
         filterAction.duration = MIN(duration, (node.end - node.begin) * node.repeat * BBZVideoDurationScale);
         [inputTree addAction:filterAction];
@@ -105,6 +106,7 @@
     BBZActionTree *transitionTree = [BBZActionTree createActionWithBeginTime:startTime endTime:startTime+duration];
     for (BBZNode *node in transitionNode.actions) {
         BBZVistualFilterAction *filterAction = [[BBZVistualFilterAction alloc] initWithNode:node];
+        filterAction.renderSize = self.context.renderSize;
         filterAction.startTime = startTime + node.begin * BBZVideoDurationScale;
         filterAction.duration = MIN(duration, (node.end - node.begin) * node.repeat * BBZVideoDurationScale);
         [transitionTree addAction:filterAction];

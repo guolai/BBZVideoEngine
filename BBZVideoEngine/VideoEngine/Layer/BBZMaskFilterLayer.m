@@ -31,9 +31,10 @@
     BBZActionTree *maskTree = [BBZActionTree createActionWithBeginTime:0  endTime:inputBuilderResult.startTime];
   
     BBZNode *node = [BBZNode createLocalNode:BBZNodeBlendImage beginTime:0 endTime:inputBuilderResult.startTime];
-    [node buildBlendFrame:CGRectMake(20.0, 20.0, 40.0, 40.0)];
-    node.image = self.model.maskImage;
+    [node buildBlendFrame:CGRectMake(self.context.renderSize.width - 40.0 - 50.0, self.context.renderSize.height - 40.0 - 50.0, 40.0, 40.0)];
+    node.images = self.model.maskImage;
     BBZVistualFilterAction *filterAction = [[BBZVistualFilterAction alloc] initWithNode:node];
+    filterAction.renderSize = self.context.renderSize;
     filterAction.startTime = 0;
     filterAction.duration = inputBuilderResult.startTime;
     [maskTree addAction:filterAction];

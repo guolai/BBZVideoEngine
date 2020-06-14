@@ -11,6 +11,8 @@
 
 @interface BBZFilterAction : BBZAction <BBZActionChainProtocol>
 
+@property (nonatomic, assign) CGSize renderSize;
+
 + (BBZFilterAction *)createWithVistualAction:(BBZVistualFilterAction *)vistualAction;
 
 //- (void) addVistualAction:(BBZVistualFilterAction *)vistualAction;

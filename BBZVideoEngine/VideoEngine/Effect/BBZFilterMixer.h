@@ -10,7 +10,13 @@
 
 
 
+
 @interface BBZFilterMixer : NSObject
+@property (nonatomic, strong, readonly) NSString *vShaderString;
+@property (nonatomic, strong, readonly) NSString *fShaderString;
+
+- (instancetype)initWithNodes:(NSArray *)nodes;
++ (BBZFilterMixer *)filterMixerWithNodes:(NSArray *)nodes;
 
 @end
 

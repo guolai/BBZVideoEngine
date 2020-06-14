@@ -7,47 +7,64 @@
 //
 
 #import "BBZFilterMixer.h"
-#import "BBZFilterAction.h"
-#import "BBZActionBuilder.h"
+#import "BBZShader.h"
+#import "BBZNode.h"
 
 @interface BBZFilterMixer ()
-
+@property (nonatomic, strong, readwrite) NSString *vShaderString;
+@property (nonatomic, strong, readwrite) NSString *fShaderString;
 @end
 
 
 @implementation BBZFilterMixer
 
-//
-//- (instancetype) init {
-//    if(self = [super init]) {
-//        _bOnlyMixActionsInCurrentNodeTree = YES;
-//    }
-//    return self;
-//}
-//
-//- (NSArray *)combineFiltersFromActionTree:(BBZActionTree *)actionTree {
-//    NSArray *array = nil;
-//    if(!actionTree) {
-//        BBZERROR(@"combineFiltersFromActionTree nil");
-//        return array;
-//    }
-//    
-//    if(self.bOnlyMixActionsInCurrentNodeTree) {
-//        array = [self combineFiltersActionNodeTree:actionTree];
-//    } else {
-//        array = [self combineFiltersActionFullTrees:actionTree];
-//    }
-//    return array;
-//}
-//
-//- (NSArray *)combineFiltersActionNodeTree:(BBZActionTree *)actionTree {
-//    NSArray *array = [BBZActionBuilder connectActionsInTree:actionTree];
-//    //action 是从根节点到叶子的 所以使用的时候要反过来
-//    array = [[array reverseObjectEnumerator] allObjects];
-//    return array;
-//}
-//
-//- (NSArray *)combineFiltersActionFullTrees:(BBZActionTree *)actionTree {
-//    return nil;
-//}
+
+- (instancetype)initWithNodes:(NSArray *)nodes {
+    if(self = [super init]) {
+        self.vShaderString = [BBZFilterMixer vertexShaderFromNodes:nodes];
+        self.fShaderString = [BBZFilterMixer fragmentShaderFromNodes:nodes];
+    }
+    return self;
+}
+
++ (BBZFilterMixer *)filterMixerWithNodes:(NSArray *)nodes {
+    BBZFilterMixer *filterMixer = [[BBZFilterMixer alloc] initWithNodes:nodes];
+    return filterMixer;
+}
+
+
+#pragma mark - Private
++ (NSString *)vertexShaderFromNodes:(NSArray *)nodes {
+    
+    BBZNode *node = nodes.firstObject;
+    NSString *vShader = node.vShaderString;
+    if(!vShader) {
+        vShader = [BBZShader vertextShader];
+    }
+    return vShader;
+}
+
++ (NSString *)fragmentShaderFromNodes:(NSArray *)nodes {
+    
+    BBZNode *node = nodes.firstObject;
+    NSString *fShader = nil;
+    if(!node.name) {
+        fShader = node.fShaderString;
+    } else if([node.name isEqualToString:@"blendimage"]) {
+        fShader = [BBZShader fragmentMaskBlendShader];
+    } else if([node.name isEqualToString:@"blendvideo"]) {
+        fShader = [BBZShader fragmentMaskBlendShader];
+    } else if([node.name isEqualToString:@"blendimage"]) {
+        
+    } else if([node.name isEqualToString:@"blendimage"]) {
+        
+    } else if([node.name isEqualToString:@"blendimage"]) {
+        
+    }
+    if(!fShader) {
+        fShader = [BBZShader fragmentPassthroughShader];
+    }
+    return fShader;
+}
+
 @end

@@ -25,7 +25,7 @@
 @property (nonatomic, assign) CGAffineTransform transform;
 
 @property (nonatomic, strong) UIImage *bgImage;
-@property (nonatomic, strong) UIImage *maskImage;
+@property (nonatomic, strong) NSArray *maskImage;
 
 //asset
 - (BOOL)addVideoSource:(NSString *)filePath;

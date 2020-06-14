@@ -11,6 +11,7 @@
 
 @class BBZFilterAction;
 @interface BBZVistualFilterAction : BBZAction
+@property (nonatomic, assign) CGSize renderSize;
 @property (nonatomic, assign) BOOL shouldIgnorMerge;//可能会有一些滤镜不希望被合并
 @property (nonatomic, strong) UIImage *image;
 

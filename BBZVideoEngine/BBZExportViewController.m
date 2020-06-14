@@ -69,6 +69,14 @@
         transform = CGAffineTransformScale(transform, 0.8, 0.8);
         transform = CGAffineTransformRotate(transform, 45*2.0*M_PI/360.0);
         videoModel.transform = transform;
+        NSMutableArray *multiArray = [NSMutableArray array];
+        for (int i = 1; i < 10; i++) {
+            NSString *strName = [NSString stringWithFormat:@"00%d@2x", i];
+            NSString *icon = [[NSBundle mainBundle] pathForResource:strName ofType:@"png" inDirectory:@"Resource/icon"];
+            UIImage *image = [UIImage imageWithContentsOfFile:icon];
+            [multiArray addObject:image];
+        }
+        videoModel.maskImage = multiArray;
     }
     
     

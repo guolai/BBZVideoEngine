@@ -75,7 +75,7 @@
 }
 
 - (void)setRenderSize:(CGSize)renderSize {
-    _renderSize = renderSize;
+    [super setRenderSize:renderSize];
     self.videoMultiFilter.renderSize = renderSize;
 }
 
