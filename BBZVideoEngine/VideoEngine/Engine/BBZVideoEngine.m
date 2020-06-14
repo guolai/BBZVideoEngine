@@ -268,10 +268,14 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
     return duration;
 }
 
-- (void)setCompleteBlock:(void (^)(BOOL, NSError *))completionBlock {
-    _completeBlock = [completionBlock copy];
+- (void)setCompleteBlock:(BBZExportCompletionBlock)completeBlock {
     BBZOutputFilterLayer *outputLayer = self.filterLayers[@(BBZFilterLayerTypeOutput)];
-    outputLayer.completeBlock = _completeBlock;
+    outputLayer.completeBlock = completeBlock;
+}
+
+- (BBZExportCompletionBlock)completeBlock {
+    BBZOutputFilterLayer *outputLayer = self.filterLayers[@(BBZFilterLayerTypeOutput)];
+    return outputLayer.completeBlock;
 }
 
 #pragma mark - WriteControl Delegate

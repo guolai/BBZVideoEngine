@@ -28,7 +28,7 @@
     _maxIndex = 5;
     _index = 1;
     backgroundColorAlpha = 1.0;
-    _shouldClearBackGround = YES;
+    _shouldClearBackGround = NO;
     runSynchronouslyOnVideoProcessingQueue(^{
         [GPUImageContext useImageProcessingContext];
         self->_uniformTextures[0] = self->filterInputTextureUniform;
@@ -190,8 +190,14 @@
     if(_uniformV4[1] >= 0) {
         glUniform4fv(_uniformV4[1], 1, (GLfloat *)&_vector4ParamValue2);
     }
+    static const GLfloat textureCoordinates2[] = {
+        0.0f, 0.0f,
+        1.0f, 0.0f,
+        0.0f, 1.0f,
+        1.0f, 1.0f,
+    };
     glVertexAttribPointer(filterPositionAttribute, 2, GL_FLOAT, 0, 0, [self adjustVertices:vertices]);
-    glVertexAttribPointer(filterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, [self adjustTextureCoordinates:textureCoordinates]);
+    glVertexAttribPointer(filterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, textureCoordinates2);
     
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 //    glFinish();

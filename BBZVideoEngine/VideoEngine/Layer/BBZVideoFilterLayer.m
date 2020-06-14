@@ -58,7 +58,7 @@
         tranformNode.bRGB = bRGB;
         
         BBZInputFilterAction *filterAction = [[BBZInputFilterAction alloc] initWithNode:tranformNode];
-        
+        filterAction.transform = self.model.transform;
         filterAction.startTime = action.startTime;
         filterAction.duration = action.duration;
         filterAction.renderSize = self.context.renderSize;
@@ -147,6 +147,7 @@ buildTimeLineWithSpliceNodes {
             }
             
             BBZInputFilterAction *filterAction = [[BBZInputFilterAction alloc] initWithNode:tranformNode];
+            filterAction.transform = self.model.transform;
             filterAction.startTime = sourceAction.startTime;
             filterAction.duration = sourceAction.duration;
             filterAction.renderSize = self.context.renderSize;

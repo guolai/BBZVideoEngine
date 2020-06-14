@@ -198,6 +198,35 @@
                 self.writer.status != AVAssetWriterStatusWriting) {
                 handled = YES;
                 error = YES;
+                NSLog(@"bobo error");
+            }
+            if(self.videoOutput == output) {
+                static NSInteger videocount = 1;
+                //                self.lastVideoTime =
+                NSLog(@"current video Time======:%f , %ld",CMTimeGetSeconds(CMSampleBufferGetPresentationTimeStamp(sampleBuffer)), videocount);
+                videocount++;
+            } else {
+                static NSInteger audiocount = 1;
+                NSLog(@"current audio Time------:%f, %ld",CMTimeGetSeconds(CMSampleBufferGetPresentationTimeStamp(sampleBuffer)), audiocount);
+                audiocount++;
+            }
+            while (self.videoInput.readyForMoreMediaData == NO && self.videoInput == input && !handled) {
+                if (self.writer.status != AVAssetWriterStatusWriting)
+                {
+                    return NO;
+                }
+                
+                usleep(10000);
+                NSLog(@"sleep on writing video");
+            }
+            while (self.audioInput.readyForMoreMediaData == NO && self.audioInput == input && !handled) {
+                if (self.writer.status != AVAssetWriterStatusWriting)
+                {
+                    return NO;
+                }
+                
+                usleep(10000);
+                NSLog(@"sleep on writing audio");
             }
             
             if (!handled && self.videoOutput == output) {
@@ -218,7 +247,7 @@
                 if (!handled && ![input appendSampleBuffer:sampleBuffer]) {
                     error = YES;
                     NSLog(@"error 222");
-                }
+                } 
             } @catch (NSException *exception) {
                 error = YES;
             } @finally {

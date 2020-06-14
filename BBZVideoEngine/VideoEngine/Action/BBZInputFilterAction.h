@@ -14,6 +14,7 @@
 @property (nonatomic, assign) CGSize renderSize;
 @property (nonatomic, weak) id<BBZInputSourceProtocol> firstInputSource;
 @property (nonatomic, weak) id<BBZInputSourceProtocol> secondInputSource;
+@property (nonatomic, assign) CGAffineTransform transform;
 //@property (nonatomic, weak) id<BBZInputSourceProtocol> thirdInputSource;
 //@property (nonatomic, weak) id<BBZInputSourceProtocol> fourthInputSource;
 

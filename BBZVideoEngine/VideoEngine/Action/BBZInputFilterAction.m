@@ -20,6 +20,13 @@
 
 @implementation BBZInputFilterAction
 
+- (instancetype)init {
+    if(self = [super init]) {
+        _transform = CGAffineTransformIdentity;
+    }
+    return self;
+}
+
 - (void)dealloc {
     [self.multiFilter removeAllCacheFrameBuffer];
     self.multiFilter = nil;
@@ -57,9 +64,14 @@
     self.multiFilter = [[BBZVideoInputFilter alloc] initWithVertexShaderFromString:vertexShader fragmentShaderFromString:framgmentShader];
     self.multiFilter.renderSize = self.renderSize;
     self.multiFilter.bUseBackGroundImage = bUseLastFB;
+    self.multiFilter.affineTransform = self.transform;
     self.multiFilter.bgFrameBuffer = [GPUImageFramebuffer BBZ_frameBufferWithImage:self.node.image.CGImage];
     [self.multiFilter.bgFrameBuffer disableReferenceCounting];
-    self.multiFilter.shouldClearBackGround = YES;
+}
+
+- (void)setTransform:(CGAffineTransform)transform {
+    _transform = transform;
+    self.multiFilter.affineTransform = transform;
 }
 
 - (void)setRenderSize:(CGSize)renderSize {

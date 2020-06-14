@@ -71,6 +71,7 @@
 - (void)setBUseBackGroundImage:(BOOL)bUseBackGroundImage {
     _bUseBackGroundImage = bUseBackGroundImage;
     if(_bUseBackGroundImage) {
+        self.shouldClearBackGround = NO;
         runAsynchronouslyOnVideoProcessingQueue(^{
             [self buildBackGroundParams];
         });
@@ -100,7 +101,7 @@
     runAsynchronouslyOnVideoProcessingQueue(^{
         GPUMatrix4x4 matrix;
         [self convert3DTransform:&self->_transform3D toMatrix:&matrix];
-        self.mat44ParamValue2 = matrix;
+        self.mat44ParamValue1 = matrix;
     });
 }
 
@@ -160,7 +161,7 @@
         _imageVertices[6] = 1.0 * normalizedWidth;
         _imageVertices[7] = 1.0;
     }
-    self.mat44ParamValue1 = matrix;
+    self.mat44ParamValue2 = matrix;
 }
 
 
@@ -179,7 +180,8 @@
     glClearColor(0.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
     //draw bg
-    CGFloat heightScaling, widthScaling;
+    CGFloat heightScaling = 1.0;
+    CGFloat widthScaling = 1.0;
     CGSize textureSize = self.bgFrameBuffer.size;
     CGRect bounds = CGRectMake(0, 0, self.renderSize.width, self.renderSize.height);
     CGRect insetRect = AVMakeRectWithAspectRatioInsideRect(textureSize, bounds);
@@ -212,6 +214,8 @@
     glEnableVertexAttribArray(_bgfilterTextureCoordinateAttribute);
     
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+//    glFinish();
+    
 }
 
 - (void)willBeginRender {

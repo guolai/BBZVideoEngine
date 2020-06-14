@@ -60,8 +60,22 @@
 
 - (void)benginVideoEngineExport {
     BBZVideoModel *videoModel = [[BBZVideoModel alloc] init];
+    if(1) {
+        NSString *path = [[NSBundle mainBundle] pathForResource:@"IMG_7305" ofType:@"HEIC" inDirectory:@"Resource"];
+        NSData *data = [NSData dataWithContentsOfFile:path];
+        UIImage *bgImage = [UIImage imageWithData:data];
+        videoModel.bgImage = bgImage;
+        CGAffineTransform transform = CGAffineTransformIdentity;
+        transform = CGAffineTransformScale(transform, 0.8, 0.8);
+        transform = CGAffineTransformRotate(transform, 45*2.0*M_PI/360.0);
+        videoModel.transform = transform;
+    }
+    
+    
+    
     NSString *path = [[NSBundle mainBundle] pathForResource:@"douyin1" ofType:@"mp4" inDirectory:@"Resource"];
     if(self.exportType == BBZExportTypeSingleVideoCostomParamas) {
+        path = [[NSBundle mainBundle] pathForResource:@"douyin3" ofType:@"mp4" inDirectory:@"Resource"];
         [videoModel addVideoSource:path];
     } else if(self.exportType == BBZExportTypeVideos) {
         [videoModel addVideoSource:path];
@@ -93,13 +107,10 @@
         [videoModel addImageSource:path];
         
     } else if(self.exportType == BBZExportTypeImagesAndVideosWithTransition) {
-        path = [[NSBundle mainBundle] pathForResource:@"IMG_7305" ofType:@"HEIC" inDirectory:@"Resource"];
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7306" ofType:@"HEIC" inDirectory:@"Resource"];
         [videoModel addImageSource:path];
         
-        path = [[NSBundle mainBundle] pathForResource:@"douyin2" ofType:@"mp4" inDirectory:@"Resource"];
-        [videoModel addVideoSource:path];
-        
-        path = [[NSBundle mainBundle] pathForResource:@"IMG_7306" ofType:@"HEIC" inDirectory:@"Resource"];
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7305" ofType:@"HEIC" inDirectory:@"Resource"];
         [videoModel addImageSource:path];
         
         path = [[NSBundle mainBundle] pathForResource:@"IMG_7311" ofType:@"HEIC" inDirectory:@"Resource"];
@@ -223,12 +234,7 @@
     //    [videoModel addTransitionGroup:path];
     //    [videoModel addFilterGroup:path];
     
-    if(1) {
-        path = [[NSBundle mainBundle] pathForResource:@"IMG_7305" ofType:@"HEIC" inDirectory:@"Resource"];
-        NSData *data = [NSData dataWithContentsOfFile:path];
-        UIImage *bgImage = [UIImage imageWithData:data];
-        videoModel.bgImage = bgImage;
-    }
+   
   
     NSString *tmpDir =  [NSString stringWithFormat:@"%@/tmp", videoModel.videoResourceDir];
     [NSFileManager removeFileIfExist:tmpDir];
@@ -238,6 +244,7 @@
     NSLog(@"视频保存 开始");
     
     __weak typeof(self) weakSelf = self;
+    
     task.completeBlock = ^(BOOL sucess, NSError *error) {
         __strong typeof(self) strongSelf = weakSelf;
         if (error)  {
@@ -247,7 +254,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             strongSelf.lblProgress.text = [NSString stringWithFormat:@"100%%"];
         });
-        if(sucess && 0) {
+        if(sucess && 1) {
             NSURL *movieURL = [NSURL fileURLWithPath:strongSelf.task.outputFile];
             [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^(void)
              {
@@ -281,8 +288,9 @@
 - (void)beginSimpleExport {
     NSDate *date = [NSDate date];
     NSLog(@"视频保存 开始");
-    //    NSURL *sampleURL = [[NSBundle mainBundle] URLForResource:@"IMG3" withExtension:@"MOV"];
-    NSURL *sampleURL = [[NSBundle mainBundle] URLForResource:@"douyin1" withExtension:@"mp4"];
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"douyin1" ofType:@"mp4" inDirectory:@"Resource"];
+    
+    NSURL *sampleURL = [NSURL fileURLWithPath:path];
     NSString *pathToMovie = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie2.mp4"];
     if ([[NSFileManager defaultManager] fileExistsAtPath:pathToMovie]) {
         [[NSFileManager defaultManager] removeItemAtPath:pathToMovie error:nil];
@@ -290,7 +298,6 @@
     NSURL *movieURL = [NSURL fileURLWithPath:pathToMovie];
     AVURLAsset *avAsset = [[AVURLAsset alloc] initWithURL:sampleURL options:nil];
     NSLog(@"%@", pathToMovie);
-    
     BBZAVAssetExportSession *exporter = [[BBZAVAssetExportSession alloc] initWithAsset:avAsset];
     exporter.shouldOptimizeForNetworkUse = YES;
     exporter.outputFileType = AVFileTypeMPEG4;

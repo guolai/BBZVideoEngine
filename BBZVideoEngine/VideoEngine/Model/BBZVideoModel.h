@@ -22,6 +22,7 @@
 @property (nonatomic, strong, readonly) BBZFilterModel *filterModel;
 @property (nonatomic, assign, readonly) CGFloat duration;
 @property (nonatomic, strong, readonly) NSString *videoResourceDir;
+@property (nonatomic, assign) CGAffineTransform transform;
 
 @property (nonatomic, strong) UIImage *bgImage;
 @property (nonatomic, strong) UIImage *maskImage;
