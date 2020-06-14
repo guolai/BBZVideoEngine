@@ -61,7 +61,7 @@ extern const int BBZActionTimeToScheduleTime;
     NSTimeInterval nDiff = CMTimeGetSeconds(CMTimeSubtract(lastSamplePresentationTime, relativeTime));
     NSTimeInterval minDuration = CMTimeGetSeconds(CMTimeSubtract(time, self.lastTime));
     minDuration = fabs(minDuration / 2.0);
-    BBZINFO(@"newFrameAtTime  dif,rltime,stime,rtime: %.4f,%.4f,%.4f,%.4f", nDiff, CMTimeGetSeconds(relativeTime), CMTimeGetSeconds(lastSamplePresentationTime), CMTimeGetSeconds(time));
+//    BBZINFO(@"newFrameAtTime  dif,rltime,stime,rtime: %.4f,%.4f,%.4f,%.4f", nDiff, CMTimeGetSeconds(relativeTime), CMTimeGetSeconds(lastSamplePresentationTime), CMTimeGetSeconds(time));
     if(nDiff > 0.001 && nDiff > minDuration) {
         //下一帧还需要复用
         self.usedSampleBuffer = self.sampleBuffer;

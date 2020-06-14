@@ -163,7 +163,7 @@
             bAdd = NO;
             BBZERROR(@" appendPixelBuffer error, %@", self.assetWriter.error);
         } else {
-             BBZINFO(@"video appendPixelBuffer %@", [NSValue valueWithCMTime:frameTime]);
+             BBZINFO(@"video write %f", CMTimeGetSeconds(frameTime));
         }
     }else {
         BBZINFO(@"status :%d", self.assetWriter.status);
@@ -231,7 +231,7 @@
                 BBZINFO(@"Problem appending audio buffer at time: %@", CFBridgingRelease(CMTimeCopyDescription(kCFAllocatorDefault, currentSampleTime)));
                 bAdd = NO;
             }else {
-                BBZINFO(@"audio appendSampleBuffer %@", [NSValue valueWithCMTime:currentSampleTime]);
+                BBZINFO(@"audio write %f", CMTimeGetSeconds(currentSampleTime));
             }
             
         } else {
