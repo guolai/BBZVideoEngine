@@ -136,13 +136,13 @@
     return shaderString;
 }
 
-- (double)offsetBegin {
-    return self.begin;
-}
-
-- (double)offsetEnd {
-    return self.end;
-}
+//- (double)offsetBegin {
+//    return self.begin;
+//}
+//
+//- (double)offsetEnd {
+//    return self.end;
+//}
 
 
 - (BBZNodeAnimationParams *)paramsAtTime:(double)time {
@@ -151,11 +151,11 @@
     }
     BBZNodeAnimation *nodeAnimation = [self.animations objectAtIndex:0];
     BBZNodeAnimationParams *currentTimeParam = [nodeAnimation.param_begin copy];
-    if(self.offsetBegin > time) {
+    if(self.begin > time) {
         NSCParameterAssert(false);
         return currentTimeParam;
     }
-    if(self.offsetEnd < time) {
+    if(self.end < time) {
         nodeAnimation = self.animations.lastObject;
         currentTimeParam = [nodeAnimation.param_end copy];
         NSCParameterAssert(false);
@@ -163,13 +163,13 @@
     }
     for (int i = 0; i < self.animations.count; i++) {
         nodeAnimation = [self.animations objectAtIndex:i];
-        if(time >= self.offsetBegin + nodeAnimation.begin && time <= self.offsetBegin + nodeAnimation.end) {
+        if(time >= self.begin + nodeAnimation.begin && time <= self.end + nodeAnimation.end) {
             break;
         }
     }
     BBZNodeAnimationParams *beginParam = nodeAnimation.param_begin;
     BBZNodeAnimationParams *endParam = nodeAnimation.param_end;
-    double currentTime = time - self.offsetBegin - nodeAnimation.begin;
+    double currentTime = time - self.begin - nodeAnimation.begin;
     double progress = currentTime / (nodeAnimation.end - nodeAnimation.begin);
     currentTimeParam = [[BBZNodeAnimationParams alloc] init];
     currentTimeParam.param1 = [self valueAtProgress:progress fromValue:beginParam.param1 toValue:endParam.param1];

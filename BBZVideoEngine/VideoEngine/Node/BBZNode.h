@@ -57,7 +57,7 @@
 @property (nonatomic, assign) BOOL bRGB;
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) NSArray *images;
-@property (nonatomic, assign) double offset;
+//@property (nonatomic, assign) double offset;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dic withFilePath:(NSString *)filePath;
 

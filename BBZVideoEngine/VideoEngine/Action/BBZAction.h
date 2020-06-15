@@ -40,7 +40,7 @@ extern const int BBZScheduleTimeScale;
 
 - (NSUInteger)endTime;
 
-- (void)upateOffsetTime:(NSInteger)offset;
+//- (void)upateOffsetTime:(NSInteger)offset;
 - (NSTimeInterval)relativeTimeFrom:(CMTime)time;
 
 - (void)removeConnects;

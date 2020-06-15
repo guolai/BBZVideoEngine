@@ -79,10 +79,10 @@
     
 }
 
-- (void)upateOffsetTime:(NSInteger)offset {
-    double dOffset = offset/(BBZVideoDurationScale * 1.0);
-    self.node.offset = dOffset;
-}
+//- (void)upateOffsetTime:(NSInteger)offset {
+//    double dOffset = offset/(BBZVideoDurationScale * 1.0);
+//    self.node.offset = dOffset;
+//}
 
 - (NSTimeInterval)relativeTimeFrom:(CMTime)time {
     NSTimeInterval tmpTime = CMTimeGetSeconds(time);

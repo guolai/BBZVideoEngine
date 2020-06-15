@@ -197,7 +197,7 @@
     self.offset = time;
     for (BBZAction *action in self.arrayActions) {
         action.startTime = self.beginTime;
-        [action upateOffsetTime:time];
+//        [action upateOffsetTime:time];
     }
     for (BBZActionTree *tree in self.arrayNodes) {
         [tree updateOffsetTime:time];

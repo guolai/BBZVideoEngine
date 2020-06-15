@@ -29,7 +29,9 @@
     _index = 1;
     backgroundColorAlpha = 1.0;
     _shouldClearBackGround = NO;
+    _fenceCount = 1;
     runSynchronouslyOnVideoProcessingQueue(^{
+        [self resetFence];
         [GPUImageContext useImageProcessingContext];
         self->_uniformTextures[0] = self->filterInputTextureUniform;
         for (int i = 1; i < self->_maxIndex; i++) {
@@ -99,6 +101,25 @@
     return bRet;
 }
 
+- (void)addFrameBuffer:(GPUImageFramebuffer *)frameBuffer atIndex:(NSInteger)index {
+    if(!frameBuffer) {
+        return;
+    }
+    NSAssert(self.index + 1 <= self.maxIndex, @"texture too much");
+    runSynchronouslyOnVideoProcessingQueue(^{
+        if([self.objectsArray containsObject:frameBuffer]){
+            [self removeFrameBuffer:frameBuffer];
+        }
+        self.index ++;
+        [self.objectsArray addObject:frameBuffer];
+        if(index > self.frameBufferArray.count) {
+            [self.frameBufferArray addObject:frameBuffer];
+        } else {
+            [self.frameBufferArray insertObject:frameBuffer atIndex:index];
+        }
+    });
+}
+
 - (NSInteger)addFrameBuffer:(GPUImageFramebuffer *)frameBuffer {
     NSInteger resultIndex = -1;
     if(!frameBuffer) {
@@ -106,6 +127,9 @@
     }
     NSAssert(self.index + 1 <= self.maxIndex, @"texture too much");
     runSynchronouslyOnVideoProcessingQueue(^{
+        if([self.objectsArray containsObject:frameBuffer]){
+            [self removeFrameBuffer:frameBuffer];
+        }
         self.index ++;
         [self.objectsArray addObject:frameBuffer];
         [self.frameBufferArray addObject:frameBuffer];
@@ -220,9 +244,68 @@
 }
 
 - (void)willEndRender {
-    
+
 }
 
+- (void)resetFence {
+    _fence[0] = 0;
+    _fence[1] = 0;
+    _fence[2] = 0;
+    _fence[3] = 0;
+    _fence[4] = 0;
+    _fence[5] = 0;
+}
+
+- (BOOL)checkNewFrameReady {
+    BOOL bReady = YES;
+    for (int i = 0; i < self.fenceCount; i++) {
+        if(_fence[i] == 0) {
+            bReady = NO;
+            break;
+        }
+    }
+    return bReady;
+}
+
+#pragma mark - parent
+- (void)setInputFramebuffer:(GPUImageFramebuffer *)newInputFramebuffer atIndex:(NSInteger)textureIndex {
+    if(self.fenceCount < 2) {
+        [super setInputFramebuffer:newInputFramebuffer atIndex:textureIndex];
+        return;
+    }
+    if(textureIndex != 0) {
+        [self addFrameBuffer:newInputFramebuffer atIndex:textureIndex];
+    } else {
+//        if(firstInputFramebuffer && firstInputFramebuffer != newInputFramebuffer) {
+//            NSInteger index =  [self addFrameBuffer:newInputFramebuffer];
+//            if(index != -1) {
+//                _fence[index] = 1;
+//            }
+//        } else {
+            [super setInputFramebuffer:newInputFramebuffer atIndex:textureIndex];
+//            _fence[textureIndex] = 1;
+//        }
+        
+    }
+}
+
+
+- (void)newFrameReadyAtTime:(CMTime)frameTime atIndex:(NSInteger)textureIndex {
+    if(self.fenceCount < 2) {
+        [super newFrameReadyAtTime:frameTime atIndex:0];
+        return;
+    }
+    if([self checkNewFrameReady]) {
+        return;
+    }
+    _fence[textureIndex] = 1;
+    if ([self checkNewFrameReady]) {
+        [super newFrameReadyAtTime:frameTime atIndex:0];
+        [self resetFence];
+    } else {
+        NSLog(@"sdfas");
+    }
+}
 
 @end
 

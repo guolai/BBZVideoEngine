@@ -21,8 +21,8 @@
 
 typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
     BBZFilterLayerTypeVideo = 0,//视频 图片 背景图 拼接
-    BBZFilterLayerTypeAudio = 1,//音频
     BBZFilterLayerTypeTransition = 2,//转场
+    BBZFilterLayerTypeAudio = 1,//音频
     BBZFilterLayerTypeEffect = 3,//特效
     BBZFilterLayerTypeMask = 4,//水印
     BBZFilterLayerTypeOutput = 5,//输出

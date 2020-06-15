@@ -14,6 +14,7 @@
     GLint _uniformV4[2];
     GLint _uniformMat441;
     GLint _uniformMat442;
+    int _fence[6];
 }
 @property (nonatomic, assign) GPUMatrix3x3 mat33ParamValue;
 @property (nonatomic, assign) GPUVector4 vector4ParamValue1;
@@ -21,13 +22,14 @@
 @property (nonatomic, assign) GPUMatrix4x4 mat44ParamValue1;
 @property (nonatomic, assign) GPUMatrix4x4 mat44ParamValue2;
 @property (nonatomic, assign) BOOL shouldClearBackGround;
+@property (nonatomic, assign) NSUInteger fenceCount;// max is 6
 
 - (NSInteger)addImageTexture:(UIImage *)image;
 - (BOOL)removeImageTexture:(UIImage *)image;
 
 - (NSInteger)addFrameBuffer:(GPUImageFramebuffer *)frameBuffer;
 - (BOOL)removeFrameBuffer:(GPUImageFramebuffer *)frameBuffer;
-
+- (void)addFrameBuffer:(GPUImageFramebuffer *)frameBuffer atIndex:(NSInteger)index;
 - (void)removeAllCacheFrameBuffer;
 
 

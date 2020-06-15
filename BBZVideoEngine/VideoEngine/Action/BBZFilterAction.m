@@ -70,6 +70,9 @@
 - (void)createImageFilter {
     BBZFilterMixer *mixer = [BBZFilterMixer filterMixerWithNodes:@[self.node]];
     self.multiFilter = [[BBZMultiImageFilter alloc] initWithVertexShaderFromString:mixer.vShaderString fragmentShaderFromString:mixer.fShaderString];
+    if([self.node.name isEqualToString:@"transition"]) {
+        self.multiFilter.fenceCount = 2;
+    }
 }
 
 - (void)removeConnects {
@@ -110,9 +113,7 @@
             self.multiFilter.vector4ParamValue1 = (GPUVector4){rect.origin.x/self.renderSize.width, rect.origin.y/self.renderSize.height, rect.size.width/self.renderSize.width, rect.size.height/self.renderSize.height};
         }
     }
-    if([self.node.name isEqualToString:@"transition"]) {
-        NSLog(@"dada");
-    }
+    
     self.multiFilter.vector4ParamValue1 =(GPUVector4){params.param1, params.param2, params.param3, params.param4};
     
     
