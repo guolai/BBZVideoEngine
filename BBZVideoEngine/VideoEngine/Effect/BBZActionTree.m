@@ -14,7 +14,7 @@
 @property (nonatomic, assign, readwrite) NSUInteger depth;
 @property (nonatomic, assign, readwrite) NSUInteger beginTime;
 @property (nonatomic, assign, readwrite) NSUInteger endTime;
-@property (nonatomic, assign, readwrite) NSUInteger offset;
+@property (nonatomic, assign, readwrite) NSInteger offset;
 @end
 
 
@@ -46,10 +46,10 @@
     if(!subTree) {
         return;
     }
-    if(subTree.beginTime > self.beginTime || subTree.endTime < self.endTime) {
-        BBZERROR(@"segment error %u, %u, %u, %u", subTree.beginTime, subTree.endTime, self.beginTime, self.endTime);
-        NSAssert(false, @"segment error");
-    }
+//    if(subTree.beginTime > self.beginTime || subTree.endTime < self.endTime) {
+//        BBZERROR(@"segment error %u, %u, %u, %u", subTree.beginTime, subTree.endTime, self.beginTime, self.endTime);
+//        NSAssert(false, @"segment error");
+//    }
     [self.arrayNodes addObject:subTree];
     self.depth = MAX(self.depth, subTree.depth+1);
 }
@@ -190,13 +190,14 @@
     return mtblString;
 }
 
-- (void)updateOffsetTime:(NSUInteger)time {
+- (void)updateOffsetTime:(NSInteger)time {
     if(self.offset == time) {
         return;
     }
     self.offset = time;
     for (BBZAction *action in self.arrayActions) {
         action.startTime = self.beginTime;
+        [action upateOffsetTime:time];
     }
     for (BBZActionTree *tree in self.arrayNodes) {
         [tree updateOffsetTime:time];

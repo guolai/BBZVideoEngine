@@ -203,12 +203,21 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
     NSArray *toLayerArray = [self actionTreeFromLayer:self.filterLayers[@(toLayer)] startTime:startTime endTime:endTime];
     if(toLayerArray.count > 0 ) {
         builderTree = [toLayerArray objectAtIndex:0];
-        if(toLayerArray.count > 1 || builderTree.subTrees.count != fromLayerArray.count) {
+        if(toLayerArray.count > 1 ||
+           fromLayerArray.count <= 1 ||
+                (builderTree.subTrees.count > 0 &&
+                 builderTree.subTrees.count != fromLayerArray.count)) {
             BBZERROR(@"action tree error");
             NSAssert(false, @"action tree error");
         } else {
-            [[builderTree subTreeAtIndex:0] addSubTree:[fromLayerArray objectAtIndex:0]];
-            [[builderTree subTreeAtIndex:1] addSubTree:[fromLayerArray objectAtIndex:1]];
+            if(builderTree.subTrees.count > 0) {
+                [[builderTree subTreeAtIndex:0] addSubTree:[fromLayerArray objectAtIndex:0]];
+                [[builderTree subTreeAtIndex:1] addSubTree:[fromLayerArray objectAtIndex:1]];
+            } else {
+                [builderTree addSubTree:[fromLayerArray objectAtIndex:0]];
+                [builderTree addSubTree:[fromLayerArray objectAtIndex:1]];
+            }
+            
         }
     } else {
         builderTree = (BBZActionTree *)[fromLayerArray objectAtIndex:0];

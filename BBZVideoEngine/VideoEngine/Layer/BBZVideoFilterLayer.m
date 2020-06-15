@@ -53,12 +53,24 @@
         builder.assetIndex++;
         BBZActionTree *actionTree = [BBZActionTree createActionTreeWithAction:action];
         
-        BBZNode *tranformNode = [BBZNode createLocalNode:BBZNodeTransformSource beginTime:action.startTime endTime:action.endTime];
+        BBZNode *tranformNode = nil;
+        if(self.model.transform) {
+            tranformNode = [BBZNode createLocalNode:BBZNodeTransformSource duration:action.endTime - action.startTime];
+            [tranformNode buildTransfromSourceFrom:self.model.transform to:self.model.transform];
+        } else {
+            if(bRGB) {
+                tranformNode = [BBZNode createLocalNode:BBZNodeTransformSource duration:action.endTime - action.startTime];
+                [tranformNode buildTransfromSourceScaleFrom:1.15 toScale:1.0];
+            } else {
+                tranformNode = [BBZNode createLocalNode:BBZNodeTransformDefault duration:action.endTime - action.startTime];
+            }
+        }
+
         tranformNode.image = self.model.bgImage;
         tranformNode.bRGB = bRGB;
         
+        
         BBZInputFilterAction *filterAction = [[BBZInputFilterAction alloc] initWithNode:tranformNode];
-        filterAction.transform = self.model.transform;
         filterAction.startTime = action.startTime;
         filterAction.duration = action.duration;
         filterAction.renderSize = self.context.renderSize;
@@ -85,8 +97,7 @@
     return builder;
 }
 
-- (BBZActionBuilderResult *)
-buildTimeLineWithSpliceNodes {
+- (BBZActionBuilderResult *)buildTimeLineWithSpliceNodes {
     BBZActionBuilderResult *builder = [[BBZActionBuilderResult alloc] init];
     builder.startTime = 0;
     builder.groupIndex = 0;
@@ -137,7 +148,7 @@ buildTimeLineWithSpliceNodes {
             
             BBZActionTree *sourceActionTree = [BBZActionTree createActionTreeWithAction:sourceAction];
             
-            BBZNode *tranformNode = [BBZNode createLocalNode:BBZNodeTransformSource beginTime:sourceAction.startTime endTime:sourceAction.endTime];
+            BBZNode *tranformNode = [BBZNode createLocalNode:BBZNodeTransformSource  duration:sourceAction.endTime - sourceAction.startTime];
             if([sourceAction isKindOfClass:[BBZImageSourceAction class]]) {
 //                tranformNode = [[BBZTransformSourceNode alloc] initWithRGBShader:NO];
                 tranformNode.bRGB = YES;
@@ -147,7 +158,6 @@ buildTimeLineWithSpliceNodes {
             }
             
             BBZInputFilterAction *filterAction = [[BBZInputFilterAction alloc] initWithNode:tranformNode];
-            filterAction.transform = self.model.transform;
             filterAction.startTime = sourceAction.startTime;
             filterAction.duration = sourceAction.duration;
             filterAction.renderSize = self.context.renderSize;

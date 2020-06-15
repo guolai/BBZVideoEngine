@@ -79,6 +79,18 @@
     
 }
 
+- (void)upateOffsetTime:(NSInteger)offset {
+    double dOffset = offset/(BBZVideoDurationScale * 1.0);
+    self.node.offset = dOffset;
+}
+
+- (NSTimeInterval)relativeTimeFrom:(CMTime)time {
+    NSTimeInterval tmpTime = CMTimeGetSeconds(time);
+    tmpTime = tmpTime - self.startTime/(BBZVideoDurationScale * 1.0);
+    return tmpTime;
+    
+}
+
 - (NSInteger)order {
     if(_order == 88888) {
         if(self.node) {

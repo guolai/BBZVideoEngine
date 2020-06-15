@@ -12,10 +12,10 @@
 
 @implementation BBZNode (Local)
 
-+ (instancetype)createLocalNode:(BBZNodeType)type beginTime:(double)beginTime endTime:(double)endTime {
++ (instancetype)createLocalNode:(BBZNodeType)type duration:(NSUInteger)duration {
     BBZNode *node = [[BBZNode alloc] init];
-    node.begin = beginTime / (BBZVideoDurationScale * 1.0);
-    node.end = endTime / (BBZVideoDurationScale * 1.0);
+    node.begin = 0;
+    node.end = duration / (BBZVideoDurationScale * 1.0);
     switch (type) {
         case BBZNodeTransformSource: {
             node.name = @"transformsource";
@@ -50,6 +50,40 @@
     begin.param4 = frame.size.height;
     animation.param_begin = begin;
     animation.param_end = [begin copy];
+    self.animations  = @[animation];
+}
+
+
+
+- (void)buildTransfromSourceFrom:(BBZTransformItem *)fromItem to:(BBZTransformItem *)toItem {
+    BBZNodeAnimation *animation = [[BBZNodeAnimation alloc] init];
+    animation.begin = 0.0;
+    animation.end = self.end - self.begin;
+    BBZNodeAnimationParams *begin = [[BBZNodeAnimationParams alloc] init];
+    begin.param1 = fromItem.scale;
+    begin.param2 = fromItem.tx;
+    begin.param3 = fromItem.ty;
+    begin.param4 = fromItem.angle;
+    BBZNodeAnimationParams *end = [[BBZNodeAnimationParams alloc] init];
+    end.param1 = toItem.scale;
+    end.param2 = toItem.tx;
+    end.param3 = toItem.ty;
+    end.param4 = toItem.angle;
+    animation.param_begin = begin;
+    animation.param_end = end;
+    self.animations  = @[animation];
+}
+
+- (void)buildTransfromSourceScaleFrom:(double)fromScale toScale:(double)toScale {
+    BBZNodeAnimation *animation = [[BBZNodeAnimation alloc] init];
+    animation.begin = 0.0;
+    animation.end = self.end - self.begin;
+    BBZNodeAnimationParams *begin = [[BBZNodeAnimationParams alloc] init];
+    begin.param1 = fromScale;
+    BBZNodeAnimationParams *end = [[BBZNodeAnimationParams alloc] init];
+    end.param1 = toScale;
+    animation.param_begin = begin;
+    animation.param_end = end;
     self.animations  = @[animation];
 }
 

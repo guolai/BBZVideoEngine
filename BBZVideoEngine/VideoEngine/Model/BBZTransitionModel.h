@@ -11,7 +11,6 @@
 #import "BBZSpliceGroupNode.h"
 
 
-NS_ASSUME_NONNULL_BEGIN
 
 @interface BBZTransitionModel : NSObject
 @property (nonatomic, assign, readonly) CGFloat minVersion;
@@ -22,4 +21,5 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWidthDir:(NSString *)filePath;
 @end
 
-NS_ASSUME_NONNULL_END
+
+

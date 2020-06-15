@@ -12,6 +12,7 @@
 #import "BBZAudioAsset.h"
 #import "BBZTransitionModel.h"
 #import "BBZFilterModel.h"
+#import "BBZTransformItem.h"
 
 @interface BBZVideoModel : NSObject
 @property (nonatomic, strong, readonly) NSString *identifier;
@@ -22,7 +23,7 @@
 @property (nonatomic, strong, readonly) BBZFilterModel *filterModel;
 @property (nonatomic, assign, readonly) CGFloat duration;
 @property (nonatomic, strong, readonly) NSString *videoResourceDir;
-@property (nonatomic, assign) CGAffineTransform transform;
+@property (nonatomic, strong) BBZTransformItem *transform;
 
 @property (nonatomic, strong) UIImage *bgImage;
 @property (nonatomic, strong) NSArray *maskImage;

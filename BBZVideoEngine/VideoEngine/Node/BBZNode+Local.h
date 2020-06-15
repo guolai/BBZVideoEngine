@@ -7,6 +7,7 @@
 //
 
 #import "BBZNode.h"
+#import "BBZTransformItem.h"
 
 typedef NS_ENUM(NSInteger, BBZNodeType) {
     BBZNodeTransformDefault = 0,
@@ -22,9 +23,11 @@ typedef NS_ENUM(NSInteger, BBZNodeType) {
 
 @interface BBZNode (Local)
 
-+ (instancetype)createLocalNode:(BBZNodeType)type beginTime:(double)beginTime endTime:(double)endTime;
-
++ (instancetype)createLocalNode:(BBZNodeType)type duration:(NSUInteger)duration;
 - (void)buildBlendFrame:(CGRect)frame;
+
+- (void)buildTransfromSourceFrom:(BBZTransformItem *)fromItem to:(BBZTransformItem *)fromItem;
+- (void)buildTransfromSourceScaleFrom:(double)fromScale toScale:(double)toScale;
 
 @end
 

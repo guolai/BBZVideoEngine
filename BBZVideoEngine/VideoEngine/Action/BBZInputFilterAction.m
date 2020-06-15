@@ -22,7 +22,7 @@
 
 - (instancetype)init {
     if(self = [super init]) {
-        _transform = CGAffineTransformIdentity;
+//        _transform = CGAffineTransformIdentity;
     }
     return self;
 }
@@ -64,25 +64,42 @@
     self.videoMultiFilter = [[BBZVideoInputFilter alloc] initWithVertexShaderFromString:vertexShader fragmentShaderFromString:framgmentShader];
     self.videoMultiFilter.renderSize = self.renderSize;
     self.videoMultiFilter.bUseBackGroundImage = bUseLastFB;
-    self.videoMultiFilter.affineTransform = self.transform;
     self.videoMultiFilter.bgFrameBuffer = [GPUImageFramebuffer BBZ_frameBufferWithImage:self.node.image.CGImage];
     [self.videoMultiFilter.bgFrameBuffer disableReferenceCounting];
 }
 
-- (void)setTransform:(CGAffineTransform)transform {
-    _transform = transform;
-    self.videoMultiFilter.affineTransform = transform;
-}
+//- (void)setTransform:(CGAffineTransform)transform {
+//    _transform = transform;
+//    self.videoMultiFilter.affineTransform = transform;
+//}
 
 - (void)setRenderSize:(CGSize)renderSize {
     [super setRenderSize:renderSize];
     self.videoMultiFilter.renderSize = renderSize;
 }
 
-//- (void)updateWithTime:(CMTime)time {
-//
-//}
-//
+- (void)updateWithTime:(CMTime)time {
+    NSTimeInterval relativeTime = [self relativeTimeFrom:time];
+    BBZNodeAnimationParams *params = [self.node paramsAtTime:relativeTime];
+    if(!params) {
+        return;
+    }
+    if(!self.node.name) {
+        return;
+    }
+    if([self.node.name isEqualToString:@"transformsource"]) {
+        CGAffineTransform transform = CGAffineTransformIdentity;
+        transform = CGAffineTransformTranslate(transform, params.param2, params.param3);
+        transform = CGAffineTransformScale(transform, params.param1, params.param1);
+        transform = CGAffineTransformRotate(transform, params.param4*2.0*M_PI/360.0);
+        self.videoMultiFilter.affineTransform = transform;
+    }
+//            CGRect rect = [params frame];
+//            self.multiFilter.vector4ParamValue1 = (GPUVector4){rect.origin.x/self.renderSize.width, rect.origin.y/self.renderSize.height, rect.size.width/self.renderSize.width, rect.size.height/self.renderSize.height};
+    
+    
+}
+
 //- (void)newFrameAtTime:(CMTime)time {
 //
 //}

@@ -49,9 +49,22 @@
 }
 
 
-- (void) addVistualAction:(BBZVistualFilterAction *)vistualAction {
+- (void)addVistualAction:(BBZVistualFilterAction *)vistualAction {
     [self.arrayNode addObject:vistualAction.node];
 }
+
+- (void)addVistualNode:(BBZNode *)otherNode {
+    [self.arrayNode addObject:otherNode];
+}
+
+//- (void)upateOffsetTime:(NSInteger)offset {
+//    double dOffset = offset/(BBZVideoDurationScale * 1.0);
+//    self.node.offset = dOffset;
+//    for (BBZNode *node in self.arrayNode) {
+//        node.offset = dOffset;
+//    }
+//    // to do test
+//}
 
 
 - (void)createImageFilter {
@@ -79,17 +92,29 @@
   time 为真实时间
   node里面 时间为放大了100倍的时间，需要进行换算 ，然后计算 node当前值
   */
-    if(self.node.images.count > 0 && self.maskImages.count == 0) {
-        for (UIImage *image in self.node.images) {
-            GPUImageFramebuffer *framebuffer = [GPUImageFramebuffer BBZ_frameBufferWithImage2:image.CGImage];
-            [self.maskImages addObject:framebuffer];
-        }
-        BBZNodeAnimationParams *params = [self.node paramsAtTime:CMTimeGetSeconds(time)];
-        if(params) {
+    NSTimeInterval relativeTime = [self relativeTimeFrom:time];
+    BBZNodeAnimationParams *params = [self.node paramsAtTime:relativeTime];
+    if(!params) {
+        return;
+    }
+    if(!self.node.name) {
+        return;
+    }
+    if([self.node.name isEqualToString:@"blendimage"]) {
+        if(self.node.images.count > 0 && self.maskImages.count == 0) {
+            for (UIImage *image in self.node.images) {
+                GPUImageFramebuffer *framebuffer = [GPUImageFramebuffer BBZ_frameBufferWithImage2:image.CGImage];
+                [self.maskImages addObject:framebuffer];
+            }
             CGRect rect = [params frame];
             self.multiFilter.vector4ParamValue1 = (GPUVector4){rect.origin.x/self.renderSize.width, rect.origin.y/self.renderSize.height, rect.size.width/self.renderSize.width, rect.size.height/self.renderSize.height};
         }
     }
+    if([self.node.name isEqualToString:@"transition"]) {
+        NSLog(@"dada");
+    }
+    self.multiFilter.vector4ParamValue1 =(GPUVector4){params.param1, params.param2, params.param3, params.param4};
+    
     
     
 //    BBZNodeAnimationParams *params = [self.node paramsAtTime:CMTimeGetSeconds(time)];

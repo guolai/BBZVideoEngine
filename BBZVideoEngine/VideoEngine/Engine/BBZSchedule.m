@@ -130,7 +130,7 @@
 - (void)increaseTime {
     self.currentTime += CMTimeGetSeconds(self.targetFrameDuration);
     CMTime tmpTime = CMTimeMake(self.currentTime * BBZScheduleTimeScale, BBZScheduleTimeScale);
-//    BBZINFO(@" currentTime = %.4f,%.4f", self.currentTime, CMTimeGetSeconds(tmpTime));
+    BBZINFO(@" currentTime = %.4f,%.4f", self.currentTime, CMTimeGetSeconds(tmpTime));
     [self.observer updateWithTime:tmpTime];
 }
 

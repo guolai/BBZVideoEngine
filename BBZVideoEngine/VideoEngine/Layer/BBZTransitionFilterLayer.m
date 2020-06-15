@@ -29,6 +29,7 @@
     builder.groupIndex = 0;
     NSMutableArray *retArray = [NSMutableArray array];
     NSInteger transionIndex = 0;
+    NSInteger totalOffset = 0;
     BBZActionTree *beforeTree = nil;
     for (BBZActionTree *spliceTree in inputBuilderResult.groupActions) {
         if(!beforeTree) {
@@ -41,29 +42,38 @@
         }
     
         BBZTransitionGroupNode *transition = [self.model.transitonModel.transitionGroups objectAtIndex:transionIndex];
-        NSUInteger transionDuration = transition.duration * BBZVideoDurationScale;
+        NSInteger transionDuration = transition.duration * BBZVideoDurationScale;
         builder.startTime -= transionDuration;
         NSAssert(builder.startTime > 0, @"transionStartTime error");
         NSAssert((spliceTree.beginTime - transionDuration > 0), @"transionStartTime error");
-        [spliceTree updateOffsetTime:transionDuration];
+        totalOffset += transionDuration*-1.0;
+        [spliceTree updateOffsetTime:totalOffset];
         
         BBZActionTree *transitionTree = [self actionTreeWithTransitionNode:transition.transitionNode duration:transionDuration startTime:builder.startTime];
         
-        BBZInputNode *input1 = [transition.inputNodes objectAtIndex:0];
-        BBZActionTree *inputActionTree1 = [self actionTreeWithInputNode:input1 duration:transionDuration startTime:builder.startTime];
+        BBZActionTree *inputActionTree1 = nil;
+        if(transition.inputNodes.count > 0) {
+            BBZInputNode *input1 = [transition.inputNodes objectAtIndex:0];
+            inputActionTree1 = [self actionTreeWithInputNode:input1 duration:transionDuration startTime:builder.startTime];
+        }
+        
         if(!inputActionTree1) {
-            [transitionTree addSubTree:beforeTree];
+//            [transitionTree addSubTree:beforeTree];
         } else {
-            [inputActionTree1 addSubTree:beforeTree];
+//            [inputActionTree1 addSubTree:beforeTree];
             [transitionTree addSubTree:inputActionTree1];
         }
         
-        BBZInputNode *input2 = [transition.inputNodes objectAtIndex:0];
-        BBZActionTree *inputActionTree2= [self actionTreeWithInputNode:input2 duration:transionDuration startTime:builder.startTime];
+        BBZActionTree *inputActionTree2 = nil;
+        if(transition.inputNodes.count > 1) {
+            BBZInputNode *input2 = [transition.inputNodes objectAtIndex:0];
+            inputActionTree2 = [self actionTreeWithInputNode:input2 duration:transionDuration startTime:builder.startTime];
+        }
+       
         if(!inputActionTree2) {
-            [transitionTree addSubTree:spliceTree];
+//            [transitionTree addSubTree:spliceTree];
         } else {
-            [inputActionTree2 addSubTree:spliceTree];
+//            [inputActionTree2 addSubTree:spliceTree];
             [transitionTree addSubTree:inputActionTree2];
         }
         

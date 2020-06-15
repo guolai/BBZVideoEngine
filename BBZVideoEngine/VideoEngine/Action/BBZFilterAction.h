@@ -15,7 +15,8 @@
 
 + (BBZFilterAction *)createWithVistualAction:(BBZVistualFilterAction *)vistualAction;
 
-//- (void) addVistualAction:(BBZVistualFilterAction *)vistualAction;
+- (void)addVistualAction:(BBZVistualFilterAction *)vistualAction;
+- (void)addVistualNode:(BBZNode *)otherNode;
 
 - (void)createImageFilter;
 

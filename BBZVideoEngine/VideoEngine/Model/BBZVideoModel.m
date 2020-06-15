@@ -27,7 +27,7 @@
         _interAssetItems = [NSMutableArray array];
         _interAudioItems = [NSMutableArray array];
         _videoResourceDir = [NSString stringWithFormat:@"%@/%@", baseDir, _identifier];
-        _transform = CGAffineTransformIdentity;
+//        _transform = CGAffineTransformIdentity;
         [NSFileManager createDirIfNeed:_videoResourceDir];
     }
     return self;

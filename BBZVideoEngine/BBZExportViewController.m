@@ -15,6 +15,8 @@
 
 @interface BBZExportViewController ()
 @property (nonatomic, strong) UILabel *lblProgress;
+@property (nonatomic, strong) UISwitch *switchBtn;
+//@property (nonatomic, strong) UISwitch *switchBtn;
 @property (nonatomic, strong) BBZExportTask *task;
 @property (nonatomic, strong) BBZAVAssetExportSession *exportSesstion;
 @end
@@ -29,19 +31,35 @@
 }
 
 - (void)viewDidLoad {
+
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor grayColor]];
     UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
     [btn setTitle:@"开始转换" forState:UIControlStateNormal];
     btn.center = self.view.center;
+    btn.backgroundColor = [UIColor blueColor];
     [self.view addSubview:btn];
     [btn addTarget:self action:@selector(btnPressed:) forControlEvents:UIControlEventTouchUpInside];
-    UILabel *lbl = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
+    UILabel *lbl = [[UILabel alloc] initWithFrame:CGRectMake(0, 40, 100, 30)];
     [self.view addSubview:lbl];
     [lbl setTextColor:[UIColor orangeColor]];
     [lbl setTextAlignment:NSTextAlignmentCenter];
     lbl.text = @"0%";
     self.lblProgress = lbl;
+    
+    self.switchBtn = [UISwitch new];
+    self.switchBtn.frame = CGRectMake(20, 90, 40, 20);
+    self.switchBtn.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+    self.switchBtn.onTintColor = [UIColor greenColor];
+    self.switchBtn.tintColor = [UIColor clearColor];
+    [self.view addSubview:self.switchBtn];
+    
+    lbl = [[UILabel alloc] initWithFrame:CGRectMake(80, 90, 200, 30)];
+    [self.view addSubview:lbl];
+    [lbl setTextColor:[UIColor redColor]];
+    [lbl setBackgroundColor:[UIColor whiteColor]];
+    [lbl setTextAlignment:NSTextAlignmentCenter];
+    lbl.text = @"加入背景，缩放0.8倍";
 }
 
 
@@ -58,17 +76,35 @@
     
 }
 
+
+
+
 - (void)benginVideoEngineExport {
     BBZVideoModel *videoModel = [[BBZVideoModel alloc] init];
+    if(self.exportType == BBZExportTypeImagesAndVideosWithTransition ||
+       self.exportType == BBZExportTypeImagesAndVideosWithBGMTranstion ||
+       self.exportType == BBZExportTypeImagesBGMTransition ) {
+        NSString *path = [NSString stringWithFormat:@"%@/Resource/demo2", [[NSBundle mainBundle] bundlePath]];
+        [videoModel addTransitionGroup:path];
+    } else {
+        if(self.switchBtn.on ) {
+            NSString *path = [[NSBundle mainBundle] pathForResource:@"IMG_7305" ofType:@"HEIC" inDirectory:@"Resource"];
+            NSData *data = [NSData dataWithContentsOfFile:path];
+            UIImage *bgImage = [UIImage imageWithData:data];
+            videoModel.bgImage = bgImage;
+            BBZTransformItem *transformItem = [[BBZTransformItem alloc] init];
+            transformItem.scale = 0.8;
+            transformItem.angle = 45.0;
+//
+//            CGAffineTransform transform = CGAffineTransformIdentity;
+//            transform = CGAffineTransformScale(transform, 0.8, 0.8);
+//            transform = CGAffineTransformRotate(transform, 45*2.0*M_PI/360.0);
+            videoModel.transform = transformItem;
+        }
+    }
+    
+    
     if(1) {
-        NSString *path = [[NSBundle mainBundle] pathForResource:@"IMG_7305" ofType:@"HEIC" inDirectory:@"Resource"];
-        NSData *data = [NSData dataWithContentsOfFile:path];
-        UIImage *bgImage = [UIImage imageWithData:data];
-        videoModel.bgImage = bgImage;
-        CGAffineTransform transform = CGAffineTransformIdentity;
-        transform = CGAffineTransformScale(transform, 0.8, 0.8);
-        transform = CGAffineTransformRotate(transform, 45*2.0*M_PI/360.0);
-        videoModel.transform = transform;
         NSMutableArray *multiArray = [NSMutableArray array];
         for (int i = 1; i < 10; i++) {
             NSString *strName = [NSString stringWithFormat:@"00%d@2x", i];
@@ -224,8 +260,7 @@
         
         path = [[NSBundle mainBundle] pathForResource:@"IMG_7317" ofType:@"HEIC" inDirectory:@"Resource"];
         [videoModel addImageSource:path];
-        
-        
+    
         
         path = [[NSBundle mainBundle] pathForResource:@"IMG_7305" ofType:@"HEIC" inDirectory:@"Resource"];
         [videoModel addImageSource:path];

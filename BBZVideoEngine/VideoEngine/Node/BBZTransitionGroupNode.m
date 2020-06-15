@@ -49,7 +49,7 @@
         _filePath = filePath;
         self.duration = [dic floatValueForKey:@"duration" default:0.0];
         self.order = [dic intValueForKey:@"order" default:0];
-        id Obj = [dic objectForKey:@"splice"];
+        id Obj = [dic objectForKey:@"transition"];
         if ([Obj isKindOfClass:[NSDictionary class]]) {
             BBZTransitionNode *node = [[BBZTransitionNode alloc] initWithDictionary:Obj withFilePath:self.filePath];
             self.transitionNode = node;

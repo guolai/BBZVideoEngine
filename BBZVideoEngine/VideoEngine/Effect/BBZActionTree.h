@@ -19,7 +19,7 @@
 
 @property (nonatomic, assign, readonly) NSUInteger beginTime;
 @property (nonatomic, assign, readonly) NSUInteger endTime;
-@property (nonatomic, assign, readonly) NSUInteger offset;
+@property (nonatomic, assign, readonly) NSInteger offset;
 
 @property (nonatomic, assign) NSInteger groupIndex;
 
@@ -38,7 +38,7 @@
 - (BOOL)addSubTreeToLeftTerminal:(BBZActionTree *)subTree;//如果当前树的左子树有分叉则添加失败，需要跳过
 - (BOOL)addSubTreeToRightTerminal:(BBZActionTree *)subTree;//如果当前树的右子有分叉则添加失败，需要跳过
 
-- (void)updateOffsetTime:(NSUInteger)time;
+- (void)updateOffsetTime:(NSInteger)time;
 - (NSUInteger)duration;
 
 //- (BBZActionTree *)mergeWithOtherTree:(BBZActionTree *)otherTree;
