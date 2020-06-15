@@ -109,7 +109,8 @@
         for (int i = 1; i < 10; i++) {
             NSString *strName = [NSString stringWithFormat:@"00%d@2x", i];
             NSString *icon = [[NSBundle mainBundle] pathForResource:strName ofType:@"png" inDirectory:@"Resource/icon"];
-            UIImage *image = [UIImage imageWithContentsOfFile:icon];
+            NSData *data = [NSData dataWithContentsOfFile:icon];
+            UIImage *image = [UIImage imageWithData:data];
             [multiArray addObject:image];
         }
         videoModel.maskImage = multiArray;

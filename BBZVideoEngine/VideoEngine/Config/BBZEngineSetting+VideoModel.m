@@ -75,7 +75,7 @@
     } else {
         settings.videoSize = [BBZEngineSetting perfectImageSize];
     }
-    settings.videoFrameRate = 24;
+    settings.videoFrameRate = 30;
     return settings;
 }
 

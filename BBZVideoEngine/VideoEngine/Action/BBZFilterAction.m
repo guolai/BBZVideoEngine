@@ -136,7 +136,7 @@
     
     if(self.maskImages.count > 0) {
         [self.multiFilter removeAllCacheFrameBuffer];
-        NSInteger index = (time.value/BBZScheduleTimeScale * 10)%self.maskImages.count;
+        NSInteger index = ((time.value/BBZScheduleTimeScale) * 100)%self.maskImages.count;
         [self.multiFilter addFrameBuffer:[self.maskImages objectAtIndex:index]];
     }
 }
