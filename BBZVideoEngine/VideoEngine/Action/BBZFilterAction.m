@@ -73,6 +73,7 @@
     }
     BBZFilterMixer *mixer = [BBZFilterMixer filterMixerWithNodes:@[self.node]];
     self.multiFilter = [[BBZMultiImageFilter alloc] initWithVertexShaderFromString:mixer.vShaderString fragmentShaderFromString:mixer.fShaderString];
+    self.multiFilter.debugName = self.node.name;
     if([self.node.name isEqualToString:@"transition"]) {
         self.multiFilter.fenceCount = 2;
     }
@@ -101,29 +102,36 @@
   time 为真实时间
   node里面 时间为放大了100倍的时间，需要进行换算 ，然后计算 node当前值
   */
-    NSTimeInterval relativeTime = [self relativeTimeFrom:time];
-    BBZNodeAnimationParams *params = [self.node paramsAtTime:relativeTime];
-    if(!params) {
-        return;
-    }
-    if(!self.node.name) {
-        return;
-    }
-    if([self.node.name isEqualToString:@"blendimage"]) {
-        if(self.node.images.count > 0 && self.maskImages.count == 0) {
-            for (UIImage *image in self.node.images) {
-                GPUImageFramebuffer *framebuffer = [GPUImageFramebuffer BBZ_frameBufferWithImage2:image.CGImage];
-                [self.maskImages addObject:framebuffer];
-            }
-            CGRect rect = [params frame];
-            self.multiFilter.vector4ParamValue1 = (GPUVector4){rect.origin.x/self.renderSize.width, rect.origin.y/self.renderSize.height, rect.size.width/self.renderSize.width, rect.size.height/self.renderSize.height};
-        }
-    } else {
-        self.multiFilter.vector4ParamValue1 =(GPUVector4){params.param1, params.param2, params.param3, params.param4};
-        
-    }
     
-   
+        NSTimeInterval relativeTime = [self relativeTimeFrom:time];
+        BBZNodeAnimationParams *params = [self.node paramsAtTime:relativeTime];
+        if(!params) {
+            if([self.node.name isEqualToString:@"blendimage"]) {
+                NSLog(@"sfa");
+            }
+            return;
+        }
+        if(!self.node.name) {
+            return;
+        }
+        if([self.node.name isEqualToString:@"blendimage"]) {
+            BBZINFO(@" currentTime blendimage = %.4f", CMTimeGetSeconds(time));
+            if(self.node.images.count > 0 && self.maskImages.count == 0) {
+                for (UIImage *image in self.node.images) {
+                    GPUImageFramebuffer *framebuffer = [GPUImageFramebuffer BBZ_frameBufferWithImage2:image.CGImage];
+                    [self.maskImages addObject:framebuffer];
+                }
+                CGRect rect = [params frame];
+                runSynchronouslyOnVideoProcessingQueue(^{
+                    self.multiFilter.vector4ParamValue1 = (GPUVector4){rect.origin.x/self.renderSize.width, rect.origin.y/self.renderSize.height, rect.size.width/self.renderSize.width, rect.size.height/self.renderSize.height};
+                });
+            }
+        } else {
+            runAsynchronouslyOnVideoProcessingQueue(^{
+                self.multiFilter.vector4ParamValue1 =(GPUVector4){params.param1, params.param2, params.param3, params.param4};
+            });
+            
+        }
     
 //    BBZNodeAnimationParams *params = [self.node paramsAtTime:CMTimeGetSeconds(time)];
 //    if(params) {
@@ -133,12 +141,13 @@
 }
 
 - (void)newFrameAtTime:(CMTime)time {
-    
-    if(self.maskImages.count > 0) {
-        [self.multiFilter removeAllCacheFrameBuffer];
-        NSInteger index = ((time.value/BBZScheduleTimeScale) * 100)%self.maskImages.count;
-        [self.multiFilter addFrameBuffer:[self.maskImages objectAtIndex:index]];
-    }
+    runAsynchronouslyOnVideoProcessingQueue(^{
+        if(self.maskImages.count > 0) {
+            [self.multiFilter removeAllCacheFrameBuffer];
+            NSInteger index = ((time.value/BBZScheduleTimeScale) * 100)%self.maskImages.count;
+            [self.multiFilter addFrameBuffer:[self.maskImages objectAtIndex:index]];
+        }
+    });
 }
 
 

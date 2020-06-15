@@ -200,6 +200,9 @@
         uniformIndex++;
         textureIndex++;
     }
+    if([self.debugName isEqualToString:@"blendimage"] && self.frameBufferArray.count == 0) {
+        NSLog(@"saflasdjfal");
+    }
     if(_uniformMat33 >= 0) {
         glUniformMatrix3fv(_uniformMat33, 1, GL_FALSE, (GLfloat *)(&_mat33ParamValue));
     }
@@ -219,7 +222,7 @@
     glVertexAttribPointer(filterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, textureCoordinates);
     
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-//    glFinish();
+    glFlush();
     [firstInputFramebuffer unlock];
     
     [self willEndRender];

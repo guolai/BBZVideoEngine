@@ -83,6 +83,7 @@
         builder.groupIndex++;
         builder.assetIndex++;
         transitionTree.groupIndex = builder.groupIndex;
+        transionIndex++;
     }
     
     builder.groupActions = retArray;

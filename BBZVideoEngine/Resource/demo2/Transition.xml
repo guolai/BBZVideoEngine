@@ -17,7 +17,7 @@
 <!--                </animation>-->
 <!--            </action>-->
 <!--        </input>-->
-        <transition timestamp="0.00" duration="0.3" repeat="1" order="2">
+        <!-- <transition timestamp="0.00" duration="0.3" repeat="1" order="2">
             <action begin="0.000" end="0.3" name="transition" fShader="heichang.glsl">
                 <animation begin="0.0" end="0.13">
                     <param_begin param1="1.0" param2="0.0" param3="0.0"/>
@@ -30,6 +30,14 @@
                 <animation begin="0.17" end="0.30">
                     <param_begin param1="0.0" param2="2.0" param3="0.0"/>
                     <param_end   param1="0.0" param2="2.0" param3="1.0"/>
+                </animation>
+            </action>
+        </transition> -->
+        <transition timestamp="0.00" duration="0.3" repeat="1" order="2">
+            <action begin="0.000" end="0.3" name="transition" fShader="gege.glsl">
+                <animation begin="0.0" end="0.3">
+                    <param_begin param1="0.0"/>
+                    <param_end   param1="1.0"/>
                 </animation>
             </action>
         </transition>

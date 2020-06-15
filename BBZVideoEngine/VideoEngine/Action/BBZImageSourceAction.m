@@ -37,12 +37,13 @@
 }
 
 - (void)newFrameAtTime:(CMTime)time {
-    if(!self.inputSourceParam) {
-        self.inputSourceParam = [[BBZInputSourceParam alloc] init];
-        GPUImageFramebuffer *framebuffer = [GPUImageFramebuffer BBZ_frameBufferWithImage2:((BBZImageAsset *)self.asset).asset.CGImage];
-        self.inputSourceParam.arrayFrameBuffer = @[framebuffer];
-        
-    }
+    runSynchronouslyOnVideoProcessingQueue(^{
+        if(!self.inputSourceParam) {
+            self.inputSourceParam = [[BBZInputSourceParam alloc] init];
+            GPUImageFramebuffer *framebuffer = [GPUImageFramebuffer BBZ_frameBufferWithImage2:((BBZImageAsset *)self.asset).asset.CGImage];
+            self.inputSourceParam.arrayFrameBuffer = @[framebuffer];
+        }
+    });
 }
 
 

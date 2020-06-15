@@ -66,6 +66,7 @@
     self.videoMultiFilter.bUseBackGroundImage = bUseLastFB;
     self.videoMultiFilter.bgFrameBuffer = [GPUImageFramebuffer BBZ_frameBufferWithImage:self.node.image.CGImage];
     [self.videoMultiFilter.bgFrameBuffer disableReferenceCounting];
+    self.videoMultiFilter.debugName = @"BBZVideoInputFilter";
 }
 
 //- (void)setTransform:(CGAffineTransform)transform {
@@ -105,7 +106,7 @@
 //}
 
 - (void)processAVSourceAtTime:(CMTime)time {
-    runAsynchronouslyOnVideoProcessingQueue(^{
+    runSynchronouslyOnVideoProcessingQueue(^{
         [self.videoMultiFilter removeAllCacheFrameBuffer];
         if(self.firstInputSource) {
             BBZInputSourceParam *outputParam = [self.firstInputSource inputSourceAtTime:time];
@@ -132,7 +133,7 @@
                 self.videoMultiFilter.mat33ParamValue = outputParam.mat33ParamValue;
             }
         }
-        NSLog(@"newFrameReadyAtTime %p", self);
+//        NSLog(@"newFrameReadyAtTime %p", self);
         [self.videoMultiFilter newFrameReadyAtTime:time atIndex:0];
     });
 }

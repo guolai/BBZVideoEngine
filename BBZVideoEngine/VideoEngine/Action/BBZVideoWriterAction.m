@@ -125,7 +125,7 @@
 }
 
 - (void)didReachEndTime {
-    runAsynchronouslyOnVideoProcessingQueue(^{
+    runSynchronouslyOnVideoProcessingQueue(^{
         [self.writer finishWriting];
     });
 }

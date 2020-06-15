@@ -23,6 +23,7 @@
 @property (nonatomic, assign) GPUMatrix4x4 mat44ParamValue2;
 @property (nonatomic, assign) BOOL shouldClearBackGround;
 @property (nonatomic, assign) NSUInteger fenceCount;// max is 6
+@property (nonatomic, strong) NSString *debugName;
 
 - (NSInteger)addImageTexture:(UIImage *)image;
 - (BOOL)removeImageTexture:(UIImage *)image;
