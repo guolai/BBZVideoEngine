@@ -13,6 +13,7 @@
 @interface BBZMultiImageFilter ()
 @property (nonatomic, strong) NSMutableArray *objectsArray;
 @property (nonatomic, strong) NSMutableArray <GPUImageFramebuffer *>*frameBufferArray;
+@property (nonatomic, strong) GPUImageFramebuffer *mainframeBuffer;
 @property (nonatomic, assign) NSInteger index;
 @property (nonatomic, assign) NSInteger maxIndex;
 @end
@@ -273,19 +274,22 @@
         [super setInputFramebuffer:newInputFramebuffer atIndex:textureIndex];
         return;
     }
+    if(!newInputFramebuffer) {
+        return;
+    }
     if(textureIndex != 0) {
         [self addFrameBuffer:newInputFramebuffer atIndex:textureIndex];
     } else {
-//        if(firstInputFramebuffer && firstInputFramebuffer != newInputFramebuffer) {
-//            NSInteger index =  [self addFrameBuffer:newInputFramebuffer];
-//            if(index != -1) {
-//                _fence[index] = 1;
-//            }
-//        } else {
+        if(self.mainframeBuffer && self.mainframeBuffer != newInputFramebuffer) {
+            NSInteger index =  [self addFrameBuffer:newInputFramebuffer];
+            if(index != -1) {
+                _fence[index] = 1;
+            }
+        } else {
             [super setInputFramebuffer:newInputFramebuffer atIndex:textureIndex];
-//            _fence[textureIndex] = 1;
-//        }
-        
+            self.mainframeBuffer = newInputFramebuffer;
+            _fence[textureIndex] = 1;
+        }
     }
 }
 
@@ -295,12 +299,13 @@
         [super newFrameReadyAtTime:frameTime atIndex:0];
         return;
     }
-    if([self checkNewFrameReady]) {
-        return;
-    }
-    _fence[textureIndex] = 1;
+//    if([self checkNewFrameReady]) {
+//        return;
+//    }
+//    _fence[textureIndex] = 1;
     if ([self checkNewFrameReady]) {
         [super newFrameReadyAtTime:frameTime atIndex:0];
+        self.mainframeBuffer = nil;
         [self resetFence];
     } else {
         NSLog(@"sdfas");

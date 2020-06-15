@@ -68,6 +68,9 @@
 
 
 - (void)createImageFilter {
+    if([self.node.name isEqualToString:@"transition"]) {
+        self.multiFilter.fenceCount = 2;
+    }
     BBZFilterMixer *mixer = [BBZFilterMixer filterMixerWithNodes:@[self.node]];
     self.multiFilter = [[BBZMultiImageFilter alloc] initWithVertexShaderFromString:mixer.vShaderString fragmentShaderFromString:mixer.fShaderString];
     if([self.node.name isEqualToString:@"transition"]) {
@@ -85,6 +88,9 @@
 
 
 - (void)connectToAction:(id<BBZActionChainProtocol>)toAction {
+    if([self.node.name isEqualToString:@"transition"]) {
+        NSLog(@"afdaf");
+    }
     [self.multiFilter addTarget:[toAction filter]];
 }
 
@@ -112,11 +118,12 @@
             CGRect rect = [params frame];
             self.multiFilter.vector4ParamValue1 = (GPUVector4){rect.origin.x/self.renderSize.width, rect.origin.y/self.renderSize.height, rect.size.width/self.renderSize.width, rect.size.height/self.renderSize.height};
         }
+    } else {
+        self.multiFilter.vector4ParamValue1 =(GPUVector4){params.param1, params.param2, params.param3, params.param4};
+        
     }
     
-    self.multiFilter.vector4ParamValue1 =(GPUVector4){params.param1, params.param2, params.param3, params.param4};
-    
-    
+   
     
 //    BBZNodeAnimationParams *params = [self.node paramsAtTime:CMTimeGetSeconds(time)];
 //    if(params) {
@@ -129,7 +136,7 @@
     
     if(self.maskImages.count > 0) {
         [self.multiFilter removeAllCacheFrameBuffer];
-        NSInteger index = (time.value/BBZScheduleTimeScale)%self.maskImages.count;
+        NSInteger index = (time.value/BBZScheduleTimeScale * 10)%self.maskImages.count;
         [self.multiFilter addFrameBuffer:[self.maskImages objectAtIndex:index]];
     }
 }

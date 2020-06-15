@@ -87,7 +87,7 @@
 }
 
 + (NSInteger)minVideoBitRate {
-    return 600 * 1024;
+    return 1000 * 1024;
 }
 
 
@@ -106,7 +106,7 @@
     else if ([UIDevice getDeviceLevel] < kBBZDeviceLeveliPhone7) {
         return CGSizeMake(720., 1280.);
     }
-    return CGSizeMake(1080., 1920.);
+    return CGSizeMake(720., 1280.);
 }
 
 + (NSInteger)perfectResolutionForRenderSize {
@@ -115,7 +115,7 @@
 }
 
 + (NSInteger)maxResolution {
-    return 1080 * 1920 * 1.2;
+    return 720. * 1280. * 1.2;
 }
 
 
@@ -129,7 +129,7 @@
     else if ([UIDevice getDeviceLevel] < kBBZDeviceLeveliPhone7) {
         return CGSizeMake(720., 1280.);
     }
-    return CGSizeMake(1080., 1920.);
+    return CGSizeMake(720., 1280.);
 }
 
 + (NSInteger)perfectResolutionForImage {
@@ -138,7 +138,7 @@
 }
 
 + (NSInteger)maxResolutionForImage {
-    return 1080 * 1920;
+    return 720 * 1280;
 }
 
 @end

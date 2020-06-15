@@ -72,7 +72,8 @@
     }
 
     for (BBZActionTree *subTree in actionTree.subTrees) {
-       [mularray addObjectsFromArray:[BBZActionBuilder connectActionTree:subTree toAction:headAction]];
+        NSArray *tmpArray = [BBZActionBuilder connectActionTree:subTree toAction:headAction];
+       [mularray addObjectsFromArray:tmpArray];
     }
     return mularray;
 }

@@ -17,6 +17,7 @@
 
 // 当前区间
 @property (nonatomic, strong) NSArray *actions;
+@property (nonatomic, strong) NSMutableArray *inputActions;
 //@property (nonatomic, assign) BOOL bLocked;
 @property (nonatomic, assign) NSUInteger currentTimePoint;
 @property (nonatomic, assign) NSUInteger currentIndex;
@@ -29,6 +30,7 @@
     if(self = [super init]) {
 //        _filterMixer = [[BBZFilterMixer alloc] init];
         _currentIndex = 0;
+        _inputActions = [NSMutableArray array];
     }
     return self;
 }
@@ -48,9 +50,13 @@
             [self didReachEndTime];
             return;
         } else {
+            [self.inputActions removeAllObjects];
             NSArray *actons = self.actions;
             self.actions = [self.segmentDelegate layerActionTreesBeforeTimePoint:self.currentTimePoint];
             for (BBZAction *action in self.actions) {
+                if([action isKindOfClass:[BBZInputFilterAction class]]) {
+                    [self.inputActions insertObject:action atIndex:0];
+                }
                 [action lock];
             }
             for (BBZAction *action in actons) {
@@ -69,10 +75,9 @@
     for (BBZAction *action in self.actions) {
         [action newFrameAtTime:time];
     }
-    for (BBZAction *action in self.actions) {
-        if([action isKindOfClass:[BBZInputFilterAction class]]) {
-            [((BBZInputFilterAction *)action) processAVSourceAtTime:time];
-        }
+
+    for (BBZInputFilterAction *action in self.self.inputActions) {
+        [action processAVSourceAtTime:time];
     }
 
 }

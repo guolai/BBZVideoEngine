@@ -47,20 +47,21 @@
 + (NSString *)fragmentShaderFromNodes:(NSArray *)nodes {
     
     BBZNode *node = nodes.firstObject;
-    NSString *fShader = nil;
-    if(!node.name) {
-        fShader = node.fShaderString;
-    } else if([node.name isEqualToString:@"blendimage"]) {
-        fShader = [BBZShader fragmentMaskBlendShader];
-    } else if([node.name isEqualToString:@"blendvideo"]) {
-        fShader = [BBZShader fragmentMaskBlendShader];
-    } else if([node.name isEqualToString:@"blendimage"]) {
-        
-    } else if([node.name isEqualToString:@"blendimage"]) {
-        
-    } else if([node.name isEqualToString:@"blendimage"]) {
-        
+    NSString *fShader = node.fShaderString;
+    if(!fShader) {
+        if([node.name isEqualToString:@"blendimage"]) {
+            fShader = [BBZShader fragmentMaskBlendShader];
+        } else if([node.name isEqualToString:@"blendvideo"]) {
+            fShader = [BBZShader fragmentMaskBlendShader];
+        } else if([node.name isEqualToString:@"blendimage"]) {
+            
+        } else if([node.name isEqualToString:@"blendimage"]) {
+            
+        } else if([node.name isEqualToString:@"blendimage"]) {
+            
+        }
     }
+    
     if(!fShader) {
         fShader = [BBZShader fragmentPassthroughShader];
     }

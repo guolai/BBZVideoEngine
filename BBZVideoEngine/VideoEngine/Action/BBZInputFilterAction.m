@@ -132,6 +132,7 @@
                 self.videoMultiFilter.mat33ParamValue = outputParam.mat33ParamValue;
             }
         }
+        NSLog(@"newFrameReadyAtTime %p", self);
         [self.videoMultiFilter newFrameReadyAtTime:time atIndex:0];
     });
 }
