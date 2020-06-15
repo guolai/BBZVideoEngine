@@ -130,6 +130,7 @@
         path = [[NSBundle mainBundle] pathForResource:@"douyin3" ofType:@"mp4" inDirectory:@"Resource"];
         [videoModel addVideoSource:path];
     } else if(self.exportType == BBZExportTypeImagesAndVideos) {
+        [videoModel addVideoSource:path];
         path = [[NSBundle mainBundle] pathForResource:@"IMG_7305" ofType:@"HEIC" inDirectory:@"Resource"];
         [videoModel addImageSource:path];
         
@@ -142,40 +143,20 @@
         path = [[NSBundle mainBundle] pathForResource:@"IMG_7311" ofType:@"HEIC" inDirectory:@"Resource"];
         [videoModel addImageSource:path];
         
-        path = [[NSBundle mainBundle] pathForResource:@"IMG_7316" ofType:@"MOV" inDirectory:@"Resource"];
-        [videoModel addVideoSource:path];
+//        path = [[NSBundle mainBundle] pathForResource:@"IMG_7316" ofType:@"MOV" inDirectory:@"Resource"];
+//        [videoModel addVideoSource:path];
         
-        path = [[NSBundle mainBundle] pathForResource:@"IMG_7312" ofType:@"HEIC" inDirectory:@"Resource"];
-        [videoModel addImageSource:path];
+//        path = [[NSBundle mainBundle] pathForResource:@"IMG_7312" ofType:@"HEIC" inDirectory:@"Resource"];
+//        [videoModel addImageSource:path];
         
-        path = [[NSBundle mainBundle] pathForResource:@"IMG_7315" ofType:@"MOV" inDirectory:@"Resource"];
-        [videoModel addVideoSource:path];
+//        path = [[NSBundle mainBundle] pathForResource:@"IMG_7315" ofType:@"MOV" inDirectory:@"Resource"];
+//        [videoModel addVideoSource:path];
         
         path = [[NSBundle mainBundle] pathForResource:@"IMG_7317" ofType:@"HEIC" inDirectory:@"Resource"];
-        [videoModel addImageSource:path];
+//        [videoModel addImageSource:path];
         
     } else if(self.exportType == BBZExportTypeImagesAndVideosWithTransition) {
-        path = [[NSBundle mainBundle] pathForResource:@"IMG_7306" ofType:@"HEIC" inDirectory:@"Resource"];
-        [videoModel addImageSource:path];
-        
-        path = [[NSBundle mainBundle] pathForResource:@"IMG_7305" ofType:@"HEIC" inDirectory:@"Resource"];
-        [videoModel addImageSource:path];
-        
-        path = [[NSBundle mainBundle] pathForResource:@"IMG_7311" ofType:@"HEIC" inDirectory:@"Resource"];
-        [videoModel addImageSource:path];
-        
-        path = [[NSBundle mainBundle] pathForResource:@"IMG_7316" ofType:@"MOV" inDirectory:@"Resource"];
         [videoModel addVideoSource:path];
-        
-        path = [[NSBundle mainBundle] pathForResource:@"IMG_7312" ofType:@"HEIC" inDirectory:@"Resource"];
-        [videoModel addImageSource:path];
-        
-        path = [[NSBundle mainBundle] pathForResource:@"IMG_7315" ofType:@"MOV" inDirectory:@"Resource"];
-        [videoModel addVideoSource:path];
-        
-        path = [[NSBundle mainBundle] pathForResource:@"IMG_7317" ofType:@"HEIC" inDirectory:@"Resource"];
-        [videoModel addImageSource:path];
-    } else if(self.exportType == BBZExportTypeImagesAndVideosWithBGM) {
         path = [[NSBundle mainBundle] pathForResource:@"IMG_7305" ofType:@"HEIC" inDirectory:@"Resource"];
         [videoModel addImageSource:path];
         
@@ -188,19 +169,34 @@
         path = [[NSBundle mainBundle] pathForResource:@"IMG_7311" ofType:@"HEIC" inDirectory:@"Resource"];
         [videoModel addImageSource:path];
         
-        path = [[NSBundle mainBundle] pathForResource:@"IMG_7316" ofType:@"MOV" inDirectory:@"Resource"];
+//        path = [[NSBundle mainBundle] pathForResource:@"IMG_7316" ofType:@"MOV" inDirectory:@"Resource"];
+//        [videoModel addVideoSource:path];
+//
+//        path = [[NSBundle mainBundle] pathForResource:@"IMG_7312" ofType:@"HEIC" inDirectory:@"Resource"];
+//        [videoModel addImageSource:path];
+//
+//        path = [[NSBundle mainBundle] pathForResource:@"IMG_7315" ofType:@"MOV" inDirectory:@"Resource"];
+//        [videoModel addVideoSource:path];
+//
+//        path = [[NSBundle mainBundle] pathForResource:@"IMG_7317" ofType:@"HEIC" inDirectory:@"Resource"];
+//        [videoModel addImageSource:path];
+    } else if(self.exportType == BBZExportTypeImagesAndVideosWithBGM) {
         [videoModel addVideoSource:path];
-        
-        path = [[NSBundle mainBundle] pathForResource:@"IMG_7312" ofType:@"HEIC" inDirectory:@"Resource"];
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7305" ofType:@"HEIC" inDirectory:@"Resource"];
         [videoModel addImageSource:path];
         
-        path = [[NSBundle mainBundle] pathForResource:@"IMG_7315" ofType:@"MOV" inDirectory:@"Resource"];
+        path = [[NSBundle mainBundle] pathForResource:@"douyin2" ofType:@"mp4" inDirectory:@"Resource"];
         [videoModel addVideoSource:path];
         
-        path = [[NSBundle mainBundle] pathForResource:@"IMG_7317" ofType:@"HEIC" inDirectory:@"Resource"];
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7306" ofType:@"HEIC" inDirectory:@"Resource"];
         [videoModel addImageSource:path];
+        
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7311" ofType:@"HEIC" inDirectory:@"Resource"];
+        [videoModel addImageSource:path];
+        
         
     } else if (self.exportType == BBZExportTypeImagesAndVideosWithBGMTranstion) {
+        [videoModel addVideoSource:path];
         path = [[NSBundle mainBundle] pathForResource:@"IMG_7305" ofType:@"HEIC" inDirectory:@"Resource"];
         [videoModel addImageSource:path];
         
@@ -213,41 +209,19 @@
         path = [[NSBundle mainBundle] pathForResource:@"IMG_7311" ofType:@"HEIC" inDirectory:@"Resource"];
         [videoModel addImageSource:path];
         
-        path = [[NSBundle mainBundle] pathForResource:@"IMG_7316" ofType:@"MOV" inDirectory:@"Resource"];
-        [videoModel addVideoSource:path];
-        
-        path = [[NSBundle mainBundle] pathForResource:@"IMG_7312" ofType:@"HEIC" inDirectory:@"Resource"];
-        [videoModel addImageSource:path];
-        
-        path = [[NSBundle mainBundle] pathForResource:@"IMG_7315" ofType:@"MOV" inDirectory:@"Resource"];
-        [videoModel addVideoSource:path];
-        
-        path = [[NSBundle mainBundle] pathForResource:@"IMG_7317" ofType:@"HEIC" inDirectory:@"Resource"];
-        [videoModel addImageSource:path];
     } else if(self.exportType == BBZExportTypeSpliceImagesAndVideosBGM){
         
         [videoModel addVideoSource:path];
-        
-        path = [[NSBundle mainBundle] pathForResource:@"IMG_7311" ofType:@"HEIC" inDirectory:@"Resource"];
-        [videoModel addImageSource:path];
-        
-        path = [[NSBundle mainBundle] pathForResource:@"IMG_7312" ofType:@"HEIC" inDirectory:@"Resource"];
-        [videoModel addImageSource:path];
-        
-        path = [[NSBundle mainBundle] pathForResource:@"IMG_7317" ofType:@"HEIC" inDirectory:@"Resource"];
-        [videoModel addImageSource:path];
-        
-        
-        path = [[NSBundle mainBundle] pathForResource:@"IMG_7315" ofType:@"MOV" inDirectory:@"Resource"];
-        [videoModel addVideoSource:path];
-        path = [[NSBundle mainBundle] pathForResource:@"IMG_7316" ofType:@"MOV" inDirectory:@"Resource"];
-        [videoModel addVideoSource:path];
-        
-        
         path = [[NSBundle mainBundle] pathForResource:@"IMG_7305" ofType:@"HEIC" inDirectory:@"Resource"];
         [videoModel addImageSource:path];
         
+        path = [[NSBundle mainBundle] pathForResource:@"douyin2" ofType:@"mp4" inDirectory:@"Resource"];
+        [videoModel addVideoSource:path];
+        
         path = [[NSBundle mainBundle] pathForResource:@"IMG_7306" ofType:@"HEIC" inDirectory:@"Resource"];
+        [videoModel addImageSource:path];
+        
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7311" ofType:@"HEIC" inDirectory:@"Resource"];
         [videoModel addImageSource:path];
         
     } else if(self.exportType == BBZExportTypeImagesBGMTransition){
@@ -262,9 +236,7 @@
         path = [[NSBundle mainBundle] pathForResource:@"IMG_7312" ofType:@"HEIC" inDirectory:@"Resource"];
         [videoModel addImageSource:path];
         
-      
     
-        
         path = [[NSBundle mainBundle] pathForResource:@"IMG_7305" ofType:@"HEIC" inDirectory:@"Resource"];
         [videoModel addImageSource:path];
         

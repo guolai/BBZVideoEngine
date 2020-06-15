@@ -24,6 +24,7 @@
         self.filePath = nil;
         CMTime sourceTimeDuration = [BBZVideoTools durationOfAsset:_avAsset timeRange:CMTimeRangeMake(kCMTimeZero, kCMTimePositiveInfinity)];
         NSTimeInterval duration = CMTimeGetSeconds(sourceTimeDuration);
+        duration = MIN(duration, 5);
         self.sourceTimeRange = CMTimeRangeMake(kCMTimeZero, CMTimeMake(duration * BBZVideoDurationScale, BBZVideoDurationScale)); ///针对某些特殊视频这样取时间区间还会有问题 后面再看要不要改吧
         self.playTimeRange = self.sourceTimeRange;
     }
