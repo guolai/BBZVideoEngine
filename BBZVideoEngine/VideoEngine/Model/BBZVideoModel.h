@@ -25,6 +25,8 @@
 @property (nonatomic, strong, readonly) NSString *videoResourceDir;
 @property (nonatomic, strong) BBZTransformItem *transform;
 
+@property (nonatomic, assign) CGFloat  builderDuraton;
+
 @property (nonatomic, strong) UIImage *bgImage;
 @property (nonatomic, strong) NSArray *maskImage;
 
@@ -43,6 +45,7 @@
 
 //timeline
 - (void)buildTimeLine;
+- (NSString *)debugSourceInfo;
 
 @end
 

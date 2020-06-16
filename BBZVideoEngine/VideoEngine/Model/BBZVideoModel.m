@@ -75,6 +75,25 @@
     return self.interAudioItems;
 }
 
+- (NSString *)debugSourceInfo {
+    NSMutableString *mutableString = [NSMutableString string];
+    NSUInteger imageCount = 0;
+    NSUInteger videoCount = 0;
+    for (BBZBaseAsset *baseAsset in self.interAssetItems) {
+        if(baseAsset.mediaType == BBZBaseAssetMediaTypeImage) {
+            imageCount++;
+        } else {
+            videoCount++;
+        }
+    }
+    
+    NSString *str = [NSString stringWithFormat:@"视频:%lu个,图片:%lu个,", (unsigned long)videoCount, imageCount];
+    [mutableString appendString:str];
+    str = [NSString stringWithFormat:@"音频:%lu个", self.audioItems.count];
+    [mutableString appendString:str];
+    return mutableString;
+}
+
 #pragma mark - Filter
 
 - (void)addFilterGroup:(NSString *)strDirectory {

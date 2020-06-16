@@ -15,6 +15,8 @@
 
 @interface BBZExportViewController ()
 @property (nonatomic, strong) UILabel *lblProgress;
+@property (nonatomic, strong) UILabel *lblInfo;
+@property (nonatomic, strong) UILabel *lblTime;
 @property (nonatomic, strong) UISwitch *switchBtn;
 //@property (nonatomic, strong) UISwitch *switchBtn;
 @property (nonatomic, strong) BBZExportTask *task;
@@ -47,6 +49,14 @@
     lbl.text = @"0%";
     self.lblProgress = lbl;
     
+    
+    lbl = [[UILabel alloc] initWithFrame:CGRectMake(100, 40, self.view.frame.size.width-100, 30)];
+    [self.view addSubview:lbl];
+    [lbl setTextColor:[UIColor orangeColor]];
+    [lbl setTextAlignment:NSTextAlignmentLeft];
+    lbl.text = @"";
+    self.lblTime = lbl;
+    
     self.switchBtn = [UISwitch new];
     self.switchBtn.frame = CGRectMake(20, 90, 40, 20);
     self.switchBtn.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
@@ -54,12 +64,20 @@
     self.switchBtn.tintColor = [UIColor clearColor];
     [self.view addSubview:self.switchBtn];
     
-    lbl = [[UILabel alloc] initWithFrame:CGRectMake(80, 90, 200, 30)];
+    lbl = [[UILabel alloc] initWithFrame:CGRectMake(80, 90, self.view.frame.size.width - 80, 30)];
     [self.view addSubview:lbl];
     [lbl setTextColor:[UIColor redColor]];
     [lbl setBackgroundColor:[UIColor whiteColor]];
-    [lbl setTextAlignment:NSTextAlignmentCenter];
-    lbl.text = @"加入背景，缩放0.8倍";
+    [lbl setTextAlignment:NSTextAlignmentLeft];
+    lbl.text = @"背景+缩放0.8倍+旋转45度";
+    
+    lbl = [[UILabel alloc] initWithFrame:CGRectMake(0, 140, self.view.frame.size.width, 100)];
+    [self.view addSubview:lbl];
+    lbl.numberOfLines = -1;
+    [lbl setTextColor:[UIColor orangeColor]];
+    [lbl setTextAlignment:NSTextAlignmentLeft];
+    lbl.text = @"";
+    self.lblInfo = lbl;
 }
 
 
@@ -251,7 +269,7 @@
     //    [videoModel addFilterGroup:path];
     
    
-  
+    
     NSString *tmpDir =  [NSString stringWithFormat:@"%@/tmp", videoModel.videoResourceDir];
     [NSFileManager removeFileIfExist:tmpDir];
     BBZExportTask *task = [BBZExportTask taskWithModel:videoModel];
@@ -266,8 +284,10 @@
         if (error)  {
             NSLog(@"视频保存Asset失败：%@",error);
         }
-        NSLog(@"视频保存 Asset cost time %f", [[NSDate date] timeIntervalSinceDate:date]);
+        NSTimeInterval costTime = [[NSDate date] timeIntervalSinceDate:date];
+        NSLog(@"视频保存 Asset cost time %f",costTime);
         dispatch_async(dispatch_get_main_queue(), ^{
+            strongSelf.lblTime.text = [NSString stringWithFormat:@"耗时：%.4f秒",costTime];
             strongSelf.lblProgress.text = [NSString stringWithFormat:@"100%%"];
         });
         if(sucess && 1) {
@@ -299,6 +319,7 @@
         });
     };
     [task start];
+    self.lblInfo.text = [NSString stringWithFormat:@"%@ \n资源总时长:%.2f秒",[videoModel debugSourceInfo], videoModel.builderDuraton];
 }
 
 - (void)beginSimpleExport {
@@ -334,9 +355,11 @@
         if (exporter.error)  {
             NSLog(@"视频保存Asset失败：%@", exporter.error);
         }
-        NSLog(@"视频保存 Asset cost time %f", [[NSDate date] timeIntervalSinceDate:date]);
+        NSTimeInterval costTime = [[NSDate date] timeIntervalSinceDate:date];
+        NSLog(@"视频保存 Asset cost time %f",costTime);
         __strong typeof(self) strongSelf = weakself;
         dispatch_async(dispatch_get_main_queue(), ^{
+            strongSelf.lblTime.text = [NSString stringWithFormat:@"耗时：%.4f秒",costTime];
             strongSelf.lblProgress.text = [NSString stringWithFormat:@"100%%"];
         });
         __block NSString *localIdentifier = nil;

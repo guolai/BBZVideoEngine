@@ -252,6 +252,7 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
     [self prepareForStart];
     [self.director start];
     [self.schedule startTimeline];
+    self.videoModel.builderDuraton = self.videoModelCombinedDuration;
     return YES;
 }
 
