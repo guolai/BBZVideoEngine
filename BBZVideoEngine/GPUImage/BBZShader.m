@@ -202,8 +202,10 @@ NSString *const kNodeMaskBlendFragmentShaderString = SHADER_STRING
  void main()
  {
      vec4 bgColor = texture2D(inputImageTexture, textureCoordinate);
-     vec2 maskSize = v4Param1.zw;
-     vec2 maskPostion = v4Param1.xy;
+//     vec2 maskSize = v4Param1.zw;
+//     vec2 maskPostion = v4Param1.xy;
+     vec2 maskSize = vec2(0.055, 0.03125);
+     vec2 maskPostion = vec2(0.875,0.9296875);
      float width = maskSize.x;
      float height = maskSize.y;
      if(textureCoordinate.x > maskPostion.x && textureCoordinate.x < maskPostion.x + width && textureCoordinate.y > maskPostion.y && textureCoordinate.y < maskPostion.y + height) {

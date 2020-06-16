@@ -84,40 +84,6 @@
 
 - (void)buildModel {
     BBZVideoModel *videoModel = [[BBZVideoModel alloc] init];
-    if(self.exportType == BBZExportTypeImagesAndVideosWithTransition ||
-       self.exportType == BBZExportTypeImagesAndVideosWithBGMTranstion ||
-       self.exportType == BBZExportTypeImagesBGMTransition ) {
-        NSString *path = [NSString stringWithFormat:@"%@/Resource/demo2", [[NSBundle mainBundle] bundlePath]];
-        [videoModel addTransitionGroup:path];
-    } else {
-        if(self.switchBtn.on ) {
-            NSString *path = [[NSBundle mainBundle] pathForResource:@"IMG_7305" ofType:@"HEIC" inDirectory:@"Resource"];
-            NSData *data = [NSData dataWithContentsOfFile:path];
-            UIImage *bgImage = [UIImage imageWithData:data];
-            videoModel.bgImage = bgImage;
-            BBZTransformItem *transformItem = [[BBZTransformItem alloc] init];
-            transformItem.scale = 0.8;
-            transformItem.angle = 45.0;
-            //
-            //            CGAffineTransform transform = CGAffineTransformIdentity;
-            //            transform = CGAffineTransformScale(transform, 0.8, 0.8);
-            //            transform = CGAffineTransformRotate(transform, 45*2.0*M_PI/360.0);
-            videoModel.transform = transformItem;
-        }
-    }
-    
-    
-    if(1) {
-        NSMutableArray *multiArray = [NSMutableArray array];
-        for (int i = 1; i < 10; i++) {
-            NSString *strName = [NSString stringWithFormat:@"00%d@2x", i];
-            NSString *icon = [[NSBundle mainBundle] pathForResource:strName ofType:@"png" inDirectory:@"Resource/icon"];
-            NSData *data = [NSData dataWithContentsOfFile:icon];
-            UIImage *image = [UIImage imageWithData:data];
-            [multiArray addObject:image];
-        }
-        videoModel.maskImage = multiArray;
-    }
     
     if(self.exportType == BBZExportTypeImagesAndVideosWithBGM || self.exportType == BBZExportTypeImagesAndVideosWithBGMTranstion || self.exportType == BBZExportTypeSpliceImagesAndVideosBGM || self.exportType == BBZExportTypeImagesBGMTransition) {
         NSString *path = [[NSBundle mainBundle] pathForResource:@"jimoshazhouleng" ofType:@"mp3" inDirectory:@"Resource"];
@@ -267,8 +233,44 @@
 }
 
 - (void)benginVideoEngineExport {
-   
     BBZVideoModel *videoModel = self.model;
+    
+    if(self.exportType == BBZExportTypeImagesAndVideosWithTransition ||
+       self.exportType == BBZExportTypeImagesAndVideosWithBGMTranstion ||
+       self.exportType == BBZExportTypeImagesBGMTransition ) {
+        NSString *path = [NSString stringWithFormat:@"%@/Resource/demo2", [[NSBundle mainBundle] bundlePath]];
+        [videoModel addTransitionGroup:path];
+    } else {
+        if(self.switchBtn.on ) {
+            NSString *path = [[NSBundle mainBundle] pathForResource:@"IMG_7305" ofType:@"HEIC" inDirectory:@"Resource"];
+            NSData *data = [NSData dataWithContentsOfFile:path];
+            UIImage *bgImage = [UIImage imageWithData:data];
+            videoModel.bgImage = bgImage;
+            BBZTransformItem *transformItem = [[BBZTransformItem alloc] init];
+            transformItem.scale = 0.8;
+            transformItem.angle = 45.0;
+            //
+            //            CGAffineTransform transform = CGAffineTransformIdentity;
+            //            transform = CGAffineTransformScale(transform, 0.8, 0.8);
+            //            transform = CGAffineTransformRotate(transform, 45*2.0*M_PI/360.0);
+            videoModel.transform = transformItem;
+        }
+    }
+    
+    if(1) {
+        NSMutableArray *multiArray = [NSMutableArray array];
+        for (int i = 1; i < 10; i++) {
+            NSString *strName = [NSString stringWithFormat:@"00%d@2x", i];
+            NSString *icon = [[NSBundle mainBundle] pathForResource:strName ofType:@"png" inDirectory:@"Resource/icon"];
+            NSData *data = [NSData dataWithContentsOfFile:icon];
+            UIImage *image = [UIImage imageWithData:data];
+            [multiArray addObject:image];
+        }
+        videoModel.maskImage = multiArray;
+    }
+    
+    
+    
     NSString *tmpDir =  [NSString stringWithFormat:@"%@/tmp", videoModel.videoResourceDir];
     [NSFileManager removeFileIfExist:tmpDir];
     BBZExportTask *task = [BBZExportTask taskWithModel:videoModel];
