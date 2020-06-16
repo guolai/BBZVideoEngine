@@ -19,6 +19,7 @@
 @property (nonatomic, strong) UILabel *lblTime;
 @property (nonatomic, strong) UISwitch *switchBtn;
 //@property (nonatomic, strong) UISwitch *switchBtn;
+@property (nonatomic, strong) BBZVideoModel *model;
 @property (nonatomic, strong) BBZExportTask *task;
 @property (nonatomic, strong) BBZAVAssetExportSession *exportSesstion;
 @end
@@ -78,26 +79,10 @@
     [lbl setTextAlignment:NSTextAlignmentLeft];
     lbl.text = @"";
     self.lblInfo = lbl;
+    [self buildModel];
 }
 
-
-- (void)btnPressed:(id)sender {
-    if (self.exportType == BBZExportTypeSingleVideoTransform) {
-        [self beginSimpleExport];
-    } else {
-        [self benginVideoEngineExport];
-    }
-}
-
-- (void)beginExport {
-    
-    
-}
-
-
-
-
-- (void)benginVideoEngineExport {
+- (void)buildModel {
     BBZVideoModel *videoModel = [[BBZVideoModel alloc] init];
     if(self.exportType == BBZExportTypeImagesAndVideosWithTransition ||
        self.exportType == BBZExportTypeImagesAndVideosWithBGMTranstion ||
@@ -113,10 +98,10 @@
             BBZTransformItem *transformItem = [[BBZTransformItem alloc] init];
             transformItem.scale = 0.8;
             transformItem.angle = 45.0;
-//
-//            CGAffineTransform transform = CGAffineTransformIdentity;
-//            transform = CGAffineTransformScale(transform, 0.8, 0.8);
-//            transform = CGAffineTransformRotate(transform, 45*2.0*M_PI/360.0);
+            //
+            //            CGAffineTransform transform = CGAffineTransformIdentity;
+            //            transform = CGAffineTransformScale(transform, 0.8, 0.8);
+            //            transform = CGAffineTransformRotate(transform, 45*2.0*M_PI/360.0);
             videoModel.transform = transformItem;
         }
     }
@@ -161,17 +146,17 @@
         path = [[NSBundle mainBundle] pathForResource:@"IMG_7311" ofType:@"HEIC" inDirectory:@"Resource"];
         [videoModel addImageSource:path];
         
-//        path = [[NSBundle mainBundle] pathForResource:@"IMG_7316" ofType:@"MOV" inDirectory:@"Resource"];
-//        [videoModel addVideoSource:path];
+        //        path = [[NSBundle mainBundle] pathForResource:@"IMG_7316" ofType:@"MOV" inDirectory:@"Resource"];
+        //        [videoModel addVideoSource:path];
         
-//        path = [[NSBundle mainBundle] pathForResource:@"IMG_7312" ofType:@"HEIC" inDirectory:@"Resource"];
-//        [videoModel addImageSource:path];
+        //        path = [[NSBundle mainBundle] pathForResource:@"IMG_7312" ofType:@"HEIC" inDirectory:@"Resource"];
+        //        [videoModel addImageSource:path];
         
-//        path = [[NSBundle mainBundle] pathForResource:@"IMG_7315" ofType:@"MOV" inDirectory:@"Resource"];
-//        [videoModel addVideoSource:path];
+        //        path = [[NSBundle mainBundle] pathForResource:@"IMG_7315" ofType:@"MOV" inDirectory:@"Resource"];
+        //        [videoModel addVideoSource:path];
         
         path = [[NSBundle mainBundle] pathForResource:@"IMG_7317" ofType:@"HEIC" inDirectory:@"Resource"];
-//        [videoModel addImageSource:path];
+        //        [videoModel addImageSource:path];
         
     } else if(self.exportType == BBZExportTypeImagesAndVideosWithTransition) {
         [videoModel addVideoSource:path];
@@ -187,17 +172,17 @@
         path = [[NSBundle mainBundle] pathForResource:@"IMG_7311" ofType:@"HEIC" inDirectory:@"Resource"];
         [videoModel addImageSource:path];
         
-//        path = [[NSBundle mainBundle] pathForResource:@"IMG_7316" ofType:@"MOV" inDirectory:@"Resource"];
-//        [videoModel addVideoSource:path];
-//
-//        path = [[NSBundle mainBundle] pathForResource:@"IMG_7312" ofType:@"HEIC" inDirectory:@"Resource"];
-//        [videoModel addImageSource:path];
-//
-//        path = [[NSBundle mainBundle] pathForResource:@"IMG_7315" ofType:@"MOV" inDirectory:@"Resource"];
-//        [videoModel addVideoSource:path];
-//
-//        path = [[NSBundle mainBundle] pathForResource:@"IMG_7317" ofType:@"HEIC" inDirectory:@"Resource"];
-//        [videoModel addImageSource:path];
+        //        path = [[NSBundle mainBundle] pathForResource:@"IMG_7316" ofType:@"MOV" inDirectory:@"Resource"];
+        //        [videoModel addVideoSource:path];
+        //
+        //        path = [[NSBundle mainBundle] pathForResource:@"IMG_7312" ofType:@"HEIC" inDirectory:@"Resource"];
+        //        [videoModel addImageSource:path];
+        //
+        //        path = [[NSBundle mainBundle] pathForResource:@"IMG_7315" ofType:@"MOV" inDirectory:@"Resource"];
+        //        [videoModel addVideoSource:path];
+        //
+        //        path = [[NSBundle mainBundle] pathForResource:@"IMG_7317" ofType:@"HEIC" inDirectory:@"Resource"];
+        //        [videoModel addImageSource:path];
     } else if(self.exportType == BBZExportTypeImagesAndVideosWithBGM) {
         [videoModel addVideoSource:path];
         path = [[NSBundle mainBundle] pathForResource:@"IMG_7305" ofType:@"HEIC" inDirectory:@"Resource"];
@@ -243,7 +228,7 @@
         [videoModel addImageSource:path];
         
     } else if(self.exportType == BBZExportTypeImagesBGMTransition){
-
+        
         
         path = [[NSBundle mainBundle] pathForResource:@"IMG_7311" ofType:@"HEIC" inDirectory:@"Resource"];
         [videoModel addImageSource:path];
@@ -254,7 +239,7 @@
         path = [[NSBundle mainBundle] pathForResource:@"IMG_7312" ofType:@"HEIC" inDirectory:@"Resource"];
         [videoModel addImageSource:path];
         
-    
+        
         path = [[NSBundle mainBundle] pathForResource:@"IMG_7305" ofType:@"HEIC" inDirectory:@"Resource"];
         [videoModel addImageSource:path];
         
@@ -268,8 +253,22 @@
     //    [videoModel addTransitionGroup:path];
     //    [videoModel addFilterGroup:path];
     
+    self.model = videoModel;
+    self.lblInfo.text = [NSString stringWithFormat:@"%@",[videoModel debugSourceInfo]];
+}
+
+
+- (void)btnPressed:(id)sender {
+    if (self.exportType == BBZExportTypeSingleVideoTransform) {
+        [self beginSimpleExport];
+    } else {
+        [self benginVideoEngineExport];
+    }
+}
+
+- (void)benginVideoEngineExport {
    
-    
+    BBZVideoModel *videoModel = self.model;
     NSString *tmpDir =  [NSString stringWithFormat:@"%@/tmp", videoModel.videoResourceDir];
     [NSFileManager removeFileIfExist:tmpDir];
     BBZExportTask *task = [BBZExportTask taskWithModel:videoModel];
