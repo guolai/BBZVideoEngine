@@ -41,6 +41,7 @@
 
 - (void)willBeginRender;
 - (void)willEndRender;
+- (void)bindInputParamValues;
 
 
 @end

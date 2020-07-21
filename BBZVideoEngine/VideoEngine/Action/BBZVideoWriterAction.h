@@ -14,7 +14,9 @@
 @property (nonatomic, weak) id<BBZVideoWriteControl> writerControl;
 
 
-- (instancetype)initWithVideoSetting:(BBZEngineSetting *)videoSetting outputFile:(NSString *)strOutputFile;
+- (instancetype)initWithVideoSetting:(BBZEngineSetting *)videoSetting
+                          outputFile:(NSString *)strOutputFile
+                                node:(BBZNode *)node;
 
 @end
 

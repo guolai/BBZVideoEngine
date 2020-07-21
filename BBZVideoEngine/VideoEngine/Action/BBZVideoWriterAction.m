@@ -11,7 +11,10 @@
 #import "BBZQueueManager.h"
 #import <Foundation/NSFileManager.h>
 #import "BBZVideoOutputFilter.h"
-
+#import "BBZFilterMixer.h"
+#import "BBZShader.h"
+#import "GPUImageFramebuffer+BBZ.h"
+#import "BBZNodeAnimationParams+property.h"
 
 
 @interface BBZVideoWriterAction () <BBZVideoOutputFilterDelegate, BBZVideoWriteControl>
@@ -21,17 +24,28 @@
 @property (nonatomic, copy) NSDictionary *videoSettings;
 @property (nonatomic, copy) NSDictionary *audioSettings;
 @property (nonatomic, strong) BBZVideoOutputFilter *outputFilter;
+@property (nonatomic, strong) NSMutableArray *maskImages;
 @end
 
 @implementation BBZVideoWriterAction
 
-- (instancetype)initWithVideoSetting:(BBZEngineSetting *)videoSetting outputFile:(NSString *)strOutputFile {
-    if(self = [super init]) {
+- (void)dealloc {
+    [self.outputFilter removeAllCacheFrameBuffer];
+    self.outputFilter = nil;
+    self.maskImages = nil;
+}
+
+
+- (instancetype)initWithVideoSetting:(BBZEngineSetting *)videoSetting
+                          outputFile:(NSString *)strOutputFile
+                                node:(BBZNode *)node{
+    if(self = [super initWithNode:node]) {
         self.videoSettings = videoSetting.videoOutputSettings;
         self.audioSettings = videoSetting.audioOutputSettings;
         self.strOutputFile = strOutputFile;
-        self.outputFilter = [[BBZVideoOutputFilter alloc] init];
-        self.outputFilter.delegate = self;
+        self.maskImages = [NSMutableArray  array];
+        [self createImageFilter];
+ 
     }
     return self;
 }
@@ -67,20 +81,61 @@
 
 - (void)updateWithTime:(CMTime)time {
     self.updateTime = time;
+    if(!self.node) {
+        return;
+    }
+    NSTimeInterval relativeTime = [self relativeTimeFrom:time];
+    BBZNodeAnimationParams *params = [self.node paramsAtTime:relativeTime];
+    if(!params) {
+        if([self.node.name isEqualToString:@"blendimage"]) {
+            NSAssert(false, @"error");
+        }
+        return;
+    }
+    if(!self.node.name) {
+        NSAssert(false, @"error");
+        return;
+    }
+    if([self.node.name isEqualToString:@"blendimage"]) {
+        
+        if(self.node.images.count > 0 && self.maskImages.count == 0) {
+            for (UIImage *image in self.node.images) {
+                GPUImageFramebuffer *framebuffer = [GPUImageFramebuffer BBZ_frameBufferWithImage2:image.CGImage];
+                [self.maskImages addObject:framebuffer];
+            }
+            CGRect rect = [params frame];
+            runSynchronouslyOnVideoProcessingQueue(^{
+                self.outputFilter.vector4ParamValue1 = (GPUVector4){rect.origin.x/self.renderSize.width, rect.origin.y/self.renderSize.height, rect.size.width/self.renderSize.width, rect.size.height/self.renderSize.height};
+            });
+        }
+    } else {
+//        runAsynchronouslyOnVideoProcessingQueue(^{
+//            self.multiFilter.vector4ParamValue1 =(GPUVector4){params.param1, params.param2, params.param3, params.param4};
+//        });
+        NSAssert(false, @"error");
+    }
 }
 
 - (void)newFrameAtTime:(CMTime)time {
-    if(!self.hasAudioTrack) {
-        return;
-    }
-//    runAsynchronouslyOnVideoProcessingQueue(^{
-        if(self.inputAudioProtocol) {
-            BBZInputAudioParam *inputAudio = [self.inputAudioProtocol inputAudioAtTime:time];
-            if(inputAudio.sampleBuffer) {
-                [self.writer writeAudioFrameBuffer:inputAudio.sampleBuffer];
+    runAsynchronouslyOnVideoProcessingQueue(^{
+        if(self.maskImages.count > 0) {
+            [self.outputFilter removeAllCacheFrameBuffer];
+            NSInteger index = ((time.value/BBZScheduleTimeScale) * 100)%self.maskImages.count;
+            [self.outputFilter addFrameBuffer:[self.maskImages objectAtIndex:index]];
+            BBZINFO(@" currentTime blendimage = %.4f", CMTimeGetSeconds(time));
+        }
+        else {
+            if([self.node.name isEqualToString:@"blendimage"]) {
+                NSAssert(false, @"error");
             }
         }
-//    });
+    });
+    if(self.hasAudioTrack && self.inputAudioProtocol) {
+        BBZInputAudioParam *inputAudio = [self.inputAudioProtocol inputAudioAtTime:time];
+        if(inputAudio.sampleBuffer) {
+            [self.writer writeAudioFrameBuffer:inputAudio.sampleBuffer];
+        }
+    }
 }
 
 - (void)lock {
@@ -93,6 +148,7 @@
             }
             [self buildWriter];
             [self.writer startWriting];
+            self.outputFilter.videoPixelBufferAdaptor = self.writer.videoPixelBufferAdaptor;
         }
 //    });
    
@@ -139,6 +195,10 @@
     [outputFramebuffer unlock];
 }
 
+- (void)didDrawPixelBuffer:(CVPixelBufferRef )pixelBuffer time:(CMTime)time {
+    [self.writer writeSyncVideoPixelBuffer:pixelBuffer withPresentationTime:time];
+}
+
 
 - (void)didWriteVideoFrame {
     if([self.writerControl respondsToSelector:@selector(didWriteVideoFrame)]) {
@@ -149,6 +209,19 @@
     if([self.writerControl respondsToSelector:@selector(didWriteAudioFrame)]) {
         [self.writerControl didWriteAudioFrame];
     }
+}
+
+
+#pragma mark - Filter
+
+- (void)createImageFilter {
+    if(self.node) {
+        BBZFilterMixer *mixer = [BBZFilterMixer filterMixerWithNodes:@[self.node]];
+        self.outputFilter = [[BBZVideoOutputFilter alloc] initWithVertexShaderFromString:mixer.vShaderString fragmentShaderFromString:mixer.fShaderString];
+    } else {
+        self.outputFilter = [[BBZVideoOutputFilter alloc] initWithVertexShaderFromString:[BBZShader vertextShader] fragmentShaderFromString:[BBZShader fragmentPassthroughShader]];
+    }
+    self.outputFilter.delegate = self;
 }
 
 - (void)removeConnects {

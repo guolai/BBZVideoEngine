@@ -13,7 +13,7 @@
 @interface BBZAssetWriter : NSObject
 @property (nonatomic, copy) NSDictionary *videoOutputSettings;
 @property (nonatomic, copy) NSDictionary *audioOutputSettings;
-
+@property (nonatomic, strong, readonly) AVAssetWriterInputPixelBufferAdaptor *videoPixelBufferAdaptor;
 @property (readwrite, nonatomic) BOOL hasAudioTrack;
 //@property (readwrite, nonatomic) BOOL shouldPassthroughAudio;
 @property (readwrite, nonatomic) BOOL shouldInvalidateAudioSampleWhenDone;

@@ -8,6 +8,7 @@
 
 #import "BBZOutputFilterLayer.h"
 #import "BBZVideoWriterAction.h"
+#import "BBZNode+Local.h"
 
 @interface BBZOutputFilterLayer ()<BBZVideoWriteControl>
 
@@ -23,10 +24,18 @@
     builder.groupIndex = 0;
     NSMutableArray *retArray = [NSMutableArray array];
     if(self.context.scheduleMode == BBZEngineScheduleModeExport) {
-        BBZVideoWriterAction *action = [[BBZVideoWriterAction alloc] initWithVideoSetting:self.context.videoSettings outputFile:self.outputFile];
+        BBZNode *node = nil;
+        if(self.model.maskImage) {
+            node = [BBZNode createLocalNode:BBZNodeBlendImage duration:inputBuilder.startTime];
+            [node buildBlendFrame:CGRectMake(self.context.renderSize.width - 40.0 - 50.0, self.context.renderSize.height - 40.0 - 50.0, 40.0, 40.0)];
+            node.images = self.model.maskImage;
+        }
+        
+        BBZVideoWriterAction *action = [[BBZVideoWriterAction alloc] initWithVideoSetting:self.context.videoSettings outputFile:self.outputFile node:node];
         action.writerControl = self;
         action.duration = inputBuilder.startTime;
-        action.startTime = builder.startTime;
+        action.startTime = 0;
+        action.renderSize = self.context.renderSize;
         action.order = builder.groupIndex;
         builder.groupIndex++;
         builder.assetIndex++;

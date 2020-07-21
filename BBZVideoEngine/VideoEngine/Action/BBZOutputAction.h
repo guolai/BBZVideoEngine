@@ -21,6 +21,7 @@
 @property (nonatomic, weak) id<BBZInputAudioProtocol> inputAudioProtocol;
 @property (nonatomic, copy) BBZExportCompletionBlock completeBlock;
 @property (nonatomic, assign) BOOL hasAudioTrack;
+@property (nonatomic, assign) CGSize renderSize;
 - (void)didReachEndTime;
 
 //@property (nonatomic, strong, readonly) GPUImageFilter *filter;

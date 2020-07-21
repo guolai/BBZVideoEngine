@@ -197,12 +197,29 @@
     glBindTexture(GL_TEXTURE_2D, [firstInputFramebuffer texture]);
     glUniform1i(filterInputTextureUniform, 2);
     
+    [self bindInputParamValues];
+    
+    glVertexAttribPointer(filterPositionAttribute, 2, GL_FLOAT, 0, 0, [self adjustVertices:vertices]);
+    glVertexAttribPointer(filterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, textureCoordinates);
+    
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    
+    [firstInputFramebuffer unlock];
+    
+    [self willEndRender];
+    
+    if (usingNextFrameForImageCapture) {
+        dispatch_semaphore_signal(imageCaptureSemaphore);
+    }
+}
+
+- (void)bindInputParamValues {
     NSInteger uniformIndex = 1;
     GLint textureIndex = 1;
     for (GPUImageFramebuffer *fb in self.frameBufferArray) {
-        glActiveTexture(GL_TEXTURE2 + textureIndex);
+        glActiveTexture(GL_TEXTURE3 + textureIndex);
         glBindTexture(GL_TEXTURE_2D, [fb texture]);
-        glUniform1i(_uniformTextures[uniformIndex], 2 + textureIndex);
+        glUniform1i(_uniformTextures[uniformIndex], 3 + textureIndex);
         uniformIndex++;
         textureIndex++;
     }
@@ -224,19 +241,8 @@
     if(_uniformV4[1] >= 0) {
         glUniform4fv(_uniformV4[1], 1, (GLfloat *)&_vector4ParamValue2);
     }
-    glVertexAttribPointer(filterPositionAttribute, 2, GL_FLOAT, 0, 0, [self adjustVertices:vertices]);
-    glVertexAttribPointer(filterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, textureCoordinates);
-    
-    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-    glFlush();
-    [firstInputFramebuffer unlock];
-    
-    [self willEndRender];
-    
-    if (usingNextFrameForImageCapture) {
-        dispatch_semaphore_signal(imageCaptureSemaphore);
-    }
 }
+
 
 - (void)removeAllCacheFrameBuffer {
     runSynchronouslyOnVideoProcessingQueue(^{
