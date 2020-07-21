@@ -24,9 +24,8 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
     BBZFilterLayerTypeTransition = 2,//转场
     BBZFilterLayerTypeAudio = 1,//音频
     BBZFilterLayerTypeEffect = 3,//特效
-    BBZFilterLayerTypeMask = 4,//水印
-    BBZFilterLayerTypeOutput = 5,//输出
-    BBZFilterLayerTypeMax = 6,
+    BBZFilterLayerTypeOutput = 4,//输出
+    BBZFilterLayerTypeMax = 5,
 };
 
 
@@ -89,8 +88,8 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
     BBZEffetFilterLayer *effectLayer = [[BBZEffetFilterLayer alloc] initWithModel:self.videoModel context:self.context];
     self.filterLayers[@(BBZFilterLayerTypeEffect)] = effectLayer;
     
-    BBZMaskFilterLayer *maskLayer = [[BBZMaskFilterLayer alloc] initWithModel:self.videoModel context:self.context];
-    self.filterLayers[@(BBZFilterLayerTypeMask)] = maskLayer;
+//    BBZMaskFilterLayer *maskLayer = [[BBZMaskFilterLayer alloc] initWithModel:self.videoModel context:self.context];
+//    self.filterLayers[@(BBZFilterLayerTypeMask)] = maskLayer;
     
     BBZOutputFilterLayer *outputLayer = [[BBZOutputFilterLayer alloc] initWithModel:self.videoModel context:self.context];
     self.filterLayers[@(BBZFilterLayerTypeOutput)] = outputLayer;
