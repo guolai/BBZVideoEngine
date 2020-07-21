@@ -28,6 +28,7 @@
     [self.array addObject:@"相片+视频+音乐+转场 合成"];
     [self.array addObject:@"拼接(相片/视频)+音乐+转场 合成"];
     [self.array addObject:@"相片+音乐+转场 合成"];
+    [self.array addObject:@"相片 合成"];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {

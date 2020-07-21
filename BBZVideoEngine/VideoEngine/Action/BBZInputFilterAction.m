@@ -106,7 +106,7 @@
 //}
 
 - (void)processAVSourceAtTime:(CMTime)time {
-    runSynchronouslyOnVideoProcessingQueue(^{
+    runAsynchronouslyOnVideoProcessingQueue(^{
         [self.videoMultiFilter removeAllCacheFrameBuffer];
         if(self.firstInputSource) {
             BBZInputSourceParam *outputParam = [self.firstInputSource inputSourceAtTime:time];

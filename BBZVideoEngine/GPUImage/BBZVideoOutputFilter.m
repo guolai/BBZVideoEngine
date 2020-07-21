@@ -11,6 +11,7 @@
 @interface BBZVideoOutputFilter ()
 @property (nonatomic, assign) CMTime frameTime;
 
+
 @end
 
 @implementation BBZVideoOutputFilter
@@ -59,7 +60,7 @@
         [self.delegate didDrawFrameBuffer:outputFramebuffer time:self.frameTime];
     }
     [outputFramebuffer unlock];
-    outputFramebuffer = nil;
+//    outputFramebuffer = nil;
     
 }
 

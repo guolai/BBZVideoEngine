@@ -107,15 +107,16 @@
         BBZNodeAnimationParams *params = [self.node paramsAtTime:relativeTime];
         if(!params) {
             if([self.node.name isEqualToString:@"blendimage"]) {
-                NSLog(@"sfa");
+                NSAssert(false, @"error");
             }
             return;
         }
         if(!self.node.name) {
+            NSAssert(false, @"error");
             return;
         }
         if([self.node.name isEqualToString:@"blendimage"]) {
-            BBZINFO(@" currentTime blendimage = %.4f", CMTimeGetSeconds(time));
+          
             if(self.node.images.count > 0 && self.maskImages.count == 0) {
                 for (UIImage *image in self.node.images) {
                     GPUImageFramebuffer *framebuffer = [GPUImageFramebuffer BBZ_frameBufferWithImage2:image.CGImage];
@@ -146,6 +147,12 @@
             [self.multiFilter removeAllCacheFrameBuffer];
             NSInteger index = ((time.value/BBZScheduleTimeScale) * 100)%self.maskImages.count;
             [self.multiFilter addFrameBuffer:[self.maskImages objectAtIndex:index]];
+            BBZINFO(@" currentTime blendimage = %.4f", CMTimeGetSeconds(time));
+        }
+        else {
+            if([self.node.name isEqualToString:@"blendimage"]) {
+                NSAssert(false, @"error");
+            }
         }
     });
 }

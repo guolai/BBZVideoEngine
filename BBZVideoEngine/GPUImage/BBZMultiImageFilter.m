@@ -20,6 +20,10 @@
 
 @implementation BBZMultiImageFilter
 
+- (void)dealloc {
+    outputFramebuffer = nil;
+}
+
 - (id)initWithVertexShaderFromString:(NSString *)vertexShaderString fragmentShaderFromString:(NSString *)fragmentShaderString {
     if (!(self = [super initWithVertexShaderFromString:vertexShaderString fragmentShaderFromString:fragmentShaderString])) {
         return nil;
@@ -32,6 +36,8 @@
     _shouldClearBackGround = NO;
     _fenceCount = 1;
     runSynchronouslyOnVideoProcessingQueue(^{
+        BBZINFO(@"V:%@", vertexShaderString);
+        BBZINFO(@"F:%@", fragmentShaderString);
         [self resetFence];
         [GPUImageContext useImageProcessingContext];
         self->_uniformTextures[0] = self->filterInputTextureUniform;
@@ -39,31 +45,31 @@
             NSString *uniformName = [NSString stringWithFormat:@"inputImageTexture%d", i+1];
             GLint uniformTexture = [self->filterProgram uniformIndex:uniformName];
             self->_uniformTextures[i] = uniformTexture;
-            NSLog(@"bob -- _uniformTextures %d :%d, %@", i, uniformTexture, uniformName);
+            BBZINFO(@"bob -- _uniformTextures %d :%d, %@", i, uniformTexture, uniformName);
         }
         {
             NSString *uniformName  = @"matParam";
             GLint uniformIndex = [self->filterProgram uniformIndex:uniformName];
             self->_uniformMat33 = uniformIndex;
-            NSLog(@"bob -- _uniformMat33 :%d", uniformIndex);
+            BBZINFO(@"bob -- _uniformMat33 :%d", uniformIndex);
         }
         {
             NSString *uniformName  = @"matParam441";
             GLint uniformIndex = [self->filterProgram uniformIndex:uniformName];
             self->_uniformMat441 = uniformIndex;
-            NSLog(@"bob -- _uniformMat441 :%d", uniformIndex);
+            BBZINFO(@"bob -- _uniformMat441 :%d", uniformIndex);
             
             uniformName  = @"matParam442";
             uniformIndex = [self->filterProgram uniformIndex:uniformName];
             self->_uniformMat442 = uniformIndex;
-            NSLog(@"bob -- _uniformMat442 :%d", uniformIndex);
+            BBZINFO(@"bob -- _uniformMat442 :%d", uniformIndex);
         }
         
         for (int i = 0; i < 2; i++) {
             NSString *uniformName = [NSString stringWithFormat:@"v4Param%d", i+1];
             GLint uniformTexture = [self->filterProgram uniformIndex:uniformName];
             self->_uniformV4[i] = uniformTexture;
-            NSLog(@"bob -- _uniformV4 %d :%d", i, uniformTexture);
+            BBZINFO(@"bob -- _uniformV4 %d :%d", i, uniformTexture);
         }
     });
     return self;
@@ -201,7 +207,7 @@
         textureIndex++;
     }
     if([self.debugName isEqualToString:@"blendimage"] && self.frameBufferArray.count == 0) {
-        NSLog(@"saflasdjfal");
+        BBZLOG();
     }
     if(_uniformMat33 >= 0) {
         glUniformMatrix3fv(_uniformMat33, 1, GL_FALSE, (GLfloat *)(&_mat33ParamValue));
@@ -311,7 +317,7 @@
         self.mainframeBuffer = nil;
         [self resetFence];
     } else {
-        NSLog(@"sdfas");
+        BBZLOG();
     }
 }
 

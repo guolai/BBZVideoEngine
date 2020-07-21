@@ -132,10 +132,11 @@
 
 #pragma mark - Delegate
 - (void)didDrawFrameBuffer:(GPUImageFramebuffer *)outputFramebuffer time:(CMTime)time{
-//    runSynchronouslyOnVideoProcessingQueue(^{
-        [self.writer writeSyncVideoPixelBuffer:outputFramebuffer.pixelBuffer withPresentationTime:time];
-//    });
-    
+    [outputFramebuffer lock];
+    CVPixelBufferLockBaseAddress(outputFramebuffer.pixelBuffer, 0);
+    [self.writer writeSyncVideoPixelBuffer:outputFramebuffer.pixelBuffer withPresentationTime:time];
+    CVPixelBufferUnlockBaseAddress(outputFramebuffer.pixelBuffer, 0);
+    [outputFramebuffer unlock];
 }
 
 
