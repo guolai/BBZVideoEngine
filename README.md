@@ -24,3 +24,4 @@
 1. 滤镜链树状资源时间线排布资源管理 
 1. 滤镜链优化管理
 
+<div style="float: right"><img src="https://git.garena.com/haibo.zhu/bbzvideoengine/blob/master/class.png" /></div>
