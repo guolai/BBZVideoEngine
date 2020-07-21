@@ -24,4 +24,5 @@
 1. 滤镜链树状资源时间线排布资源管理 
 1. 滤镜链优化管理
 
-<div style="float: right"><img src="https://github.com/guolai/GPUVideoWriter-bg-yuvrotate-mask/blob/master/Default-568h%402x.png" /></div>
+## 类结构概览
+![Image text](https://github.com/guolai/testCoreData/blob/master/class.jpg)
