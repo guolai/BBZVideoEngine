@@ -139,6 +139,7 @@
 }
 
 - (void)processVideoPixelBuffer:(CVPixelBufferRef)pixelBuffer withPresentationTime:(CMTime)frameTime {
+    CVPixelBufferLockBaseAddress(pixelBuffer, 0);
     if (CMTIME_IS_INVALID(self.startTime)) {
         if (self.assetWriter.status != AVAssetWriterStatusWriting) {
             [self.assetWriter startWriting];
@@ -150,8 +151,8 @@
     BOOL bShouldSkip = NO;
     NSInteger retryCount = 0;
     while (self.videoInput.readyForMoreMediaData == NO && !self.videoEncodingIsFinished && retryCount < 4) {
-        if (self.assetWriter.status != AVAssetWriterStatusWriting)
-        {
+        if (self.assetWriter.status != AVAssetWriterStatusWriting) {
+            CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
             return;
         }
         retryCount++;
@@ -167,6 +168,7 @@
     if (self.assetWriter.status == AVAssetWriterStatusWriting && !bShouldSkip) {
         if (CMTIME_IS_NUMERIC(frameTime) == NO)  {
             BBZERROR(@" write video frame with invalid presentation time");
+            CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
             return;
         }
         
@@ -179,6 +181,8 @@
     }else {
         BBZINFO(@"status :%d", self.assetWriter.status);
     }
+    CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
+    [[GPUImageFramebufferManager shareInstance] printAllLiveObject];
     if(!bAdd && self.assetWriter.status == AVAssetWriterStatusFailed) {
         if (self.completionBlock) {
             self.completionBlock(NO, self.assetWriter.error);

@@ -22,7 +22,10 @@
 @implementation BBZVideoOutputFilter
 
 - (void)dealloc {
-    [self destroyDataFBO];
+    runSynchronouslyOnVideoProcessingQueue(^{
+        [self destroyDataFBO];
+    });
+   
 }
 
 - (instancetype)initWithVertexShaderFromString:(NSString *)vertexShaderString fragmentShaderFromString:(NSString *)fragmentShaderString {
@@ -79,34 +82,23 @@
 }
 
 - (void)destroyDataFBO {
-    runSynchronouslyOnVideoProcessingQueue(^{
-        [GPUImageContext useImageProcessingContext];
-        
-        if (_movieFramebuffer)
-        {
-            glDeleteFramebuffers(1, &_movieFramebuffer);
-            _movieFramebuffer = 0;
+    [GPUImageContext useImageProcessingContext];
+    if (_movieFramebuffer) {
+        glDeleteFramebuffers(1, &_movieFramebuffer);
+        _movieFramebuffer = 0;
+    }
+    if (_movieRenderbuffer) {
+        glDeleteRenderbuffers(1, &_movieRenderbuffer);
+        _movieRenderbuffer = 0;
+    }
+    if ([GPUImageContext supportsFastTextureUpload]) {
+        if (_renderTexture) {
+            CFRelease((_renderTexture));
         }
-        
-        if (_movieRenderbuffer)
-        {
-            glDeleteRenderbuffers(1, &_movieRenderbuffer);
-            _movieRenderbuffer = 0;
+        if (_renderTarget) {
+            CVPixelBufferRelease(_renderTarget);
         }
-        
-        if ([GPUImageContext supportsFastTextureUpload])
-        {
-            if (_renderTexture)
-            {
-                CFRelease((_renderTexture));
-            }
-            if (_renderTarget)
-            {
-                CVPixelBufferRelease(_renderTarget);
-            }
-            
-        }
-    });
+    }
 }
 
 - (void)setFilterFBO {
@@ -167,18 +159,13 @@
     glFinish();
     [firstInputFramebuffer unlock];
 
-    [self willEndRender];
-
     if (usingNextFrameForImageCapture) {
         dispatch_semaphore_signal(imageCaptureSemaphore);
     }
     CVPixelBufferRef pixel_buffer = _renderTarget;
-
-    CVPixelBufferLockBaseAddress(pixel_buffer, 0);
     if([self.delegate respondsToSelector:@selector(didDrawPixelBuffer:time:)]) {
         [self.delegate didDrawPixelBuffer:pixel_buffer time:self.frameTime];
     }
-    CVPixelBufferUnlockBaseAddress(pixel_buffer, 0);
 }
 
 @end

@@ -321,6 +321,7 @@
                                 });
              }];
         }
+        strongSelf.task = nil;
     };
     task.progressBlock = ^(CGFloat progress) {
         __strong typeof(self) strongSelf = weakSelf;

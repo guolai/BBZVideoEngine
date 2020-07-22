@@ -183,16 +183,13 @@
 - (void)didReachEndTime {
     runSynchronouslyOnVideoProcessingQueue(^{
         [self.writer finishWriting];
+        [[GPUImageContext sharedFramebufferCache] purgeAllUnassignedFramebuffers];
     });
 }
 
 #pragma mark - Delegate
 - (void)didDrawFrameBuffer:(GPUImageFramebuffer *)outputFramebuffer time:(CMTime)time{
-    [outputFramebuffer lock];
-    CVPixelBufferLockBaseAddress(outputFramebuffer.pixelBuffer, 0);
     [self.writer writeSyncVideoPixelBuffer:outputFramebuffer.pixelBuffer withPresentationTime:time];
-    CVPixelBufferUnlockBaseAddress(outputFramebuffer.pixelBuffer, 0);
-    [outputFramebuffer unlock];
 }
 
 - (void)didDrawPixelBuffer:(CVPixelBufferRef )pixelBuffer time:(CMTime)time {
