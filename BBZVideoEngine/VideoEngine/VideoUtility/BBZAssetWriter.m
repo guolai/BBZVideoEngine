@@ -35,6 +35,17 @@
 
 @implementation BBZAssetWriter
 
+- (void)dealloc {
+    [self destoryPixelBufferPoolCache];
+    self.videoPixelBufferAdaptor = nil;
+}
+
+- (void)destoryPixelBufferPoolCache {
+    if(self.videoPixelBufferAdaptor) {
+        CVPixelBufferPoolFlush([self.videoPixelBufferAdaptor pixelBufferPool], kCVPixelBufferPoolFlushExcessBuffers);
+    }
+    
+}
 
 - (instancetype)initWithOutputFile:(NSString *)strFilePath size:(CGSize)videoSize fileType:(NSString *)fileType {
     if(self = [super init]) {
@@ -280,6 +291,7 @@
 - (void)finishWriting {
 //    dispatch_async(self.inputQueue, ^{
         [self asyncfinishWriting];
+    [self destoryPixelBufferPoolCache];
 //    });
 }
 
