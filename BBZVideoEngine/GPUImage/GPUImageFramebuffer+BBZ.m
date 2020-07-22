@@ -103,6 +103,7 @@
 + (GPUImageFramebuffer *)BBZ_frameBufferWithImage2:(CGImageRef)inputImage {
     CVPixelBufferRef pixelBuffer = [GPUImageFramebuffer BBZ_pixelBufferWithCGImage:inputImage];
     GPUImageFramebuffer *frameBuffer = [GPUImageFramebuffer BBZ_frameBufferWithCVPixelBuffer:pixelBuffer];
+    CFRelease(pixelBuffer);
     return frameBuffer;
 }
 
