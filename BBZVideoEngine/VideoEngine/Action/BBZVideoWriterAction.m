@@ -33,6 +33,8 @@
     [self.outputFilter removeAllCacheFrameBuffer];
     self.outputFilter = nil;
     self.maskImages = nil;
+    [self.writer cancleWriting];
+    self.writer = nil;
 }
 
 
@@ -156,10 +158,6 @@
 }
 
 - (void)destroySomething{
-//    runAsynchronouslyOnVideoProcessingQueue(^{
-        [self.writer cancleWriting];
-        self.writer = nil;
-//    });
    
 }
 
@@ -184,6 +182,8 @@
     runSynchronouslyOnVideoProcessingQueue(^{
         [self.writer finishWriting];
         [[GPUImageContext sharedFramebufferCache] purgeAllUnassignedFramebuffers];
+        BBZLOG();
+        [[GPUImageFramebufferManager shareInstance] printAllLiveObject];
     });
 }
 

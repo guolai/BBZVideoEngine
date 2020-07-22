@@ -16,6 +16,7 @@
 @synthesize asset = _asset;
 
 
+
 - (instancetype)init {
     if(self = [super init]) {
         _scale = 1.0;

@@ -317,11 +317,11 @@
                                     }
                                     
                                     NSLog(@"视频保存本地成功");
-                                    
+                                    strongSelf.task = nil;
                                 });
              }];
         }
-        strongSelf.task = nil;
+      
     };
     task.progressBlock = ^(CGFloat progress) {
         __strong typeof(self) strongSelf = weakSelf;

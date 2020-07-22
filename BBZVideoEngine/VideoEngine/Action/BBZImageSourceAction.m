@@ -22,6 +22,7 @@
 
 - (void)destroySomething {
     [((BBZImageAsset *)self.asset) unloadImage];
+    self.inputSourceParam = nil;
 }
 
 - (void)lock {

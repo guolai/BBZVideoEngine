@@ -10,7 +10,6 @@
 
 @interface BBZVideoOutputFilter () {
     GLuint _movieFramebuffer;
-    GLuint _movieRenderbuffer;
     CVPixelBufferRef _renderTarget;
     CVOpenGLESTextureRef _renderTexture;
 }
@@ -49,14 +48,15 @@
 
 - (void)createDataFBO {
     glActiveTexture(GL_TEXTURE1);
-    glGenFramebuffers(1, &_movieFramebuffer);
-    glBindFramebuffer(GL_FRAMEBUFFER, _movieFramebuffer);
-    
+    if(!_movieFramebuffer) {
+        glGenFramebuffers(1, &_movieFramebuffer);
+    }
+    NSAssert(!_renderTarget, @"error");
     CVPixelBufferPoolCreatePixelBuffer (NULL, [self.videoPixelBufferAdaptor pixelBufferPool], &_renderTarget);
 
-    CVBufferSetAttachment(_renderTarget, kCVImageBufferColorPrimariesKey, kCVImageBufferColorPrimaries_ITU_R_709_2, kCVAttachmentMode_ShouldPropagate);
-    CVBufferSetAttachment(_renderTarget, kCVImageBufferYCbCrMatrixKey, kCVImageBufferYCbCrMatrix_ITU_R_601_4, kCVAttachmentMode_ShouldPropagate);
-    CVBufferSetAttachment(_renderTarget, kCVImageBufferTransferFunctionKey, kCVImageBufferTransferFunction_ITU_R_709_2, kCVAttachmentMode_ShouldPropagate);
+//    CVBufferSetAttachment(_renderTarget, kCVImageBufferColorPrimariesKey, kCVImageBufferColorPrimaries_ITU_R_709_2, kCVAttachmentMode_ShouldPropagate);
+//    CVBufferSetAttachment(_renderTarget, kCVImageBufferYCbCrMatrixKey, kCVImageBufferYCbCrMatrix_ITU_R_601_4, kCVAttachmentMode_ShouldPropagate);
+//    CVBufferSetAttachment(_renderTarget, kCVImageBufferTransferFunctionKey, kCVImageBufferTransferFunction_ITU_R_709_2, kCVAttachmentMode_ShouldPropagate);
     
     CVOpenGLESTextureCacheCreateTextureFromImage (kCFAllocatorDefault, [[GPUImageContext sharedImageProcessingContext] coreVideoTextureCache], _renderTarget,
                                                   NULL, // texture attributes
@@ -87,24 +87,22 @@
         glDeleteFramebuffers(1, &_movieFramebuffer);
         _movieFramebuffer = 0;
     }
-    if (_movieRenderbuffer) {
-        glDeleteRenderbuffers(1, &_movieRenderbuffer);
-        _movieRenderbuffer = 0;
+    [self destroyRenderTarget];
+}
+
+- (void)destroyRenderTarget {
+   
+    if (_renderTexture) {
+        CFRelease((_renderTexture));
+        _renderTexture = nil;
     }
-    if ([GPUImageContext supportsFastTextureUpload]) {
-        if (_renderTexture) {
-            CFRelease((_renderTexture));
-        }
-        if (_renderTarget) {
-            CVPixelBufferRelease(_renderTarget);
-        }
+    if (_renderTarget) {
+        CFRelease(_renderTarget);
+        _renderTarget = nil;
     }
 }
 
 - (void)setFilterFBO {
-    if (_movieFramebuffer) {
-        [self destroyDataFBO];
-    }
     [self createDataFBO];
     
     glBindFramebuffer(GL_FRAMEBUFFER, _movieFramebuffer);
@@ -131,7 +129,6 @@
         [firstInputFramebuffer unlock];
         return;
     }
-    [self destroyDataFBO];
     [self setFilterFBO];
 
     if (usingNextFrameForImageCapture) {
@@ -164,8 +161,10 @@
     }
     CVPixelBufferRef pixel_buffer = _renderTarget;
     if([self.delegate respondsToSelector:@selector(didDrawPixelBuffer:time:)]) {
-        [self.delegate didDrawPixelBuffer:pixel_buffer time:self.frameTime];
+        [self.delegate didDrawPixelBuffer:_renderTarget time:self.frameTime];
     }
+    [self destroyRenderTarget];
+    [[GPUImageFramebufferManager shareInstance] printAllLiveObject];
 }
 
 @end

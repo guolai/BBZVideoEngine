@@ -126,9 +126,9 @@
 
 - (void)writeVideoPixelBuffer:(CVPixelBufferRef)pixelBuffer withPresentationTime:(CMTime)time {
 //    dispatch_async(self.inputQueue, ^{
-        CFRetain(pixelBuffer);
+//        CFRetain(pixelBuffer);
         [self processVideoPixelBuffer:pixelBuffer withPresentationTime:time];
-        CFRelease(pixelBuffer);
+//        CFRelease(pixelBuffer);
 //    });
 }
 
@@ -182,7 +182,7 @@
         BBZINFO(@"status :%d", self.assetWriter.status);
     }
     CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
-    [[GPUImageFramebufferManager shareInstance] printAllLiveObject];
+  
     if(!bAdd && self.assetWriter.status == AVAssetWriterStatusFailed) {
         if (self.completionBlock) {
             self.completionBlock(NO, self.assetWriter.error);

@@ -17,6 +17,11 @@
 @implementation BBZAction
 @synthesize node = _node;
 
+- (void)dealloc {
+    BBZINFO(@"dealloc referenceCount %zd, %zd %@", _referenceCount, _referenceCountingDisabled, self);
+    [self removeConnects];
+}
+
 - (instancetype)init {
     if(self = [super init]) {
         _repeatCount = 1;
@@ -59,7 +64,7 @@
     }
     
     NSAssert(_referenceCount > 0, @"some thing wrong");
-    _referenceCount++;
+    _referenceCount--;
     if (_referenceCount < 1) {
         [self destroySomething];
     }

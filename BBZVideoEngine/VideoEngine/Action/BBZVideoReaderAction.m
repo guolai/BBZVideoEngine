@@ -149,8 +149,10 @@ extern const int BBZActionTimeToScheduleTime;
 
 - (void)destroySomething{
     self.sampleBuffer = nil;
+    self.usedSampleBuffer = nil;
     [self.videoOutPut endProcessing];
     [self.reader removeOutput:self.videoOutPut];
+    self.inputSourceParam = nil;
     self.videoOutPut = nil;
     self.reader = nil;
 }

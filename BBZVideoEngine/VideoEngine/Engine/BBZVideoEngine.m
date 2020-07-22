@@ -48,6 +48,14 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
 
 @implementation BBZVideoEngine
 
+- (void)dealloc {
+    BBZINFO(@"%@", self);
+    [self.filterLayers removeAllObjects];
+    self.filterLayers = nil;
+    [self.schedule stopTimeline];
+    
+}
+
 - (instancetype)initWithModel:(BBZVideoModel *)videoModel
                 context:(BBZEngineContext *)context
                    outputFile:(NSString *)outputFile {

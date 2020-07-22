@@ -16,7 +16,14 @@
 @property (nonatomic, strong) BBZEngineContext *context;
 @end
 
+
 @implementation BBZFilterLayer
+
+- (void)dealloc {
+    BBZINFO(@"%@", self);
+    self.builderResult = nil;
+}
+
 - (instancetype)initWithModel:(BBZVideoModel *)model context:(BBZEngineContext *)context {
     if(self = [super init]) {
         _model = model;
