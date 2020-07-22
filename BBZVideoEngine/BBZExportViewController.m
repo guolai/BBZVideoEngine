@@ -32,7 +32,6 @@
     self.exportSesstion = nil;
     [self.task cancel];
     self.task = nil;
-    [[GPUImageContext sharedFramebufferCache] purgeAllUnassignedFramebuffers];
     BBZLOG();
     [[GPUImageFramebufferManager shareInstance] printAllLiveObject];
 }

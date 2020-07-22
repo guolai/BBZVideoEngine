@@ -168,12 +168,14 @@
             if (self.completeBlock) {
                 self.completeBlock((error ? NO : YES), error);
             }
+            [[GPUImageContext sharedFramebufferCache] purgeAllUnassignedFramebuffers];
         });
     }  else {
         BBZRunSynchronouslyOnTaskQueue(^{
             if (self.completeBlock) {
                 self.completeBlock((error ? NO : YES), error);
             }
+            [[GPUImageContext sharedFramebufferCache] purgeAllUnassignedFramebuffers];
         });
     }
 }
