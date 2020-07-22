@@ -181,9 +181,6 @@
 - (void)didReachEndTime {
     runSynchronouslyOnVideoProcessingQueue(^{
         [self.writer finishWriting];
-        [[GPUImageContext sharedFramebufferCache] purgeAllUnassignedFramebuffers];
-        BBZLOG();
-        [[GPUImageFramebufferManager shareInstance] printAllLiveObject];
     });
 }
 

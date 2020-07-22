@@ -11,6 +11,7 @@
 #import "BBZVideoModel.h"
 #import <Photos/Photos.h>
 #import "BBZAVAssetExportSession.h"
+#import "GPUImage.h"
 
 
 @interface BBZExportViewController ()
@@ -31,7 +32,11 @@
     self.exportSesstion = nil;
     [self.task cancel];
     self.task = nil;
+    [[GPUImageContext sharedFramebufferCache] purgeAllUnassignedFramebuffers];
+    BBZLOG();
+    [[GPUImageFramebufferManager shareInstance] printAllLiveObject];
 }
+
 
 - (void)viewDidLoad {
 
@@ -213,11 +218,11 @@
         [videoModel addImageSource:path];
         
     } else if(self.exportType == BBZExportTypeImages) {
-//        path = [[NSBundle mainBundle] pathForResource:@"IMG_7311" ofType:@"HEIC" inDirectory:@"Resource"];
-//        [videoModel addImageSource:path];
-//        
-//        path = [[NSBundle mainBundle] pathForResource:@"IMG_7317" ofType:@"HEIC" inDirectory:@"Resource"];
-//        [videoModel addImageSource:path];
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7311" ofType:@"HEIC" inDirectory:@"Resource"];
+        [videoModel addImageSource:path];
+        
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7317" ofType:@"HEIC" inDirectory:@"Resource"];
+        [videoModel addImageSource:path];
         
         path = [[NSBundle mainBundle] pathForResource:@"IMG_7312" ofType:@"HEIC" inDirectory:@"Resource"];
         [videoModel addImageSource:path];

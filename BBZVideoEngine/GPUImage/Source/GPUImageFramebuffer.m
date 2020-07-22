@@ -58,11 +58,11 @@
                     //                    NSLog(@"GPUImageFramebuffer  %p, %@", fb, NSStringFromCGSize(fb.size));
                 }
                 count++;
-                if([fb framebufferReferenceCount] >= 1)
+                if([fb framebufferReferenceCount] > 1)
                 {
                     count2++;
                 }
-                if([allCachedFBs containsObject:fb])
+                 if([fb framebufferReferenceCount] == 1)
                 {
                     count3++;
                 }
@@ -73,7 +73,7 @@
             NSLog(@"GPUImageFramebuffer  %@",string);
         }
         self.lastIndex++;
-        NSLog(@"GPUImageFramebuffer all:%lu, live:%ld, livestorng:%ld, cached:%ld", (unsigned long)self.fbWeakObjectArray.count, (long)count, (long)count2, (long)count3);
+        NSLog(@"GPUImageFramebuffer cache:%lu, live>1:%ld, live=1:%ld all:%ld", (unsigned long)self.fbWeakObjectArray.count, (long)count2, (long)count3, (long)count);
     });
 #endif
 }
