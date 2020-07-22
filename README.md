@@ -26,3 +26,4 @@
 
 ## 类结构概览
 ![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/class.jpg)
+![Image text](https://github.com/guolai/BBZVideoEngine/blob/master/class.jpg)
