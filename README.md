@@ -25,4 +25,4 @@
 1. 滤镜链优化管理
 
 ## 类结构概览
-![Image text](https://github.com/guolai/testCoreData/blob/master/class.jpg)
+![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/class.jpg)
