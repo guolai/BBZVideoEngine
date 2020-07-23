@@ -74,25 +74,25 @@
 
 
 ### 加入视频资源
-```
+
     NSString *path = [[NSBundle mainBundle] pathForResource:@"douyin3" ofType:@"mp4" inDirectory:@"Resource"];
     [videoModel addVideoSource:path];
-```
+
 
 ### 加入背景音乐
-(```)
+
     NSString *path = [[NSBundle mainBundle] pathForResource:@"jimoshazhouleng" ofType:@"mp3" inDirectory:@"Resource"];
     [videoModel addAudioSource:path];
-(```)
+
 
 ### 指定转场资源路径
-(```)
+
     NSString *path = [NSString stringWithFormat:@"%@/Resource/demo2", [[NSBundle mainBundle] bundlePath]];
     [videoModel addTransitionGroup:path];
-(```)
+
 
 ### 加入视频或者图集 支持加入背景图片，并对内容进行缩放和旋转
-(```)
+
     NSString *path = [[NSBundle mainBundle] pathForResource:@"IMG_7305" ofType:@"HEIC" inDirectory:@"Resource"];
     NSData *data = [NSData dataWithContentsOfFile:path];
     UIImage *bgImage = [UIImage imageWithData:data];
@@ -101,10 +101,10 @@
     transformItem.scale = 0.8;
     transformItem.angle = 45.0;
     videoModel.transform = transformItem;
-(```)
+
 
 ### 视频水印支持动态图片序列帧
-(```)
+
     NSMutableArray *multiArray = [NSMutableArray array];
     for (int i = 1; i < 10; i++) {
         NSString *strName = [NSString stringWithFormat:@"00%d@2x", i];
@@ -114,14 +114,13 @@
         [multiArray addObject:image];
     }
     videoModel.maskImage = multiArray;
-(```)
+
 
 ### 启动合成任务
-(```)
+
     BBZExportTask *task = [BBZExportTask taskWithModel:videoModel];
     task.completeBlock = ^(BOOL sucess, NSError *error) {
     };
     task.progressBlock = ^(CGFloat progress) {
     };
     [task start];
-(```)
