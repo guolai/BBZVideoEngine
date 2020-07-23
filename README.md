@@ -63,21 +63,21 @@
 
 ## 代码使用示例
 ### 创建model
-(''')
+
     BBZVideoModel *videoModel = [[BBZVideoModel alloc] init];   
-(''')
+
 
 ### 加入图片资源
-(```)
+
     NSString *path = [[NSBundle mainBundle] pathForResource:@"IMG_7305" ofType:@"HEIC" inDirectory:@"Resource"];
     [videoModel addImageSource:path];  
-(```)
+
 
 ### 加入视频资源
-(```)
+```
     NSString *path = [[NSBundle mainBundle] pathForResource:@"douyin3" ofType:@"mp4" inDirectory:@"Resource"];
     [videoModel addVideoSource:path];
-(```)
+```
 
 ### 加入背景音乐
 (```)
