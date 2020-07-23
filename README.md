@@ -40,7 +40,6 @@
 ## 音视频处理工作流
 ![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/DescriptionWorkFlow.jpg)
 ![Image text](https://github.com/guolai/testCoreData/blob/master/DescriptionWorkFlow.jpg)
-
 ![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/VideoEngineWorkFlow.jpg)
 ![Image text](https://github.com/guolai/testCoreData/blob/master/VideoEngineWorkFlow.jpg)
 
