@@ -30,33 +30,33 @@
 
 
 ## 音视频引擎架构图
-![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/AVFoundatioSimpleClass.jpg)
+![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/AVFoundatioSimpleClass.png)
 ![Image text](https://github.com/guolai/testCoreData/blob/master/AVFoundatioSimpleClass.png)
 
 ## 类结构概览
-![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/class.jpg)
-![Image text](https://github.com/guolai/testCoreData/blob/master/class.jpg)
+![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/class.png)
+![Image text](https://github.com/guolai/testCoreData/blob/master/class.png)
 
-<!-- ## 音视频处理工作流 -->
-<!-- ![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/DescriptionWorkFlow.jpg) -->
-<!-- ![Image text](https://github.com/guolai/testCoreData/blob/master/DescriptionWorkFlow.jpg) -->
-<!--  -->
-<!-- ![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/VideoEngineWorkFlow.jpg) -->
-<!-- ![Image text](https://github.com/guolai/testCoreData/blob/master/VideoEngineWorkFlow.jpg) -->
+## 音视频处理工作流
+![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/DescriptionWorkFlow.png)
+![Image text](https://github.com/guolai/testCoreData/blob/master/DescriptionWorkFlow.png)
+
+![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/VideoEngineWorkFlow.png)
+![Image text](https://github.com/guolai/testCoreData/blob/master/VideoEngineWorkFlow.png)
 
 
 ## 转场时间轴示意
-![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/TransitionFlow.jpg)
-![Image text](https://github.com/guolai/testCoreData/blob/master/TransitionFlow.jpg)
+![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/TransitionFlow.png)
+![Image text](https://github.com/guolai/testCoreData/blob/master/TransitionFlow.png)
 
 ## 树状滤镜链管理
-![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/FilterTreeManage.jpg)
-![Image text](https://github.com/guolai/testCoreData/blob/master/FilterTreeManage.jpg)
+![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/FilterTreeManage.png)
+![Image text](https://github.com/guolai/testCoreData/blob/master/FilterTreeManage.png)
 
 ## 拼接及转场滤镜链
-![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/transitionAndSplice.jpg)
-![Image text](https://github.com/guolai/testCoreData/blob/master/transitionAndSplice.jpg)
+![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/transitionAndSplice.png)
+![Image text](https://github.com/guolai/testCoreData/blob/master/transitionAndSplice.png)
 
 ## 滤镜链优化处理
-![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/FilterOptimization.jpg)
-![Image text](https://github.com/guolai/testCoreData/blob/master/FilterOptimization.jpg)
+![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/FilterOptimization.png)
+![Image text](https://github.com/guolai/testCoreData/blob/master/FilterOptimization.png)
