@@ -26,6 +26,10 @@
 
 @implementation BBZAssetReader
 
+- (void)dealloc {
+    BBZINFO(@"dealloc %@", self);
+}
+
 - (instancetype)initWithAsset:(AVAsset *)asset {
     return [self initWithAsset:asset videoComposition:nil audioMix:nil];
 }
@@ -80,6 +84,7 @@
 }
 
 - (void)dealloc {
+    BBZINFO(@"dealloc %@", self);
     [self cleanup];
 }
 

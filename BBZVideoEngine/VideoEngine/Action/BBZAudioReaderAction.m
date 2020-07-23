@@ -60,7 +60,9 @@
             return;
             
         }
-        self.inputAudioParam.sampleBuffer = [self adjustTime:sampleBuffer by:self.reader.timeRange.start];
+        CMSampleBufferRef adjustSampleBuffer = [self adjustTime:sampleBuffer by:self.reader.timeRange.start];
+        self.inputAudioParam.sampleBuffer = adjustSampleBuffer;
+        CFRelease(adjustSampleBuffer);
         self.inputAudioParam.time = time;
         self.sampleBuffer = nil;
         lastSamplePresentationTime = CMSampleBufferGetPresentationTimeStamp(self.inputAudioParam.sampleBuffer);
@@ -116,8 +118,10 @@
 
 
 - (void)destroySomething{
+
+    self.sampleBuffer = nil;
+    self.inputAudioParam = nil;
     [self.audioOutPut endProcessing];
-    self.inputAudioParam.sampleBuffer = nil;
     [self.reader removeOutput:self.audioOutPut];
     self.audioOutPut = nil;
     self.reader = nil;

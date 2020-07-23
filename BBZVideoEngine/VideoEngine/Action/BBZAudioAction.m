@@ -15,6 +15,11 @@
 
 
 @implementation BBZInputAudioParam
+
+- (void)dealloc {
+    self.sampleBuffer = nil;
+}
+
 - (void)setSampleBuffer:(CMSampleBufferRef)sampleBuffer {
     if(sampleBuffer &&  _sampleBuffer == sampleBuffer) {
         return;

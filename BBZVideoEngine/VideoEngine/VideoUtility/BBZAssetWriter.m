@@ -206,7 +206,7 @@
 }
 
 - (void)processAudioBuffer:(CMSampleBufferRef)audioBuffer {
-    CFRetain(audioBuffer);
+    BOOL bShouldRelease = NO;
     CMTime currentSampleTime = CMSampleBufferGetOutputPresentationTimeStamp(audioBuffer);
     if (CMTIME_IS_INVALID(self.startTime)) {
         if (self.assetWriter.status != AVAssetWriterStatusWriting)  {
@@ -215,9 +215,8 @@
         [self.assetWriter startSessionAtSourceTime:currentSampleTime];
         self.startTime = currentSampleTime;
     } else {
-        CFRelease(audioBuffer);
         audioBuffer = [self adjustTime:audioBuffer by:self.startTime];
-        CFRetain(audioBuffer);
+        bShouldRelease = YES;
     }
 
     currentSampleTime = CMSampleBufferGetPresentationTimeStamp(audioBuffer);
@@ -258,7 +257,9 @@
     if (_shouldInvalidateAudioSampleWhenDone) {
         CMSampleBufferInvalidate(audioBuffer);
     }
-    CFRelease(audioBuffer);
+    if(bShouldRelease) {
+        CFRelease(audioBuffer);
+    }
     if(!bAdd && self.assetWriter.status == AVAssetWriterStatusFailed) {
         if(self.completionBlock) {
             self.completionBlock(NO, self.assetWriter.error);
