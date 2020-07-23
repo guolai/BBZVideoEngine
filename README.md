@@ -63,9 +63,9 @@
 
 ## 代码使用示例
 ### 创建model
-(```)
+(''')
     BBZVideoModel *videoModel = [[BBZVideoModel alloc] init];   
-(```)
+(''')
 
 ### 加入图片资源
 (```)
