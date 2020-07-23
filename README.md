@@ -24,6 +24,39 @@
 1. 滤镜链树状资源时间线排布资源管理 
 1. 滤镜链优化管理
 
+## 整体框架图
+![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/AVFoundation.png)
+![Image text](https://github.com/guolai/testCoreData/blob/master/AVFoundation.png)
+
+
+## 音视频引擎架构图
+![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/AVFoundatioSimpleClass.jpg)
+![Image text](https://github.com/guolai/testCoreData/blob/master/AVFoundatioSimpleClass.png)
+
 ## 类结构概览
 ![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/class.jpg)
-![Image text](https://github.com/guolai/BBZVideoEngine/blob/master/class.jpg)
+![Image text](https://github.com/guolai/testCoreData/blob/master/class.jpg)
+
+## 音视频处理工作流
+![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/DescriptionWorkFlow.jpg)
+![Image text](https://github.com/guolai/testCoreData/blob/master/DescriptionWorkFlow.jpg)
+
+![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/VideoEngineWorkFlow.jpg)
+![Image text](https://github.com/guolai/testCoreData/blob/master/VideoEngineWorkFlow.jpg)
+
+
+## 转场时间轴示意
+![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/TransitionFlow.jpg)
+![Image text](https://github.com/guolai/testCoreData/blob/master/TransitionFlow.jpg)
+
+## 树状滤镜链管理
+![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/FilterTreeManage.jpg)
+![Image text](https://github.com/guolai/testCoreData/blob/master/FilterTreeManage.jpg)
+
+## 拼接及转场滤镜链
+![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/transitionAndSplice.jpg)
+![Image text](https://github.com/guolai/testCoreData/blob/master/transitionAndSplice.jpg)
+
+## 滤镜链优化处理
+![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/FilterOptimization.jpg)
+![Image text](https://github.com/guolai/testCoreData/blob/master/FilterOptimization.jpg)
