@@ -19,8 +19,8 @@
 @property (nonatomic, strong) NSArray *actions;
 @property (nonatomic, strong) NSMutableArray *inputActions;
 //@property (nonatomic, assign) BOOL bLocked;
-@property (nonatomic, assign) NSUInteger currentTimePoint;
-@property (nonatomic, assign) NSUInteger currentIndex;
+@property (nonatomic, assign) NSInteger currentTimePoint;
+@property (nonatomic, assign) NSInteger currentIndex;
 @end
 
 
@@ -29,7 +29,7 @@
 - (instancetype)init {
     if(self = [super init]) {
 //        _filterMixer = [[BBZFilterMixer alloc] init];
-        _currentIndex = 0;
+        [self reset];
         _inputActions = [NSMutableArray array];
     }
     return self;
@@ -93,8 +93,20 @@
     for (BBZAction *action in self.actions) {
        [action unlock];
     }
-    self.currentIndex = 0;
-    self.currentTimePoint = 0;
+    [self reset];
+}
+
+- (BOOL)cancel {
+    [super cancel];
+    for (BBZAction *action in self.actions) {
+        [action unlock];
+    }
+    return YES;
+}
+
+- (void)reset {
+    _currentIndex = 0;
+    _currentTimePoint = -1 * BBZVideoDurationScale;
 }
 
 - (BOOL)findNextTimePoint {
