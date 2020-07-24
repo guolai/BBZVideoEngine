@@ -99,6 +99,8 @@
         if([self.objectsArray containsObject:image]) {
             NSInteger objectIndex = [self.objectsArray indexOfObject:image];
             [self.objectsArray removeObject:image];
+            GPUImageFramebuffer *tmpFb = [self.frameBufferArray objectAtIndex:objectIndex];
+            [tmpFb unlock];
             [self.frameBufferArray removeObjectAtIndex:objectIndex];
             self.index --;
             bRet = YES;
@@ -118,6 +120,7 @@
             [self removeFrameBuffer:frameBuffer];
         }
         self.index ++;
+        [frameBuffer lock];
         [self.objectsArray addObject:frameBuffer];
         if(index > self.frameBufferArray.count) {
             [self.frameBufferArray addObject:frameBuffer];
@@ -251,8 +254,13 @@
 - (void)removeAllCacheFrameBuffer {
     runSynchronouslyOnVideoProcessingQueue(^{
         self.index = 1;
+        for (GPUImageFramebuffer *fb in self.frameBufferArray) {
+            [fb unlock];
+        }
         [self.objectsArray removeAllObjects];
         [self.frameBufferArray removeAllObjects];
+        self.mainframeBuffer = nil;
+        [self resetFence];
     });
 }
 

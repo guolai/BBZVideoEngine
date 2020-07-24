@@ -163,6 +163,7 @@
 
 - (void)didFinishWritingVideoWithError:(NSError *)error async:(BOOL)async {
     BBZINFO(@"-----------%@", self.strOutputFile);
+    [[GPUImageFramebufferManager shareInstance] printAllLiveObject];
     if (async) {
         BBZRunAsynchronouslyOnTaskQueue(^{
             if (self.completeBlock) {

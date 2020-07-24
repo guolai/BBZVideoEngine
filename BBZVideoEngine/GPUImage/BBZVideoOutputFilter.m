@@ -158,7 +158,7 @@
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     glFinish();
     [firstInputFramebuffer unlock];
-
+    firstInputFramebuffer = nil;
     if (usingNextFrameForImageCapture) {
         dispatch_semaphore_signal(imageCaptureSemaphore);
     }
@@ -166,8 +166,9 @@
     if([self.delegate respondsToSelector:@selector(didDrawPixelBuffer:time:)]) {
         [self.delegate didDrawPixelBuffer:_renderTarget time:self.frameTime];
     }
+    [self removeOutputFramebuffer];
     [self destroyRenderTarget];
-//    [[GPUImageFramebufferManager shareInstance] printAllLiveObject];
+    [[GPUImageFramebufferManager shareInstance] printAllLiveObject];
 }
 
 @end
