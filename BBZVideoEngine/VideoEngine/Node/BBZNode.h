@@ -8,6 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString *const BBZFilterTransformSource;
+extern NSString *const BBZFilterBlendImage;
+extern NSString *const BBZFilterBlendVideo;
+extern NSString *const BBZFilterBlendVideoAndImage;
+extern NSString *const BBZFilterTransition;
+extern NSString *const BBZFilterSplice;
+
+
+
+
 @interface BBZNodeAnimationParams : NSObject <NSCopying>
 @property (nonatomic, assign) CGFloat param1;
 @property (nonatomic, assign) CGFloat param2;

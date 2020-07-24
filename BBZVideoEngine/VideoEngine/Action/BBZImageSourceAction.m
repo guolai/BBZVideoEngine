@@ -43,6 +43,7 @@
             self.inputSourceParam = [[BBZInputSourceParam alloc] init];
             GPUImageFramebuffer *framebuffer = [GPUImageFramebuffer BBZ_frameBufferWithImage2:((BBZImageAsset *)self.asset).asset.CGImage];
             [framebuffer disableReferenceCounting];
+            BBZINFO(@"newFrameAtTime %@", framebuffer);
             self.inputSourceParam.arrayFrameBuffer = @[framebuffer];
         }
     });

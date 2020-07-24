@@ -10,6 +10,9 @@
 #import "BBZTransformSourceNode.h"
 #import "BBZAction.h"
 
+
+
+
 @implementation BBZNode (Local)
 
 + (instancetype)createLocalNode:(BBZNodeType)type duration:(NSUInteger)duration {
@@ -18,19 +21,19 @@
     node.end = duration / (BBZVideoDurationScale * 1.0);
     switch (type) {
         case BBZNodeTransformSource: {
-            node.name = @"transformsource";
+            node.name = BBZFilterTransformSource;
         }
             break;
         case BBZNodeBlendImage: {
-            node.name = @"blendimage";
+            node.name = BBZFilterBlendImage;
         }
             break;
         case BBZNodeBlendVideo: {
-            node.name = @"blendvideo";
+            node.name = BBZFilterBlendVideo;
         }
             break;
         case BBZNodeBlendVideoAndImage: {
-            node.name = @"blendvideoandimage";
+            node.name = BBZFilterBlendVideoAndImage;
         }
             break;
         default:

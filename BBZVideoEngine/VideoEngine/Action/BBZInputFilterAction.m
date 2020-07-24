@@ -88,7 +88,7 @@
     if(!self.node.name) {
         return;
     }
-    if([self.node.name isEqualToString:@"transformsource"]) {
+    if([self.node.name isEqualToString:BBZFilterTransformSource]) {
         CGAffineTransform transform = CGAffineTransformIdentity;
         transform = CGAffineTransformTranslate(transform, params.param2, params.param3);
         transform = CGAffineTransformScale(transform, params.param1, params.param1);
@@ -124,15 +124,15 @@
                 self.videoMultiFilter.mat33ParamValue = outputParam.mat33ParamValue;
             }
         }
-        if(self.secondInputSource) {
-            BBZInputSourceParam *outputParam = [self.secondInputSource inputSourceAtTime:time];
-            for (GPUImageFramebuffer *fb in outputParam.arrayFrameBuffer) {
-                [self.videoMultiFilter addFrameBuffer:fb];
-            }
-            if(outputParam.bVideoSource) {
-                self.videoMultiFilter.mat33ParamValue = outputParam.mat33ParamValue;
-            }
-        }
+//        if(self.secondInputSource) {
+//            BBZInputSourceParam *outputParam = [self.secondInputSource inputSourceAtTime:time];
+//            for (GPUImageFramebuffer *fb in outputParam.arrayFrameBuffer) {
+//                [self.videoMultiFilter addFrameBuffer:fb];
+//            }
+//            if(outputParam.bVideoSource) {
+//                self.videoMultiFilter.mat33ParamValue = outputParam.mat33ParamValue;
+//            }
+//        }
 //        NSLog(@"newFrameReadyAtTime %p", self);
         [self.videoMultiFilter newFrameReadyAtTime:time atIndex:0];
     });
@@ -148,7 +148,7 @@
 - (void)removeConnects {
     [self.videoMultiFilter removeAllTargets];
     self.firstInputSource = nil;
-    self.secondInputSource = nil;
+//    self.secondInputSource = nil;
 }
 
 - (id)filter {

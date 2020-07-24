@@ -49,17 +49,11 @@
     BBZNode *node = nodes.firstObject;
     NSString *fShader = node.fShaderString;
     if(!fShader) {
-        if([node.name isEqualToString:@"blendimage"]) {
+        if([node.name isEqualToString:BBZFilterBlendImage]) {
             fShader = [BBZShader fragmentMaskBlendShader];
-        } else if([node.name isEqualToString:@"blendvideo"]) {
+        } else if([node.name isEqualToString:BBZFilterBlendVideo]) {
             fShader = [BBZShader fragmentMaskBlendShader];
-        } else if([node.name isEqualToString:@"blendimage"]) {
-            
-        } else if([node.name isEqualToString:@"blendimage"]) {
-            
-        } else if([node.name isEqualToString:@"blendimage"]) {
-            
-        }
+        } 
     }
     
     if(!fShader) {

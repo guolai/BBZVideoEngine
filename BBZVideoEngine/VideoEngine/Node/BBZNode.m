@@ -9,6 +9,15 @@
 #import "BBZNode.h"
 #import "NSDictionary+YYAdd.h"
 
+
+NSString *const BBZFilterTransformSource = @"transformsource";
+NSString *const BBZFilterBlendImage = @"blendimage";
+NSString *const BBZFilterBlendVideo = @"blendvideo";
+NSString *const BBZFilterBlendVideoAndImage = @"blendvideoandimage";
+NSString *const BBZFilterTransition = @"transition";
+NSString *const BBZFilterSplice = @"splice";
+
+
 @implementation BBZNodeAnimationParams
 
 - (instancetype)initWithDictionary:(NSDictionary *)dic {

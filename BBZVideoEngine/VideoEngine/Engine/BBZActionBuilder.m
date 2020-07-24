@@ -26,11 +26,11 @@
             BBZInputFilterAction *inputAction = (BBZInputFilterAction *)toAction;
             if(!inputAction.firstInputSource) {
                 inputAction.firstInputSource = (BBZSourceAction *)fromAction;
-            } else if(!inputAction.secondInputSource) {
-                inputAction.secondInputSource = (BBZSourceAction *)fromAction;
+//            } else if(!inputAction.secondInputSource) {
+//                inputAction.secondInputSource = (BBZSourceAction *)fromAction;
             } else  {
                 NSAssert(false, @"error");
-                inputAction.secondInputSource = (BBZSourceAction *)fromAction;
+//                inputAction.secondInputSource = (BBZSourceAction *)fromAction;
             }
         } else {
             BBZERROR(@"headAction: %@, tailAction:%@", NSStringFromClass([fromAction class]), NSStringFromClass([toAction class]));

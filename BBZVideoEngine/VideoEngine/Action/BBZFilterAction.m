@@ -71,7 +71,7 @@
     BBZFilterMixer *mixer = [BBZFilterMixer filterMixerWithNodes:@[self.node]];
     self.multiFilter = [[BBZMultiImageFilter alloc] initWithVertexShaderFromString:mixer.vShaderString fragmentShaderFromString:mixer.fShaderString];
     self.multiFilter.debugName = self.node.name;
-    if([self.node.name isEqualToString:@"transition"]) {
+    if([self.node.name isEqualToString:BBZFilterTransition]) {
         self.multiFilter.fenceCount = 2;
     }
 }
@@ -86,9 +86,6 @@
 
 
 - (void)connectToAction:(id<BBZActionChainProtocol>)toAction {
-    if([self.node.name isEqualToString:@"transition"]) {
-        NSLog(@"afdaf");
-    }
     [self.multiFilter addTarget:[toAction filter]];
 }
 
@@ -103,7 +100,7 @@
         NSTimeInterval relativeTime = [self relativeTimeFrom:time];
         BBZNodeAnimationParams *params = [self.node paramsAtTime:relativeTime];
         if(!params) {
-            if([self.node.name isEqualToString:@"blendimage"]) {
+            if([self.node.name isEqualToString:BBZFilterBlendImage]) {
                 NSAssert(false, @"error");
             }
             return;
@@ -112,7 +109,7 @@
             NSAssert(false, @"error");
             return;
         }
-        if([self.node.name isEqualToString:@"blendimage"]) {
+        if([self.node.name isEqualToString:BBZFilterBlendImage]) {
           
             if(self.node.images.count > 0 && self.maskImages.count == 0) {
                 for (UIImage *image in self.node.images) {
@@ -139,19 +136,7 @@
 }
 
 - (void)newFrameAtTime:(CMTime)time {
-    runAsynchronouslyOnVideoProcessingQueue(^{
-        if(self.maskImages.count > 0) {
-            [self.multiFilter removeAllCacheFrameBuffer];
-            NSInteger index = ((time.value/BBZScheduleTimeScale) * 100)%self.maskImages.count;
-            [self.multiFilter addFrameBuffer:[self.maskImages objectAtIndex:index]];
-            BBZINFO(@" currentTime blendimage = %.4f", CMTimeGetSeconds(time));
-        }
-        else {
-            if([self.node.name isEqualToString:@"blendimage"]) {
-                NSAssert(false, @"error");
-            }
-        }
-    });
+
 }
 
 

@@ -89,7 +89,7 @@
     NSTimeInterval relativeTime = [self relativeTimeFrom:time];
     BBZNodeAnimationParams *params = [self.node paramsAtTime:relativeTime];
     if(!params) {
-        if([self.node.name isEqualToString:@"blendimage"]) {
+        if([self.node.name isEqualToString:BBZFilterBlendImage]) {
             NSAssert(false, @"error");
         }
         return;
@@ -98,7 +98,7 @@
         NSAssert(false, @"error");
         return;
     }
-    if([self.node.name isEqualToString:@"blendimage"]) {
+    if([self.node.name isEqualToString:BBZFilterBlendImage]) {
         
         if(self.node.images.count > 0 && self.maskImages.count == 0) {
             for (UIImage *image in self.node.images) {
@@ -127,7 +127,7 @@
             BBZINFO(@" currentTime blendimage = %.4f", CMTimeGetSeconds(time));
         }
         else {
-            if([self.node.name isEqualToString:@"blendimage"]) {
+            if([self.node.name isEqualToString:BBZFilterBlendImage]) {
                 NSAssert(false, @"error");
             }
         }

@@ -203,7 +203,7 @@
     glVertexAttribPointer(filterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, textureCoordinates);
     
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-    
+    BBZINFO(@"renderToTextureWithVertices %p, %p, %@, %@", firstInputFramebuffer, outputFramebuffer, self.debugName, self);
     [firstInputFramebuffer unlock];
     
     [self willEndRender];
@@ -321,6 +321,7 @@
     if ([self checkNewFrameReady]) {
         [super newFrameReadyAtTime:frameTime atIndex:0];
         self.mainframeBuffer = nil;
+        [self removeAllCacheFrameBuffer];
         [self resetFence];
     } else {
         BBZLOG();
