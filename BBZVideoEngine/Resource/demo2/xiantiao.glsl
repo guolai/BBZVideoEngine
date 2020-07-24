@@ -4,9 +4,9 @@ varying highp vec2 textureCoordinate;
 
 uniform sampler2D inputImageTexture;
 uniform sampler2D inputImageTexture2;
-uniform float progress;
+uniform mediump vec4 v4Param1;
 
-
+float progress = v4Param1.x;
 vec4 getFromColor(vec2 p)
 {
     return texture2D(inputImageTexture, p);
