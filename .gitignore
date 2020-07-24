@@ -3,8 +3,7 @@
 # Xcode
 xcuserdata/
 *.xcworkspace
-SSZAVSDK/SSZAVSDK.xcodeproj/xcshareddata/
-SSZLive.xcodeproj/xcshareddata/
+BBZVideoEngine.xcodeproj/project.xcworkspace/xcuserdata/
 ## Build generated
 build/
 DerivedData/
