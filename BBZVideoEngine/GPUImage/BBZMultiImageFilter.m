@@ -138,6 +138,7 @@
             [self removeFrameBuffer:frameBuffer];
         }
         self.index ++;
+        [frameBuffer lock];
         [self.objectsArray addObject:frameBuffer];
         [self.frameBufferArray addObject:frameBuffer];
     });
@@ -152,6 +153,7 @@
             NSInteger objectIndex = [self.objectsArray indexOfObject:frameBuffer];
             [self.objectsArray removeObject:frameBuffer];
             [self.frameBufferArray removeObjectAtIndex:objectIndex];
+            [frameBuffer unlock];
             self.index --;
             bRet = YES;
         }
@@ -209,7 +211,10 @@
     [firstInputFramebuffer unlock];
     
     [self willEndRender];
-    
+//    glFinish();
+//    if([self.debugName isEqualToString:@"transition"]) {
+//        BBZLOG();
+//    }
     if (usingNextFrameForImageCapture) {
         dispatch_semaphore_signal(imageCaptureSemaphore);
     }

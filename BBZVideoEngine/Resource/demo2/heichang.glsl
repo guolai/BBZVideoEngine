@@ -31,10 +31,7 @@ void main()
         outputColor = blendColor(vZero, v1, FrontAlpha);
     } else {
         if(State > 1.5) {
-            
-            vZero = vec4(1.0, 0.0,0.0, 1.0);
-            outputColor = blendColor(vZero, v1, 0.5);
-           
+            outputColor = blendColor(vZero, v2, EndAlpha);
         } else {
             outputColor =vZero;
         }

@@ -96,6 +96,7 @@
   time 为真实时间
   node里面 时间为放大了100倍的时间，需要进行换算 ，然后计算 node当前值
   */
+  
     NSTimeInterval relativeTime = [self relativeTimeFrom:time];
     BBZNodeAnimationParams *params = [self.node paramsAtTime:relativeTime];
     if(!params) {
