@@ -68,9 +68,6 @@
 
 
 - (void)createImageFilter {
-    if([self.node.name isEqualToString:@"transition"]) {
-        self.multiFilter.fenceCount = 2;
-    }
     BBZFilterMixer *mixer = [BBZFilterMixer filterMixerWithNodes:@[self.node]];
     self.multiFilter = [[BBZMultiImageFilter alloc] initWithVertexShaderFromString:mixer.vShaderString fragmentShaderFromString:mixer.fShaderString];
     self.multiFilter.debugName = self.node.name;
