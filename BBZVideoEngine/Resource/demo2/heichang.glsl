@@ -20,26 +20,23 @@ void main()
     highp vec2 coordinate = textureCoordinate;
     lowp vec4 outputColor;
     vec4 vZero = vec4(0.0, 0.0, 0.0, 1.0);
-
+    
     float State = v4Param1.y;
     float FrontAlpha = v4Param1.x;
     float EndAlpha = v4Param1.z;
-    
-    if(State < 1.0)
-    {
-        highp vec4 v1 = texture2D(inputImageTexture, coordinate);
+    highp vec4 v1 = texture2D(inputImageTexture, coordinate);
+    highp vec4 v2 = texture2D(inputImageTexture2, coordinate);
+    if(State < 1.0) {
+        
         outputColor = blendColor(vZero, v1, FrontAlpha);
-    }
-    else
-    {
-        if(State < 2.0)
-        {
+    } else {
+        if(State > 1.5) {
+            
+            vZero = vec4(1.0, 0.0,0.0, 1.0);
+            outputColor = blendColor(vZero, v1, 0.5);
+           
+        } else {
             outputColor =vZero;
-        }
-        else
-        {
-            highp vec4 v1 = texture2D(inputImageTexture2, coordinate);
-            outputColor = blendColor(vZero, v1, EndAlpha);
         }
     }
     gl_FragColor = outputColor;

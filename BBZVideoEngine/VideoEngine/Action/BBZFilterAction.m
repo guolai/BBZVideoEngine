@@ -96,43 +96,38 @@
   time 为真实时间
   node里面 时间为放大了100倍的时间，需要进行换算 ，然后计算 node当前值
   */
-    
-        NSTimeInterval relativeTime = [self relativeTimeFrom:time];
-        BBZNodeAnimationParams *params = [self.node paramsAtTime:relativeTime];
-        if(!params) {
-            if([self.node.name isEqualToString:BBZFilterBlendImage]) {
-                NSAssert(false, @"error");
-            }
-            return;
-        }
-        if(!self.node.name) {
+    NSTimeInterval relativeTime = [self relativeTimeFrom:time];
+    BBZNodeAnimationParams *params = [self.node paramsAtTime:relativeTime];
+    if(!params) {
+        if([self.node.name isEqualToString:BBZFilterBlendImage] ||
+           [self.node.name isEqualToString:BBZFilterTransition]) {
             NSAssert(false, @"error");
-            return;
         }
-        if([self.node.name isEqualToString:BBZFilterBlendImage]) {
-          
-            if(self.node.images.count > 0 && self.maskImages.count == 0) {
-                for (UIImage *image in self.node.images) {
-                    GPUImageFramebuffer *framebuffer = [GPUImageFramebuffer BBZ_frameBufferWithImage2:image.CGImage];
-                    [self.maskImages addObject:framebuffer];
-                }
-                CGRect rect = [params frame];
-                runSynchronouslyOnVideoProcessingQueue(^{
-                    self.multiFilter.vector4ParamValue1 = (GPUVector4){rect.origin.x/self.renderSize.width, rect.origin.y/self.renderSize.height, rect.size.width/self.renderSize.width, rect.size.height/self.renderSize.height};
-                });
+        return;
+    }
+    if(!self.node.name) {
+        NSAssert(false, @"error");
+        return;
+    }
+    if([self.node.name isEqualToString:BBZFilterBlendImage]) {
+        if(self.node.images.count > 0 && self.maskImages.count == 0) {
+            for (UIImage *image in self.node.images) {
+                GPUImageFramebuffer *framebuffer = [GPUImageFramebuffer BBZ_frameBufferWithImage2:image.CGImage];
+                [self.maskImages addObject:framebuffer];
             }
-        } else {
+            CGRect rect = [params frame];
             runAsynchronouslyOnVideoProcessingQueue(^{
-                self.multiFilter.vector4ParamValue1 =(GPUVector4){params.param1, params.param2, params.param3, params.param4};
+                self.multiFilter.vector4ParamValue1 = (GPUVector4){rect.origin.x/self.renderSize.width, rect.origin.y/self.renderSize.height, rect.size.width/self.renderSize.width, rect.size.height/self.renderSize.height};
             });
-            
         }
-    
-//    BBZNodeAnimationParams *params = [self.node paramsAtTime:CMTimeGetSeconds(time)];
-//    if(params) {
-//         //to do
-//    }
-    //to do
+    } else {
+        runAsynchronouslyOnVideoProcessingQueue(^{
+            self.multiFilter.vector4ParamValue1 =(GPUVector4){params.param1, params.param2, params.param3, params.param4};
+            BBZINFO(@"updateWithTime %f, %f, %f, %f %@", params.param1, params.param2, params.param3, params.param4, self.node.name);
+        });
+        
+    }
+
 }
 
 - (void)newFrameAtTime:(CMTime)time {

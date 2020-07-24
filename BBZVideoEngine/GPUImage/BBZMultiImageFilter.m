@@ -203,9 +203,9 @@
     glVertexAttribPointer(filterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, textureCoordinates);
     
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-    BBZINFO(@"renderToTextureWithVertices %p, %p, %@, %@", firstInputFramebuffer, outputFramebuffer, self.debugName, self);
-    BBZINFO(@"renderToTexture1 %@", firstInputFramebuffer.debugDescription);
-    BBZINFO(@"renderToTexture2 %@", outputFramebuffer.debugDescription);
+//    BBZINFO(@"renderToTextureWithVertices %p, %p, %@, %@", firstInputFramebuffer, outputFramebuffer, self.debugName, self);
+//    BBZINFO(@"renderToTexture1 %@", firstInputFramebuffer.debugDescription);
+//    BBZINFO(@"renderToTexture2 %@", outputFramebuffer.debugDescription);
     [firstInputFramebuffer unlock];
     
     [self willEndRender];
@@ -224,9 +224,6 @@
         glUniform1i(_uniformTextures[uniformIndex], 2 + textureIndex);
         uniformIndex++;
         textureIndex++;
-    }
-    if([self.debugName isEqualToString:@"blendimage"] && self.frameBufferArray.count == 0) {
-        BBZLOG();
     }
     if(_uniformMat33 >= 0) {
         glUniformMatrix3fv(_uniformMat33, 1, GL_FALSE, (GLfloat *)(&_mat33ParamValue));

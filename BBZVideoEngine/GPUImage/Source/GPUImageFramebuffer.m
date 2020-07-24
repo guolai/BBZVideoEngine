@@ -37,8 +37,7 @@
     }
     return self;
 }
-- (void)printAllLiveObject
-{
+- (void)printAllLiveObject {
 #ifdef DEBUG
     dispatch_async(_fb_queue, ^{
         NSInteger count = 0;

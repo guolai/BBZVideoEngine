@@ -172,9 +172,14 @@ NSString *const BBZFilterSplice = @"splice";
     }
     for (int i = 0; i < self.animations.count; i++) {
         nodeAnimation = [self.animations objectAtIndex:i];
-        if(time >= self.begin + nodeAnimation.begin && time <= self.end + nodeAnimation.end) {
+        if(time >= self.begin + nodeAnimation.begin && time <= self.begin + nodeAnimation.end) {
             break;
         }
+    }
+    
+    if(!nodeAnimation) {
+        NSCParameterAssert(nodeAnimation);
+        return currentTimeParam;
     }
     BBZNodeAnimationParams *beginParam = nodeAnimation.param_begin;
     BBZNodeAnimationParams *endParam = nodeAnimation.param_end;

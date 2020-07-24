@@ -51,6 +51,7 @@
     if(!_movieFramebuffer) {
         glGenFramebuffers(1, &_movieFramebuffer);
     }
+    glBindFramebuffer(GL_FRAMEBUFFER, _movieFramebuffer);
     NSAssert(!_renderTarget, @"error");
     CVPixelBufferPoolCreatePixelBuffer (NULL, [self.videoPixelBufferAdaptor pixelBufferPool], &_renderTarget);
 
@@ -151,9 +152,9 @@
 
     glVertexAttribPointer(filterPositionAttribute, 2, GL_FLOAT, 0, 0, [self adjustVertices:vertices]);
     glVertexAttribPointer(filterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, textureCoordinates);
-    BBZINFO(@"renderToTextureWithVertices %p, %p, %@, %@", firstInputFramebuffer, outputFramebuffer, self.debugName, self);
-    BBZINFO(@"renderToTexture1 %@", firstInputFramebuffer.debugDescription);
-    BBZINFO(@"renderToTexture2 %@", outputFramebuffer.debugDescription);
+//    BBZINFO(@"renderToTextureWithVertices %p, %p, %@, %@", firstInputFramebuffer, outputFramebuffer, self.debugName, self);
+//    BBZINFO(@"renderToTexture1 %@", firstInputFramebuffer.debugDescription);
+//    BBZINFO(@"renderToTexture2 %@", outputFramebuffer.debugDescription);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     glFinish();
     [firstInputFramebuffer unlock];
@@ -161,14 +162,12 @@
     if (usingNextFrameForImageCapture) {
         dispatch_semaphore_signal(imageCaptureSemaphore);
     }
-    if(CMTimeGetSeconds(self.frameTime) > 3.0) {
-        BBZLOG();
-    }
+    
     if([self.delegate respondsToSelector:@selector(didDrawPixelBuffer:time:)]) {
         [self.delegate didDrawPixelBuffer:_renderTarget time:self.frameTime];
     }
     [self destroyRenderTarget];
-    [[GPUImageFramebufferManager shareInstance] printAllLiveObject];
+//    [[GPUImageFramebufferManager shareInstance] printAllLiveObject];
 }
 
 @end
