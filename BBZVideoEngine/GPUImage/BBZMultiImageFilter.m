@@ -204,6 +204,8 @@
     
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     BBZINFO(@"renderToTextureWithVertices %p, %p, %@, %@", firstInputFramebuffer, outputFramebuffer, self.debugName, self);
+    BBZINFO(@"renderToTexture1 %@", firstInputFramebuffer.debugDescription);
+    BBZINFO(@"renderToTexture2 %@", outputFramebuffer.debugDescription);
     [firstInputFramebuffer unlock];
     
     [self willEndRender];
@@ -217,9 +219,9 @@
     NSInteger uniformIndex = 1;
     GLint textureIndex = 1;
     for (GPUImageFramebuffer *fb in self.frameBufferArray) {
-        glActiveTexture(GL_TEXTURE3 + textureIndex);
+        glActiveTexture(GL_TEXTURE2 + textureIndex);
         glBindTexture(GL_TEXTURE_2D, [fb texture]);
-        glUniform1i(_uniformTextures[uniformIndex], 3 + textureIndex);
+        glUniform1i(_uniformTextures[uniformIndex], 2 + textureIndex);
         uniformIndex++;
         textureIndex++;
     }

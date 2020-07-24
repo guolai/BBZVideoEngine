@@ -559,4 +559,9 @@ void dataProviderUnlockCallback (void *info, const void *data, size_t size)
     return _texture;
 }
 
+- (NSString *)debugDescription {
+    NSString *retString = [NSString stringWithFormat:@"renderTarget:%p, renderTexture:%p, texture:%u, %p", renderTarget, renderTexture, _texture, self];
+    return retString;
+}
+
 @end

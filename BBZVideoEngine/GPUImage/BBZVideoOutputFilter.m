@@ -142,9 +142,9 @@
         glClear(GL_COLOR_BUFFER_BIT);
     }
 
-    glActiveTexture(GL_TEXTURE3);
+    glActiveTexture(GL_TEXTURE5);
     glBindTexture(GL_TEXTURE_2D, [firstInputFramebuffer texture]);
-    glUniform1i(filterInputTextureUniform, 3);
+    glUniform1i(filterInputTextureUniform, 5);
 
 
     [self bindInputParamValues];
@@ -152,6 +152,8 @@
     glVertexAttribPointer(filterPositionAttribute, 2, GL_FLOAT, 0, 0, [self adjustVertices:vertices]);
     glVertexAttribPointer(filterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, textureCoordinates);
     BBZINFO(@"renderToTextureWithVertices %p, %p, %@, %@", firstInputFramebuffer, outputFramebuffer, self.debugName, self);
+    BBZINFO(@"renderToTexture1 %@", firstInputFramebuffer.debugDescription);
+    BBZINFO(@"renderToTexture2 %@", outputFramebuffer.debugDescription);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     glFinish();
     [firstInputFramebuffer unlock];
