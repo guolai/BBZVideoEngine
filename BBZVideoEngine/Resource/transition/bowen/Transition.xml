@@ -1,0 +1,13 @@
+<!-- 新老引擎的分发通过miniVersion来判定 -->
+<root miniVersion="1.0">
+    <inputGroup duration="0.3" order="1">
+        <transition timestamp="0.00" duration="0.3" repeat="1" order="2">
+            <action begin="0.000" end="0.3" name="transition" fShader="bowen.glsl">
+                <animation begin="0.0" end="0.3">
+                    <param_begin param1="0.0"/>
+                    <param_end   param1="1.0"/>
+                </animation>
+            </action>
+        </transition>
+    </inputGroup>
+</root>

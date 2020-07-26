@@ -251,7 +251,7 @@
     if(self.exportType == BBZExportTypeImagesAndVideosWithTransition ||
        self.exportType == BBZExportTypeImagesAndVideosWithBGMTranstion ||
        self.exportType == BBZExportTypeImagesBGMTransition ) {
-        NSString *path = [NSString stringWithFormat:@"%@/Resource/demo2", [[NSBundle mainBundle] bundlePath]];
+        NSString *path = [NSString stringWithFormat:@"%@/Resource/transition/gege", [[NSBundle mainBundle] bundlePath]];
         [videoModel addTransitionGroup:path];
     } else {
         if(self.switchBtn.on ) {
