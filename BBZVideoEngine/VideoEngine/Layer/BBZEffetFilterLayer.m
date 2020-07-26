@@ -28,13 +28,13 @@
     builder.groupIndex = 0;
     NSMutableArray *retArray = [NSMutableArray array];
     for (BBZFilterNode *filterNode in self.model.filterModel.filterGroups) {
-        NSUInteger startTime = filterNode.begin * BBZVideoDurationScale;
+        NSInteger startTime = filterNode.begin * BBZVideoDurationScale;
         if(filterNode.bPlayFromEnd) {
-            startTime = MAX(inputBuilderResult.startTime - filterNode.duration, 0);
+            startTime = MAX(inputBuilderResult.startTime - filterNode.duration * BBZVideoDurationScale, 0);
         }
-        startTime = MIN(startTime, inputBuilderResult.startTime);
-        CGFloat duration = filterNode.duration;
-        duration = MIN(duration, inputBuilderResult.startTime - (startTime + duration));
+        startTime = MIN(startTime, 0);
+        CGFloat duration = filterNode.duration * BBZVideoDurationScale;
+        duration = MIN(duration, inputBuilderResult.startTime - startTime);
         duration = MAX(duration, 0);
         if(fabs(duration) < 0.01) {
             BBZERROR(@"duration is zero");

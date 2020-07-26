@@ -29,6 +29,8 @@
 
 + (NSString *)fragmentMaskBlendShader;
 
++ (NSString *)fragmentLutShader;
+
 @end
 
 

@@ -111,23 +111,35 @@
         return;
     }
     if([self.node.name isEqualToString:BBZFilterBlendImage]) {
-        if(self.node.images.count > 0 && self.maskImages.count == 0) {
+        if(self.maskImages.count == 0) {
             for (UIImage *image in self.node.images) {
                 GPUImageFramebuffer *framebuffer = [GPUImageFramebuffer BBZ_frameBufferWithImage2:image.CGImage];
                 [self.maskImages addObject:framebuffer];
+                [self.multiFilter addFrameBuffer:framebuffer];
             }
             CGRect rect = [params frame];
             runAsynchronouslyOnVideoProcessingQueue(^{
                 self.multiFilter.vector4ParamValue1 = (GPUVector4){rect.origin.x/self.renderSize.width, rect.origin.y/self.renderSize.height, rect.size.width/self.renderSize.width, rect.size.height/self.renderSize.height};
             });
         }
-    } else {
-        runAsynchronouslyOnVideoProcessingQueue(^{
-            self.multiFilter.vector4ParamValue1 =(GPUVector4){params.param1, params.param2, params.param3, params.param4};
-            BBZINFO(@"updateWithTime %f, %f, %f, %f %@", params.param1, params.param2, params.param3, params.param4, self.node.name);
-        });
-        
+    } else if([self.node.name isEqualToString:BBZFilterLut]) {
+        if(self.maskImages.count == 0) {
+            NSString *strPath = self.node.filePath;
+            NSString *strFile = [NSString stringWithFormat:@"%@/%@", strPath, self.node.attenmentFile];
+            if([[NSFileManager defaultManager] fileExistsAtPath:strFile]) {
+                UIImage *image = [UIImage imageWithContentsOfFile:strFile];
+                GPUImageFramebuffer *framebuffer = [GPUImageFramebuffer BBZ_frameBufferWithImage2:image.CGImage];
+                [self.maskImages addObject:framebuffer];
+                [self.multiFilter addFrameBuffer:framebuffer];
+            }
+        }
+       
     }
+    runAsynchronouslyOnVideoProcessingQueue(^{
+        self.multiFilter.vector4ParamValue1 =(GPUVector4){params.param1, params.param2, params.param3, params.param4};
+        BBZINFO(@"updateWithTime %f, %f, %f, %f %@", params.param1, params.param2, params.param3, params.param4, self.node.name);
+    });
+   
 
 }
 

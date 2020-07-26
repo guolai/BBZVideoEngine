@@ -251,7 +251,7 @@
     if(self.exportType == BBZExportTypeImagesAndVideosWithTransition ||
        self.exportType == BBZExportTypeImagesAndVideosWithBGMTranstion ||
        self.exportType == BBZExportTypeImagesBGMTransition ) {
-        NSString *path = [NSString stringWithFormat:@"%@/Resource/transition/gege", [[NSBundle mainBundle] bundlePath]];
+        NSString *path = [NSString stringWithFormat:@"%@/Resource/transition/black", [[NSBundle mainBundle] bundlePath]];
         [videoModel addTransitionGroup:path];
     } else {
         if(self.switchBtn.on ) {
@@ -281,8 +281,10 @@
         }
         videoModel.maskImage = multiArray;
     }
-    
-    
+    if (1) {
+        NSString *path = [NSString stringWithFormat:@"%@/Resource/filter/lut", [[NSBundle mainBundle] bundlePath]];
+        [videoModel addFilterGroup:path];
+    }
     
     NSString *tmpDir =  [NSString stringWithFormat:@"%@/tmp", videoModel.videoResourceDir];
     [NSFileManager removeFileIfExist:tmpDir];

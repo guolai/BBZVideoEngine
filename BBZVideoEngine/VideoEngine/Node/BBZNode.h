@@ -14,6 +14,7 @@ extern NSString *const BBZFilterBlendVideo;
 extern NSString *const BBZFilterBlendVideoAndImage;
 extern NSString *const BBZFilterTransition;
 extern NSString *const BBZFilterSplice;
+extern NSString *const BBZFilterLut;
 
 
 
@@ -45,8 +46,8 @@ extern NSString *const BBZFilterSplice;
 
 @interface BBZNode : NSObject
 /*
- <action begin="0.00" end="10.00" name="blend" blend_type="3" repeat="1" attenment="mask.mp4" order="1"/>
- <action begin="0.000" end="0.3" name="image" fragment_shader="heichang.glsl" animated="1">
+ <action begin="0.00" end="10.00" name="blend" repeat="1" attenment="mask.mp4" order="1"/>
+ <action begin="0.000" end="0.3" name="image" fshader="heichang.glsl">
 */
 @property (nonatomic, assign) double begin;
 @property (nonatomic, assign) double end;
@@ -58,6 +59,7 @@ extern NSString *const BBZFilterSplice;
 @property (nonatomic, strong, readonly) NSString *vShaderString;
 @property (nonatomic, strong, readonly) NSString *fShaderString;
 @property (nonatomic, strong) NSString *scale_mode;
+@property (nonatomic, strong) NSString *attenmentFile;
 @property (nonatomic, strong, readonly) NSString *filePath;
 @property (nonatomic, strong) NSArray<BBZNodeAnimation *> *animations;
 

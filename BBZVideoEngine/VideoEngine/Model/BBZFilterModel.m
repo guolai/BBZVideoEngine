@@ -30,7 +30,7 @@
         _filePath = filePath;
         [self parseFileContent];
     }
-    return nil;
+    return self;
 }
 
 - (void)parseFileContent {

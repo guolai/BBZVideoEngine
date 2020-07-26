@@ -8,7 +8,7 @@
 
 #import "BBZNode.h"
 #import "NSDictionary+YYAdd.h"
-
+extern const int BBZVideoDurationScale;
 
 NSString *const BBZFilterTransformSource = @"transformsource";
 NSString *const BBZFilterBlendImage = @"blendimage";
@@ -16,6 +16,7 @@ NSString *const BBZFilterBlendVideo = @"blendvideo";
 NSString *const BBZFilterBlendVideoAndImage = @"blendvideoandimage";
 NSString *const BBZFilterTransition = @"transition";
 NSString *const BBZFilterSplice = @"splice";
+NSString *const BBZFilterLut = @"lut";
 
 
 @implementation BBZNodeAnimationParams
@@ -105,6 +106,7 @@ NSString *const BBZFilterSplice = @"splice";
         self.vShader = [dic stringValueForKey:@"vShader" default:nil];
         self.scale_mode = [dic stringValueForKey:@"scale_mode" default:nil];
         self.repeat = [dic intValueForKey:@"repeat" default:1];
+        self.attenmentFile = [dic stringValueForKey:@"attenment" default:nil];
         id animationObj = [dic objectForKey:@"animation"];
         NSMutableArray *array = [NSMutableArray array];
         if ([animationObj isKindOfClass:[NSDictionary class]]) {
@@ -158,16 +160,25 @@ NSString *const BBZFilterSplice = @"splice";
     if(self.animations.count == 0) {
         return nil;
     }
+    NSInteger intTime = time * 1000;
+    NSInteger intDuration = (self.end - self.begin) * 1000;
+    NSInteger repeat = intTime / intDuration;
+    if(repeat > self.repeat) {
+        NSAssert(false, @"error");
+        return nil;;
+    }
+    double offSet = repeat * (self.end - self.begin);
+    time = time - offSet;
     BBZNodeAnimation *nodeAnimation = [self.animations objectAtIndex:0];
     BBZNodeAnimationParams *currentTimeParam = [nodeAnimation.param_begin copy];
     if(self.begin > time) {
-        NSCParameterAssert(false);
+        NSAssert(false, @"error");
         return currentTimeParam;
     }
     if(self.end < time) {
         nodeAnimation = self.animations.lastObject;
         currentTimeParam = [nodeAnimation.param_end copy];
-        NSCParameterAssert(false);
+        NSAssert(false, @"error");
         return currentTimeParam;
     }
     for (int i = 0; i < self.animations.count; i++) {

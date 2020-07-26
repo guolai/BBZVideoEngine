@@ -216,6 +216,52 @@ NSString *const kNodeMaskBlendFragmentShaderString = SHADER_STRING
  );
 
 
+NSString *const kNodeLutFragmentShaderString = SHADER_STRING
+(
+ precision highp float;
+ varying highp vec2 textureCoordinate;
+ uniform sampler2D inputImageTexture;
+ uniform sampler2D inputImageTexture2;
+ 
+ uniform vec4 v4Param1;
+ 
+ vec4 lut(vec4 textureColor, sampler2D lutSampler)
+ {
+    highp float blueColor = textureColor.b * 63.0;
+    float intensity = v4Param1.x;
+    highp vec2 quad1;
+    quad1.y = floor(floor(blueColor) / 8.0);
+    quad1.x = floor(blueColor) - (quad1.y * 8.0);
+    
+    highp vec2 quad2;
+    quad2.y = floor(ceil(blueColor) / 8.0);
+    quad2.x = ceil(blueColor) - (quad2.y * 8.0);
+    
+    highp vec2 texPos1;
+    texPos1.x = (quad1.x * 0.125) + 0.5/512.0 + ((0.125 - 1.0/512.0) * textureColor.r);
+    texPos1.y = (quad1.y * 0.125) + 0.5/512.0 + ((0.125 - 1.0/512.0) * textureColor.g);
+    
+    highp vec2 texPos2;
+    texPos2.x = (quad2.x * 0.125) + 0.5/512.0 + ((0.125 - 1.0/512.0) * textureColor.r);
+    texPos2.y = (quad2.y * 0.125) + 0.5/512.0 + ((0.125 - 1.0/512.0) * textureColor.g);
+    
+    lowp vec4 newColor1 = texture2D(lutSampler, texPos1);
+    lowp vec4 newColor2 = texture2D(lutSampler, texPos2);
+    
+    lowp vec4 newColor = mix(newColor1, newColor2, fract(blueColor));
+    vec4 retColor = mix(textureColor, vec4(newColor.rgb, textureColor.w), intensity);
+    return retColor;
+}
+ void main()
+{
+    vec4 sourceColor = texture2D(inputImageTexture, textureCoordinate);
+    sourceColor = lut(sourceColor, inputImageTexture2);
+    gl_FragColor = sourceColor;
+    
+}
+ );
+
+
 @implementation BBZShader
 
 + (NSString *)vertextShader {
@@ -266,6 +312,13 @@ NSString *const kNodeMaskBlendFragmentShaderString = SHADER_STRING
      v4Param1 : maskPostion,maskSize
      */
      return  kNodeMaskBlendFragmentShaderString;
+}
+
++ (NSString *)fragmentLutShader {
+    /*
+     v4Param1 : x:lut程度
+     */
+    return  kNodeLutFragmentShaderString;
 }
 
 @end
