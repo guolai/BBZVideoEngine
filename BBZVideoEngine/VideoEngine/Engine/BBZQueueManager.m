@@ -87,7 +87,7 @@ void BBZRunAsynchronouslyOnTaskQueue(void (^block)(void))
 #if !OS_OBJECT_USE_OBJC
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    if (dispatch_get_current_queue() == videoProcessingQueue)
+    if (dispatch_get_current_queue() == queue)
 #pragma clang diagnostic pop
 #else
         if (dispatch_get_specific([BBZQueueManager taskKey]))
@@ -126,7 +126,7 @@ void BBZRunAsynchronouslyOnExportQueue(void (^block)(void))
 #if !OS_OBJECT_USE_OBJC
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    if (dispatch_get_current_queue() == videoProcessingQueue)
+    if (dispatch_get_current_queue() == queue)
 #pragma clang diagnostic pop
 #else
         if (dispatch_get_specific([BBZQueueManager exportKey]))
