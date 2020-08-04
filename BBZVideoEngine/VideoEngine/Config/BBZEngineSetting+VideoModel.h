@@ -10,7 +10,7 @@
 #import "BBZVideoModel.h"
 
 @interface BBZEngineSetting (VideoModel)
-- (BBZEngineSetting *)buildVideoSettings:(BBZVideoModel *)videoModel;
++ (BBZEngineSetting *)buildVideoSettings:(BBZVideoModel *)videoModel;
 @end
 
 

@@ -12,7 +12,8 @@
 
 @implementation BBZEngineSetting (VideoModel)
 
-- (BBZEngineSetting *)buildVideoSettings:(BBZVideoModel *)videoModel {
++ (BBZEngineSetting *)buildVideoSettings:(BBZVideoModel *)videoModel {
+    
     NSArray *assetItems = videoModel.assetItems;
     
     NSMutableArray *array = [NSMutableArray array];

@@ -52,7 +52,7 @@
             self.state = BBZTaskStateRunning;
             bRet = YES;
             if(!self.videoSetting) {
-                self.videoSetting = [[BBZEngineSetting alloc] buildVideoSettings:self.videoModel];
+                self.videoSetting = [BBZEngineSetting buildVideoSettings:self.videoModel];
             }
             BBZEngineContext *context = [BBZEngineContext contextWithVideoSettings:self.videoSetting];
             context.scheduleMode = BBZEngineScheduleModeExport;
