@@ -164,17 +164,19 @@
         else if ([deviceType isEqualToString:@"iPhone 7 Plus"]) level = kBBZDeviceLeveliPhone7p;
         
         else if ([deviceType isEqualToString:@"iPhone 8"]) level = kBBZDeviceLeveliPhone8;
-        else if ([deviceType isEqualToString:@"iPhone 8S Plus"]) level = kBBZDeviceLeveliPhone8p;
+        else if ([deviceType isEqualToString:@"iPhone 8 Plus"]) level = kBBZDeviceLeveliPhone8p;
         
         
         else if ([deviceType isEqualToString:@"iPhone X"]) level = kBBZDeviceLeveliPhoneX;
+        else if ([deviceType isEqualToString:@"iPhone XS"]) level = kBBZDeviceLeveliPhoneX;
         
         else if ([deviceType isEqualToString:@"iPhone XS Max"]) level = kBBZDeviceLeveliPhoneX;
-        else if ([deviceType isEqualToString:@"iPhone X"]) level = kBBZDeviceLeveliPhoneX;
-        else if ([deviceType isEqualToString:@"iPhone X"]) level = kBBZDeviceLeveliPhoneX;
+        else if ([deviceType isEqualToString:@"iPhone XR"]) level = kBBZDeviceLeveliPhoneX;
         
         
         else if ([deviceType isEqualToString:@"iPhone11"]) level = kBBZDeviceLeveliPhone11;
+        else if ([deviceType isEqualToString:@"iPhone11 Pro"]) level = kBBZDeviceLeveliPhone11;
+        else if ([deviceType isEqualToString:@"iPhone11 Pro Max"]) level = kBBZDeviceLeveliPhone11;
         
         else if ([deviceType isEqualToString:@"iPad"]) level = 4;
         else if ([deviceType isEqualToString:@"iPad 2"]) level = 5;
@@ -187,6 +189,12 @@
         else if ([deviceType isEqualToString:@"iPad mini 3"]) level = 7;
         else if ([deviceType isEqualToString:@"iPad mini 4"]) level = 8;    //A8X
         else if ([deviceType isEqualToString:@"iPad Pro"]) level = 9;   //A9X
+        else if ([deviceType isEqualToString:@"iPad Pro 2"]) level = 9;
+        else if ([deviceType isEqualToString:@"iPad 6"]) level = 10;
+        else if ([deviceType isEqualToString:@"iPad 7"]) level = 10;
+        else if ([deviceType isEqualToString:@"iPad Pro 3"]) level = 10;
+        else if ([deviceType isEqualToString:@"iPad mini 5"]) level = 10;
+        else if ([deviceType isEqualToString:@"iPad Air 3"]) level = 10;
  
         
         else if ([deviceType isEqualToString:@"iPodTouch"]) level = 1;
@@ -195,12 +203,13 @@
         else if ([deviceType isEqualToString:@"iPodTouch 4"]) level = 4;
         else if ([deviceType isEqualToString:@"iPodTouch 5"]) level = 5;
         else if ([deviceType isEqualToString:@"iPodTouch 6"]) level = 8;
+        else if ([deviceType isEqualToString:@"iPodTouch 7"]) level = 9;
         
         else if ([deviceType isEqualToString:@"new iPhone"]) level = kBBZDeviceLeveliPhoneNew;
         else if ([deviceType isEqualToString:@"new iPad"]) level = kBBZDeviceLeveliPhoneNew;
         else if ([deviceType isEqualToString:@"new iPod"]) level = kBBZDeviceLeveliPhoneNew;
         
-        else level = kBBZDeviceLeveliPhoneNew;
+        else level = kBBZDeviceLeveliPhoneSE;
     });
     return level;
 }
