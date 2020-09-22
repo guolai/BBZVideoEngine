@@ -12,6 +12,13 @@
 
 @implementation BBZEngineSetting
 
+- (instancetype)init {
+    if(self = [super init]) {
+        self.fillType = BBZVideoFillModePreserveAspectRatio;
+    }
+    return self;
+}
+
 
 + (instancetype)passthroughVideoSettings {
     BBZEngineSetting *videoSettings = [[BBZEngineSetting alloc] init];

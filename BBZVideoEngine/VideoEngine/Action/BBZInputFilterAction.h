@@ -8,11 +8,13 @@
 
 #import "BBZFilterAction.h"
 #import "BBZSourceAction.h"
+#import "BBZEngineSetting.h"
 
 @interface BBZInputFilterAction : BBZFilterAction
 //@property (nonatomic, assign) BOOL bRGBTexture;
 
 @property (nonatomic, weak) id<BBZInputSourceProtocol> firstInputSource;
+@property (nonatomic, assign) BBZVideoFillModeType fillType;
 //@property (nonatomic, weak) id<BBZInputSourceProtocol> secondInputSource;
 //@property (nonatomic, assign) CGAffineTransform transform;
 //@property (nonatomic, weak) id<BBZInputSourceProtocol> thirdInputSource;

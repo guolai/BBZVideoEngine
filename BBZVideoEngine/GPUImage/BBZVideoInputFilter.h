@@ -7,6 +7,7 @@
 //
 
 #import "BBZMultiImageFilter.h"
+#import "BBZEngineSetting.h"
 
 //typedef NS_ENUM(NSInteger, BBZVideoInputType) {
 //    BBZVideoInputTypeImage,
@@ -14,11 +15,6 @@
 //};
 
 
-typedef NS_ENUM(NSUInteger, BBZVideoFillModeType) {
-    BBZVideoFillModeStretch,
-    BBZVideoFillModePreserveAspectRatio,
-    BBZVideoFillModePreserveAspectRatioAndFill
-};
 
 /*
  使用transform有三种场景

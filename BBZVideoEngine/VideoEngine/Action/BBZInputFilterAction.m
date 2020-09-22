@@ -64,9 +64,15 @@
     self.videoMultiFilter = [[BBZVideoInputFilter alloc] initWithVertexShaderFromString:vertexShader fragmentShaderFromString:framgmentShader];
     self.videoMultiFilter.renderSize = self.renderSize;
     self.videoMultiFilter.bUseBackGroundImage = bUseLastFB;
+    self.videoMultiFilter.fillType = self.fillType;
     self.videoMultiFilter.bgFrameBuffer = [GPUImageFramebuffer BBZ_frameBufferWithImage:self.node.image.CGImage];
     [self.videoMultiFilter.bgFrameBuffer disableReferenceCounting];
     self.videoMultiFilter.debugName = @"BBZVideoInputFilter";
+}
+
+- (void)setFillType:(BBZVideoFillModeType)fillType {
+    _fillType = fillType;
+    self.videoMultiFilter.fillType = fillType;
 }
 
 //- (void)setTransform:(CGAffineTransform)transform {

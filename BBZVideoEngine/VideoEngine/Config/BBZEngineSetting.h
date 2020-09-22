@@ -8,9 +8,19 @@
 
 #import <Foundation/Foundation.h>
 
+
 NS_ASSUME_NONNULL_BEGIN
 
+typedef NS_ENUM(NSUInteger, BBZVideoFillModeType) {
+    BBZVideoFillModeStretch,
+    BBZVideoFillModePreserveAspectRatio,
+    BBZVideoFillModePreserveAspectRatioAndFill
+};
+
+
 @interface BBZEngineSetting : NSObject
+
+@property (nonatomic, assign) BBZVideoFillModeType fillType;
 
 @property (nonatomic, assign) CGSize videoSize;
 @property (nonatomic, assign) NSInteger videoBitRate;

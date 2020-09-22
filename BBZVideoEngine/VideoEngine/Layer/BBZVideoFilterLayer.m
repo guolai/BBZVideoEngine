@@ -74,6 +74,7 @@
         filterAction.startTime = action.startTime;
         filterAction.duration = action.duration;
         filterAction.renderSize = self.context.renderSize;
+        filterAction.fillType = self.context.videoSettings.fillType;
         BBZActionTree *filterTree = [BBZActionTree createActionTreeWithAction:filterAction];
         [filterTree addSubTree:actionTree];
         filterTree.groupIndex = builder.groupIndex;
