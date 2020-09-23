@@ -22,6 +22,7 @@
 
 - (void)dealloc {
     outputFramebuffer = nil;
+    [self removeAllCacheFrameBuffer];
 }
 
 - (id)initWithVertexShaderFromString:(NSString *)vertexShaderString fragmentShaderFromString:(NSString *)fragmentShaderString {
