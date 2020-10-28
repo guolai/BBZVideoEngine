@@ -20,6 +20,8 @@
 @property (nonatomic, copy) BBZExportCompletionBlock completeBlock;
 @property (nonatomic, copy) BBZExportProgressBlock progressBlock;
 
+- (void)resume;
+
 + (instancetype)videoEngineWithModel:(BBZVideoModel *)model
                       context:(BBZEngineContext *)context
                          outputFile:(NSString *)outputFile;

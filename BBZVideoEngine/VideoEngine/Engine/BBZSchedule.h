@@ -33,6 +33,7 @@
 
 - (void)setTimelineRate:(float)rate;
 - (void)startTimeline;
+- (void)resumeTimeline;
 - (void)pauseTimeline;
 - (void)stopTimeline;
 - (void)seekTimelineToTime:(CMTime)time;

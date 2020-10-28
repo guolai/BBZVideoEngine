@@ -254,8 +254,24 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
 
 #pragma mark - Public
 
+- (void)resume {
+    BBZINFO(@"videoEngine task is begin");
+    if(self.state == BBZTaskStateRunning) {
+        return;
+    }
+    if(self.state == BBZTaskStatePause) {
+        [self.director  start];
+        [self.schedule resumeTimeline];
+        self.state = BBZTaskStateRunning;
+        BBZINFO(@"videoEngine task is resume");
+    } else {
+        [self start];
+        BBZINFO(@"videoEngine task is start");
+    }
+}
 
 - (BOOL)start {
+    [super start];
     [self prepareForStart];
     [self.director start];
     [self.schedule startTimeline];
@@ -264,12 +280,17 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
 }
 
 - (BOOL)pause {
+    if(self.state != BBZTaskStateRunning) {
+        return NO;
+    }
+    [super pause];
     [self.director pause];
     [self.schedule pauseTimeline];
     return YES;
 }
 
 - (BOOL)cancel {
+    [super cancel];
     [self.director cancel];
     [self.schedule stopTimeline];
     return YES;
@@ -300,8 +321,14 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
 - (void)didWriteVideoFrame {
     if(self.context.scheduleMode == BBZEngineScheduleModeExport) {
         __weak typeof(self) weakSelf = self;
+        if(self.state == BBZTaskStatePause) {
+            return;
+        }
         BBZRunAsynchronouslyOnTaskQueue(^{
             __strong typeof(self) strongSelf = weakSelf;
+            if(strongSelf.state == BBZTaskStatePause) {
+                return;
+            }
             if(strongSelf.progressBlock) {
                 CGFloat progress = strongSelf.schedule.currentTime/self.videoModelCombinedDuration;
                 self.progressBlock(progress);

@@ -7,6 +7,7 @@
 //
 
 #import "BBZSchedule.h"
+#import "BBZQueueManager.h"
 
 @interface BBZSchedule ()
 @property (nonatomic, assign) BBZEngineScheduleMode mode;
@@ -41,6 +42,9 @@
 
 
 - (void)onTimer:(CADisplayLink *)displayLink {
+    if(self.bPaused) {
+        return;
+    }
     NSTimeInterval now = CFAbsoluteTimeGetCurrent();
     NSTimeInterval deltaTime = (now - self.lastTime) * self.rate;
     self.currentTime = self.currentTime + deltaTime;
@@ -76,6 +80,7 @@
 
 - (void)startTimeline {
     self.bPaused = NO;
+    self.lastTime = CFAbsoluteTimeGetCurrent();
     if(self.mode == BBZEngineScheduleModeExport) {
         NSTimeInterval now = CFAbsoluteTimeGetCurrent();
         NSTimeInterval deltaTime = (now - self.lastTime) * self.rate;
@@ -99,13 +104,24 @@
 - (void)setBPaused:(BOOL)bPaused {
     _bPaused = bPaused;
     self.displayLink.paused = _bPaused;
-    if(_bPaused) {
-        NSTimeInterval now = CFAbsoluteTimeGetCurrent();
-        NSTimeInterval deltaTime = (now - self.lastTime) * self.rate;
-        self.currentTime = self.currentTime + deltaTime;
+}
+
+- (void)resumeTimeline {
+    self.bPaused = NO;
+    if(self.mode == BBZEngineScheduleModeExport) {
+        BBZRunAsynchronouslyOnTaskQueue(^{
+            [self increaseTime];
+        });
     } else {
-        self.lastTime = CFAbsoluteTimeGetCurrent();
+        if(self.bPaused) {
+            NSTimeInterval now = CFAbsoluteTimeGetCurrent();
+            NSTimeInterval deltaTime = (now - self.lastTime) * self.rate;
+            self.currentTime = self.currentTime + deltaTime;
+        } else {
+            self.lastTime = CFAbsoluteTimeGetCurrent();
+        }
     }
+    BBZINFO(@"BBZSchedule resumeTimeline");
 }
 
 - (void)pauseTimeline {
@@ -119,6 +135,7 @@
         [self.displayLink invalidate];
         self.displayLink = nil;
     }
+    self.currentTime = 0;
     BBZINFO(@"BBZSchedule resetTimeline");
 }
 
@@ -128,6 +145,9 @@
 }
 
 - (void)increaseTime {
+    if(self.bPaused) {
+        return;
+    }
     self.currentTime += CMTimeGetSeconds(self.targetFrameDuration);
     CMTime tmpTime = CMTimeMake(self.currentTime * BBZScheduleTimeScale, BBZScheduleTimeScale);
     BBZINFO(@" currentTime = %.4f,%.4f", self.currentTime, CMTimeGetSeconds(tmpTime));

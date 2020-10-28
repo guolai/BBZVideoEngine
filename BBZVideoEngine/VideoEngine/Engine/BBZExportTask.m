@@ -16,11 +16,20 @@
 @property (nonatomic, strong) NSString *exportFilePath;
 @property (nonatomic, strong) BBZVideoEngine *videoEngine;
 @property (nonatomic, strong) BBZEngineContext *context;
+@property (nonatomic, assign) BOOL bShouldResume;
 //@property (nonatomic, assign) dispatch_queue_t queue;
 @end
 
 @implementation BBZExportTask
 @synthesize videoModel = _videoModel;
+
+- (void)dealloc {
+    if(self.bShouldRemoveFileAfterCompleted) {
+        if ([[NSFileManager defaultManager] fileExistsAtPath:self.exportFilePath]) {
+            [[NSFileManager defaultManager] removeItemAtPath:self.exportFilePath error:NULL];
+        }
+    }
+}
 
 - (instancetype)initWithModel:(BBZVideoModel *)videoModel {
     if(self = [super init]) {
@@ -66,34 +75,40 @@
             });
         }
     });
+    [self addObserverNotification];
     return bRet;
+}
+
+- (void)resume {
+    BBZRunAsynchronouslyOnExportQueue(^{
+         [self.videoEngine resume];
+    });
 }
 
 - (BOOL)pause {
     __block BOOL bRet = NO;
-    BBZRunSynchronouslyOnExportQueue(^{
+//    BBZRunAsynchronouslyOnExportQueue(^{
         if(self.state == BBZTaskStateRunning) {
             bRet = YES;
             self.state = BBZTaskStatePause;
-            BBZRunAsynchronouslyOnExportQueue(^{
-                
-            });
+            [self.videoEngine pause];
         } else  if(self.state == BBZTaskStatePause){
             BBZINFO(@"export task is paused");
         } else {
           
             BBZINFO(@"export task is not runnig");
         }
-    });
+//    });
     return bRet;
 }
 
 - (BOOL)cancel {
     __block BOOL bRet = NO;
-    BBZRunSynchronouslyOnExportQueue(^{
+    BBZRunAsynchronouslyOnExportQueue(^{
         if(self.state == BBZTaskStateRunning) {
             bRet = YES;
             self.state = BBZTaskStateCancel;
+            [self.videoEngine cancel];
             // to do cancel
         } else  if(self.state == BBZTaskStateCancel){
             BBZINFO(@"export task is cancel");
@@ -101,11 +116,12 @@
             BBZINFO(@"export task is not runnig");
         }
     });
+    [self removeObserverNotification];
     return bRet;
 }
 
 - (void)completeWithError:(NSError *)error {
-   
+   [self removeObserverNotification];
 }
 
 - (void)updateProgress:(float)progress {
@@ -118,4 +134,32 @@
     }
     return _outputFile;
 }
+
+#pragma mark - Private
+
+- (void)addObserverNotification {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
+}
+
+- (void)removeObserverNotification {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)applicationDidBecomeActive {
+    if(self.bShouldResume) {
+        [self resume];
+    }
+}
+
+- (void)applicationWillResignActive {
+    if(self.state == BBZTaskStateRunning) {
+        self.bShouldResume = YES;
+        [self pause];
+    } else {
+        self.bShouldResume = NO;
+    }
+}
+
+
 @end

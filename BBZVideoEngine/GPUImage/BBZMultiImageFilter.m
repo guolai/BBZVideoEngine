@@ -37,8 +37,8 @@
     _shouldClearBackGround = NO;
     _fenceCount = 1;
     runSynchronouslyOnVideoProcessingQueue(^{
-        BBZINFO(@"V:%@", vertexShaderString);
-        BBZINFO(@"F:%@", fragmentShaderString);
+//        BBZINFO(@"V:%@", vertexShaderString);
+//        BBZINFO(@"F:%@", fragmentShaderString);
         [self resetFence];
         [GPUImageContext useImageProcessingContext];
         self->_uniformTextures[0] = self->filterInputTextureUniform;
