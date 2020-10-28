@@ -5,9 +5,13 @@
 
 # 目的 ：
 
-随着社交类APP抖音快手带动短视频行业的爆火，越来越多的行业参与到了短视频这个领域。比如以电商为代表的淘宝拼多多，以及我们公司虾皮也会慢慢在这块进行了一些新的尝试。
+随着社交类APP抖音快手带动短视频行业的爆火，越来越多的行业参与到了短视频这个领域。比如以电商为代表的淘宝拼多多，以及以及东南亚电商。
 
-之前在腾讯微视主要负责了发布器引擎相关开发与设计，本次设计框架主要是在以前微视框架上进行了大幅改进，以使虾皮可以在这块少走一些弯路、少掉一些坑，以更加合理的功能架构设计，在实现当前需求的功能前提下，为以后产品功能的快速迭代预留好新增功能的接口。同时在性能提升方面尽可能做到极致，占用更少的内存CPU资源
+之前在腾讯主要负责了发布器引擎相关开发与设计，一直在思考如何实现一套比较完美的音视频编辑引擎，可以在支持扩展的情况下，又极大的保持性能与内存占用的最小化实现.
+对比了行业内常见三种音视频引擎实现方案在性能及扩展能力方面的指标，最终决定了当前开源音视频引擎架构原型。
+希望可以帮助更多的使用者可以在这块少走一些弯路、少掉一些坑，以更加合理的功能架构设计，在实现当前需求的功能前提下，为以后产品功能的快速迭代预留好新增功能的接口。同时在性能提升方面尽可能做到极致，占用更少的内存CPU资源
+当然写这个框架是利用了一些业余时间来完成的，还有一些功能点未进行开发
+有任何使用过程中的有比较好的建议或者问题，欢迎加VX：HaoYeO88 交流
 
 # 功能：
 
@@ -51,40 +55,40 @@
 
 
 ## 整体框架图
-![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/AVFoundation.png)
+<!-- ![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/AVFoundation.png) -->
 ![Image text](https://github.com/guolai/testCoreData/blob/master/AVFoundation.png)
 
 
 ## 音视频引擎架构图
-![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/AVFoundatioSimpleClass.png)
+<!-- ![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/AVFoundatioSimpleClass.png) -->
 ![Image text](https://github.com/guolai/testCoreData/blob/master/AVFoundatioSimpleClass.png)
 
 ## 类结构概览
-![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/class.png)
+<!-- ![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/class.png) -->
 ![Image text](https://github.com/guolai/testCoreData/blob/master/class.png)
 
 ## 音视频处理工作流
-![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/DescriptionWorkFlow.png)
+<!-- ![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/DescriptionWorkFlow.png) -->
 ![Image text](https://github.com/guolai/testCoreData/blob/master/DescriptionWorkFlow.png)
 
-![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/VideoEngineWorkFlow.png)
+<!-- ![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/VideoEngineWorkFlow.png) -->
 ![Image text](https://github.com/guolai/testCoreData/blob/master/VideoEngineWorkFlow.png)
 
 
 ## 转场时间轴示意
-![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/TransitionFlow.png)
+<!-- ![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/TransitionFlow.png) -->
 ![Image text](https://github.com/guolai/testCoreData/blob/master/TransitionFlow.png)
 
 ## 树状滤镜链管理
-![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/FilterTreeManage.png)
+<!-- ![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/FilterTreeManage.png) -->
 ![Image text](https://github.com/guolai/testCoreData/blob/master/FilterTreeManage.png)
 
 ## 拼接及转场滤镜链
-![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/transitionAndSplice.png)
+<!-- ![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/transitionAndSplice.png) -->
 ![Image text](https://github.com/guolai/testCoreData/blob/master/transitionAndSplice.png)
 
 ## 滤镜链优化处理
-![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/FilterOptimization.png)
+<!-- ![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/FilterOptimization.png) -->
 ![Image text](https://github.com/guolai/testCoreData/blob/master/FilterOptimization.png)
 
 ## 代码使用示例
