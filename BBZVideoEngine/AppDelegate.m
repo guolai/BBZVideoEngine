@@ -11,7 +11,7 @@
 #import "BBZErrorMonitor.h"
 
 @interface AppDelegate ()
-
+@property (atomic, assign) UIBackgroundTaskIdentifier backgroundTask;
 @end
 
 @implementation AppDelegate
@@ -25,7 +25,7 @@
     [[BBZErrorMonitor shareInstance] addErrorBlock:^(NSError *error) {
         NSSet *ignoredErrors = [NSSet setWithObjects:@(401), @(4097),@(2),@(260), nil];
         if (error && ![ignoredErrors containsObject:@(error.code)]) {
-            BBZINFO(@"%@", [NSString stringWithFormat:@"%@:%ld",error.domain,(long)error.code]);
+            BBZINFO(@"BBZErrorMonitor %@", [NSString stringWithFormat:@"%@:%ld",error.domain,(long)error.code]);
         }
     }];
     
@@ -52,23 +52,46 @@
 
 
 - (void)applicationWillResignActive:(UIApplication *)application {
-    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-    // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
+//    usleep(1000);
+    NSLog(@"applicationWillResignActive 1");
 }
 
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    NSLog(@"applicationDidEnterBackground 1");
+//    usleep(9000);
+    NSLog(@"applicationDidEnterBackground 2");
+    if (self.backgroundTask != UIBackgroundTaskInvalid) {    // 双击home之后，关闭程序，仍然会进到这个程序里来，这时候结束就可以了
+        NSLog(@"backgroundTask != UIBackgroundTaskInvalid return");
+        return;
+    }
+    
+    self.backgroundTask = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+
+        
+        NSLog(@"***********程序将被系统挂起***********");
+        [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTask];
+        self.backgroundTask = UIBackgroundTaskInvalid;
+        NSLog(@"***********程序将被系统挂起 结束***********");
+    }];
+    
+    if (self.backgroundTask == UIBackgroundTaskInvalid) {
+        NSLog(@"**********后台任务开启失败!");
+        return;
+    }
 }
 
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-    // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+//    usleep(1000);
+    NSLog(@"applicationWillEnterForeground");
 }
 
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
+    application.applicationIconBadgeNumber = 0;
+//    usleep(1000);
+    NSLog(@"applicationDidBecomeActive");
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 }
 

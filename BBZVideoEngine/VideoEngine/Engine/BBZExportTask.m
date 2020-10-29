@@ -58,6 +58,9 @@
             if ([[NSFileManager defaultManager] fileExistsAtPath:self.outputFile]) {
                 [[NSFileManager defaultManager] removeItemAtPath:self.outputFile error:NULL];
             }
+            if ([UIApplication sharedApplication].applicationState != UIApplicationStateActive) {
+                self.bShouldResume = YES;
+            }
             self.state = BBZTaskStateRunning;
             bRet = YES;
             if(!self.videoSetting) {
@@ -81,7 +84,13 @@
 
 - (void)resume {
     BBZRunAsynchronouslyOnExportQueue(^{
-         [self.videoEngine resume];
+        if(self.state == BBZTaskStatePause) {
+             [self.videoEngine resume];
+            self.state = BBZTaskStateRunning;
+        } else {
+            [self start];
+        }
+        
     });
 }
 
@@ -149,6 +158,7 @@
 - (void)applicationDidBecomeActive {
     if(self.bShouldResume) {
         [self resume];
+        self.bShouldResume = NO;
     }
 }
 
