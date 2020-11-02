@@ -7,9 +7,11 @@
 //
 
 #import "BBZVistualFilterAction.h"
-//#import "BBZMultiImageFilter.h"
+#import "BBZMultiImageFilter.h"
 
 @interface BBZFilterAction : BBZAction <BBZActionChainProtocol>
+@property (nonatomic, strong) BBZMultiImageFilter *multiFilter;
+
 
 @property (nonatomic, assign) CGSize renderSize;
 

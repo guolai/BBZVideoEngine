@@ -110,6 +110,8 @@
 		14183FB12450511D00D03057 /* YYTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 14183F5F2450511D00D03057 /* YYTimer.m */; };
 		14183FB22450511D00D03057 /* YYThreadSafeArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 14183F602450511D00D03057 /* YYThreadSafeArray.m */; };
 		14183FB32450511D00D03057 /* YYReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 14183F612450511D00D03057 /* YYReachability.m */; };
+		141875B6254FE283004E3026 /* BBZMaskVideoFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 141875B5254FE283004E3026 /* BBZMaskVideoFilter.m */; };
+		141875BC254FE3CB004E3026 /* BBZBlendVideoFilterAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 141875BB254FE3CB004E3026 /* BBZBlendVideoFilterAction.m */; };
 		1426D6FA243D82BD008BEB86 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1426D6F9243D82BD008BEB86 /* AppDelegate.m */; };
 		1426D6FD243D82BD008BEB86 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1426D6FC243D82BD008BEB86 /* ViewController.m */; };
 		1426D702243D82BE008BEB86 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1426D701243D82BE008BEB86 /* Assets.xcassets */; };
@@ -400,6 +402,10 @@
 		14183F602450511D00D03057 /* YYThreadSafeArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYThreadSafeArray.m; sourceTree = "<group>"; };
 		14183F612450511D00D03057 /* YYReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYReachability.m; sourceTree = "<group>"; };
 		14183F622450511D00D03057 /* YYSentinel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYSentinel.h; sourceTree = "<group>"; };
+		141875B4254FE283004E3026 /* BBZMaskVideoFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZMaskVideoFilter.h; sourceTree = "<group>"; };
+		141875B5254FE283004E3026 /* BBZMaskVideoFilter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZMaskVideoFilter.m; sourceTree = "<group>"; };
+		141875BA254FE3CB004E3026 /* BBZBlendVideoFilterAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZBlendVideoFilterAction.h; sourceTree = "<group>"; };
+		141875BB254FE3CB004E3026 /* BBZBlendVideoFilterAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZBlendVideoFilterAction.m; sourceTree = "<group>"; };
 		1426D6F5243D82BD008BEB86 /* BBZVideoEngine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BBZVideoEngine.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1426D6F8243D82BD008BEB86 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		1426D6F9243D82BD008BEB86 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -945,6 +951,8 @@
 				1493807A24697EB300051DFC /* BBZVideoOutputFilter.m */,
 				1484CF8D247FA2C300B2245B /* BBZShader.h */,
 				1484CF8E247FA2C300B2245B /* BBZShader.m */,
+				141875B4254FE283004E3026 /* BBZMaskVideoFilter.h */,
+				141875B5254FE283004E3026 /* BBZMaskVideoFilter.m */,
 			);
 			path = GPUImage;
 			sourceTree = "<group>";
@@ -976,6 +984,8 @@
 				1849444A248FF29C00E0912C /* BBZAudioAction.m */,
 				1849444C248FF2B700E0912C /* BBZAudioReaderAction.h */,
 				1849444D248FF2B700E0912C /* BBZAudioReaderAction.m */,
+				141875BA254FE3CB004E3026 /* BBZBlendVideoFilterAction.h */,
+				141875BB254FE3CB004E3026 /* BBZBlendVideoFilterAction.m */,
 			);
 			path = Action;
 			sourceTree = "<group>";
@@ -1326,6 +1336,7 @@
 				14183F682450511D00D03057 /* YYWebImageManager.m in Sources */,
 				1431FA27244B58A400AA2F65 /* BBZVideoAsset.m in Sources */,
 				14183F6F2450511D00D03057 /* UIImageView+YYWebImage.m in Sources */,
+				141875B6254FE283004E3026 /* BBZMaskVideoFilter.m in Sources */,
 				1431FA2A244B58B300AA2F65 /* BBZImageAsset.m in Sources */,
 				14183FAA2450511D00D03057 /* YYThreadSafeDictionary.m in Sources */,
 				1849444E248FF2B700E0912C /* BBZAudioReaderAction.m in Sources */,
@@ -1406,6 +1417,7 @@
 				18B80E192451F5A600B3B376 /* BBZTransitionGroupNode.m in Sources */,
 				1409D1F1244959850053CFA4 /* GPUImageFilter.m in Sources */,
 				1431FA66244D8E3000AA2F65 /* BBZVideoModel.m in Sources */,
+				141875BC254FE3CB004E3026 /* BBZBlendVideoFilterAction.m in Sources */,
 				14183CA724503AA400D03057 /* BBZFilterModel.m in Sources */,
 				1426D6FA243D82BD008BEB86 /* AppDelegate.m in Sources */,
 				14183F8D2450511D00D03057 /* UIDevice+YYAdd.m in Sources */,

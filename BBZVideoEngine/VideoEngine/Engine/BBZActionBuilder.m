@@ -13,6 +13,9 @@
 #import "BBZInputFilterAction.h"
 #import "BBZVideoWriterAction.h"
 #import "BBZVideoControl.h"
+#import "BBZBlendVideoFilterAction.h"
+
+extern NSString *const BBZFilterBlendVideo;
 
 @implementation BBZActionBuilder
 + (void)connectAction:(BBZAction *)fromAction toAction:(BBZAction *)toAction {
@@ -56,7 +59,7 @@
     for (NSInteger index = actionTree.actions.count - 1; index >= 0 ; index--) {
         BBZAction *tmpAction = [actionTree.actions objectAtIndex:index];
         if([tmpAction isKindOfClass:[BBZVistualFilterAction class]]) {
-            tmpAction = [BBZFilterAction createWithVistualAction:(BBZVistualFilterAction *)tmpAction];
+            tmpAction = [BBZActionBuilder createFilterActionFromVistualAction:(BBZVistualFilterAction *)tmpAction];
         }
         headAction = tmpAction;
         if(!tailAction) {//根结点
@@ -86,6 +89,16 @@
     for (BBZAction *action in actionTree.actions) {
         [action removeConnects];
     }
+}
+
++ (BBZFilterAction *)createFilterActionFromVistualAction:(BBZVistualFilterAction *)vistualAction {
+    BBZFilterAction *retAction = nil;
+    if([vistualAction.node.name isEqualToString:BBZFilterBlendVideo]) {
+        retAction = [BBZBlendVideoFilterAction createWithVistualAction:vistualAction];
+    } else {
+        retAction = [BBZFilterAction createWithVistualAction:vistualAction];
+    }
+    return retAction;;
 }
 
 @end

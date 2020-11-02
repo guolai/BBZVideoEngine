@@ -9,6 +9,7 @@
 #import "BBZNode.h"
 #import "NSDictionary+YYAdd.h"
 extern const int BBZVideoDurationScale;
+extern const int BBZScheduleTimeScale;
 
 NSString *const BBZFilterTransformSource = @"transformsource";
 NSString *const BBZFilterBlendImage = @"blendimage";
@@ -155,6 +156,20 @@ NSString *const BBZFilterLut = @"lut";
 //    return self.end;
 //}
 
+- (CMTime)relativeTimeFromActionTime:(CMTime)actionTime {
+    NSTimeInterval tmpTime = CMTimeGetSeconds(actionTime);
+    NSInteger intTime = tmpTime * 1000;
+    NSInteger intDuration = (self.end - self.begin) * 1000;
+    NSInteger repeat = intTime / intDuration;
+    if(repeat > self.repeat) {
+        NSAssert(false, @"repeat error");
+        return kCMTimeInvalid;
+    }
+    double offSet = repeat * (self.end - self.begin);
+    tmpTime = tmpTime - offSet;
+    CMTime retTime = CMTimeMake(tmpTime * BBZScheduleTimeScale, BBZScheduleTimeScale);
+    return retTime;
+}
 
 - (BBZNodeAnimationParams *)paramsAtTime:(double)time {
     if(self.animations.count == 0) {

@@ -75,6 +75,8 @@ extern NSString *const BBZFilterLut;
 
 - (BBZNodeAnimationParams *)paramsAtTime:(double)time;
 
+- (CMTime)relativeTimeFromActionTime:(CMTime)actionTime;
+
 @end
 
 

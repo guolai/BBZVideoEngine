@@ -7,13 +7,13 @@
 //
 
 #import "BBZFilterAction.h"
-#import "BBZMultiImageFilter.h"
+//#import "BBZMultiImageFilter.h"
 #import "GPUImageFramebuffer+BBZ.h"
 #import "BBZNodeAnimationParams+property.h"
 #import "BBZFilterMixer.h"
 
 @interface BBZFilterAction ()
-@property (nonatomic, strong) BBZMultiImageFilter *multiFilter;
+
 @property (nonatomic, strong) NSMutableArray *arrayNode;
 @property (nonatomic, strong) NSMutableArray *maskImages;
 @end    
@@ -39,7 +39,7 @@
     if(vistualAction.filterAction) {
         return vistualAction.filterAction;
     }
-    BBZFilterAction *fitlerAction = [[BBZFilterAction alloc] initWithNode:vistualAction.node];
+    BBZFilterAction *fitlerAction = [[[self class] alloc] initWithNode:vistualAction.node];
     fitlerAction.renderSize = vistualAction.renderSize;
     fitlerAction.repeatCount = vistualAction.repeatCount;
     fitlerAction.startTime = vistualAction.startTime;
@@ -68,8 +68,10 @@
 
 
 - (void)createImageFilter {
-    BBZFilterMixer *mixer = [BBZFilterMixer filterMixerWithNodes:@[self.node]];
-    self.multiFilter = [[BBZMultiImageFilter alloc] initWithVertexShaderFromString:mixer.vShaderString fragmentShaderFromString:mixer.fShaderString];
+    if(!self.multiFilter) {
+        BBZFilterMixer *mixer = [BBZFilterMixer filterMixerWithNodes:@[self.node]];
+        self.multiFilter = [[BBZMultiImageFilter alloc] initWithVertexShaderFromString:mixer.vShaderString fragmentShaderFromString:mixer.fShaderString];
+    }
     self.multiFilter.debugName = self.node.name;
     if([self.node.name isEqualToString:BBZFilterTransition]) {
         self.multiFilter.fenceCount = 2;

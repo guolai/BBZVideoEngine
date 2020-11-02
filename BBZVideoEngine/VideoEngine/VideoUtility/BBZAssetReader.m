@@ -169,7 +169,7 @@
 
 - (AVAssetReaderOutput *)videoCompositionOutputWithOutputSettings:(NSDictionary *)outputSettings {
     AVAssetReaderVideoCompositionOutput *output;
-    if(outputSettings) {
+    if(!outputSettings) {
         outputSettings = [self defaultVideoOutputSettings];
     }
     NSArray *tracks = [self.reader.asset tracksWithMediaType:AVMediaTypeVideo];
@@ -369,6 +369,9 @@
     }
     
     while (CMTimeCompare(firstSampleBufferTime, CMTimeAdd(targetTime, CMTimeMake(1, 6000))) <= 0) {
+//        if(tmpSampleBuffer) {
+//            CFRelease(tmpSampleBuffer);
+//        }
         tmpSampleBuffer = self.canRead ? [self nextSampleBufferForProviderOutput:self.providerOutput] : NULL;
         if (tmpSampleBuffer == NULL) {
             break;

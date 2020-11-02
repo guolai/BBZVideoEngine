@@ -19,6 +19,7 @@ typedef NS_ENUM(NSInteger, BBZExportType) {
     BBZExportTypeSpliceImagesAndVideosBGM = 7,
     BBZExportTypeImagesBGMTransition = 8,
     BBZExportTypeImages = 9,
+    BBZExportTypeMaskVideo = 10,
 
 };
 

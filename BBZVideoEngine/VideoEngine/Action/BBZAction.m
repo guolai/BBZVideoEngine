@@ -115,6 +115,10 @@
     return CMTimeMake(self.startTime * BBZVideoDurationScale, BBZVideoDurationScale);
 }
 
+- (CMTime)realStartCMTime {
+    return CMTimeMake(self.startTime, BBZVideoDurationScale);
+}
+
 - (CMTime)durationCMTime {
     return CMTimeMake((self.endTime - self.startTime) * BBZVideoDurationScale, BBZVideoDurationScale);
 }

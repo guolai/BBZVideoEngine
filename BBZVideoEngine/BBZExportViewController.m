@@ -98,7 +98,7 @@
     if(self.exportType == BBZExportTypeSingleVideoCostomParamas) {
         path = [[NSBundle mainBundle] pathForResource:@"douyin3" ofType:@"mp4" inDirectory:@"Resource"];
         [videoModel addVideoSource:path];
-    } else if(self.exportType == BBZExportTypeVideos) {
+    } else if(self.exportType == BBZExportTypeVideos ) {
         [videoModel addVideoSource:path];
         path = [[NSBundle mainBundle] pathForResource:@"douyin3" ofType:@"mp4" inDirectory:@"Resource"];
         [videoModel addVideoSource:path];
@@ -226,6 +226,15 @@
         path = [[NSBundle mainBundle] pathForResource:@"IMG_7305" ofType:@"HEIC" inDirectory:@"Resource"];
         [videoModel addImageSource:path];
     }
+    else if(self.exportType == BBZExportTypeMaskVideo) {
+//        [videoModel addVideoSource:path];
+        
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7317" ofType:@"HEIC" inDirectory:@"Resource"];
+        [videoModel addImageSource:path];
+        
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7305" ofType:@"HEIC" inDirectory:@"Resource"];
+        [videoModel addImageSource:path];
+    }
     
     
     //    path = [NSString stringWithFormat:@"%@/Resource/demo3", [[NSBundle mainBundle] bundlePath]];
@@ -281,7 +290,10 @@
         }
         videoModel.maskImage = multiArray;
     }
-    if (1) {
+    if(self.exportType == BBZExportTypeMaskVideo) {
+        NSString *path = [NSString stringWithFormat:@"%@/Resource/filter/mask", [[NSBundle mainBundle] bundlePath]];
+        [videoModel addFilterGroup:path];
+    } else if (1) {
         NSString *path = [NSString stringWithFormat:@"%@/Resource/filter/lut", [[NSBundle mainBundle] bundlePath]];
         [videoModel addFilterGroup:path];
     }
