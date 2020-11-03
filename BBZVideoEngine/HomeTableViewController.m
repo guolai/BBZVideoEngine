@@ -8,15 +8,18 @@
 
 #import "HomeTableViewController.h"
 #import "BBZExportViewController.h"
+#import "BBZExportViewController2.h"
 #import "BBZVideoModel.h"
 
 @interface HomeTableViewController ()
 @property (nonatomic, strong) NSMutableArray *array;
+@property (nonatomic, assign) BOOL bUseExportSquare;
 @end
 
 @implementation HomeTableViewController
 
 - (void)viewDidLoad {
+    self.bUseExportSquare = YES;
     [super viewDidLoad];
     self.array = [NSMutableArray array];
     [self.array addObject:@"单视频尺寸转换"];
@@ -49,9 +52,16 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    BBZExportViewController *vc = [[BBZExportViewController alloc] init];
-    vc.exportType = indexPath.row;
-    [self.navigationController pushViewController:vc animated:YES];
+    if(self.bUseExportSquare) {
+        BBZExportViewController2 *vc = [[BBZExportViewController2 alloc] init];
+        vc.exportType = indexPath.row;
+        [self.navigationController pushViewController:vc animated:YES];
+    } else {
+        BBZExportViewController *vc = [[BBZExportViewController alloc] init];
+        vc.exportType = indexPath.row;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    
 }
 
 
