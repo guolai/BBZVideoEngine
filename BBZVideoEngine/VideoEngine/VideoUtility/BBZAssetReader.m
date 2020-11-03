@@ -89,7 +89,7 @@
 }
 
 - (void)startProcessing {
-    
+    [self restartProvider];
 }
 
 - (void)endProcessing {
@@ -117,6 +117,11 @@
 
 - (NSError *)error {
     return ((self.provider != nil) && (self.provider.status == AVAssetReaderStatusFailed)) ? self.provider.error : self.lastError;
+}
+
+
+- (BOOL)restartProvider {
+    return NO;
 }
 
 - (NSError *)restartProviderWithOutputs:(NSArray *)outputs timeRange:(CMTimeRange)timeRange {

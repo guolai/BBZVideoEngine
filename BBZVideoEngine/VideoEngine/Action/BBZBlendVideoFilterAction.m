@@ -17,7 +17,10 @@
 
 @interface BBZBlendVideoFilterAction ()
 @property (nonatomic, strong) BBZAssetReader *reader;
-@property (nonatomic, strong) BBZAssetReaderRandomAccessVideoOutput *videoOutPut;
+@property (nonatomic, strong) BBZAssetReaderSequentialAccessVideoOutput *videoOutPut;
+@property (nonatomic, assign) CMSampleBufferRef sampleBuffer;
+@property (nonatomic, assign) CMSampleBufferRef usedSampleBuffer;
+@property (nonatomic, assign) CMTime lastTime;
 
 @end
 
@@ -50,7 +53,7 @@
     BBZVideoAsset *videoAsset = [BBZVideoAsset assetWithAVAsset:avAsset];
      self.reader = [[BBZAssetReader alloc] initWithAsset:(AVAsset *)videoAsset.asset];
     self.reader.timeRange = videoAsset.playTimeRange;
-    self.videoOutPut = [[BBZAssetReaderRandomAccessVideoOutput alloc] initWithOutputSettings:[self defaultVideoOutputSettings]];
+    self.videoOutPut = [[BBZAssetReaderSequentialAccessVideoOutput alloc] initWithOutputSettings:[self defaultVideoOutputSettings]];
     [self.reader addOutput:self.videoOutPut];
 }
 
@@ -68,6 +71,8 @@
 }
 
 - (void)destroySomething{
+    self.sampleBuffer = nil;
+    self.usedSampleBuffer = nil;
     [self.videoOutPut endProcessing];
     [self.reader removeOutput:self.videoOutPut];
     self.videoOutPut = nil;
@@ -89,13 +94,67 @@
     CMTime actionTime = CMTimeSubtract(time, self.realStartCMTime);
     if (CMTIME_IS_NUMERIC(actionTime) &&
         CMTIME_COMPARE_INLINE(actionTime, >=, kCMTimeZero)) {
+        
         CMTime assetTime = [self.node relativeTimeFromActionTime:actionTime];
-        [self.videoOutPut sampleBufferAtTime:assetTime];
+        
+        NSTimeInterval assetDuratin = CMTimeGetSeconds(self.reader.timeRange.duration);
+        NSTimeInterval maxDuration = self.node.end - self.node.begin;
+        NSTimeInterval minDuration = MIN(assetDuratin, maxDuration);
+        
+        if(self.sampleBuffer) {
+            CMTime lastSamplePresentationTime = CMSampleBufferGetPresentationTimeStamp(self.sampleBuffer);
+            NSTimeInterval nDiff = CMTimeGetSeconds(CMTimeSubtract(lastSamplePresentationTime, assetTime));
+            if(CMTimeGetSeconds(assetTime) < 0.1) {
+                NSLog(@"adsfasd");
+            }
+            if(nDiff + 0.2 > minDuration) {
+                [self.videoOutPut endProcessing];
+                [self.videoOutPut startProcessing];
+                self.sampleBuffer = nil;
+            }
+        }
+       
+        
+        
+        
+        CMSampleBufferRef sampleBuffer = self.sampleBuffer;
+        if(!sampleBuffer) {
+            sampleBuffer = [self.videoOutPut nextSampleBuffer];
+            if(sampleBuffer) {
+                self.sampleBuffer = sampleBuffer;
+            }
+            if(!self.sampleBuffer) {
+                BBZERROR(@"newFrameAtTime use lastfb");
+                self.sampleBuffer = self.videoOutPut.currentSampleBuffer;
+            }
+            if(!self.sampleBuffer) {
+                BBZERROR(@"newFrameAtTime use usedfb");
+                self.sampleBuffer = self.usedSampleBuffer;
+            }
+        }
+        
+     
+        CMTime lastSamplePresentationTime = CMSampleBufferGetPresentationTimeStamp(self.sampleBuffer);
+        NSTimeInterval nDiff = CMTimeGetSeconds(CMTimeSubtract(lastSamplePresentationTime, assetTime));
+        
+        NSTimeInterval frameTime = CMTimeGetSeconds(CMTimeSubtract(time, self.lastTime));
+        frameTime = fabs(frameTime / 2.0);
+        if(nDiff > 0.001 && nDiff > frameTime) {
+            //下一帧还需要复用
+            self.usedSampleBuffer = self.sampleBuffer;
+        } else {
+            self.usedSampleBuffer = self.sampleBuffer;
+            self.sampleBuffer = nil;
+        }
+        NSAssert(self.usedSampleBuffer, @"error nil samplebuffer");
+        
+        
+//        [self.videoOutPut sampleBufferAtTime:assetTime];
         NSLog(@"BBZBlendVideoFilterAction %.4f,%.4f,%.4f", CMTimeGetSeconds(time),CMTimeGetSeconds(actionTime),CMTimeGetSeconds(assetTime));
     } else {
         NSAssert(false, @"time error");
     }
-    
+    self.lastTime = time;
 //    BBZNodeAnimationParams *params = [self.node paramsAtTime:relativeTime];
     
 //    runAsynchronouslyOnVideoProcessingQueue(^{
@@ -122,6 +181,34 @@
     [self.multiFilter addFrameBuffer:maskFrameBuffer];
     CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
     
+}
+
+- (void)setSampleBuffer:(CMSampleBufferRef)sampleBuffer {
+    if(sampleBuffer &&  _sampleBuffer == sampleBuffer) {
+        return;
+    }
+    if(sampleBuffer) {
+        CFRetain(sampleBuffer);
+    }
+    if(_sampleBuffer) {
+        CFRelease(_sampleBuffer);
+        _sampleBuffer = nil;
+    }
+    _sampleBuffer = sampleBuffer;
+}
+
+- (void)setUsedSampleBuffer:(CMSampleBufferRef)sampleBuffer {
+    if(sampleBuffer &&  _usedSampleBuffer == sampleBuffer) {
+        return;
+    }
+    if(sampleBuffer) {
+        CFRetain(sampleBuffer);
+    }
+    if(_usedSampleBuffer) {
+        CFRelease(_usedSampleBuffer);
+        _usedSampleBuffer = nil;
+    }
+    _usedSampleBuffer = sampleBuffer;
 }
 
 
