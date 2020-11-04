@@ -93,7 +93,7 @@ extern NSString *const BBZFilterBlendVideo;
 
 + (BBZFilterAction *)createFilterActionFromVistualAction:(BBZVistualFilterAction *)vistualAction {
     BBZFilterAction *retAction = nil;
-    if([vistualAction.node.name isEqualToString:BBZFilterBlendVideo]) {
+    if([vistualAction.node.name isEqualToString:BBZFilterBlendVideo] || [vistualAction.node.name isEqualToString:BBZFilterBlendLeftRightVideo]) {
         retAction = [BBZBlendVideoFilterAction createWithVistualAction:vistualAction];
     } else {
         retAction = [BBZFilterAction createWithVistualAction:vistualAction];

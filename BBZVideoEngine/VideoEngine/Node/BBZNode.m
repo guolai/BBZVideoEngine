@@ -14,6 +14,7 @@ extern const int BBZScheduleTimeScale;
 NSString *const BBZFilterTransformSource = @"transformsource";
 NSString *const BBZFilterBlendImage = @"blendimage";
 NSString *const BBZFilterBlendVideo = @"blendvideo";
+NSString *const BBZFilterBlendLeftRightVideo = @"blendlrvideo";
 NSString *const BBZFilterBlendVideoAndImage = @"blendvideoandimage";
 NSString *const BBZFilterTransition = @"transition";
 NSString *const BBZFilterSplice = @"splice";

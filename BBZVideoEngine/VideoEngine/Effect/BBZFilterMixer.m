@@ -53,6 +53,8 @@
             fShader = [BBZShader fragmentMaskBlendShader];
         } else if([node.name isEqualToString:BBZFilterBlendVideo]) {
             fShader = [BBZShader fragmentMaskBlendVideoShader];
+        } else if([node.name isEqualToString:BBZFilterBlendLeftRightVideo]) {
+            fShader = [BBZShader fragmentMaskBlendLeftRightVideoShader];
         } else if([node.name isEqualToString:BBZFilterLut]) {
             fShader = [BBZShader fragmentLutShader];
         }

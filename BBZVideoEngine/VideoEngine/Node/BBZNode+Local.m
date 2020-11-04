@@ -32,6 +32,10 @@
             node.name = BBZFilterBlendVideo;
         }
             break;
+        case BBZNodeBlendLeftRightVideo: {
+            node.name = BBZFilterBlendLeftRightVideo;
+        }
+            break;
         case BBZNodeBlendVideoAndImage: {
             node.name = BBZFilterBlendVideoAndImage;
         }

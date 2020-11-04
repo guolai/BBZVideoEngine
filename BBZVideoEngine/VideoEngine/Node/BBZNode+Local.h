@@ -18,6 +18,7 @@ typedef NS_ENUM(NSInteger, BBZNodeType) {
     BBZNodeTransformSource,
     BBZNodeBlendImage,
     BBZNodeBlendVideo,
+    BBZNodeBlendLeftRightVideo,
     BBZNodeBlendVideoAndImage,
 };
 

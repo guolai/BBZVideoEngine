@@ -254,6 +254,44 @@ NSString *const kNodeMaskBlendVideoFragmentShaderString = SHADER_STRING
  );
 
 
+NSString *const kNodeMaskBlendLRVideoFragmentShaderString = SHADER_STRING
+(
+ precision highp float;
+ varying highp vec2 textureCoordinate;
+ 
+ uniform sampler2D inputImageTexture;
+ uniform sampler2D inputImageTexture2;
+ 
+ uniform vec4 v4Param1;
+ 
+ vec4 blendColor(in highp vec4 dstColor, in highp vec4 srcColor)
+ {
+    vec3 vOne = vec3(1.0, 1.0, 1.0);
+    vec3 vZero = vec3(0.0, 0.0, 0.0);
+    vec3 resultFore = srcColor.rgb + dstColor.rgb * (1.0 - srcColor.a);
+    return vec4(resultFore.rgb, 1.0);
+}
+ 
+ void main()
+ {
+    float wScale = 1.0;
+    float hScale = 1.0;
+    lowp vec4 c1 = texture2D(inputImageTexture, textureCoordinate);
+    vec2 coord = vec2((textureCoordinate.x-0.5)*(1.0/wScale)+0.5,(textureCoordinate.y-0.5)*(1.0/hScale)+0.5);
+    if (coord.x>=0.0&&coord.x<=1.0&&coord.y>=0.0&&coord.y<=1.0)
+    {
+        lowp vec4 c2 = texture2D(inputImageTexture2, vec2(coord.x * 0.5, coord.y));
+        lowp vec4 c3 = texture2D(inputImageTexture2, vec2(coord.x * 0.5 + 0.5, coord.y));
+        gl_FragColor = blendColor(c1, vec4(c2.rgb,c3.r));
+    }
+    else
+    {
+        gl_FragColor = c1;
+    }
+}
+ );
+
+
 
 NSString *const kNodeLutFragmentShaderString = SHADER_STRING
 (
@@ -358,6 +396,13 @@ NSString *const kNodeLutFragmentShaderString = SHADER_STRING
      v4Param1 : wScale,hScale
      */
     return  kNodeMaskBlendVideoFragmentShaderString;
+}
+
++ (NSString *)fragmentMaskBlendLeftRightVideoShader {
+    /*
+     v4Param1 : wScale,hScale
+     */
+    return  kNodeMaskBlendLRVideoFragmentShaderString;
 }
 
 + (NSString *)fragmentLutShader {
