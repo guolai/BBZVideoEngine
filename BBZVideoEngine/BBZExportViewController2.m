@@ -228,7 +228,10 @@
         [videoModel addImageSource:path];
     }
     else if(self.exportType == BBZExportTypeMaskVideo) {
-        [videoModel addVideoSource:path];
+//        [videoModel addVideoSource:path];
+        
+        path = [[NSBundle mainBundle] pathForResource:@"IMG_7311" ofType:@"HEIC" inDirectory:@"Resource"];
+        [videoModel addImageSource:path];
         
         path = [[NSBundle mainBundle] pathForResource:@"IMG_7317" ofType:@"HEIC" inDirectory:@"Resource"];
         [videoModel addImageSource:path];
@@ -260,8 +263,9 @@
     
     if(self.exportType == BBZExportTypeImagesAndVideosWithTransition ||
        self.exportType == BBZExportTypeImagesAndVideosWithBGMTranstion ||
-       self.exportType == BBZExportTypeImagesBGMTransition ) {
-        NSString *path = [NSString stringWithFormat:@"%@/Resource/transition/black", [[NSBundle mainBundle] bundlePath]];
+       self.exportType == BBZExportTypeImagesBGMTransition ||
+       self.exportType == BBZExportTypeMaskVideo) {
+        NSString *path = [NSString stringWithFormat:@"%@/Resource/transition/gege", [[NSBundle mainBundle] bundlePath]];
         [videoModel addTransitionGroup:path];
     } else {
         if(self.switchBtn.on ) {
@@ -301,7 +305,7 @@
     
     BBZEngineSetting *setting = [BBZEngineSetting  buildVideoSettings:videoModel];
     setting.videoSize = CGSizeMake(720, 720);
-    setting.fillType = BBZVideoFillModePreserveAspectRatioAndFill;
+    setting.fillType = BBZVideoFillModePreserveAspectRatio;
     
     NSString *tmpDir =  [NSString stringWithFormat:@"%@/tmp", videoModel.videoResourceDir];
     [NSFileManager removeFileIfExist:tmpDir];
