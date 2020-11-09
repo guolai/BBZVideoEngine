@@ -39,7 +39,6 @@
     return self;
 }
 
-
 - (void)buildBackGroundParams {
     [GPUImageContext useImageProcessingContext];
     
