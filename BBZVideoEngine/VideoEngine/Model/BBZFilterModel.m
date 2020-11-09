@@ -12,6 +12,7 @@
 @interface BBZFilterModel ()
 @property (nonatomic, assign, readwrite) CGFloat duration;
 @property (nonatomic, assign, readwrite) CGFloat minVersion;
+@property (nonatomic, strong, readwrite) BBZNode *endingAction;
 
 @end
 
@@ -57,10 +58,16 @@
         if ([inputGroup isKindOfClass:[NSArray class]]) {
             for (NSDictionary *item in inputGroup) {
                 BBZFilterNode *node = [[BBZFilterNode alloc] initWithDictionary:item withFilePath:self.filePath];
+                if(node.endingAction) {
+                    self.endingAction = node.endingAction;
+                }
                 [array addObject:node];
             }
         } else if ([inputGroup isKindOfClass:[NSDictionary class]]) {
             BBZFilterNode *node = [[BBZFilterNode alloc] initWithDictionary:inputGroup withFilePath:self.filePath];
+            if(node.endingAction) {
+                self.endingAction = node.endingAction;
+            }
             [array addObject:node];
         }
         _filterGroups = array;

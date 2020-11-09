@@ -27,6 +27,7 @@
 @property (nonatomic, assign, readonly) BOOL bPlayFromEnd;
 //@property (nonatomic, assign) NSInteger repeat;
 @property (nonatomic, strong) NSArray<BBZNode *> *actions;
+@property (nonatomic, strong, readonly) BBZNode *endingAction;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dic withFilePath:(NSString *)filePath;
 

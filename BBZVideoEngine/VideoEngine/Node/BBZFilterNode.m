@@ -9,6 +9,12 @@
 #import "BBZFilterNode.h"
 #import "NSDictionary+YYAdd.h"
 
+extern NSString *const BBZFilterMovieEnding;
+
+@interface BBZFilterNode ()
+@property (nonatomic, assign, readwrite) BOOL hasEnding;
+@end
+
 @implementation BBZFilterNode
 - (instancetype)initWithDictionary:(NSDictionary *)dic withFilePath:(NSString *)filePath {
     if (self = [super init]) {
@@ -36,6 +42,18 @@
 
 - (BOOL)bPlayFromEnd {
     return self.begin < 0.0;
+}
+
+
+- (BBZNode *)endingAction {
+    BBZNode *retAction = nil;
+    for (BBZNode *node in self.actions) {
+        if([node.name isEqualToString:BBZFilterMovieEnding]) {
+            retAction = node;
+            break;
+        }
+    }
+    return retAction;
 }
 
 @end

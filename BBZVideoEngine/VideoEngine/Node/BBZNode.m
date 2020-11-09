@@ -19,6 +19,7 @@ NSString *const BBZFilterBlendVideoAndImage = @"blendvideoandimage";
 NSString *const BBZFilterTransition = @"transition";
 NSString *const BBZFilterSplice = @"splice";
 NSString *const BBZFilterLut = @"lut";
+NSString *const BBZFilterMovieEnding = @"movieending";
 
 
 @implementation BBZNodeAnimationParams

@@ -228,7 +228,7 @@
         [videoModel addImageSource:path];
     }
     else if(self.exportType == BBZExportTypeMaskVideo) {
-//        [videoModel addVideoSource:path];
+        [videoModel addVideoSource:path];
         
         path = [[NSBundle mainBundle] pathForResource:@"IMG_7311" ofType:@"HEIC" inDirectory:@"Resource"];
         [videoModel addImageSource:path];

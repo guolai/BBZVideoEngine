@@ -152,7 +152,15 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
     self.actionMixer = [[BBZActionMixer alloc] init];
 }
 
-
+- (void)reBuildDurationForEnding{
+    if(self.videoModel.filterModel.endingAction) {
+        if(self.videoModel.transitonModel.spliceGroups.count == 0) {
+            
+        } else {
+            NSAssert(false, @"unhandled");
+        }
+    }
+}
 
 
 - (void)prepareForStart {

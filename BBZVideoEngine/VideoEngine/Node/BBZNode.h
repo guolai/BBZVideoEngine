@@ -16,6 +16,7 @@ extern NSString *const BBZFilterBlendVideoAndImage;
 extern NSString *const BBZFilterTransition;
 extern NSString *const BBZFilterSplice;
 extern NSString *const BBZFilterLut;
+extern NSString *const BBZFilterMovieEnding;
 
 
 

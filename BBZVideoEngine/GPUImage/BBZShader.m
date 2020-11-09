@@ -339,6 +339,29 @@ NSString *const kNodeLutFragmentShaderString = SHADER_STRING
  );
 
 
+
+NSString *const kNodeMovieEndingFragmentShaderString = SHADER_STRING
+(
+ precision highp float;
+ varying highp vec2 textureCoordinate;
+ 
+ uniform sampler2D inputImageTexture;
+ uniform sampler2D inputImageTexture2;
+ 
+ uniform vec4 v4Param1;
+ 
+ void main()
+ {
+    float progress = v4Param1.z;
+    lowp vec4 c1 = texture2D(inputImageTexture, textureCoordinate);
+    lowp vec3 vZero = vec3(0.0, 0.0, 0.0, 1.0);
+    gl_FragColor = mix(c1, vZero, progress);
+  
+}
+ );
+
+
+
 @implementation BBZShader
 
 + (NSString *)vertextShader {
@@ -410,6 +433,13 @@ NSString *const kNodeLutFragmentShaderString = SHADER_STRING
      v4Param1 : x:lut程度
      */
     return  kNodeLutFragmentShaderString;
+}
+
++ (NSString *)fragmentMovieEndingShader {
+    /*
+     v4Param1 : progress
+     */
+    return  kNodeMovieEndingFragmentShaderString;
 }
 
 @end

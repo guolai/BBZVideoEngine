@@ -104,7 +104,8 @@
 }
 
 - (void)setFilterFBO {
-    if (!_movieFramebuffer) {
+//    if (!_movieFramebuffer)
+    {
         [self createDataFBO];
     }
     
@@ -169,7 +170,7 @@
         [self.delegate didDrawPixelBuffer:_renderTarget time:self.frameTime];
     }
     [self removeOutputFramebuffer];
-//    [self destroyRenderTarget];
+    [self destroyRenderTarget];
     [[GPUImageFramebufferManager shareInstance] printAllLiveObject];
 }
 
