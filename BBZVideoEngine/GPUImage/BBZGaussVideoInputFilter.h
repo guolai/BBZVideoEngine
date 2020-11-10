@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface BBZGaussVideoInputFilter : BBZVideoInputFilter
 
+- (instancetype)initWithRGBInput:(BOOL)bRGB;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -57,11 +57,19 @@ NSString *const kBBZGaussVideoInputFragmentShader = SHADER_STRING
 @interface BBZGaussVideoInputFilter () {
     GLint _gaussFilterPositionAttribute, _gaussFilterTextureCoordinateAttribute;
     GLint _gaussFilterInputTextureUniform;
-    GLint _gaussFilterInputTextureUniform2;
     GLint _gaussTexelWidthUniform, _gaussTexelHeightUniform;
+    
+    GLint _yuvFilterPositionAttribute, _yuvFilterTextureCoordinateAttribute;
+    GLint _yuvFilterInputTextureUniform;
+    GLint _yuvFilterInputTextureUniform2;
+    GLint _yuvUniformMat33;
+    
 }
 
 @property (nonatomic, strong) GLProgram *gaussFilterProgram;
+@property (nonatomic, strong) GLProgram *yuvFilterProgram;
+@property (nonatomic, assign) BOOL bRGB;
+@property (nonatomic, strong) GPUImageFramebuffer *rgbFrameBuffer;
 
 @end
 
@@ -72,13 +80,56 @@ NSString *const kBBZGaussVideoInputFragmentShader = SHADER_STRING
     BBZINFO(@"BBZVideoInputFilter dealloc");
 }
 
-- (instancetype)initWithVertexShaderFromString:(NSString *)vertexShaderString fragmentShaderFromString:(NSString *)fragmentShaderString {
-    if(self = [super initWithVertexShaderFromString:vertexShaderString fragmentShaderFromString:fragmentShaderString]) {
+- (instancetype)initWithRGBInput:(BOOL)bRGB {
+    NSString *vertexShader = nil;
+    NSString *framgmentShader = nil;
+   
+    vertexShader = [BBZShader vertextTransfromShader];
+    framgmentShader = [BBZShader fragmentFBFectchRGBTransfromShader];
+
+    if(self = [super initWithVertexShaderFromString:vertexShader fragmentShaderFromString:framgmentShader]) {
+        self.bRGB = bRGB;
         runSynchronouslyOnVideoProcessingQueue(^{
+            [self buildYUVFilterParams];
             [self buildGaussFilterParams];
         });
     }
     return self;
+}
+
+- (void)buildYUVFilterParams {
+    if(self.bRGB) {
+        return;
+    }
+    [GPUImageContext useImageProcessingContext];
+    
+    self.yuvFilterProgram = [[GPUImageContext sharedImageProcessingContext] programForVertexShaderString:kGPUImageVertexShaderString fragmentShaderString:[BBZShader fragmentYUV420FTransfromShader]];
+    
+    if (!self.yuvFilterProgram.initialized)  {
+        [self.yuvFilterProgram addAttribute:@"position"];
+        [self.yuvFilterProgram addAttribute:@"inputTextureCoordinate"];
+        
+        if (![self.yuvFilterProgram link]) {
+            NSString *progLog = [self.yuvFilterProgram programLog];
+            NSLog(@"Program link log: %@", progLog);
+            NSString *fragLog = [self.yuvFilterProgram fragmentShaderLog];
+            NSLog(@"Fragment shader compile log: %@", fragLog);
+            NSString *vertLog = [self.yuvFilterProgram vertexShaderLog];
+            NSLog(@"Vertex shader compile log: %@", vertLog);
+            self.yuvFilterProgram = nil;
+            NSAssert(NO, @"Filter shader link failed");
+        }
+    }
+    [GPUImageContext setActiveShaderProgram:self.yuvFilterProgram];
+    
+    _yuvFilterPositionAttribute = [self.yuvFilterProgram attributeIndex:@"position"];
+    _yuvFilterTextureCoordinateAttribute = [self.yuvFilterProgram attributeIndex:@"inputTextureCoordinate"];
+    _yuvFilterInputTextureUniform = [self.yuvFilterProgram uniformIndex:@"inputImageTexture"];
+    _yuvFilterInputTextureUniform2 = [self.yuvFilterProgram uniformIndex:@"inputImageTexture2"];
+    NSString *uniformName  = @"matParam";
+    GLint uniformIndex = [self.yuvFilterProgram uniformIndex:uniformName];
+    self->_yuvUniformMat33 = uniformIndex;
+    [GPUImageContext setActiveShaderProgram:self.yuvFilterProgram];
 }
 
 - (void)buildGaussFilterParams {
@@ -106,7 +157,6 @@ NSString *const kBBZGaussVideoInputFragmentShader = SHADER_STRING
     _gaussFilterPositionAttribute = [self.gaussFilterProgram attributeIndex:@"position"];
     _gaussFilterTextureCoordinateAttribute = [self.gaussFilterProgram attributeIndex:@"inputTextureCoordinate"];
     _gaussFilterInputTextureUniform = [self.gaussFilterProgram uniformIndex:@"inputImageTexture"];
-    _gaussFilterInputTextureUniform2 = [self.gaussFilterProgram uniformIndex:@"inputImageTexture2"];
     [GPUImageContext setActiveShaderProgram:self.gaussFilterProgram];
     _gaussTexelWidthUniform = [self.gaussFilterProgram uniformIndex:@"texelWidthOffset"];
     _gaussTexelHeightUniform = [self.gaussFilterProgram uniformIndex:@"texelHeightOffset"];
@@ -114,79 +164,56 @@ NSString *const kBBZGaussVideoInputFragmentShader = SHADER_STRING
 }
 
 
+- (int)adjustVideoSizeValue:(CGFloat)fValue {
+    int value = fValue;
+    value = value - value % 2;
+    return value;
+}
+
 - (void)processGaussImage {
-    //否则，需要resize+blur
-//    [GPUImageContext useImageProcessingContext];
-//    outputFramebuffer = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:[self sizeOfFBO] textureOptions:self.outputTextureOptions onlyTexture:NO];
-//    secondOutputFramebuffer = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:[self sizeOfFBO] textureOptions:self.outputTextureOptions onlyTexture:NO];
-//    if (usingNextFrameForImageCapture) {
-//        [outputFramebuffer lock];
-//    }
-//
-//    //step1: resize
-//    [GPUImageContext setActiveShaderProgram:filterProgram];
-//    [filterProgram use];
-//    [secondOutputFramebuffer activateFramebuffer];  //先画到second上面
-//    [self setFloat:self.fDown forUniformName:@"resizeRatio"];
-//    [self setFloat:0.0 forUniformName:@"bAddEdge"];
-//    [self setFloat:0.0 forUniformName:@"fXLimit"];
-//    //    [self setFloat:0.0 forUniformName:@"fYLimit"];
-//
-//    glClearColor(backgroundColorRed, backgroundColorGreen, backgroundColorBlue, backgroundColorAlpha);
-//    glClear(GL_COLOR_BUFFER_BIT);
-//
-//    glActiveTexture(GL_TEXTURE2);
-//    glBindTexture(GL_TEXTURE_2D, [firstInputFramebuffer texture]);
-//    glUniform1i(filterInputTextureUniform, 2);
-//
-//    glVertexAttribPointer(filterPositionAttribute, 2, GL_FLOAT, 0, 0, vertices);
-//    glVertexAttribPointer(filterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, textureCoordinates);
-//    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-//
-//    if (_blurRadius > 0){
-//        //step2: gauss1
-//        [GPUImageContext setActiveShaderProgram:secondFilterProgram];
-//        [secondFilterProgram use];
-//        [outputFramebuffer activateFramebuffer];
-//        glClearColor(backgroundColorRed, backgroundColorGreen, backgroundColorBlue, backgroundColorAlpha);
-//        glClear(GL_COLOR_BUFFER_BIT);
-//        if(self.blurDirction == BlurDirction_All || self.blurDirction == BlurDirction_Horizontal)
-//        {
-//            glUniform1f(gaussTexelWidthUniform, 1.0 / imageSize.width);
-//        }
-//        else
-//        {
-//            glUniform1f(gaussTexelWidthUniform, 0.0);
-//        }
-//        glUniform1f(gaussTexelHeightUniform, 0.0);
-//
-//        glActiveTexture(GL_TEXTURE2);
-//        glBindTexture(GL_TEXTURE_2D, [secondOutputFramebuffer texture]);
-//        glUniform1i(secondFilterInputTextureUniform, 2);
-//
-//        glVertexAttribPointer(secondFilterPositionAttribute, 2, GL_FLOAT, 0, 0, gaussVertex);
-//        glVertexAttribPointer(secondFilterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, gaussFragment);
-//        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-//
-//        //step3: gauss2
-//        [secondOutputFramebuffer activateFramebuffer];
-//        //        glClearColor(backgroundColorRed, backgroundColorGreen, backgroundColorBlue, backgroundColorAlpha);
-//        //        glClear(GL_COLOR_BUFFER_BIT);
-//        glUniform1f(gaussTexelWidthUniform, 0.0);
-//        if(self.blurDirction == BlurDirction_All || self.blurDirction == BlurDirction_Vertical)
-//        {
-//            glUniform1f(gaussTexelHeightUniform, 1.0 / imageSize.height);
-//        }
-//        else
-//        {
-//            glUniform1f(gaussTexelHeightUniform, 0.0);
-//        }
-//
-//        glActiveTexture(GL_TEXTURE2);
-//        glBindTexture(GL_TEXTURE_2D, [outputFramebuffer texture]);
-//        glUniform1i(secondFilterInputTextureUniform, 2);
-//        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-//    }
+    
+    CGSize smallSize = [self sizeOfFBO];
+    smallSize = CGSizeMake([self adjustVideoSizeValue:smallSize.width/4.0], [self adjustVideoSizeValue:smallSize.height/4.0]);
+    NSLog(@"processGaussImage size %@", NSStringFromCGSize(smallSize));
+    
+    GPUImageFramebuffer *frameBuffer1 = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:[self sizeOfFBO] textureOptions:self.outputTextureOptions onlyTexture:NO];
+    [frameBuffer1 activateFramebuffer];
+    
+    [GPUImageContext setActiveShaderProgram:self.gaussFilterProgram];
+    glClearColor(backgroundColorRed, backgroundColorGreen, backgroundColorBlue, 1.0);
+    glClear(GL_COLOR_BUFFER_BIT);
+    
+
+    glUniform1f(_gaussTexelWidthUniform, 1.0 / smallSize.width);
+    glUniform1f(_gaussTexelHeightUniform, 0.0);
+
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, [self.rgbFrameBuffer texture]);
+    glUniform1i(_gaussFilterInputTextureUniform, 2);
+
+    glVertexAttribPointer(_gaussFilterPositionAttribute, 2, GL_FLOAT, 0, 0, gaussVertex);
+    glVertexAttribPointer(_gaussFilterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, gaussFragment);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+    //step3: gauss2
+    [secondOutputFramebuffer activateFramebuffer];
+    //        glClearColor(backgroundColorRed, backgroundColorGreen, backgroundColorBlue, backgroundColorAlpha);
+    //        glClear(GL_COLOR_BUFFER_BIT);
+    glUniform1f(gaussTexelWidthUniform, 0.0);
+    if(self.blurDirction == BlurDirction_All || self.blurDirction == BlurDirction_Vertical)
+    {
+        glUniform1f(gaussTexelHeightUniform, 1.0 / imageSize.height);
+    }
+    else
+    {
+        glUniform1f(gaussTexelHeightUniform, 0.0);
+    }
+
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, [outputFramebuffer texture]);
+    glUniform1i(secondFilterInputTextureUniform, 2);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    
     
 }
 
@@ -196,10 +223,89 @@ NSString *const kBBZGaussVideoInputFragmentShader = SHADER_STRING
 }
 
 - (void)willEndRender {
+    if(self.rgbFrameBuffer == firstInputFramebuffer) {
+        return;
+    }
     [self.bgFrameBuffer unlock];
     self.bgFrameBuffer = nil;
 }
 
 
+#pragma mark - Render
+- (void)renderToTextureWithVertices:(const GLfloat *)vertices textureCoordinates:(const GLfloat *)textureCoordinates {
+    if (self.preventRendering) {
+        [firstInputFramebuffer unlock];
+        return;
+    }
+    if(!self.bRGB) {
+        self.rgbFrameBuffer = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:[self sizeOfFBO] textureOptions:self.outputTextureOptions onlyTexture:NO];
+        [self.rgbFrameBuffer activateFramebuffer];
+        [GPUImageContext setActiveShaderProgram:self.yuvFilterProgram];
+        
+        if(self.shouldClearBackGround) {
+            glClearColor(backgroundColorRed, backgroundColorGreen, backgroundColorBlue, 1.0);
+            glClear(GL_COLOR_BUFFER_BIT);
+        }
+        
+        glActiveTexture(GL_TEXTURE2);
+        glBindTexture(GL_TEXTURE_2D, [firstInputFramebuffer texture]);
+        glUniform1i(_yuvFilterInputTextureUniform, 2);
+        
+        GPUImageFramebuffer *fb2 = [[self frameBuffers] objectAtIndex:0];
+        glActiveTexture(GL_TEXTURE3);
+        glBindTexture(GL_TEXTURE_2D, [fb2 texture]);
+        glUniform1i(_yuvFilterInputTextureUniform2, 3);
+        
+        GPUMatrix3x3 tmpmat33ParamValue = self.mat33ParamValue;
+        glUniformMatrix3fv(_yuvUniformMat33, 1, GL_FALSE, (GLfloat *)(&tmpmat33ParamValue));
+        
+        
+        glVertexAttribPointer(_yuvFilterPositionAttribute, 2, GL_FLOAT, 0, 0, vertices);
+        glVertexAttribPointer(_yuvFilterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, textureCoordinates);
+        
+    }else {
+        self.rgbFrameBuffer = firstInputFramebuffer;
+    }
+
+    outputFramebuffer = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:[self sizeOfFBO] textureOptions:self.outputTextureOptions onlyTexture:NO];
+    
+    [self willBeginRender];
+    
+    [outputFramebuffer activateFramebuffer];
+    if (usingNextFrameForImageCapture) {
+        [outputFramebuffer lock];
+    }
+    
+    [GPUImageContext setActiveShaderProgram:filterProgram];
+    [self setUniformsForProgramAtIndex:0];
+    if(self.shouldClearBackGround) {
+        glClearColor(backgroundColorRed, backgroundColorGreen, backgroundColorBlue, 1.0);
+        glClear(GL_COLOR_BUFFER_BIT);
+    }
+    
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, [self.rgbFrameBuffer texture]);
+    glUniform1i(filterInputTextureUniform, 2);
+    
+    [self bindInputParamValues];
+    
+    glVertexAttribPointer(filterPositionAttribute, 2, GL_FLOAT, 0, 0, [self adjustVertices:vertices]);
+    glVertexAttribPointer(filterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, textureCoordinates);
+    
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    //    BBZINFO(@"renderToTextureWithVertices %p, %p, %@, %@", firstInputFramebuffer, outputFramebuffer, self.debugName, self);
+    //    BBZINFO(@"renderToTexture1 %@", firstInputFramebuffer.debugDescription);
+    //    BBZINFO(@"renderToTexture2 %@", outputFramebuffer.debugDescription);
+    [firstInputFramebuffer unlock];
+    
+    [self willEndRender];
+    //    glFinish();
+    //    if([self.debugName isEqualToString:@"transition"]) {
+    //        BBZLOG();
+    //    }
+    if (usingNextFrameForImageCapture) {
+        dispatch_semaphore_signal(imageCaptureSemaphore);
+    }
+}
 
 @end

@@ -11,7 +11,7 @@
 #import "BBZTransformSourceNode.h"
 #import "BBZShader.h"
 #import "GPUImageFramebuffer+BBZ.h"
-
+#import "BBZGaussVideoInputFilter.h"
 
 
 @implementation BBZInputFilterAction
@@ -42,9 +42,6 @@
         } else {
             vertexShader = [BBZShader vertextTransfromShader];
             framgmentShader = [BBZShader fragmentRGBTransfromShader];
-//            vertexShader = [BBZShader vertextShader];
-//            framgmentShader = [BBZShader fragmentPassthroughShader];
-
         }
     } else {
         if(bUseLastFB) {
@@ -55,14 +52,20 @@
             framgmentShader = [BBZShader fragmentYUV420FTransfromShader];
         }
     }
-//    vertexShader = [BBZShader vertextShader];
-//    framgmentShader = [BBZShader fragmentPassthroughShader];
-    BBZVideoInputFilter *videoMultiFilter = [[BBZVideoInputFilter alloc] initWithVertexShaderFromString:vertexShader fragmentShaderFromString:framgmentShader];
-    videoMultiFilter.renderSize = self.renderSize;
-    videoMultiFilter.bUseBackGroundImage = bUseLastFB;
-    videoMultiFilter.fillType = self.fillType;
-    videoMultiFilter.bgFrameBuffer = [GPUImageFramebuffer BBZ_frameBufferWithImage:self.node.image.CGImage];
-    [videoMultiFilter.bgFrameBuffer disableReferenceCounting];
+    BBZVideoInputFilter *videoMultiFilter = nil;
+    if(self.node.useGaussImage) {
+        videoMultiFilter = [[BBZGaussVideoInputFilter alloc] initWithRGBInput:self.node.bRGB];
+        videoMultiFilter.renderSize = self.renderSize;
+        videoMultiFilter.bUseBackGroundImage = YES;
+        videoMultiFilter.fillType = self.fillType;
+    } else {
+        videoMultiFilter = [[BBZVideoInputFilter alloc] initWithVertexShaderFromString:vertexShader fragmentShaderFromString:framgmentShader];
+        videoMultiFilter.renderSize = self.renderSize;
+        videoMultiFilter.bUseBackGroundImage = bUseLastFB;
+        videoMultiFilter.fillType = self.fillType;
+        videoMultiFilter.bgFrameBuffer = [GPUImageFramebuffer BBZ_frameBufferWithImage:self.node.image.CGImage];
+        [videoMultiFilter.bgFrameBuffer disableReferenceCounting];
+    }
     videoMultiFilter.debugName = NSStringFromClass([videoMultiFilter class]);
     self.multiFilter = videoMultiFilter;
 }

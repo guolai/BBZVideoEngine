@@ -13,7 +13,6 @@
 #import "BBZVideoReaderAction.h"
 #import "BBZTransformSourceNode.h"
 #import "BBZNode+Local.h"
-#import "BBZGaussInputFilterAction.h"
 
 
 @implementation BBZVideoFilterLayer
@@ -71,12 +70,7 @@
         tranformNode.bRGB = bRGB;
         
         
-        BBZInputFilterAction *filterAction = nil;
-        if(self.model.useGaussImage) {
-            filterAction = [[BBZGaussInputFilterAction alloc] initWithNode:tranformNode];
-        } else {
-            filterAction = [[BBZInputFilterAction alloc] initWithNode:tranformNode];
-        }
+        BBZInputFilterAction *filterAction = [[BBZInputFilterAction alloc] initWithNode:tranformNode];
         
         filterAction.startTime = action.startTime;
         filterAction.duration = action.duration;
@@ -165,12 +159,7 @@
                 tranformNode.bRGB = NO;
             }
             tranformNode.useGaussImage = self.model.useGaussImage;
-            BBZInputFilterAction *filterAction = nil;
-            if(self.model.useGaussImage) {
-                filterAction = [[BBZGaussInputFilterAction alloc] initWithNode:tranformNode];
-            } else {
-                filterAction = [[BBZInputFilterAction alloc] initWithNode:tranformNode];
-            }
+            BBZInputFilterAction *filterAction = [[BBZInputFilterAction alloc] initWithNode:tranformNode];
             filterAction.startTime = sourceAction.startTime;
             filterAction.duration = sourceAction.duration;
             filterAction.renderSize = self.context.renderSize;
