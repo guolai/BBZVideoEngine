@@ -31,7 +31,8 @@
 @property (nonatomic, assign) CATransform3D transform3D;
 @property (nonatomic, assign) BBZVideoFillModeType fillType;
 
-
+- (void)updateFillType;
+- (BOOL)checkRotated;
 //- (void)renderVideo:(CMSampleBufferRef)sampleBuffer atTime:(CMTime)time;
 //- (void)renderImage:(GPUImageFramebuffer *)imageFrameBuffer atTime:(CMTime)time;
 

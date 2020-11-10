@@ -13,6 +13,7 @@
 #import "BBZVideoReaderAction.h"
 #import "BBZTransformSourceNode.h"
 #import "BBZNode+Local.h"
+#import "BBZGaussInputFilterAction.h"
 
 
 @implementation BBZVideoFilterLayer
@@ -65,12 +66,18 @@
                 tranformNode = [BBZNode createLocalNode:BBZNodeTransformDefault duration:action.endTime - action.startTime];
             }
         }
-
+        tranformNode.useGaussImage = self.model.useGaussImage;
         tranformNode.image = self.model.bgImage;
         tranformNode.bRGB = bRGB;
         
         
-        BBZInputFilterAction *filterAction = [[BBZInputFilterAction alloc] initWithNode:tranformNode];
+        BBZInputFilterAction *filterAction = nil;
+        if(self.model.useGaussImage) {
+            filterAction = [[BBZGaussInputFilterAction alloc] initWithNode:tranformNode];
+        } else {
+            filterAction = [[BBZInputFilterAction alloc] initWithNode:tranformNode];
+        }
+        
         filterAction.startTime = action.startTime;
         filterAction.duration = action.duration;
         filterAction.renderSize = self.context.renderSize;
@@ -157,8 +164,13 @@
 //                tranformNode = [[BBZTransformSourceNode alloc] initWithYUVShader:NO];
                 tranformNode.bRGB = NO;
             }
-            
-            BBZInputFilterAction *filterAction = [[BBZInputFilterAction alloc] initWithNode:tranformNode];
+            tranformNode.useGaussImage = self.model.useGaussImage;
+            BBZInputFilterAction *filterAction = nil;
+            if(self.model.useGaussImage) {
+                filterAction = [[BBZGaussInputFilterAction alloc] initWithNode:tranformNode];
+            } else {
+                filterAction = [[BBZInputFilterAction alloc] initWithNode:tranformNode];
+            }
             filterAction.startTime = sourceAction.startTime;
             filterAction.duration = sourceAction.duration;
             filterAction.renderSize = self.context.renderSize;

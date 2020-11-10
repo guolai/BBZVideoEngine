@@ -69,6 +69,7 @@ extern NSString *const BBZFilterMovieEnding;
 
 //
 @property (nonatomic, assign) BOOL bRGB;
+@property (nonatomic, assign) BOOL useGaussImage;
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) NSArray *images;
 //@property (nonatomic, assign) double offset;

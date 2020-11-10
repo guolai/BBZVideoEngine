@@ -28,6 +28,7 @@
 @property (nonatomic, assign) CGFloat  builderDuraton;
 
 @property (nonatomic, strong) UIImage *bgImage;
+@property (nonatomic, assign) BOOL useGaussImage;//画幅不一致情况下使用高斯模糊
 @property (nonatomic, strong) NSArray *maskImage;
 
 //asset
