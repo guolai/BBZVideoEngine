@@ -172,18 +172,31 @@ NSString *const kBBZGaussVideoInputFragmentShader = SHADER_STRING
 
 - (void)processGaussImage {
     
+    static const GLfloat normalVertices[] = {
+        -1.0f, -1.0f,
+        1.0f, -1.0f,
+        -1.0f,  1.0f,
+        1.0f,  1.0f,
+    };
+    
+    static const GLfloat normalTextureCoordinates[] = {
+        0.0f, 0.0f,
+        1.0f, 0.0f,
+        0.0f, 1.0f,
+        1.0f, 1.0f,
+    };
+    
     CGSize smallSize = [self sizeOfFBO];
     smallSize = CGSizeMake([self adjustVideoSizeValue:smallSize.width/4.0], [self adjustVideoSizeValue:smallSize.height/4.0]);
     NSLog(@"processGaussImage size %@", NSStringFromCGSize(smallSize));
     
-    GPUImageFramebuffer *frameBuffer1 = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:[self sizeOfFBO] textureOptions:self.outputTextureOptions onlyTexture:NO];
+    GPUImageFramebuffer *frameBuffer1 = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:smallSize textureOptions:self.outputTextureOptions onlyTexture:NO];
     [frameBuffer1 activateFramebuffer];
     
     [GPUImageContext setActiveShaderProgram:self.gaussFilterProgram];
     glClearColor(backgroundColorRed, backgroundColorGreen, backgroundColorBlue, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
     
-
     glUniform1f(_gaussTexelWidthUniform, 1.0 / smallSize.width);
     glUniform1f(_gaussTexelHeightUniform, 0.0);
 
@@ -191,30 +204,27 @@ NSString *const kBBZGaussVideoInputFragmentShader = SHADER_STRING
     glBindTexture(GL_TEXTURE_2D, [self.rgbFrameBuffer texture]);
     glUniform1i(_gaussFilterInputTextureUniform, 2);
 
-    glVertexAttribPointer(_gaussFilterPositionAttribute, 2, GL_FLOAT, 0, 0, gaussVertex);
-    glVertexAttribPointer(_gaussFilterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, gaussFragment);
+    glVertexAttribPointer(_gaussFilterPositionAttribute, 2, GL_FLOAT, 0, 0, normalVertices);
+    glVertexAttribPointer(_gaussFilterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, normalTextureCoordinates);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    
+    GPUImageFramebuffer *frameBuffer2 = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:smallSize textureOptions:self.outputTextureOptions onlyTexture:NO];
+    [frameBuffer2 activateFramebuffer];
 
-    //step3: gauss2
-    [secondOutputFramebuffer activateFramebuffer];
-    //        glClearColor(backgroundColorRed, backgroundColorGreen, backgroundColorBlue, backgroundColorAlpha);
-    //        glClear(GL_COLOR_BUFFER_BIT);
-    glUniform1f(gaussTexelWidthUniform, 0.0);
-    if(self.blurDirction == BlurDirction_All || self.blurDirction == BlurDirction_Vertical)
-    {
-        glUniform1f(gaussTexelHeightUniform, 1.0 / imageSize.height);
-    }
-    else
-    {
-        glUniform1f(gaussTexelHeightUniform, 0.0);
-    }
+
+    glUniform1f(_gaussTexelWidthUniform, 0.0);
+ 
+    glUniform1f(_gaussTexelHeightUniform, 1.0 / smallSize.height);
+ 
 
     glActiveTexture(GL_TEXTURE2);
-    glBindTexture(GL_TEXTURE_2D, [outputFramebuffer texture]);
-    glUniform1i(secondFilterInputTextureUniform, 2);
+    glBindTexture(GL_TEXTURE_2D, [frameBuffer1 texture]);
+    glUniform1i(_gaussFilterInputTextureUniform, 2);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     
-    
+    self.bgFrameBuffer = frameBuffer2;
+    [frameBuffer1 unlock];
+    frameBuffer1 = nil;
 }
 
 - (void)willBeginRender {
