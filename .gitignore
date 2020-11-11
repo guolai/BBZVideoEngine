@@ -3,12 +3,16 @@
 # Xcode
 xcuserdata/
 *.xcworkspace
-BBZVideoEngine.xcodeproj/project.xcworkspace/xcuserdata/
+BBZVideoEngine/*.xcworkspace
+BBZVideoEngine/BBZVideoEngine.xcodeproj/project.xcworkspace/xcuserdata/
 ## Build generated
 build/
 DerivedData/
 
 ## CocoaPods
 
-Pods/
-Podfile.lock
+BBZVideoEngine/Pods/
+BBZVideoEngine/Podfile.lock
+
+BBZVEDemo/Pods/
+BBZVEDemo/Podfile.lock
