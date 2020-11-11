@@ -198,13 +198,14 @@ NSString *const kBBZGaussVideoInputFragmentShader = SHADER_STRING
     NSLog(@"processGaussImage size %@", NSStringFromCGSize(smallSize));
     
     GPUImageFramebuffer *frameBuffer1 = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:smallSize textureOptions:self.outputTextureOptions onlyTexture:NO];
+    GPUImageFramebuffer *frameBuffer2 = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:smallSize textureOptions:self.outputTextureOptions onlyTexture:NO];
     [frameBuffer1 activateFramebuffer];
     
     [GPUImageContext setActiveShaderProgram:self.gaussFilterProgram];
     glClearColor(backgroundColorRed, backgroundColorGreen, backgroundColorBlue, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
     
-    glUniform1f(_gaussTexelWidthUniform, 1.0 / smallSize.width);
+    glUniform1f(_gaussTexelWidthUniform, 0.0);
     glUniform1f(_gaussTexelHeightUniform, 0.0);
 
     glActiveTexture(GL_TEXTURE2);
@@ -215,13 +216,13 @@ NSString *const kBBZGaussVideoInputFragmentShader = SHADER_STRING
     glVertexAttribPointer(_gaussFilterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, normalTextureCoordinates);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     
-    GPUImageFramebuffer *frameBuffer2 = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:smallSize textureOptions:self.outputTextureOptions onlyTexture:NO];
+   
     [frameBuffer2 activateFramebuffer];
 
 
-    glUniform1f(_gaussTexelWidthUniform, 0.0);
+    glUniform1f(_gaussTexelWidthUniform, 1.0 / smallSize.width);
  
-    glUniform1f(_gaussTexelHeightUniform, 1.0 / smallSize.height);
+    glUniform1f(_gaussTexelHeightUniform, 0.0 );
  
 
     glActiveTexture(GL_TEXTURE2);
@@ -229,9 +230,25 @@ NSString *const kBBZGaussVideoInputFragmentShader = SHADER_STRING
     glUniform1i(_gaussFilterInputTextureUniform, 2);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     
-    self.bgFrameBuffer = frameBuffer2;
-    [frameBuffer1 unlock];
-    frameBuffer1 = nil;
+
+    [frameBuffer1 activateFramebuffer];
+    
+    
+    glUniform1f(_gaussTexelWidthUniform, 0.0);
+    
+    glUniform1f(_gaussTexelHeightUniform, 1.0 / smallSize.height);
+    
+    
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, [frameBuffer2 texture]);
+    glUniform1i(_gaussFilterInputTextureUniform, 2);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    glFinish();
+    self.bgFrameBuffer = frameBuffer1;
+//    [frameBuffer1 unlock];
+//    frameBuffer1 = nil;
+    [frameBuffer2 unlock];
+    frameBuffer2 = nil;
 }
 
 - (void)willBeginRender {
