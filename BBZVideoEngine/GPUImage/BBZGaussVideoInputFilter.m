@@ -195,7 +195,7 @@ NSString *const kBBZGaussVideoInputFragmentShader = SHADER_STRING
     
     CGSize smallSize = self.rgbFrameBuffer.size;
     smallSize = CGSizeMake([self adjustVideoSizeValue:smallSize.width/8.0], [self adjustVideoSizeValue:smallSize.height/8.0]);
-    NSLog(@"processGaussImage size %@", NSStringFromCGSize(smallSize));
+//    NSLog(@"processGaussImage size %@", NSStringFromCGSize(smallSize));
     
     GPUImageFramebuffer *frameBuffer1 = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:smallSize textureOptions:self.outputTextureOptions onlyTexture:NO];
     GPUImageFramebuffer *frameBuffer2 = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:smallSize textureOptions:self.outputTextureOptions onlyTexture:NO];

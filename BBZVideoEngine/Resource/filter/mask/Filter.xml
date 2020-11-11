@@ -1,7 +1,7 @@
 <!-- 新老引擎的分发通过miniVersion来判定 所有数据保留两位有效小数位，坐标相关可以保留5位 -->
 <root duration="1000.0" miniVersion="1.0">
     <filter index="0" begin="0.00"  duration="1000.0">
-        <action begin="0.00" end="10.00" name="blendvideo" repeat="100" attenment="maskvideo2.mp4" order="1"/>
+<!--        <action begin="0.00" end="10.00" name="blendvideo" repeat="100" attenment="maskvideo2.mp4" order="1"/>-->
         <action begin="0.00" end="12.00" name="blendlrvideo" repeat="100" attenment="maskvideo.mp4" order="2"/>
     </filter>
 </root>
