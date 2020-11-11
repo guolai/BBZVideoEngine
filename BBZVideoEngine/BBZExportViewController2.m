@@ -14,7 +14,6 @@
 #import "GPUImage.h"
 #import "BBZEngineSetting+VideoModel.h"
 
-
 @interface BBZExportViewController2 ()
 @property (nonatomic, strong) UILabel *lblProgress;
 @property (nonatomic, strong) UILabel *lblInfo;
@@ -90,7 +89,7 @@
 - (void)buildModel {
     BBZVideoModel *videoModel = [[BBZVideoModel alloc] init];
     
-    if(self.exportType == BBZExportTypeImagesAndVideosWithBGM || self.exportType == BBZExportTypeImagesAndVideosWithBGMTranstion || self.exportType == BBZExportTypeSpliceImagesAndVideosBGM || self.exportType == BBZExportTypeImagesBGMTransition) {
+    if(self.exportType == BBZExportTypeImagesAndVideosWithBGM || self.exportType == BBZExportTypeImagesAndVideosWithBGMTranstion || self.exportType == BBZExportTypeSpliceImagesAndVideosBGM || self.exportType == BBZExportTypeImagesBGMTransition || self.exportType == BBZExportTypeMaskVideo) {
         NSString *path = [[NSBundle mainBundle] pathForResource:@"jimoshazhouleng" ofType:@"mp3" inDirectory:@"Resource"];
         [videoModel addAudioSource:path];
     }
@@ -230,11 +229,11 @@
     else if(self.exportType == BBZExportTypeMaskVideo) {
 //        [videoModel addVideoSource:path];
         
-        path = [[NSBundle mainBundle] pathForResource:@"IMG_7311" ofType:@"HEIC" inDirectory:@"Resource"];
-        [videoModel addImageSource:path];
-        
-        path = [[NSBundle mainBundle] pathForResource:@"IMG_7317" ofType:@"HEIC" inDirectory:@"Resource"];
-        [videoModel addImageSource:path];
+//        path = [[NSBundle mainBundle] pathForResource:@"IMG_7311" ofType:@"HEIC" inDirectory:@"Resource"];
+//        [videoModel addImageSource:path];
+//        
+//        path = [[NSBundle mainBundle] pathForResource:@"IMG_7317" ofType:@"HEIC" inDirectory:@"Resource"];
+//        [videoModel addImageSource:path];
         
         path = [[NSBundle mainBundle] pathForResource:@"IMG_7305" ofType:@"HEIC" inDirectory:@"Resource"];
         [videoModel addImageSource:path];
@@ -288,7 +287,7 @@
         }
     }
     
-    if(1) {
+    if(0) {
         NSMutableArray *multiArray = [NSMutableArray array];
         for (int i = 1; i < 10; i++) {
             NSString *strName = [NSString stringWithFormat:@"00%d@2x", i];

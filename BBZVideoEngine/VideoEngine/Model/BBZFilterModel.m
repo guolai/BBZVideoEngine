@@ -70,6 +70,9 @@
             }
             [array addObject:node];
         }
+        [array sortUsingComparator:^NSComparisonResult(BBZFilterNode *obj1, BBZFilterNode *obj2) {
+            return (obj1.index<obj2.index)?NSOrderedAscending:NSOrderedDescending;
+        }];
         _filterGroups = array;
     }
 }

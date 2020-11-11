@@ -352,9 +352,9 @@ NSString *const kNodeMovieEndingFragmentShaderString = SHADER_STRING
  
  void main()
  {
-    float progress = v4Param1.z;
+    float progress = v4Param1.x;
     lowp vec4 c1 = texture2D(inputImageTexture, textureCoordinate);
-    lowp vec3 vZero = vec3(0.0, 0.0, 0.0, 1.0);
+    lowp vec4 vZero = vec4(0.0, 0.0, 0.0, 1.0);
     gl_FragColor = mix(c1, vZero, progress);
   
 }

@@ -8,6 +8,6 @@
 
 #import "BBZFilterLayer.h"
 
-@interface BBZEffetFilterLayer : BBZFilterLayer
+@interface BBZEffectFilterLayer : BBZFilterLayer
 
 @end

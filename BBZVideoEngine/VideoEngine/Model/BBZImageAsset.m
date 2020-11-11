@@ -12,7 +12,7 @@
 #import "BBZEngineSetting.h"
 #import "UIImage+BBZ.h"
 
-extern const int BBZDefaultImageTime;
+extern const float BBZDefaultImageTime;
 
 @interface BBZImageAsset ()
 @property (nonatomic, strong) UIImage *sourceimage;

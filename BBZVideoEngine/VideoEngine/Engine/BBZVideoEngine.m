@@ -12,7 +12,7 @@
 #import "BBZActionMixer.h"
 #import "BBZVideoFilterLayer.h"
 #import "BBZAudioFilterLayer.h"
-#import "BBZEffetFilterLayer.h"
+#import "BBZEffectFilterLayer.h"
 #import "BBZMaskFilterLayer.h"
 #import "BBZOutputFilterLayer.h"
 #import "BBZTransitionFilterLayer.h"
@@ -93,7 +93,7 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
     BBZTransitionFilterLayer *transitionLayer = [[BBZTransitionFilterLayer alloc] initWithModel:self.videoModel context:self.context];
     self.filterLayers[@(BBZFilterLayerTypeTransition)] = transitionLayer;
     
-    BBZEffetFilterLayer *effectLayer = [[BBZEffetFilterLayer alloc] initWithModel:self.videoModel context:self.context];
+    BBZEffectFilterLayer *effectLayer = [[BBZEffectFilterLayer alloc] initWithModel:self.videoModel context:self.context];
     self.filterLayers[@(BBZFilterLayerTypeEffect)] = effectLayer;
     
 //    BBZMaskFilterLayer *maskLayer = [[BBZMaskFilterLayer alloc] initWithModel:self.videoModel context:self.context];
@@ -187,7 +187,7 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
             if(layerIndex == BBZFilterLayerTypeAudio) {
                 continue;
             }
-            builderTree = [self builderChainFrom:builderTree layer:(BBZFilterLayerType)layerIndex startTime:startTime endTime:endTime];
+            builderTree = [self builderChainFrom2:builderTree layer:(BBZFilterLayerType)layerIndex startTime:startTime endTime:endTime];
         }
         [self.timeSegments setObject:builderTree forKey:@(endTime)];
     }
@@ -205,6 +205,19 @@ typedef NS_ENUM(NSInteger, BBZFilterLayerType) {
         [builderTree addSubTree:fromTree];
     } else  {
         builderTree = fromTree;
+    }
+    return builderTree;
+}
+
+- (BBZActionTree *)builderChainFrom2:(BBZActionTree *)fromTree
+                              layer:(BBZFilterLayerType)layerType
+                          startTime:(NSUInteger)startTime
+                            endTime:(NSUInteger)endTime {
+    BBZActionTree *builderTree = fromTree;
+    NSArray *layerArray = [self actionTreeFromLayer:self.filterLayers[@(layerType)] startTime:startTime endTime:endTime];
+    for (BBZActionTree *tmpTree in layerArray) {
+        [tmpTree addSubTree:builderTree];
+        builderTree = tmpTree;
     }
     return builderTree;
 }

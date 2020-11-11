@@ -6,10 +6,10 @@
 //  Copyright © 2020年 BBZ. All rights reserved.
 //
 
-#import "BBZEffetFilterLayer.h"
+#import "BBZEffectFilterLayer.h"
 #import "BBZFilterAction.h"
 
-@implementation BBZEffetFilterLayer
+@implementation BBZEffectFilterLayer
 
 - (BBZActionBuilderResult *)buildTimelineNodes:(BBZActionBuilderResult *)inputBuilder {
     NSAssert(self.model.assetItems.count > 0, @"must have at least one asset");
@@ -30,10 +30,13 @@
     for (BBZFilterNode *filterNode in self.model.filterModel.filterGroups) {
         NSInteger startTime = filterNode.begin * BBZVideoDurationScale;
         if(filterNode.bPlayFromEnd) {
-            startTime = MAX(inputBuilderResult.startTime - filterNode.duration * BBZVideoDurationScale, 0);
+            startTime = MAX(inputBuilderResult.startTime - (int)(filterNode.duration * BBZVideoDurationScale), 0);
+            startTime = MAX(startTime, 0);
+        } else {
+            startTime = MIN(startTime, 0);
         }
-        startTime = MIN(startTime, 0);
-        CGFloat duration = filterNode.duration * BBZVideoDurationScale;
+        
+        NSInteger duration = filterNode.duration * BBZVideoDurationScale;
         duration = MIN(duration, inputBuilderResult.startTime - startTime);
         duration = MAX(duration, 0);
         if(fabs(duration) < 0.01) {

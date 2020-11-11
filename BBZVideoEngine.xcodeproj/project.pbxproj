@@ -188,7 +188,7 @@
 		18DC30FA2461A02100023423 /* BBZTransitionFilterLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 18DC30F92461A02100023423 /* BBZTransitionFilterLayer.m */; };
 		18F3E80724589093005221A8 /* BBZVideoFilterLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F3E80624589093005221A8 /* BBZVideoFilterLayer.m */; };
 		18F3E80A245890AE005221A8 /* BBZAudioFilterLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F3E809245890AE005221A8 /* BBZAudioFilterLayer.m */; };
-		18F3E80D245890D1005221A8 /* BBZEffetFilterLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F3E80C245890D1005221A8 /* BBZEffetFilterLayer.m */; };
+		18F3E80D245890D1005221A8 /* BBZEffectFilterLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F3E80C245890D1005221A8 /* BBZEffectFilterLayer.m */; };
 		18F3E810245890F4005221A8 /* BBZMaskFilterLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F3E80F245890F4005221A8 /* BBZMaskFilterLayer.m */; };
 		18F3E81324589110005221A8 /* BBZOutputFilterLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F3E81224589110005221A8 /* BBZOutputFilterLayer.m */; };
 		18FC29482450A17100473556 /* BBZFilterNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 18FC29472450A17100473556 /* BBZFilterNode.m */; };
@@ -552,8 +552,8 @@
 		18F3E80624589093005221A8 /* BBZVideoFilterLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZVideoFilterLayer.m; sourceTree = "<group>"; };
 		18F3E808245890AE005221A8 /* BBZAudioFilterLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZAudioFilterLayer.h; sourceTree = "<group>"; };
 		18F3E809245890AE005221A8 /* BBZAudioFilterLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZAudioFilterLayer.m; sourceTree = "<group>"; };
-		18F3E80B245890D1005221A8 /* BBZEffetFilterLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZEffetFilterLayer.h; sourceTree = "<group>"; };
-		18F3E80C245890D1005221A8 /* BBZEffetFilterLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZEffetFilterLayer.m; sourceTree = "<group>"; };
+		18F3E80B245890D1005221A8 /* BBZEffectFilterLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZEffectFilterLayer.h; sourceTree = "<group>"; };
+		18F3E80C245890D1005221A8 /* BBZEffectFilterLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZEffectFilterLayer.m; sourceTree = "<group>"; };
 		18F3E80E245890F4005221A8 /* BBZMaskFilterLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZMaskFilterLayer.h; sourceTree = "<group>"; };
 		18F3E80F245890F4005221A8 /* BBZMaskFilterLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBZMaskFilterLayer.m; sourceTree = "<group>"; };
 		18F3E81124589110005221A8 /* BBZOutputFilterLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBZOutputFilterLayer.h; sourceTree = "<group>"; };
@@ -1011,8 +1011,8 @@
 				18F3E80624589093005221A8 /* BBZVideoFilterLayer.m */,
 				18F3E808245890AE005221A8 /* BBZAudioFilterLayer.h */,
 				18F3E809245890AE005221A8 /* BBZAudioFilterLayer.m */,
-				18F3E80B245890D1005221A8 /* BBZEffetFilterLayer.h */,
-				18F3E80C245890D1005221A8 /* BBZEffetFilterLayer.m */,
+				18F3E80B245890D1005221A8 /* BBZEffectFilterLayer.h */,
+				18F3E80C245890D1005221A8 /* BBZEffectFilterLayer.m */,
 				18F3E80E245890F4005221A8 /* BBZMaskFilterLayer.h */,
 				18F3E80F245890F4005221A8 /* BBZMaskFilterLayer.m */,
 				18DC30F82461A02100023423 /* BBZTransitionFilterLayer.h */,
@@ -1309,7 +1309,7 @@
 				1409D1E5244959850053CFA4 /* GPUImageFramebufferCache.m in Sources */,
 				1409D1E2244959850053CFA4 /* GLProgram.m in Sources */,
 				18F3E810245890F4005221A8 /* BBZMaskFilterLayer.m in Sources */,
-				18F3E80D245890D1005221A8 /* BBZEffetFilterLayer.m in Sources */,
+				18F3E80D245890D1005221A8 /* BBZEffectFilterLayer.m in Sources */,
 				14183F642450511D00D03057 /* YYCache.m in Sources */,
 				14183FB22450511D00D03057 /* YYThreadSafeArray.m in Sources */,
 				14183F882450511D00D03057 /* YYTextArchiver.m in Sources */,

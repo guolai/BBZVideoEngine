@@ -8,8 +8,8 @@
 
 #import "BBZBaseAsset.h"
 
-const int BBZDefaultImageTime = 2;
-const int BBZMinVideoTime = 2;
+const float BBZDefaultImageTime = 2.68;
+const float BBZMinVideoTime = 2.0;
 //const int BBZVideoTimeScale = 600;
 const int BBZVideoDurationScale = 100;
 const int BBZScheduleTimeScale = 6000;
