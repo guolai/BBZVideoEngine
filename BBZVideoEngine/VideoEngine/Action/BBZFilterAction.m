@@ -44,6 +44,7 @@
     fitlerAction.repeatCount = vistualAction.repeatCount;
     fitlerAction.startTime = vistualAction.startTime;
     fitlerAction.duration = vistualAction.duration;
+    vistualAction.filterAction = fitlerAction;
 //    fitlerAction.node =
     return fitlerAction;
 }

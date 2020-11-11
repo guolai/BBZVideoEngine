@@ -51,7 +51,7 @@
     
     AVURLAsset *avAsset = [[AVURLAsset alloc] initWithURL:[NSURL fileURLWithPath:strFile] options:nil];
     BBZVideoAsset *videoAsset = [BBZVideoAsset assetWithAVAsset:avAsset];
-     self.reader = [[BBZAssetReader alloc] initWithAsset:(AVAsset *)videoAsset.asset];
+    self.reader = [[BBZAssetReader alloc] initWithAsset:(AVAsset *)videoAsset.asset];
     self.reader.timeRange = videoAsset.playTimeRange;
     self.videoOutPut = [[BBZAssetReaderSequentialAccessVideoOutput alloc] initWithOutputSettings:[self defaultVideoOutputSettings]];
     [self.reader addOutput:self.videoOutPut];

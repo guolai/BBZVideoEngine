@@ -15,7 +15,7 @@
 @property (nonatomic, assign) BOOL shouldIgnorMerge;//可能会有一些滤镜不希望被合并
 @property (nonatomic, strong) UIImage *image;
 
-@property (nonatomic, strong) BBZFilterAction *filterAction;
+@property (nonatomic, weak) BBZFilterAction *filterAction;
 @end
 
 
