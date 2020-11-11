@@ -126,10 +126,8 @@ NSString *const kBBZGaussVideoInputFragmentShader = SHADER_STRING
     _yuvFilterTextureCoordinateAttribute = [self.yuvFilterProgram attributeIndex:@"inputTextureCoordinate"];
     _yuvFilterInputTextureUniform = [self.yuvFilterProgram uniformIndex:@"inputImageTexture"];
     _yuvFilterInputTextureUniform2 = [self.yuvFilterProgram uniformIndex:@"inputImageTexture2"];
-    NSString *uniformName  = @"matParam";
-    GLint uniformIndex = [self.yuvFilterProgram uniformIndex:uniformName];
-    self->_yuvUniformMat33 = uniformIndex;
-    [GPUImageContext setActiveShaderProgram:self.yuvFilterProgram];
+    _yuvUniformMat33 = [self.yuvFilterProgram uniformIndex:@"matParam"];
+    
 }
 
 - (void)buildGaussFilterParams {
@@ -187,7 +185,7 @@ NSString *const kBBZGaussVideoInputFragmentShader = SHADER_STRING
     };
     
     CGSize smallSize = [self sizeOfFBO];
-    smallSize = CGSizeMake([self adjustVideoSizeValue:smallSize.width/4.0], [self adjustVideoSizeValue:smallSize.height/4.0]);
+    smallSize = CGSizeMake([self adjustVideoSizeValue:smallSize.width/8.0], [self adjustVideoSizeValue:smallSize.height/8.0]);
     NSLog(@"processGaussImage size %@", NSStringFromCGSize(smallSize));
     
     GPUImageFramebuffer *frameBuffer1 = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:smallSize textureOptions:self.outputTextureOptions onlyTexture:NO];
@@ -257,14 +255,14 @@ NSString *const kBBZGaussVideoInputFragmentShader = SHADER_STRING
             glClear(GL_COLOR_BUFFER_BIT);
         }
         
-        glActiveTexture(GL_TEXTURE2);
+        glActiveTexture(GL_TEXTURE3);
         glBindTexture(GL_TEXTURE_2D, [firstInputFramebuffer texture]);
-        glUniform1i(_yuvFilterInputTextureUniform, 2);
+        glUniform1i(_yuvFilterInputTextureUniform, 3);
         
         GPUImageFramebuffer *fb2 = [[self frameBuffers] objectAtIndex:0];
-        glActiveTexture(GL_TEXTURE3);
+        glActiveTexture(GL_TEXTURE4);
         glBindTexture(GL_TEXTURE_2D, [fb2 texture]);
-        glUniform1i(_yuvFilterInputTextureUniform2, 3);
+        glUniform1i(_yuvFilterInputTextureUniform2, 4);
         
         GPUMatrix3x3 tmpmat33ParamValue = self.mat33ParamValue;
         glUniformMatrix3fv(_yuvUniformMat33, 1, GL_FALSE, (GLfloat *)(&tmpmat33ParamValue));
@@ -272,6 +270,7 @@ NSString *const kBBZGaussVideoInputFragmentShader = SHADER_STRING
         
         glVertexAttribPointer(_yuvFilterPositionAttribute, 2, GL_FLOAT, 0, 0, vertices);
         glVertexAttribPointer(_yuvFilterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, textureCoordinates);
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
         
     }else {
         self.rgbFrameBuffer = firstInputFramebuffer;

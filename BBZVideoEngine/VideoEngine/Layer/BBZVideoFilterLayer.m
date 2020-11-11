@@ -60,7 +60,7 @@
         } else {
             if(bRGB) {
                 tranformNode = [BBZNode createLocalNode:BBZNodeTransformSource duration:action.endTime - action.startTime];
-                [tranformNode buildTransfromSourceScaleFrom:1.15 toScale:1.0];
+                [tranformNode buildTransfromSourceScaleFrom:1.0 toScale:1.0];
             } else {
                 tranformNode = [BBZNode createLocalNode:BBZNodeTransformDefault duration:action.endTime - action.startTime];
             }
