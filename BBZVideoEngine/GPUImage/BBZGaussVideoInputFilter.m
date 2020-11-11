@@ -18,7 +18,7 @@ NSString *const kBBZGaussVideoInputVertexShader = SHADER_STRING
  uniform float texelWidthOffset;
  uniform float texelHeightOffset;
  
- varying vec2 blurCoordinates[5];
+ varying vec2 blurCoordinates[9];
  
  void main()
  {
@@ -26,10 +26,14 @@ NSString *const kBBZGaussVideoInputVertexShader = SHADER_STRING
     
     vec2 singleStepOffset = vec2(texelWidthOffset, texelHeightOffset);
     blurCoordinates[0] = inputTextureCoordinate.xy;
-    blurCoordinates[1] = inputTextureCoordinate.xy + singleStepOffset * 1.182425;
-    blurCoordinates[2] = inputTextureCoordinate.xy - singleStepOffset * 1.182425;
-    blurCoordinates[3] = inputTextureCoordinate.xy + singleStepOffset * 3.029312;
-    blurCoordinates[4] = inputTextureCoordinate.xy - singleStepOffset * 3.029312;
+    blurCoordinates[1] = inputTextureCoordinate.xy + singleStepOffset * 1.458430;
+    blurCoordinates[2] = inputTextureCoordinate.xy - singleStepOffset * 1.458430;
+    blurCoordinates[3] = inputTextureCoordinate.xy + singleStepOffset * 3.403985;
+    blurCoordinates[4] = inputTextureCoordinate.xy - singleStepOffset * 3.403985;
+    blurCoordinates[5] = inputTextureCoordinate.xy + singleStepOffset * 5.351806;
+    blurCoordinates[6] = inputTextureCoordinate.xy - singleStepOffset * 5.351806;
+    blurCoordinates[7] = inputTextureCoordinate.xy + singleStepOffset * 7.302940;
+    blurCoordinates[8] = inputTextureCoordinate.xy - singleStepOffset * 7.302940;
 }
  );
 
@@ -39,16 +43,21 @@ NSString *const kBBZGaussVideoInputFragmentShader = SHADER_STRING
  uniform highp float texelWidthOffset;
  uniform highp float texelHeightOffset;
  
- varying highp vec2 blurCoordinates[5];
+ varying highp vec2 blurCoordinates[9];
  
  void main()
  {
     lowp vec4 sum = vec4(0.0);
-    sum += texture2D(inputImageTexture, blurCoordinates[0]) * 0.398943;
-    sum += texture2D(inputImageTexture, blurCoordinates[1]) * 0.295963;
-    sum += texture2D(inputImageTexture, blurCoordinates[2]) * 0.295963;
-    sum += texture2D(inputImageTexture, blurCoordinates[3]) * 0.004566;
-    sum += texture2D(inputImageTexture, blurCoordinates[4]) * 0.004566;
+    sum += texture2D(inputImageTexture, blurCoordinates[0]) * 0.133571;
+    sum += texture2D(inputImageTexture, blurCoordinates[1]) * 0.233308;
+    sum += texture2D(inputImageTexture, blurCoordinates[2]) * 0.233308;
+    sum += texture2D(inputImageTexture, blurCoordinates[3]) * 0.135928;
+    sum += texture2D(inputImageTexture, blurCoordinates[4]) * 0.135928;
+    sum += texture2D(inputImageTexture, blurCoordinates[5]) * 0.051383;
+    
+    sum += texture2D(inputImageTexture, blurCoordinates[6]) * 0.051383;
+    sum += texture2D(inputImageTexture, blurCoordinates[7]) * 0.012595;
+    sum += texture2D(inputImageTexture, blurCoordinates[8]) * 0.012595;
     gl_FragColor = sum;
 }
  );
@@ -184,7 +193,7 @@ NSString *const kBBZGaussVideoInputFragmentShader = SHADER_STRING
         1.0f, 1.0f,
     };
     
-    CGSize smallSize = [self sizeOfFBO];
+    CGSize smallSize = self.rgbFrameBuffer.size;
     smallSize = CGSizeMake([self adjustVideoSizeValue:smallSize.width/8.0], [self adjustVideoSizeValue:smallSize.height/8.0]);
     NSLog(@"processGaussImage size %@", NSStringFromCGSize(smallSize));
     
@@ -246,7 +255,7 @@ NSString *const kBBZGaussVideoInputFragmentShader = SHADER_STRING
         return;
     }
     if(!self.bRGB) {
-        self.rgbFrameBuffer = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:[self sizeOfFBO] textureOptions:self.outputTextureOptions onlyTexture:NO];
+        self.rgbFrameBuffer = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:firstInputFramebuffer.size textureOptions:self.outputTextureOptions onlyTexture:NO];
         [self.rgbFrameBuffer activateFramebuffer];
         [GPUImageContext setActiveShaderProgram:self.yuvFilterProgram];
         
@@ -284,23 +293,23 @@ NSString *const kBBZGaussVideoInputFragmentShader = SHADER_STRING
     if (usingNextFrameForImageCapture) {
         [outputFramebuffer lock];
     }
-    
+
     [GPUImageContext setActiveShaderProgram:filterProgram];
     [self setUniformsForProgramAtIndex:0];
     if(self.shouldClearBackGround) {
         glClearColor(backgroundColorRed, backgroundColorGreen, backgroundColorBlue, 1.0);
         glClear(GL_COLOR_BUFFER_BIT);
     }
-    
+
     glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, [self.rgbFrameBuffer texture]);
     glUniform1i(filterInputTextureUniform, 2);
-    
+
     [self bindInputParamValues];
-    
+
     glVertexAttribPointer(filterPositionAttribute, 2, GL_FLOAT, 0, 0, [self adjustVertices:vertices]);
     glVertexAttribPointer(filterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, textureCoordinates);
-    
+
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     //    BBZINFO(@"renderToTextureWithVertices %p, %p, %@, %@", firstInputFramebuffer, outputFramebuffer, self.debugName, self);
     //    BBZINFO(@"renderToTexture1 %@", firstInputFramebuffer.debugDescription);
