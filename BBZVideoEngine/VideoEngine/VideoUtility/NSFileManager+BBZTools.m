@@ -7,6 +7,7 @@
 //
 
 #import "NSFileManager+BBZTools.h"
+#import "BBZVideoEngineHeader.h"
 
 
 @implementation NSFileManager (BBZTools)

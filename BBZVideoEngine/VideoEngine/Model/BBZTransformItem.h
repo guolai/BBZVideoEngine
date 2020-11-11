@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "BBZVideoEngineHeader.h"
 
 @interface BBZTransformItem : NSObject
 @property (nonatomic, assign) CGFloat scale;

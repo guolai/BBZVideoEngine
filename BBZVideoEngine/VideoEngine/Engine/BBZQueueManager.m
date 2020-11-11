@@ -12,8 +12,8 @@ static void *bbzvideoEngineTaskKey;
 static void *bbzvideoEngineExportKey;
 
 @interface BBZQueueManager ()
-@property (nonatomic, strong) dispatch_queue_t taskQueue;
-@property (nonatomic, strong) dispatch_queue_t exportQueue;
+@property (nonatomic, assign) dispatch_queue_t taskQueue;
+@property (nonatomic, assign) dispatch_queue_t exportQueue;
 @end
 
 @implementation BBZQueueManager

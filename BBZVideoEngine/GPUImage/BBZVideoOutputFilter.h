@@ -7,6 +7,7 @@
 //
 
 #import "BBZMultiImageFilter.h"
+#import "BBZVideoEngineHeader.h"
 
 @protocol BBZVideoOutputFilterDelegate <NSObject>
 - (void)didDrawFrameBuffer:(GPUImageFramebuffer *)outputFramebuffer time:(CMTime)time;

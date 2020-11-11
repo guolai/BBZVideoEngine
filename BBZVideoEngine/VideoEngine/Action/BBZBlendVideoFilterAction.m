@@ -150,7 +150,7 @@
         
         
 //        [self.videoOutPut sampleBufferAtTime:assetTime];
-        NSLog(@"BBZBlendVideoFilterAction %.4f,%.4f,%.4f", CMTimeGetSeconds(time),CMTimeGetSeconds(actionTime),CMTimeGetSeconds(assetTime));
+//        NSLog(@"BBZBlendVideoFilterAction %.4f,%.4f,%.4f", CMTimeGetSeconds(time),CMTimeGetSeconds(actionTime),CMTimeGetSeconds(assetTime));
     } else {
         NSAssert(false, @"time error");
     }

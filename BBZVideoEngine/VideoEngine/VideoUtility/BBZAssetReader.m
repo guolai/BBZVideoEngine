@@ -7,6 +7,7 @@
 //
 
 #import "BBZAssetReader.h"
+#import "BBZVideoEngineHeader.h"
 
 
 @interface BBZAssetReaderOutput ()

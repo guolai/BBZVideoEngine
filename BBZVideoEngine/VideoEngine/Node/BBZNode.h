@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "BBZVideoEngineHeader.h"
 
 extern NSString *const BBZFilterTransformSource;
 extern NSString *const BBZFilterBlendImage;

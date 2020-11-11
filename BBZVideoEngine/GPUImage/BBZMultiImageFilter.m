@@ -8,6 +8,7 @@
 
 #import "BBZMultiImageFilter.h"
 #import "GPUImageFramebuffer+BBZ.h"
+#import "BBZVideoEngineHeader.h"
 
 
 @interface BBZMultiImageFilter ()

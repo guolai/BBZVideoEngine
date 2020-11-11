@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "BBZVideoEngineHeader.h"
 
 @interface BBZQueueManager : NSObject
 

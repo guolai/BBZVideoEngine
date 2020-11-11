@@ -19,7 +19,7 @@
 @property (nonatomic, strong) AVAssetWriterInput *videoInput;
 @property (nonatomic, strong) AVAssetWriterInputPixelBufferAdaptor *videoPixelBufferAdaptor;
 @property (nonatomic, strong) AVAssetWriterInput *audioInput;
-@property (nonatomic, strong) dispatch_queue_t inputQueue;
+@property (nonatomic, assign) dispatch_queue_t inputQueue;
 @property (nonatomic, assign, readwrite) CMTime lastSamplePresentationTime;
 @property (nonatomic, strong) void (^completionHandler)(BBZAVAssetExportSession *);
 //@property (nonatomic, strong, readwrite) BBZVideoRenderFilter *videoRenderFilter;

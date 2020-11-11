@@ -7,6 +7,7 @@
 //
 
 #import "BBZVideoTools.h"
+#import "BBZVideoEngineHeader.h"
 
 @implementation BBZVideoTools
 + (AVAsset *)mergeVideoFile:(NSString *)videoFile
