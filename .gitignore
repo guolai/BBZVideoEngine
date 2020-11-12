@@ -5,8 +5,10 @@ xcuserdata/
 *.xcworkspace
 BBZVideoEngine/*.xcworkspace
 BBZVideoEngine/BBZVideoEngine.xcodeproj/project.xcworkspace/xcuserdata/
+BBZVideoEngine/BBZVideoEngine.xcodeproj/xcshareddata/
 BBZVEDemo/*.xcworkspace
 BBZVEDemo/BBZVEDemo.xcodeproj/project.xcworkspace/xcuserdata/
+BBZVEDemo/BBZVEDemo.xcodeproj/xcshareddata/
 ## Build generated
 build/
 DerivedData/

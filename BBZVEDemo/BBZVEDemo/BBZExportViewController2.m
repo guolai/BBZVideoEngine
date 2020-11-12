@@ -309,6 +309,7 @@
     BBZEngineSetting *setting = [BBZEngineSetting  buildVideoSettings:videoModel];
     setting.videoSize = CGSizeMake(720, 720);
     setting.fillType = BBZVideoFillModePreserveAspectRatio;
+    setting.videoFrameRate = 60;
     
     NSString *tmpDir =  [NSString stringWithFormat:@"%@/tmp", videoModel.videoResourceDir];
     [NSFileManager removeFileIfExist:tmpDir];
