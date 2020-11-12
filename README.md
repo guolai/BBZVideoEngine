@@ -62,41 +62,32 @@
 
 
 ## 整体框架图
-<!-- ![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/AVFoundation.png) -->
-![Image text](https://github.com/guolai/testCoreData/blob/master/AVFoundation.png)
+![Image text](https://github.com/guolai/BBZVideoEngine/blob/master/Flow/AVFoundation.png)
 
 
 ## 音视频引擎架构图
-<!-- ![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/AVFoundatioSimpleClass.png) -->
-![Image text](https://github.com/guolai/testCoreData/blob/master/AVFoundatioSimpleClass.png)
+![Image text](https://github.com/guolai/BBZVideoEngine/blob/master/Flow/AVFoundatioSimpleClass.png)
 
 ## 类结构概览
-<!-- ![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/class.png) -->
-![Image text](https://github.com/guolai/testCoreData/blob/master/class.png)
+![Image text](https://github.com/guolai/BBZVideoEngine/blob/master/Flow/class.png)
 
 ## 音视频处理工作流
-<!-- ![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/DescriptionWorkFlow.png) -->
-![Image text](https://github.com/guolai/testCoreData/blob/master/DescriptionWorkFlow.png)
+![Image text](https://github.com/guolai/BBZVideoEngine/blob/master/Flow/DescriptionWorkFlow.png)
 
-<!-- ![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/VideoEngineWorkFlow.png) -->
-![Image text](https://github.com/guolai/testCoreData/blob/master/VideoEngineWorkFlow.png)
+![Image text](https://github.com/guolai/BBZVideoEngine/blob/master/Flow/VideoEngineWorkFlow.png)
 
 
 ## 转场时间轴示意
-<!-- ![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/TransitionFlow.png) -->
-![Image text](https://github.com/guolai/testCoreData/blob/master/TransitionFlow.png)
+![Image text](https://github.com/guolai/BBZVideoEngine/blob/master/Flow/TransitionFlow.png)
 
 ## 树状滤镜链管理
-<!-- ![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/FilterTreeManage.png) -->
-![Image text](https://github.com/guolai/testCoreData/blob/master/FilterTreeManage.png)
+![Image text](https://github.com/guolai/BBZVideoEngine/blob/master/Flow/FilterTreeManage.png)
 
 ## 拼接及转场滤镜链
-<!-- ![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/transitionAndSplice.png) -->
-![Image text](https://github.com/guolai/testCoreData/blob/master/transitionAndSplice.png)
+![Image text](https://github.com/guolai/BBZVideoEngine/blob/master/Flow/transitionAndSplice.png)
 
 ## 滤镜链优化处理
-<!-- ![Image text](http://raw.githubusercontent.com/guolai/testCoreData/master/FilterOptimization.png) -->
-![Image text](https://github.com/guolai/testCoreData/blob/master/FilterOptimization.png)
+![Image text](https://github.com/guolai/BBZVideoEngine/blob/master/Flow/FilterOptimization.png)
 
 ## 代码使用示例
 ### 创建model
