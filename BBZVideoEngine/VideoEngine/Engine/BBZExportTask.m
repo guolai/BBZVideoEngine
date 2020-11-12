@@ -24,9 +24,10 @@
 @synthesize videoModel = _videoModel;
 
 - (void)dealloc {
-    if(self.bShouldRemoveFileAfterCompleted) {
+    if(self.bShouldRemoveFileAfterCompleted || self.outputFile != self.exportFilePath) {
         if ([[NSFileManager defaultManager] fileExistsAtPath:self.exportFilePath]) {
             [[NSFileManager defaultManager] removeItemAtPath:self.exportFilePath error:NULL];
+            BBZINFO(@"BBZExportTask remove exportFile %@", self.exportFilePath);
         }
     }
 }
