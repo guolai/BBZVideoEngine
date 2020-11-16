@@ -243,7 +243,7 @@
     return nil;
 }
 
-+ (NSDictionary *)dictionaryWithXML:(id)xml {
++ (NSDictionary *)BBZVEdictionaryWithXML:(id)xml {
     _BBZVEXMLDictionaryParser *parser = nil;
     if ([xml isKindOfClass:[NSString class]]) {
         parser = [[_BBZVEXMLDictionaryParser alloc] initWithString:xml];
