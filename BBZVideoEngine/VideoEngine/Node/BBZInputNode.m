@@ -7,17 +7,17 @@
 //
 
 #import "BBZInputNode.h"
-#import "NSDictionary+YYAdd.h"
+#import "NSDictionary+BBZVE.h"
 
 @implementation BBZInputNode
 
 -(instancetype)initWithDictionary:(NSDictionary *)dic  withFilePath:(NSString *)filePath{
     if (self = [super init]) {
         _filePath = filePath;
-        self.index = [dic intValueForKey:@"index" default:0];
-        self.playOrder = [dic intValueForKey:@"playOrder" default:0];
-        self.scale = [dic floatValueForKey:@"scale" default:1.0];
-        self.assetOrder = [dic intValueForKey:@"assetOrder" default:0];
+        self.index = [dic BBZVEintValueForKey:@"index" default:0];
+        self.playOrder = [dic BBZVEintValueForKey:@"playOrder" default:0];
+        self.scale = [dic BBZVEfloatValueForKey2:@"scale" default:1.0];
+        self.assetOrder = [dic BBZVEintValueForKey:@"assetOrder" default:0];
         id Obj = [dic objectForKey:@"action"];
         NSMutableArray *array = [NSMutableArray array];
         if ([Obj isKindOfClass:[NSDictionary class]]) {

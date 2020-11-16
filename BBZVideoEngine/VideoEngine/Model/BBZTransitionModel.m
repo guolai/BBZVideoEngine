@@ -7,7 +7,7 @@
 //
 
 #import "BBZTransitionModel.h"
-#import "NSDictionary+YYAdd.h"
+#import "NSDictionary+BBZVE.h"
 
 
 @interface BBZTransitionModel ()
@@ -44,7 +44,7 @@
     if([[NSFileManager defaultManager] fileExistsAtPath:strFilterFile]) {
         NSMutableArray *array = [NSMutableArray array];
         NSData *data = [NSData  dataWithContentsOfFile:strFilterFile];
-        NSDictionary *dic = [NSDictionary dictionaryWithXML:data];
+        NSDictionary *dic = [NSDictionary BBZVEdictionaryWithXML:data];
         if(dic) {
             self.minVersion = [[dic objectForKey:@"miniVersion"] floatValue];
             id inputGroup = dic[@"inputGroup"];
@@ -70,7 +70,7 @@
     if([[NSFileManager defaultManager] fileExistsAtPath:strFilterFile]) {
         NSMutableArray *array = [NSMutableArray array];
         NSData *data = [NSData  dataWithContentsOfFile:strFilterFile];
-        NSDictionary *dic = [NSDictionary dictionaryWithXML:data];
+        NSDictionary *dic = [NSDictionary BBZVEdictionaryWithXML:data];
         if(dic) {
             self.minVersion = MIN([[dic objectForKey:@"miniVersion"] floatValue], self.minVersion);
             id inputGroup = dic[@"inputGroup"];

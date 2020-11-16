@@ -15,6 +15,5 @@ Pod::Spec.new do |s|
   s.prefix_header_file = 'BBZVideoEngine/BBZVideoEngine/BBZVEHeader.h'
   s.ios.deployment_target = '5.0'
   s.ios.frameworks   = ['OpenGLES', 'CoreMedia', 'QuartzCore', 'AVFoundation']
-  s.dependency "YYKit"
   s.dependency "JRSwizzle"
 end

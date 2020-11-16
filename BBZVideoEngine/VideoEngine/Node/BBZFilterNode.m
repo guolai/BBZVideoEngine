@@ -7,7 +7,7 @@
 //
 
 #import "BBZFilterNode.h"
-#import "NSDictionary+YYAdd.h"
+#import "NSDictionary+BBZVE.h"
 
 extern NSString *const BBZFilterMovieEnding;
 
@@ -19,9 +19,9 @@ extern NSString *const BBZFilterMovieEnding;
 - (instancetype)initWithDictionary:(NSDictionary *)dic withFilePath:(NSString *)filePath {
     if (self = [super init]) {
         _filePath = filePath;
-        self.begin = [dic floatValueForKey:@"begin" default:0.0];
-        self.duration = [dic floatValueForKey:@"duration" default:0.0];
-        self.index = [dic intValueForKey:@"index" default:0];
+        self.begin = [dic BBZVEfloatValueForKey2:@"begin" default:0.0];
+        self.duration = [dic BBZVEfloatValueForKey2:@"duration" default:0.0];
+        self.index = [dic BBZVEintValueForKey:@"index" default:0];
 //        self.repeat = [dic intValueForKey:@"repeat" default:1];
         id Obj = [dic objectForKey:@"action"];
         NSMutableArray *array = [NSMutableArray array];

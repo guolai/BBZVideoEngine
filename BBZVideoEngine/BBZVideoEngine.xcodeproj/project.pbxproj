@@ -192,6 +192,8 @@
 		142B74F4255C08ED0047B0C7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 142B74F3255C08ED0047B0C7 /* CoreGraphics.framework */; };
 		142B7573255C10BF0047B0C7 /* BBZVideoEngineHeader.h in Headers */ = {isa = PBXBuildFile; fileRef = 142B7572255C10BF0047B0C7 /* BBZVideoEngineHeader.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		142B7575255C10CA0047B0C7 /* BBZVEHeader.h in Headers */ = {isa = PBXBuildFile; fileRef = 142B7574255C10C90047B0C7 /* BBZVEHeader.h */; };
+		147CA66025628F2D00AEFC08 /* NSDictionary+BBZVE.h in Headers */ = {isa = PBXBuildFile; fileRef = 147CA65E25628F2D00AEFC08 /* NSDictionary+BBZVE.h */; };
+		147CA66125628F2D00AEFC08 /* NSDictionary+BBZVE.m in Sources */ = {isa = PBXBuildFile; fileRef = 147CA65F25628F2D00AEFC08 /* NSDictionary+BBZVE.m */; };
 		D7D6DFB8A914EDB139D25FC9 /* Pods_BBZVideoEngine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08F0C0A00EB7CCC4B24ADC51 /* Pods_BBZVideoEngine.framework */; };
 /* End PBXBuildFile section */
 
@@ -385,6 +387,8 @@
 		142B74F3255C08ED0047B0C7 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
 		142B7572255C10BF0047B0C7 /* BBZVideoEngineHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBZVideoEngineHeader.h; sourceTree = "<group>"; };
 		142B7574255C10C90047B0C7 /* BBZVEHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBZVEHeader.h; sourceTree = "<group>"; };
+		147CA65E25628F2D00AEFC08 /* NSDictionary+BBZVE.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+BBZVE.h"; sourceTree = "<group>"; };
+		147CA65F25628F2D00AEFC08 /* NSDictionary+BBZVE.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+BBZVE.m"; sourceTree = "<group>"; };
 		95916F0BCA066ACCE0744D75 /* Pods-BBZVideoEngine.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BBZVideoEngine.debug.xcconfig"; path = "Target Support Files/Pods-BBZVideoEngine/Pods-BBZVideoEngine.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -581,6 +585,8 @@
 				142B7375255BE78C0047B0C7 /* BBZAVAssetExportSession.h */,
 				142B7376255BE78C0047B0C7 /* BBZVideoTools.m */,
 				142B7377255BE78C0047B0C7 /* BBZAssetReader.h */,
+				147CA65E25628F2D00AEFC08 /* NSDictionary+BBZVE.h */,
+				147CA65F25628F2D00AEFC08 /* NSDictionary+BBZVE.m */,
 			);
 			path = VideoUtility;
 			sourceTree = "<group>";
@@ -749,6 +755,7 @@
 				142B745E255BE78D0047B0C7 /* BBZVideoEngine.h in Headers */,
 				142B73E6255BE78D0047B0C7 /* BBZEngineSetting+VideoModel.h in Headers */,
 				142B745B255BE78D0047B0C7 /* BBZExportTask.h in Headers */,
+				147CA66025628F2D00AEFC08 /* NSDictionary+BBZVE.h in Headers */,
 				142B744A255BE78D0047B0C7 /* BBZInputNode.h in Headers */,
 				142B741A255BE78D0047B0C7 /* NSFileManager+BBZTools.h in Headers */,
 				142B7468255BE78D0047B0C7 /* GPUImageMovieComposition.h in Headers */,
@@ -927,6 +934,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				147CA66125628F2D00AEFC08 /* NSDictionary+BBZVE.m in Sources */,
 				142B741E255BE78D0047B0C7 /* NSError+BBZ.m in Sources */,
 				142B747F255BE78D0047B0C7 /* GPUImageColorConversion.m in Sources */,
 				142B7428255BE78D0047B0C7 /* BBZAssetWriter.m in Sources */,

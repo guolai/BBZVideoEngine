@@ -7,7 +7,7 @@
 //
 
 #import "BBZTransitionGroupNode.h"
-#import "NSDictionary+YYAdd.h"
+#import "NSDictionary+BBZVE.h"
 
 //@property (nonatomic, assign) double timestamp;
 //@property (nonatomic, assign) double duration;
@@ -17,10 +17,10 @@
 -(instancetype)initWithDictionary:(NSDictionary *)dic withFilePath:(NSString *)filePath {
     if (self = [super init]) {
         _filePath = filePath;
-        self.timestamp = [dic floatValueForKey:@"timestamp" default:0.0];
-        self.duration = [dic floatValueForKey:@"duration" default:0.0];
-        self.order = [dic intValueForKey:@"order" default:0];
-        self.repeat = [dic intValueForKey:@"repeat" default:0];
+        self.timestamp = [dic BBZVEfloatValueForKey2:@"timestamp" default:0.0];
+        self.duration = [dic BBZVEfloatValueForKey2:@"duration" default:0.0];
+        self.order = [dic BBZVEintValueForKey:@"order" default:0];
+        self.repeat = [dic BBZVEintValueForKey:@"repeat" default:0];
         id Obj = [dic objectForKey:@"action"];
         NSMutableArray *array = [NSMutableArray array];
         if ([Obj isKindOfClass:[NSDictionary class]]) {
@@ -47,8 +47,9 @@
 -(instancetype)initWithDictionary:(NSDictionary *)dic  withFilePath:(NSString *)filePath{
     if (self = [super init]) {
         _filePath = filePath;
-        self.duration = [dic floatValueForKey:@"duration" default:0.0];
-        self.order = [dic intValueForKey:@"order" default:0];
+        self.duration = [dic BBZVEfloatValueForKey2:@"duration" default:0.0];
+        
+        self.order = [dic BBZVEintValueForKey:@"order" default:0];
         id Obj = [dic objectForKey:@"transition"];
         if ([Obj isKindOfClass:[NSDictionary class]]) {
             BBZTransitionNode *node = [[BBZTransitionNode alloc] initWithDictionary:Obj withFilePath:self.filePath];

@@ -7,7 +7,7 @@
 //
 
 #import "BBZFilterModel.h"
-#import "NSDictionary+YYAdd.h"
+#import "NSDictionary+BBZVE.h"
 
 @interface BBZFilterModel ()
 @property (nonatomic, assign, readwrite) CGFloat duration;
@@ -50,7 +50,7 @@
     
     NSMutableArray *array = [NSMutableArray array];
     NSData *data = [NSData  dataWithContentsOfFile:strFilterFile];
-    NSDictionary *dic = [NSDictionary dictionaryWithXML:data];
+    NSDictionary *dic = [NSDictionary BBZVEdictionaryWithXML:data];
     if(dic) {
 //        self.duration = [[dic objectForKey:@"duration"] floatValue];
         self.minVersion = [[dic objectForKey:@"miniVersion"] floatValue];

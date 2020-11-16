@@ -8,7 +8,6 @@ use_frameworks!
 
 
 target 'BBZVideoEngine' do
-    pod 'YYKit'
     pod 'JRSwizzle'
 end
 

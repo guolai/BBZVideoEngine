@@ -7,7 +7,7 @@
 //
 
 #import "BBZNode.h"
-#import "NSDictionary+YYAdd.h"
+#import "NSDictionary+BBZVE.h"
 extern const int BBZVideoDurationScale;
 extern const int BBZScheduleTimeScale;
 
@@ -26,14 +26,14 @@ NSString *const BBZFilterMovieEnding = @"movieending";
 
 - (instancetype)initWithDictionary:(NSDictionary *)dic {
     if(self = [super init]) {
-        self.param1 = [dic floatValueForKey:@"param1" default:0.0];
-        self.param2 = [dic floatValueForKey:@"param2" default:0.0];
-        self.param3 = [dic floatValueForKey:@"param3" default:0.0];
-        self.param4 = [dic floatValueForKey:@"param4" default:0.0];
-        self.param5 = [dic floatValueForKey:@"param5" default:0.0];
-        self.param6 = [dic floatValueForKey:@"param6" default:0.0];
-        self.param7 = [dic floatValueForKey:@"param7" default:0.0];
-        self.param8 = [dic floatValueForKey:@"param8" default:0.0];
+        self.param1 = [dic BBZVEfloatValueForKey2:@"param1" default:0.0];
+        self.param2 = [dic BBZVEfloatValueForKey2:@"param2" default:0.0];
+        self.param3 = [dic BBZVEfloatValueForKey2:@"param3" default:0.0];
+        self.param4 = [dic BBZVEfloatValueForKey2:@"param4" default:0.0];
+        self.param5 = [dic BBZVEfloatValueForKey2:@"param5" default:0.0];
+        self.param6 = [dic BBZVEfloatValueForKey2:@"param6" default:0.0];
+        self.param7 = [dic BBZVEfloatValueForKey2:@"param7" default:0.0];
+        self.param8 = [dic BBZVEfloatValueForKey2:@"param8" default:0.0];
     }
     return self;
 }
@@ -57,8 +57,8 @@ NSString *const BBZFilterMovieEnding = @"movieending";
 
 -(instancetype)initWithDictionary:(NSDictionary *)dic {
     if (self = [super init]) {
-        self.begin = [dic floatValueForKey:@"begin" default:0.0];
-        self.end = [dic floatValueForKey:@"end" default:0.0];
+        self.begin = [dic BBZVEfloatValueForKey2:@"begin" default:0.0];
+        self.end = [dic BBZVEfloatValueForKey2:@"end" default:0.0];
         self.param_begin = [[BBZNodeAnimationParams alloc] initWithDictionary:dic[@"param_begin"]];
         self.param_end = [[BBZNodeAnimationParams alloc] initWithDictionary:dic[@"param_end"]];
     }
@@ -101,15 +101,15 @@ NSString *const BBZFilterMovieEnding = @"movieending";
     if (self = [super init]) {
         [self initParams];
         _filePath = filePath;
-        self.begin = [dic floatValueForKey:@"begin" default:0.0];
-        self.end = [dic floatValueForKey:@"end" default:3600.0];
-        self.order = [dic intValueForKey:@"order" default:0];
-        self.name = [dic stringValueForKey:@"name" default:nil];
-        self.fShader = [dic stringValueForKey:@"fShader" default:nil];
-        self.vShader = [dic stringValueForKey:@"vShader" default:nil];
-        self.scale_mode = [dic stringValueForKey:@"scale_mode" default:nil];
-        self.repeat = [dic intValueForKey:@"repeat" default:1];
-        self.attenmentFile = [dic stringValueForKey:@"attenment" default:nil];
+        self.begin = [dic BBZVEfloatValueForKey2:@"begin" default:0.0];
+        self.end = [dic BBZVEfloatValueForKey2:@"end" default:3600.0];
+        self.order = [dic BBZVEintValueForKey:@"order" default:0];
+        self.name = [dic BBZVEstringValueForKey:@"name" default:nil];
+        self.fShader = [dic BBZVEstringValueForKey:@"fShader" default:nil];
+        self.vShader = [dic BBZVEstringValueForKey:@"vShader" default:nil];
+        self.scale_mode = [dic BBZVEstringValueForKey:@"scale_mode" default:nil];
+        self.repeat = [dic BBZVEintValueForKey:@"repeat" default:1];
+        self.attenmentFile = [dic BBZVEstringValueForKey:@"attenment" default:nil];
         id animationObj = [dic objectForKey:@"animation"];
         NSMutableArray *array = [NSMutableArray array];
         if ([animationObj isKindOfClass:[NSDictionary class]]) {

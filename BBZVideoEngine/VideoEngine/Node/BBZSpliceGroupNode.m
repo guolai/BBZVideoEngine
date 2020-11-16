@@ -7,7 +7,7 @@
 //
 
 #import "BBZSpliceGroupNode.h"
-#import "NSDictionary+YYAdd.h"
+#import "NSDictionary+BBZVE.h"
 
 @implementation BBZSpliceNode
 -(instancetype)initWithDictionary:(NSDictionary *)dic withFilePath:(NSString *)filePath {
@@ -38,8 +38,8 @@
 @implementation BBZSpliceGroupNode
 -(instancetype)initWithDictionary:(NSDictionary *)dic withFilePath:(NSString *)filePath {
     if (self = [super init]) {
-        self.minDuration = [dic floatValueForKey:@"duration" default:0.0];
-        self.order = [dic intValueForKey:@"order" default:0];
+        self.minDuration = [dic BBZVEfloatValueForKey2:@"duration" default:0.0];
+        self.order = [dic BBZVEintValueForKey:@"order" default:0];
         id Obj = [dic objectForKey:@"splice"];
         if ([Obj isKindOfClass:[NSDictionary class]]) {
             BBZSpliceNode *node = [[BBZSpliceNode alloc] initWithDictionary:Obj withFilePath:self.filePath];
