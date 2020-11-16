@@ -131,7 +131,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (unsigned long long)BBZVEunsignedLongLongValueForKey:(NSString *)key default:(unsigned long long)def;
 
 - (float)BBZVEfloatValueForKey:(NSString *)key default:(float)def;
-- (float)BBZVEfloatValueForKey2:(NSString *)key default:(float)def;
+//- (float)BBZVEfloatValueForKey2:(NSString *)key default:(float)def;
 - (double)BBZVEdoubleValueForKey:(NSString *)key default:(double)def;
 - (double)BBZVEdoubleValueForKey2:(NSString *)key default:(double)def;
 

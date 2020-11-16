@@ -38,7 +38,7 @@
 @implementation BBZSpliceGroupNode
 -(instancetype)initWithDictionary:(NSDictionary *)dic withFilePath:(NSString *)filePath {
     if (self = [super init]) {
-        self.minDuration = [dic BBZVEfloatValueForKey2:@"duration" default:0.0];
+        self.minDuration = [dic BBZVEdoubleValueForKey2:@"duration" default:0.0];
         self.order = [dic BBZVEintValueForKey:@"order" default:0];
         id Obj = [dic objectForKey:@"splice"];
         if ([Obj isKindOfClass:[NSDictionary class]]) {

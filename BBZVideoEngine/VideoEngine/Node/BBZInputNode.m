@@ -16,7 +16,7 @@
         _filePath = filePath;
         self.index = [dic BBZVEintValueForKey:@"index" default:0];
         self.playOrder = [dic BBZVEintValueForKey:@"playOrder" default:0];
-        self.scale = [dic BBZVEfloatValueForKey2:@"scale" default:1.0];
+        self.scale = [dic BBZVEdoubleValueForKey2:@"scale" default:1.0];
         self.assetOrder = [dic BBZVEintValueForKey:@"assetOrder" default:0];
         id Obj = [dic objectForKey:@"action"];
         NSMutableArray *array = [NSMutableArray array];

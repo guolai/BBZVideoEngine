@@ -17,8 +17,8 @@
 -(instancetype)initWithDictionary:(NSDictionary *)dic withFilePath:(NSString *)filePath {
     if (self = [super init]) {
         _filePath = filePath;
-        self.timestamp = [dic BBZVEfloatValueForKey2:@"timestamp" default:0.0];
-        self.duration = [dic BBZVEfloatValueForKey2:@"duration" default:0.0];
+        self.timestamp = [dic BBZVEdoubleValueForKey2:@"timestamp" default:0.0];
+        self.duration = [dic BBZVEdoubleValueForKey2:@"duration" default:0.0];
         self.order = [dic BBZVEintValueForKey:@"order" default:0];
         self.repeat = [dic BBZVEintValueForKey:@"repeat" default:0];
         id Obj = [dic objectForKey:@"action"];
@@ -47,7 +47,7 @@
 -(instancetype)initWithDictionary:(NSDictionary *)dic  withFilePath:(NSString *)filePath{
     if (self = [super init]) {
         _filePath = filePath;
-        self.duration = [dic BBZVEfloatValueForKey2:@"duration" default:0.0];
+        self.duration = [dic BBZVEdoubleValueForKey2:@"duration" default:0.0];
         
         self.order = [dic BBZVEintValueForKey:@"order" default:0];
         id Obj = [dic objectForKey:@"transition"];

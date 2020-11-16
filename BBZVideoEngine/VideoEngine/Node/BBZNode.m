@@ -26,14 +26,14 @@ NSString *const BBZFilterMovieEnding = @"movieending";
 
 - (instancetype)initWithDictionary:(NSDictionary *)dic {
     if(self = [super init]) {
-        self.param1 = [dic BBZVEfloatValueForKey2:@"param1" default:0.0];
-        self.param2 = [dic BBZVEfloatValueForKey2:@"param2" default:0.0];
-        self.param3 = [dic BBZVEfloatValueForKey2:@"param3" default:0.0];
-        self.param4 = [dic BBZVEfloatValueForKey2:@"param4" default:0.0];
-        self.param5 = [dic BBZVEfloatValueForKey2:@"param5" default:0.0];
-        self.param6 = [dic BBZVEfloatValueForKey2:@"param6" default:0.0];
-        self.param7 = [dic BBZVEfloatValueForKey2:@"param7" default:0.0];
-        self.param8 = [dic BBZVEfloatValueForKey2:@"param8" default:0.0];
+        self.param1 = [dic BBZVEdoubleValueForKey2:@"param1" default:0.0];
+        self.param2 = [dic BBZVEdoubleValueForKey2:@"param2" default:0.0];
+        self.param3 = [dic BBZVEdoubleValueForKey2:@"param3" default:0.0];
+        self.param4 = [dic BBZVEdoubleValueForKey2:@"param4" default:0.0];
+        self.param5 = [dic BBZVEdoubleValueForKey2:@"param5" default:0.0];
+        self.param6 = [dic BBZVEdoubleValueForKey2:@"param6" default:0.0];
+        self.param7 = [dic BBZVEdoubleValueForKey2:@"param7" default:0.0];
+        self.param8 = [dic BBZVEdoubleValueForKey2:@"param8" default:0.0];
     }
     return self;
 }
@@ -57,8 +57,8 @@ NSString *const BBZFilterMovieEnding = @"movieending";
 
 -(instancetype)initWithDictionary:(NSDictionary *)dic {
     if (self = [super init]) {
-        self.begin = [dic BBZVEfloatValueForKey2:@"begin" default:0.0];
-        self.end = [dic BBZVEfloatValueForKey2:@"end" default:0.0];
+        self.begin = [dic BBZVEdoubleValueForKey2:@"begin" default:0.0];
+        self.end = [dic BBZVEdoubleValueForKey2:@"end" default:0.0];
         self.param_begin = [[BBZNodeAnimationParams alloc] initWithDictionary:dic[@"param_begin"]];
         self.param_end = [[BBZNodeAnimationParams alloc] initWithDictionary:dic[@"param_end"]];
     }
@@ -101,8 +101,8 @@ NSString *const BBZFilterMovieEnding = @"movieending";
     if (self = [super init]) {
         [self initParams];
         _filePath = filePath;
-        self.begin = [dic BBZVEfloatValueForKey2:@"begin" default:0.0];
-        self.end = [dic BBZVEfloatValueForKey2:@"end" default:3600.0];
+        self.begin = [dic BBZVEdoubleValueForKey2:@"begin" default:0.0];
+        self.end = [dic BBZVEdoubleValueForKey2:@"end" default:3600.0];
         self.order = [dic BBZVEintValueForKey:@"order" default:0];
         self.name = [dic BBZVEstringValueForKey:@"name" default:nil];
         self.fShader = [dic BBZVEstringValueForKey:@"fShader" default:nil];

@@ -19,8 +19,8 @@ extern NSString *const BBZFilterMovieEnding;
 - (instancetype)initWithDictionary:(NSDictionary *)dic withFilePath:(NSString *)filePath {
     if (self = [super init]) {
         _filePath = filePath;
-        self.begin = [dic BBZVEfloatValueForKey2:@"begin" default:0.0];
-        self.duration = [dic BBZVEfloatValueForKey2:@"duration" default:0.0];
+        self.begin = [dic BBZVEdoubleValueForKey2:@"begin" default:0.0];
+        self.duration = [dic BBZVEdoubleValueForKey2:@"duration" default:0.0];
         self.index = [dic BBZVEintValueForKey:@"index" default:0];
 //        self.repeat = [dic intValueForKey:@"repeat" default:1];
         id Obj = [dic objectForKey:@"action"];

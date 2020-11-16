@@ -350,18 +350,18 @@ return def;
     return def;
 }
 
-- (float)BBZVEfloatValueForKey2:(NSString *)key default:(float)def {
-    if (!key) return def;
-    id value = self[key];
-    if (!value || value == [NSNull null]) return def;
-    if ([value isKindOfClass:[NSNumber class]]) return ((NSNumber *)value).floatValue;
-    if ([value isKindOfClass:[NSString class]]) {
-        NSString *strValue = value;
-        NSDecimalNumber *number = [NSDecimalNumber decimalNumberWithString:strValue];
-        return number.floatValue;
-    }
-    return def;
-}
+//- (float)BBZVEfloatValueForKey2:(NSString *)key default:(float)def {
+//    if (!key) return def;
+//    id value = self[key];
+//    if (!value || value == [NSNull null]) return def;
+//    if ([value isKindOfClass:[NSNumber class]]) return ((NSNumber *)value).floatValue;
+//    if ([value isKindOfClass:[NSString class]]) {
+//        NSString *strValue = value;
+//        NSDecimalNumber *number = [NSDecimalNumber decimalNumberWithString:strValue];
+//        return number.floatValue;
+//    }
+//    return def;
+//}
 
 - (NSInteger)BBZVEintegerValueForKey:(NSString *)key default:(NSInteger)def {
     RETURN_VALUE(integerValue);
