@@ -9,7 +9,7 @@
 #import "BBZVideoOutputFilter.h"
 
 @interface BBZVideoOutputFilter () {
-    GLuint _movieFramebuffer;
+    GLint _movieFramebuffer, _movieRenderbuffer;
     CVPixelBufferRef _renderTarget;
     CVOpenGLESTextureRef _renderTexture;
 }
@@ -52,29 +52,39 @@
         glGenFramebuffers(1, &_movieFramebuffer);
     }
     glBindFramebuffer(GL_FRAMEBUFFER, _movieFramebuffer);
-    NSAssert(!_renderTarget, @"error");
-    CVPixelBufferPoolCreatePixelBuffer (NULL, [self.videoPixelBufferAdaptor pixelBufferPool], &_renderTarget);
-
-    CVBufferSetAttachment(_renderTarget, kCVImageBufferColorPrimariesKey, kCVImageBufferColorPrimaries_ITU_R_709_2, kCVAttachmentMode_ShouldPropagate);
-    CVBufferSetAttachment(_renderTarget, kCVImageBufferYCbCrMatrixKey, kCVImageBufferYCbCrMatrix_ITU_R_601_4, kCVAttachmentMode_ShouldPropagate);
-    CVBufferSetAttachment(_renderTarget, kCVImageBufferTransferFunctionKey, kCVImageBufferTransferFunction_ITU_R_709_2, kCVAttachmentMode_ShouldPropagate);
-    
-    CVOpenGLESTextureCacheCreateTextureFromImage (kCFAllocatorDefault, [[GPUImageContext sharedImageProcessingContext] coreVideoTextureCache], _renderTarget,
-                                                  NULL, // texture attributes
-                                                  GL_TEXTURE_2D,
-                                                  GL_RGBA, // opengl format
-                                                  (int)self.sizeOfFBO.width,
-                                                  (int)self.sizeOfFBO.height,
-                                                  GL_BGRA, // native iOS format
-                                                  GL_UNSIGNED_BYTE,
-                                                  0,
-                                                  &_renderTexture);
-    
-    glBindTexture(CVOpenGLESTextureGetTarget(_renderTexture), CVOpenGLESTextureGetName(_renderTexture));
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, CVOpenGLESTextureGetName(_renderTexture), 0);
+    if ([GPUImageContext supportsFastTextureUpload]) {
+        NSAssert(!_renderTarget, @"error");
+        CVPixelBufferPoolCreatePixelBuffer (NULL, [self.videoPixelBufferAdaptor pixelBufferPool], &_renderTarget);
+        
+        CVBufferSetAttachment(_renderTarget, kCVImageBufferColorPrimariesKey, kCVImageBufferColorPrimaries_ITU_R_709_2, kCVAttachmentMode_ShouldPropagate);
+        CVBufferSetAttachment(_renderTarget, kCVImageBufferYCbCrMatrixKey, kCVImageBufferYCbCrMatrix_ITU_R_601_4, kCVAttachmentMode_ShouldPropagate);
+        CVBufferSetAttachment(_renderTarget, kCVImageBufferTransferFunctionKey, kCVImageBufferTransferFunction_ITU_R_709_2, kCVAttachmentMode_ShouldPropagate);
+        
+        CVOpenGLESTextureCacheCreateTextureFromImage (kCFAllocatorDefault, [[GPUImageContext sharedImageProcessingContext] coreVideoTextureCache], _renderTarget,
+                                                      NULL, // texture attributes
+                                                      GL_TEXTURE_2D,
+                                                      GL_RGBA, // opengl format
+                                                      (int)self.sizeOfFBO.width,
+                                                      (int)self.sizeOfFBO.height,
+                                                      GL_BGRA, // native iOS format
+                                                      GL_UNSIGNED_BYTE,
+                                                      0,
+                                                      &_renderTexture);
+        
+        glBindTexture(CVOpenGLESTextureGetTarget(_renderTexture), CVOpenGLESTextureGetName(_renderTexture));
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, CVOpenGLESTextureGetName(_renderTexture), 0);
+    } else {
+        if(!_movieFramebuffer) {
+            glGenRenderbuffers(1, &_movieRenderbuffer);
+        }
+        glBindRenderbuffer(GL_RENDERBUFFER, _movieRenderbuffer);
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8_OES, (int)self.sizeOfFBO.width, (int)self.sizeOfFBO.height);
+        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, _movieRenderbuffer);
+    }
+   
 
 
     __unused GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
@@ -87,6 +97,11 @@
     if (_movieFramebuffer) {
         glDeleteFramebuffers(1, &_movieFramebuffer);
         _movieFramebuffer = 0;
+    }
+    if (_movieRenderbuffer)
+    {
+        glDeleteRenderbuffers(1, &_movieRenderbuffer);
+        _movieRenderbuffer = 0;
     }
     [self destroyRenderTarget];
 }
@@ -165,9 +180,27 @@
     if (usingNextFrameForImageCapture) {
         dispatch_semaphore_signal(imageCaptureSemaphore);
     }
+    CVPixelBufferRef pixel_buffer = NULL;
+    if ([GPUImageContext supportsFastTextureUpload]) {
+        pixel_buffer = _renderTarget;
+    } else {
+        CVReturn status = CVPixelBufferPoolCreatePixelBuffer(NULL, [self.videoPixelBufferAdaptor pixelBufferPool], &pixel_buffer);
+        if ((pixel_buffer == NULL) || (status != kCVReturnSuccess)) {
+            CVPixelBufferRelease(pixel_buffer);
+            return;
+        } else {
+            CVPixelBufferLockBaseAddress(pixel_buffer, 0);
+            
+            GLubyte *pixelBufferData = (GLubyte *)CVPixelBufferGetBaseAddress(pixel_buffer);
+            glReadPixels(0, 0, self.sizeOfFBO.width, self.sizeOfFBO.height, GL_RGBA, GL_UNSIGNED_BYTE, pixelBufferData);
+            CVPixelBufferUnlockBaseAddress(pixel_buffer, 0);
+        }
+    }
+    
+    
     
     if([self.delegate respondsToSelector:@selector(didDrawPixelBuffer:time:)]) {
-        [self.delegate didDrawPixelBuffer:_renderTarget time:self.frameTime];
+        [self.delegate didDrawPixelBuffer:pixel_buffer time:self.frameTime];
     }
     [self removeOutputFramebuffer];
     [self destroyRenderTarget];

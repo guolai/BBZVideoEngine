@@ -161,21 +161,43 @@
     
     [GPUImageContext useImageProcessingContext];
     
-    CVOpenGLESTextureRef textureRef = NULL;
-    CVReturn rec = CVOpenGLESTextureCacheCreateTextureFromImage (kCFAllocatorDefault, [[GPUImageContext sharedImageProcessingContext] coreVideoTextureCache], pixelBuffer, NULL, GL_TEXTURE_2D, GL_RGBA, bufferWidth, bufferHeight, GL_BGRA, GL_UNSIGNED_BYTE, 0, &textureRef);
-    if (textureRef == NULL)
-    {
-        NSLog(@"CVOpenGLESTextureCacheCreateTextureFromImage error: %d", rec);
-        NSAssert(NO, @"CVOpenGLESTextureCacheCreateTextureFromImage error: %d", rec);
+    if ([GPUImageContext supportsFastTextureUpload]) {
+        CVOpenGLESTextureRef textureRef = NULL;
+        CVReturn rec = CVOpenGLESTextureCacheCreateTextureFromImage (kCFAllocatorDefault, [[GPUImageContext sharedImageProcessingContext] coreVideoTextureCache], pixelBuffer, NULL, GL_TEXTURE_2D, GL_RGBA, bufferWidth, bufferHeight, GL_BGRA, GL_UNSIGNED_BYTE, 0, &textureRef);
+        if (textureRef == NULL)
+        {
+            NSLog(@"CVOpenGLESTextureCacheCreateTextureFromImage error: %d", rec);
+            NSAssert(NO, @"CVOpenGLESTextureCacheCreateTextureFromImage error: %d", rec);
+        }
+        
+        GLuint textureIndex = CVOpenGLESTextureGetName(textureRef);
+        outputFramebuffer = [[GPUImageFramebuffer alloc] initWithSize:CGSizeMake(bufferWidth, bufferHeight) overriddenTexture:textureIndex renderTexture:textureRef];
+        [outputFramebuffer disableReferenceCounting];
+        glBindTexture(GL_TEXTURE_2D, textureIndex);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glBindTexture(GL_TEXTURE_2D, 0);
+    } else {
+        int64_t totolPixels = bufferWidth * bufferHeight;
+        bufferWidth = bytesPerRow / 4;
+        bufferHeight = (int)(totolPixels / bufferWidth);
+        
+        //NSLog(@"after bufferWidth = %i  bufferHeight = %i", bufferWidth, bufferHeight);
+        
+        outputFramebuffer = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:CGSizeMake(bufferWidth, bufferHeight) textureOptions:textureOptions onlyTexture:YES];
+//        [outputFramebuffer disableReferenceCounting];
+        glBindTexture(GL_TEXTURE_2D, [outputFramebuffer texture]);
+        glTexImage2D(GL_TEXTURE_2D,
+                     0,
+                     textureOptions.internalFormat,
+                     bufferWidth,
+                     bufferHeight,
+                     0,
+                     textureOptions.format,
+                     textureOptions.type,
+                     CVPixelBufferGetBaseAddress(pixelBuffer));
     }
-    
-    GLuint textureIndex = CVOpenGLESTextureGetName(textureRef);
-    outputFramebuffer = [[GPUImageFramebuffer alloc] initWithSize:CGSizeMake(bufferWidth, bufferHeight) overriddenTexture:textureIndex renderTexture:textureRef];
-    [outputFramebuffer disableReferenceCounting];
-    glBindTexture(GL_TEXTURE_2D, textureIndex);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glBindTexture(GL_TEXTURE_2D, 0);
+  
     
     return outputFramebuffer;
 }
@@ -209,39 +231,87 @@
     //NSLog(@"pixelBuffer size {%i * %i}", bufferWidth, bufferHeight);
     
     [GPUImageContext useImageProcessingContext];
-    
-    CVOpenGLESTextureRef luminanceTextureRef = NULL;
-    CVOpenGLESTextureRef chrominanceTextureRef = NULL;
-    GLint luminanceTexture;
-    GLint chrominanceTexture;
-    
-    CVReturn rec = CVOpenGLESTextureCacheCreateTextureFromImage (kCFAllocatorDefault, [[GPUImageContext sharedImageProcessingContext] coreVideoTextureCache], pixelBuffer, NULL, GL_TEXTURE_2D, GL_LUMINANCE, bufferWidth, bufferHeight, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0, &luminanceTextureRef);
-    if (luminanceTextureRef == NULL)
-    {
-        NSLog(@"CVOpenGLESTextureCacheCreateTextureFromImage error: %d", rec);
-        NSAssert(NO, @"CVOpenGLESTextureCacheCreateTextureFromImage error: %d", rec);
+    if ([GPUImageContext supportsFastTextureUpload]) {
+        CVOpenGLESTextureRef luminanceTextureRef = NULL;
+        CVOpenGLESTextureRef chrominanceTextureRef = NULL;
+        GLint luminanceTexture;
+        GLint chrominanceTexture;
+        
+        CVReturn rec = CVOpenGLESTextureCacheCreateTextureFromImage (kCFAllocatorDefault, [[GPUImageContext sharedImageProcessingContext] coreVideoTextureCache], pixelBuffer, NULL, GL_TEXTURE_2D, GL_LUMINANCE, bufferWidth, bufferHeight, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0, &luminanceTextureRef);
+        if (luminanceTextureRef == NULL)
+        {
+            NSLog(@"CVOpenGLESTextureCacheCreateTextureFromImage error: %d", rec);
+            NSAssert(NO, @"CVOpenGLESTextureCacheCreateTextureFromImage error: %d", rec);
+        }
+        
+        luminanceTexture = CVOpenGLESTextureGetName(luminanceTextureRef);
+        YFramebuffer = [[GPUImageFramebuffer alloc] initWithSize:CGSizeMake(bufferWidth, bufferHeight) overriddenTexture:luminanceTexture renderTexture:luminanceTextureRef];
+        [YFramebuffer disableReferenceCounting];
+        glBindTexture(GL_TEXTURE_2D, luminanceTexture);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        
+        rec = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault, [[GPUImageContext sharedImageProcessingContext] coreVideoTextureCache], pixelBuffer, NULL, GL_TEXTURE_2D, GL_LUMINANCE_ALPHA, bufferWidth/2, bufferHeight/2, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 1, &chrominanceTextureRef);
+        if (chrominanceTextureRef == NULL)
+        {
+            NSLog(@"CVOpenGLESTextureCacheCreateTextureFromImage2 error: %d", rec);
+            NSAssert(NO, @"CVOpenGLESTextureCacheCreateTextureFromImage2 error: %d", rec);
+        }
+        
+        chrominanceTexture = CVOpenGLESTextureGetName(chrominanceTextureRef);
+        UVFramebuffer = [[GPUImageFramebuffer alloc] initWithSize:CGSizeMake(bufferWidth/2, bufferHeight/2) overriddenTexture:chrominanceTexture renderTexture:chrominanceTextureRef];
+        [UVFramebuffer disableReferenceCounting];
+        glBindTexture(GL_TEXTURE_2D, chrominanceTexture);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    } else {
+        char *pitches[2];
+        pitches[0] = CVPixelBufferGetWidthOfPlane(pixelBuffer, 0);
+        pitches[1] = CVPixelBufferGetWidthOfPlane(pixelBuffer, 1);
+        
+        int64_t totolPixels = bufferWidth * bufferHeight;
+        bufferWidth = bytesPerRow / 4;
+        bufferHeight = (int)(totolPixels / bufferWidth);
+        
+        //NSLog(@"after bufferWidth = %i  bufferHeight = %i", bufferWidth, bufferHeight);
+        
+        YFramebuffer = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:CGSizeMake(bufferWidth, bufferHeight) textureOptions:textureOptions onlyTexture:YES];
+        
+        glBindTexture(GL_TEXTURE_2D, [YFramebuffer texture]);
+        glTexImage2D(GL_TEXTURE_2D,
+                     0,
+                     textureOptions.internalFormat,
+                     bufferWidth,
+                     bufferHeight,
+                     0,
+                     textureOptions.format,
+                     textureOptions.type,
+                     pitches[0]);
+        
+        bufferWidth = bufferWidth/2;
+        bufferHeight = bufferHeight/2;
+        totolPixels = bufferWidth * bufferHeight;
+//        bufferWidth = bytesPerRow / 4;
+//        bufferHeight = (int)(totolPixels / bufferWidth);
+        
+        //NSLog(@"after bufferWidth = %i  bufferHeight = %i", bufferWidth, bufferHeight);
+        
+        UVFramebuffer = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:CGSizeMake(bufferWidth, bufferHeight) textureOptions:textureOptions onlyTexture:YES];
+        
+        glBindTexture(GL_TEXTURE_2D, [YFramebuffer texture]);
+        glTexImage2D(GL_TEXTURE_2D,
+                     0,
+                     textureOptions.internalFormat,
+                     bufferWidth,
+                     bufferHeight,
+                     0,
+                     textureOptions.format,
+                     textureOptions.type,
+                     pitches[1]);
+        
     }
     
-    luminanceTexture = CVOpenGLESTextureGetName(luminanceTextureRef);
-    YFramebuffer = [[GPUImageFramebuffer alloc] initWithSize:CGSizeMake(bufferWidth, bufferHeight) overriddenTexture:luminanceTexture renderTexture:luminanceTextureRef];
-    [YFramebuffer disableReferenceCounting];
-    glBindTexture(GL_TEXTURE_2D, luminanceTexture);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     
-    rec = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault, [[GPUImageContext sharedImageProcessingContext] coreVideoTextureCache], pixelBuffer, NULL, GL_TEXTURE_2D, GL_LUMINANCE_ALPHA, bufferWidth/2, bufferHeight/2, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 1, &chrominanceTextureRef);
-    if (chrominanceTextureRef == NULL)
-    {
-        NSLog(@"CVOpenGLESTextureCacheCreateTextureFromImage2 error: %d", rec);
-        NSAssert(NO, @"CVOpenGLESTextureCacheCreateTextureFromImage2 error: %d", rec);
-    }
-    
-    chrominanceTexture = CVOpenGLESTextureGetName(chrominanceTextureRef);
-    UVFramebuffer = [[GPUImageFramebuffer alloc] initWithSize:CGSizeMake(bufferWidth/2, bufferHeight/2) overriddenTexture:chrominanceTexture renderTexture:chrominanceTextureRef];
-    [UVFramebuffer disableReferenceCounting];
-    glBindTexture(GL_TEXTURE_2D, chrominanceTexture);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     
     return @[YFramebuffer, UVFramebuffer];
 }
