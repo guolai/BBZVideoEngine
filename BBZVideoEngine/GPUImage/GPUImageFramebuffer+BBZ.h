@@ -38,6 +38,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)BBZ_frameBufferUpdateRGBAData:(void *)data width:(int)width height:(int)height;
 
+- (UIImage *)imageFromGLReadPixels;
+
 @end
 
 NS_ASSUME_NONNULL_END

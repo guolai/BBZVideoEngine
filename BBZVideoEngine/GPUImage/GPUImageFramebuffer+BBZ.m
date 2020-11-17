@@ -178,24 +178,53 @@
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glBindTexture(GL_TEXTURE_2D, 0);
     } else {
-        int64_t totolPixels = bufferWidth * bufferHeight;
-        bufferWidth = bytesPerRow / 4;
-        bufferHeight = (int)(totolPixels / bufferWidth);
-        
-        //NSLog(@"after bufferWidth = %i  bufferHeight = %i", bufferWidth, bufferHeight);
-        
+        CVPixelBufferLockBaseAddress(pixelBuffer, 0);
+//        textureOptions.internalFormat = GL_BGRA;
+//        textureOptions.format = GL_BGRA;
         outputFramebuffer = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:CGSizeMake(bufferWidth, bufferHeight) textureOptions:textureOptions onlyTexture:YES];
 //        [outputFramebuffer disableReferenceCounting];
         glBindTexture(GL_TEXTURE_2D, [outputFramebuffer texture]);
-        glTexImage2D(GL_TEXTURE_2D,
-                     0,
-                     textureOptions.internalFormat,
-                     bufferWidth,
-                     bufferHeight,
-                     0,
-                     textureOptions.format,
-                     textureOptions.type,
-                     CVPixelBufferGetBaseAddress(pixelBuffer));
+        if ((bufferWidth << 2) == bytesPerRow) {
+            glTexImage2D(GL_TEXTURE_2D,
+                         0,
+                         textureOptions.internalFormat,
+                         bufferWidth,
+                         bufferHeight,
+                         0,
+                         textureOptions.format,
+                         textureOptions.type,
+                         CVPixelBufferGetBaseAddress(pixelBuffer));
+        } else if ((bufferWidth<<2) < bytesPerRow) {
+            int bpr = (int)bufferWidth * 4;
+            size_t mallocSize = bufferWidth * bufferHeight * 4;
+            GLubyte *texDataBuff = (GLubyte *)malloc(mallocSize);
+            memset(texDataBuff, 0, mallocSize);
+        
+            void *baseData = CVPixelBufferGetBaseAddress(pixelBuffer);
+            for (int row = 0; row<bufferHeight; row++) {
+                memcpy(texDataBuff+row*bpr, (char *)baseData+row*bytesPerRow, bpr);
+            }
+            glTexImage2D(GL_TEXTURE_2D,
+                         0,
+                         textureOptions.internalFormat,
+                         bufferWidth,
+                         bufferHeight,
+                         0,
+                         textureOptions.format,
+                         textureOptions.type,
+                         texDataBuff);
+            free(texDataBuff);
+            texDataBuff = nil;
+        } else {
+            NSAssert(false, @"not handled");
+        }
+    
+        
+//        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, [outputFramebuffer texture], 0);
+//        UIImage *image = [outputFramebuffer imageFromGLReadPixels];
+//        NSLog(@"%@", image);
+         glBindTexture(GL_TEXTURE_2D, 0);
+         CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
     }
   
     
@@ -269,9 +298,9 @@
         pitches[0] = CVPixelBufferGetWidthOfPlane(pixelBuffer, 0);
         pitches[1] = CVPixelBufferGetWidthOfPlane(pixelBuffer, 1);
         
-        int64_t totolPixels = bufferWidth * bufferHeight;
-        bufferWidth = bytesPerRow / 4;
-        bufferHeight = (int)(totolPixels / bufferWidth);
+//        int64_t totolPixels = bufferWidth * bufferHeight;
+//        bufferWidth = bytesPerRow / 4;
+//        bufferHeight = (int)(totolPixels / bufferWidth);
         
         //NSLog(@"after bufferWidth = %i  bufferHeight = %i", bufferWidth, bufferHeight);
         
@@ -290,7 +319,7 @@
         
         bufferWidth = bufferWidth/2;
         bufferHeight = bufferHeight/2;
-        totolPixels = bufferWidth * bufferHeight;
+//        totolPixels = bufferWidth * bufferHeight;
 //        bufferWidth = bytesPerRow / 4;
 //        bufferHeight = (int)(totolPixels / bufferWidth);
         
@@ -447,6 +476,26 @@
                  textureOptions.format,
                  textureOptions.type,
                  data);
+}
+
+- (UIImage *)imageFromGLReadPixels {
+    CGSize size = self.size;
+    GLubyte *rawBytesForImage = (GLubyte *) calloc(size.width * size.height * 4, sizeof(GLubyte));
+    glReadPixels(0, 0, size.width, size.height, GL_RGBA, GL_UNSIGNED_BYTE, rawBytesForImage);
+    
+    
+    
+    CGColorSpaceRef defaultRGBColorSpace = CGColorSpaceCreateDeviceRGB();
+    NSUInteger totalNumberOfPixels = round(size.width * size.height);
+    
+    CGDataProviderRef dataProvider = CGDataProviderCreateWithData((__bridge_retained void*)self, rawBytesForImage, totalNumberOfPixels*4, nil);
+    
+    CGImageRef cgImageFromBytes = CGImageCreate((int)size.width, (int)size.height, 8, 32, (int)size.width*4, defaultRGBColorSpace, kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst, dataProvider, NULL, NO, kCGRenderingIntentDefault);
+    UIImage *image = [UIImage imageWithCGImage:cgImageFromBytes];
+    CGImageRelease(cgImageFromBytes);
+    CGDataProviderRelease(dataProvider);
+    CGColorSpaceRelease(defaultRGBColorSpace);
+    return image;
 }
 
 @end

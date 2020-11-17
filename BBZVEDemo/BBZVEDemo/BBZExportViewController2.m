@@ -217,11 +217,11 @@
         [videoModel addImageSource:path];
         
     } else if(self.exportType == BBZExportTypeImages) {
-        path = [[NSBundle mainBundle] pathForResource:@"IMG_7311" ofType:@"HEIC" inDirectory:@"Resource"];
-        [videoModel addImageSource:path];
-        
-        path = [[NSBundle mainBundle] pathForResource:@"IMG_7317" ofType:@"HEIC" inDirectory:@"Resource"];
-        [videoModel addImageSource:path];
+//        path = [[NSBundle mainBundle] pathForResource:@"IMG_7311" ofType:@"HEIC" inDirectory:@"Resource"];
+//        [videoModel addImageSource:path];
+//        
+//        path = [[NSBundle mainBundle] pathForResource:@"IMG_7317" ofType:@"HEIC" inDirectory:@"Resource"];
+//        [videoModel addImageSource:path];
         
         path = [[NSBundle mainBundle] pathForResource:@"IMG_7305" ofType:@"HEIC" inDirectory:@"Resource"];
         [videoModel addImageSource:path];

@@ -214,6 +214,8 @@ NSString *const kBBZGaussVideoInputFragmentShader = SHADER_STRING
 
     glVertexAttribPointer(_gaussFilterPositionAttribute, 2, GL_FLOAT, 0, 0, normalVertices);
     glVertexAttribPointer(_gaussFilterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, normalTextureCoordinates);
+//    glEnableVertexAttribArray(_gaussFilterPositionAttribute);
+//    glEnableVertexAttribArray(_gaussFilterTextureCoordinateAttribute);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     
    
@@ -243,7 +245,7 @@ NSString *const kBBZGaussVideoInputFragmentShader = SHADER_STRING
     glBindTexture(GL_TEXTURE_2D, [frameBuffer2 texture]);
     glUniform1i(_gaussFilterInputTextureUniform, 2);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-    glFinish();
+//    glFinish();
     self.bgFrameBuffer = frameBuffer1;
 //    [frameBuffer1 unlock];
 //    frameBuffer1 = nil;
@@ -296,6 +298,8 @@ NSString *const kBBZGaussVideoInputFragmentShader = SHADER_STRING
         
         glVertexAttribPointer(_yuvFilterPositionAttribute, 2, GL_FLOAT, 0, 0, vertices);
         glVertexAttribPointer(_yuvFilterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, textureCoordinates);
+//        glEnableVertexAttribArray(_yuvFilterPositionAttribute);
+//        glEnableVertexAttribArray(_yuvFilterTextureCoordinateAttribute);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
         
     }else {
@@ -326,7 +330,8 @@ NSString *const kBBZGaussVideoInputFragmentShader = SHADER_STRING
 
     glVertexAttribPointer(filterPositionAttribute, 2, GL_FLOAT, 0, 0, [self adjustVertices:vertices]);
     glVertexAttribPointer(filterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, textureCoordinates);
-
+//    glEnableVertexAttribArray(filterPositionAttribute);
+//    glEnableVertexAttribArray(filterTextureCoordinateAttribute);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     //    BBZINFO(@"renderToTextureWithVertices %p, %p, %@, %@", firstInputFramebuffer, outputFramebuffer, self.debugName, self);
     //    BBZINFO(@"renderToTexture1 %@", firstInputFramebuffer.debugDescription);

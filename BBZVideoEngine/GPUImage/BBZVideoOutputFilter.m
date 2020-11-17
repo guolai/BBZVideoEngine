@@ -29,6 +29,8 @@
 
 - (instancetype)initWithVertexShaderFromString:(NSString *)vertexShaderString fragmentShaderFromString:(NSString *)fragmentShaderString {
     self = [super initWithVertexShaderFromString:vertexShaderString fragmentShaderFromString:fragmentShaderString];
+    _movieFramebuffer = -1;
+    _movieRenderbuffer = -1;
     return self;
 }
 
@@ -48,7 +50,7 @@
 
 - (void)createDataFBO {
     glActiveTexture(GL_TEXTURE1);
-    if(!_movieFramebuffer) {
+    if(_movieFramebuffer < 0) {
         glGenFramebuffers(1, &_movieFramebuffer);
     }
     glBindFramebuffer(GL_FRAMEBUFFER, _movieFramebuffer);
@@ -77,7 +79,7 @@
         
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, CVOpenGLESTextureGetName(_renderTexture), 0);
     } else {
-        if(!_movieFramebuffer) {
+        if(_movieRenderbuffer < 0) {
             glGenRenderbuffers(1, &_movieRenderbuffer);
         }
         glBindRenderbuffer(GL_RENDERBUFFER, _movieRenderbuffer);
@@ -96,12 +98,12 @@
     [GPUImageContext useImageProcessingContext];
     if (_movieFramebuffer) {
         glDeleteFramebuffers(1, &_movieFramebuffer);
-        _movieFramebuffer = 0;
+        _movieFramebuffer = -1;
     }
     if (_movieRenderbuffer)
     {
         glDeleteRenderbuffers(1, &_movieRenderbuffer);
-        _movieRenderbuffer = 0;
+        _movieRenderbuffer = -1;
     }
     [self destroyRenderTarget];
 }
@@ -119,7 +121,7 @@
 }
 
 - (void)setFilterFBO {
-//    if (!_movieFramebuffer)
+//    if (_movieFramebuffer < 0)
     {
         [self createDataFBO];
     }
@@ -170,6 +172,8 @@
 
     glVertexAttribPointer(filterPositionAttribute, 2, GL_FLOAT, 0, 0, [self adjustVertices:vertices]);
     glVertexAttribPointer(filterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, textureCoordinates);
+//    glEnableVertexAttribArray(filterPositionAttribute);
+//    glEnableVertexAttribArray(filterTextureCoordinateAttribute);
 //    BBZINFO(@"renderToTextureWithVertices %p, %p, %@, %@", firstInputFramebuffer, outputFramebuffer, self.debugName, self);
 //    BBZINFO(@"renderToTexture1 %@", firstInputFramebuffer.debugDescription);
 //    BBZINFO(@"renderToTexture2 %@", outputFramebuffer.debugDescription);
@@ -196,8 +200,6 @@
             CVPixelBufferUnlockBaseAddress(pixel_buffer, 0);
         }
     }
-    
-    
     
     if([self.delegate respondsToSelector:@selector(didDrawPixelBuffer:time:)]) {
         [self.delegate didDrawPixelBuffer:pixel_buffer time:self.frameTime];

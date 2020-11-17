@@ -208,15 +208,23 @@
     
     glVertexAttribPointer(filterPositionAttribute, 2, GL_FLOAT, 0, 0, [self adjustVertices:vertices]);
     glVertexAttribPointer(filterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, textureCoordinates);
-    
+//    glEnableVertexAttribArray(filterPositionAttribute);
+//    glEnableVertexAttribArray(filterTextureCoordinateAttribute);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    
 //    BBZINFO(@"renderToTextureWithVertices %p, %p, %@, %@", firstInputFramebuffer, outputFramebuffer, self.debugName, self);
 //    BBZINFO(@"renderToTexture1 %@", firstInputFramebuffer.debugDescription);
 //    BBZINFO(@"renderToTexture2 %@", outputFramebuffer.debugDescription);
     [firstInputFramebuffer unlock];
     
     [self willEndRender];
-//    glFinish();
+    if(0) {
+        glFinish();
+        
+        UIImage *image = [outputFramebuffer imageFromGLReadPixels];
+        NSLog(@"%@", image);
+    }
+  
 //    if([self.debugName isEqualToString:@"transition"]) {
 //        BBZLOG();
 //    }
