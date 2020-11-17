@@ -179,8 +179,9 @@
         glBindTexture(GL_TEXTURE_2D, 0);
     } else {
         CVPixelBufferLockBaseAddress(pixelBuffer, 0);
-//        textureOptions.internalFormat = GL_BGRA;
-//        textureOptions.format = GL_BGRA;
+#if TARGET_IPHONE_SIMULATOR
+        textureOptions.format = GL_RGBA;
+#endif
         outputFramebuffer = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:CGSizeMake(bufferWidth, bufferHeight) textureOptions:textureOptions onlyTexture:YES];
 //        [outputFramebuffer disableReferenceCounting];
         glBindTexture(GL_TEXTURE_2D, [outputFramebuffer texture]);
