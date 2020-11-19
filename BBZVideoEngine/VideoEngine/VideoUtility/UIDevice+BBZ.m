@@ -56,6 +56,12 @@
     if ([deviceModel isEqualToString:@"iPhone12,1"])   return @"iPhone11";
     if ([deviceModel isEqualToString:@"iPhone12,3"])   return @"iPhone11 Pro";
     if ([deviceModel isEqualToString:@"iPhone12,5"])   return @"iPhone11 Pro Max";
+    if ([deviceModel isEqualToString:@"iPhone12,8"])   return @"iPhone12";
+    if ([deviceModel isEqualToString:@"iPhone13,1"])   return @"iPhone12";
+    if ([deviceModel isEqualToString:@"iPhone13,2"])   return @"iPhone12";
+    if ([deviceModel isEqualToString:@"iPhone13,3"])   return @"iPhone12 Pro";
+    if ([deviceModel isEqualToString:@"iPhone13,4"])   return @"iPhone12 Pro Max";
+    
     
     //iPod 系列
     if ([deviceModel isEqualToString:@"iPod1,1"])      return @"iPodTouch 1";
@@ -126,6 +132,7 @@
     if ([deviceModel isEqualToString:@"iPad11,4"])      return @"iPad Air 3";
     
     
+    
     if ([deviceModel isEqualToString:@"i386"])         return @"Simulator";
     if ([deviceModel isEqualToString:@"x86_64"])       return @"Simulator";
     
@@ -177,6 +184,11 @@
         else if ([deviceType isEqualToString:@"iPhone11"]) level = kBBZDeviceLeveliPhone11;
         else if ([deviceType isEqualToString:@"iPhone11 Pro"]) level = kBBZDeviceLeveliPhone11;
         else if ([deviceType isEqualToString:@"iPhone11 Pro Max"]) level = kBBZDeviceLeveliPhone11;
+        
+        else if ([deviceType isEqualToString:@"iPhone12"]) level = kBBZDeviceLeveliPhone12;
+        else if ([deviceType isEqualToString:@"iPhone12 Pro"]) level = kBBZDeviceLeveliPhone12;
+        else if ([deviceType isEqualToString:@"iPhone12 Pro Max"]) level = kBBZDeviceLeveliPhone12;
+    
         
         else if ([deviceType isEqualToString:@"iPad"]) level = 4;
         else if ([deviceType isEqualToString:@"iPad 2"]) level = 5;

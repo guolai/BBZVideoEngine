@@ -26,6 +26,7 @@ typedef NS_ENUM (NSInteger, kBBZDeviceLevel) {
     kBBZDeviceLeveliPhone8p = 16,
     kBBZDeviceLeveliPhoneX = 17,
     kBBZDeviceLeveliPhone11 = 18,
+    kBBZDeviceLeveliPhone12 = 19,
     kBBZDeviceLeveliPhoneNew = 100,
 };
 
