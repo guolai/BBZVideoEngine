@@ -53,6 +53,8 @@
 
 # 待完成功能：
 
+* 视频预览
+
 * 粒子特效实现 
 * 人脸模型支持 
 * 3D贴纸支持 
@@ -68,8 +70,6 @@
 ## 音视频引擎架构图
 ![Image text](https://github.com/guolai/BBZVideoEngine/blob/master/Flow/AVFoundatioSimpleClass.png)
 
-## 类结构概览
-![Image text](https://github.com/guolai/BBZVideoEngine/blob/master/Flow/class.png)
 
 ## 音视频处理工作流
 ![Image text](https://github.com/guolai/BBZVideoEngine/blob/master/Flow/DescriptionWorkFlow.png)
