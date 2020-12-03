@@ -5,7 +5,7 @@ Pod::Spec.new do |s|
   s.summary  = 'Edit and Export Videos'
   s.homepage = 'https://github.com/guolai/BBZVideoEngine'
   s.author   = { "bob" => "zhuhaibobb@gmail.com"  }
-  s.source   = { :git => 'https://github.com/guolai/BBZVideoEngine.git', :tag => "#{s.version}" }
+  s.source   = { :git => 'https://github.com/guolai/BBZVideoEngine.git'}
 #   s.resource_bundles = {
 #     'BBZVideoEngineFrameworkBundle' => ['BBZVideoEngine/Resource/*'],
 # }
