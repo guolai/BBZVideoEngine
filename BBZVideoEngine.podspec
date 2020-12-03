@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name     = 'BBZVideoEngine'
   s.version  = '0.1'
-  s.license  = 'Private and Confidencial'
+  s.license = { :type => "MIT", :file => "LICENSE" }
   s.summary  = 'Edit and Export Videos'
   s.homepage = 'https://github.com/guolai/BBZVideoEngine'
   s.author   = { "bob" => "zhuhaibobb@gmail.com"  }
