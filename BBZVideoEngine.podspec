@@ -5,7 +5,7 @@ Pod::Spec.new do |s|
   s.summary  = 'Edit and Export Videos'
   s.homepage = 'https://github.com/guolai/BBZVideoEngine'
   s.author   = { "bob" => "zhuhaibobb@gmail.com"  }
-  s.source   = { :git => 'https://github.com/guolai/BBZVideoEngine.git', :tag => s.version.to_s }
+  s.source       = { :git => 'https://github.com/guolai/BBZVideoEngine.git', :tag => s.version.to_s }
 #   s.resource_bundles = {
 #     'BBZVideoEngineFrameworkBundle' => ['BBZVideoEngine/Resource/*'],
 # }
@@ -14,6 +14,6 @@ Pod::Spec.new do |s|
   s.xcconfig = { 'CLANG_MODULES_AUTOLINK' => 'YES' }
   s.prefix_header_file = 'BBZVideoEngine/BBZVideoEngine/BBZVEHeader.h'
   s.ios.deployment_target = '5.0'
-  s.ios.frameworks   = ['OpenGLES', 'CoreMedia', 'QuartzCore', 'AVFoundation']
+  s.ios.frameworks   = ['OpenGLES', 'CoreMedia', 'QuartzCore', 'AVFoundation', 'UIKit', 'CoreFoundation', 'AssetsLibrary']
   s.dependency "JRSwizzle"
 end
