@@ -11,8 +11,8 @@
 #import "BBZVideoModel.h"
 #import <Photos/Photos.h>
 #import "BBZAVAssetExportSession.h"
-#import "GPUImage.h"
 #import "BBZEngineSetting+VideoModel.h"
+#import "GPUImageFramebuffer.h"
 
 @interface BBZExportViewController2 ()
 @property (nonatomic, strong) UILabel *lblProgress;

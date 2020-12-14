@@ -12,18 +12,18 @@ static void *bbzvideoEngineTaskKey;
 static void *bbzvideoEngineExportKey;
 
 @interface BBZQueueManager ()
-@property (nonatomic, assign) dispatch_queue_t taskQueue;
-@property (nonatomic, assign) dispatch_queue_t exportQueue;
+@property (nonatomic, strong) dispatch_queue_t taskQueue;
+@property (nonatomic, strong) dispatch_queue_t exportQueue;
 @end
 
 @implementation BBZQueueManager
 
 - (instancetype)init {
     if(self = [super init]) {
-        _taskQueue = dispatch_queue_create("com.bob.bbzvideoEngine.taskqueue", NULL);
+        _taskQueue = dispatch_queue_create("com.bob.bbzvideoEngine.taskqueue", DISPATCH_QUEUE_SERIAL);
         bbzvideoEngineTaskKey = &bbzvideoEngineTaskKey;
         dispatch_queue_set_specific(_taskQueue, bbzvideoEngineTaskKey, (__bridge void *)self, NULL);
-        _exportQueue = dispatch_queue_create("com.bob.bbzvideoEngine.exportqueue", NULL);
+        _exportQueue = dispatch_queue_create("com.bob.bbzvideoEngine.exportqueue", DISPATCH_QUEUE_SERIAL);
         bbzvideoEngineExportKey = &bbzvideoEngineExportKey;
         dispatch_queue_set_specific(_exportQueue, bbzvideoEngineExportKey, (__bridge void *)self, NULL);
     }

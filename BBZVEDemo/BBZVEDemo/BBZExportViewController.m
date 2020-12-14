@@ -12,7 +12,8 @@
 #import <Photos/Photos.h>
 #import "BBZAVAssetExportSession.h"
 #import "GPUImage.h"
-
+#import "BBZEngineSetting+VideoModel.h"
+#import "BBZVideoEngine-umbrella.h"
 
 @interface BBZExportViewController ()
 @property (nonatomic, strong) UILabel *lblProgress;
@@ -298,10 +299,14 @@
         [videoModel addFilterGroup:path];
     }
     
+    BBZEngineSetting *setting = [BBZEngineSetting  buildVideoSettings:videoModel];
+    setting.videoFrameRate = 24;
+    
     NSString *tmpDir =  [NSString stringWithFormat:@"%@/tmp", videoModel.videoResourceDir];
     [NSFileManager removeFileIfExist:tmpDir];
     BBZExportTask *task = [BBZExportTask taskWithModel:videoModel];
     self.task = task;
+    task.videoSetting = setting;
     NSDate *date = [NSDate date];
     NSLog(@"视频保存 开始");
     

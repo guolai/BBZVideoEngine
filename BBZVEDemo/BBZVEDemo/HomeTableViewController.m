@@ -19,7 +19,7 @@
 @implementation HomeTableViewController
 
 - (void)viewDidLoad {
-    self.bUseExportSquare = YES;
+    self.bUseExportSquare = NO;
     [super viewDidLoad];
     self.array = [NSMutableArray array];
     [self.array addObject:@"单视频尺寸转换"];

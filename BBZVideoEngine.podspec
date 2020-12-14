@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
 #     'BBZVideoEngineFrameworkBundle' => ['BBZVideoEngine/Resource/*'],
 # }
   s.source_files = 'BBZVideoEngine/VideoEngine/**/*.{h,m}','BBZVideoEngine/GPUImage/**/*.{h,m}'
-  s.public_header_files = 'BBZVideoEngine/VideoEngine/**/*.{h}'
+  s.public_header_files = 'BBZVideoEngine/VideoEngine/**/*.{h}','BBZVideoEngine/GPUImage/**/*.{h}'
 #  s.xcconfig = { 'CLANG_MODULES_AUTOLINK' => 'YES' }
   s.prefix_header_file = 'BBZVideoEngine/BBZVideoEngine/BBZVEHeader.h'
   s.ios.deployment_target = '9.0'
