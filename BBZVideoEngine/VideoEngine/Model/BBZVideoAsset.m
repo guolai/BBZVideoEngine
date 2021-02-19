@@ -67,6 +67,13 @@
     return _avAsset;
 }
 
+- (void)setPlayTimeRange:(CMTimeRange)playTimeRange {
+    CMTimeRange visibleTimeRange = CMTimeRangeGetIntersection(self.sourceTimeRange, playTimeRange);
+    if (CMTIMERANGE_IS_VALID(visibleTimeRange)) {
+        [super setPlayTimeRange:visibleTimeRange];
+    }
+}
+
 #pragma mark - Private
 
 

@@ -28,10 +28,11 @@ extern const int BBZActionTimeToScheduleTime;
 - (void)buildReader {
     if(!self.reader) {
         BBZVideoAsset *videoAsset = (BBZVideoAsset *)self.asset;
-        self.reader = [[BBZAssetReader alloc] initWithAsset:(AVAsset *)videoAsset.asset];
+        self.reader = [[BBZAssetReader alloc] initWithAsset:(AVAsset *)videoAsset.asset videoComposition:videoAsset.videoCompostion audioMix:nil];
         self.reader.timeRange = videoAsset.playTimeRange;
         self.videoOutPut = [[BBZAssetReaderSequentialAccessVideoOutput alloc] initWithOutputSettings:nil];
         [self.reader addOutput:self.videoOutPut];
+        self.lastTime = kCMTimeZero;
     }
 }
 
@@ -55,26 +56,53 @@ extern const int BBZActionTimeToScheduleTime;
             self.sampleBuffer = self.usedSampleBuffer;
         }
     }
+    BOOL bShouldDecodeNextBuffer = NO;
     CMTime relativeTime = CMTimeSubtract(time, CMTimeMake(self.startTime * BBZActionTimeToScheduleTime, BBZScheduleTimeScale));
-    CMTime lastSamplePresentationTime = CMSampleBufferGetPresentationTimeStamp(self.sampleBuffer);
-    lastSamplePresentationTime = CMTimeSubtract(lastSamplePresentationTime, self.reader.timeRange.start);
-    NSTimeInterval nDiff = CMTimeGetSeconds(CMTimeSubtract(lastSamplePresentationTime, relativeTime));
-    NSTimeInterval minDuration = CMTimeGetSeconds(CMTimeSubtract(time, self.lastTime));
-    minDuration = fabs(minDuration / 2.0);
-//    BBZINFO(@"newFrameAtTime  dif,rltime,stime,rtime: %.4f,%.4f,%.4f,%.4f", nDiff, CMTimeGetSeconds(relativeTime), CMTimeGetSeconds(lastSamplePresentationTime), CMTimeGetSeconds(time));
-    if(nDiff > 0.001 && nDiff > minDuration) {
-        //下一帧还需要复用
-        self.usedSampleBuffer = self.sampleBuffer;
-    } else {
+    do {
+        BOOL bDidReachEnd = NO;
+        if(bShouldDecodeNextBuffer) {
+            sampleBuffer = [self.videoOutPut nextSampleBuffer];
+            if(sampleBuffer) {
+                self.sampleBuffer = sampleBuffer;
+            } else {
+                bDidReachEnd = YES;
+                bShouldDecodeNextBuffer = NO;
+            }
+        }
+        if(!bDidReachEnd) {
+            CMTime lastSamplePresentationTime = CMSampleBufferGetPresentationTimeStamp(self.sampleBuffer);
+            lastSamplePresentationTime = CMTimeSubtract(lastSamplePresentationTime, self.reader.timeRange.start);
+            NSTimeInterval nDiff = CMTimeGetSeconds(CMTimeSubtract(lastSamplePresentationTime, relativeTime));
+            NSTimeInterval minDuration = CMTimeGetSeconds(CMTimeSubtract(time, self.lastTime));
+            minDuration = fabs(minDuration / 2.0);
+            if(minDuration < 1.0/120.0) {
+                minDuration = 1.0/120.0;
+            } else if(minDuration > 1.0 / 60.0) {
+                minDuration = 1.0 / 60.0;
+            }
+            BBZINFO(@"readeraction newFrameAtTime  dif:%.4f,rltime:%.4f,stime:%.4f,rtime:%.4f,minduration:%.4ff", nDiff, CMTimeGetSeconds(relativeTime), CMTimeGetSeconds(lastSamplePresentationTime), CMTimeGetSeconds(time), minDuration);
+            if(nDiff > 0.0 && nDiff > minDuration) {
+                //下一帧还需要复用
+                if(self.sampleBuffer) {
+                    self.usedSampleBuffer = self.sampleBuffer;
+                }
+                bShouldDecodeNextBuffer = NO;
+            } else if(fabs(nDiff) <= minDuration) {
+                self.usedSampleBuffer = self.sampleBuffer;
+                self.sampleBuffer = nil;
+                bShouldDecodeNextBuffer = NO;
+            } else {
+                bShouldDecodeNextBuffer = YES;
+                BBZINFO(@"readeraction should fine next");
+            }
+        }
         
-        self.usedSampleBuffer = self.sampleBuffer;
-        self.sampleBuffer = nil;
-       
-    }
+    } while (bShouldDecodeNextBuffer);
+    
     NSAssert(self.usedSampleBuffer, @"error nil samplebuffer");
-//    lastSamplePresentationTime = CMSampleBufferGetPresentationTimeStamp(self.usedSampleBuffer);
-//    BBZINFO(@"sample time:%@, realtime:%@", [NSValue valueWithCMTime:lastSamplePresentationTime], [NSValue valueWithCMTime:time]);
-//        }
+    //    lastSamplePresentationTime = CMSampleBufferGetPresentationTimeStamp(self.usedSampleBuffer);
+    //    BBZINFO(@"sample time:%@, realtime:%@", [NSValue valueWithCMTime:lastSamplePresentationTime], [NSValue valueWithCMTime:time]);
+    //        }
     self.lastTime = time;
 }
 

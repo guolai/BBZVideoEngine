@@ -26,14 +26,18 @@
 @property (nonatomic, strong) BBZTransformItem *transform;
 
 @property (nonatomic, assign) CGFloat  builderDuraton;
-
+@property (nonatomic, assign) BOOL useOriginAudio;
 @property (nonatomic, strong) UIImage *bgImage;
 @property (nonatomic, assign) BOOL useGaussImage;//画幅不一致情况下使用高斯模糊
 @property (nonatomic, strong) NSArray *maskImage;
+@property (nonatomic, assign) CGRect maskImageRect;
 
 //asset
 - (BOOL)addVideoSource:(NSString *)filePath;
+- (BOOL)addVideoSource:(NSString *)filePath visibleTimeRange:(CMTimeRange)timeRange;
 - (BOOL)addVideoAsset:(AVAsset *)avAsset;
+- (BOOL)addVideoAsset:(AVAsset *)avAsset visibleTimeRange:(CMTimeRange)timeRange;
+- (BOOL)addVideoAsset:(AVAsset *)avAsset videoCompostion:(AVVideoComposition *)videoComposition visibleTimeRange:(CMTimeRange)timeRange;
 - (BOOL)addImageSource:(NSString *)filePath;
 - (BOOL)addUIImage:(UIImage *)image;
 
@@ -43,6 +47,11 @@
 - (void)addFilterGroup:(NSString *)strDirectory;
 - (void)addTransitionGroup:(NSString *)strDirectory;
 
+////gifFilter
+//- (void)addGifFilter:(NSArray *)images
+//            atttment:(NSDictionary *)info
+//            interval:(CGFloat)fInterval;
+//- (void)addMaskFilter:(UIImage *)image frame:(CGRect)frame;
 
 //timeline
 - (void)buildTimeLine;

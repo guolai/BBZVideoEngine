@@ -13,7 +13,7 @@
 //@property (nonatomic, assign, readonly) CGFloat duration;
 @property (nonatomic, assign, readonly) CGFloat minVersion;
 @property (nonatomic, strong, readonly) NSString *filePath;
-@property (nonatomic, strong, readonly) NSArray<BBZFilterNode *> *filterGroups;
+@property (nonatomic, strong) NSArray<BBZFilterNode *> *filterGroups;
 @property (nonatomic, strong, readonly) BBZNode *endingAction;
 
 - (instancetype)initWidthDir:(NSString *)filePath;

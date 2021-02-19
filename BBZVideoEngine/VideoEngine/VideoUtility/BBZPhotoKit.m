@@ -40,11 +40,9 @@
     options.deliveryMode = PHVideoRequestOptionsDeliveryModeAutomatic;
     
     return [[PHImageManager defaultManager] requestAVAssetForVideo:asset options:options resultHandler:^(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
-        dispatch_async(dispatch_get_main_queue(), ^(void) {
-            if (completion) {
-                completion(asset, audioMix);
-            }
-        });
+        if (completion) {
+            completion(asset, audioMix);
+        }
     }];
 }
 

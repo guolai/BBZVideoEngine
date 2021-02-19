@@ -205,6 +205,7 @@
 + (int)adjustVideoSizeValue:(CGFloat)fValue {
     int value = fValue;
     value = value - value % 2;
+    value = MAX(1, value);
     return value;
 }
 

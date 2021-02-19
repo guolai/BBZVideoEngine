@@ -28,6 +28,7 @@
         _interAudioItems = [NSMutableArray array];
         _videoResourceDir = [NSString stringWithFormat:@"%@/%@", baseDir, _identifier];
 //        _transform = CGAffineTransformIdentity;
+        _useOriginAudio = YES;
         [NSFileManager createDirIfNeed:_videoResourceDir];
     }
     return self;
@@ -42,8 +43,33 @@
     return YES;
 }
 
+- (BOOL)addVideoSource:(NSString *)filePath visibleTimeRange:(CMTimeRange)timeRange {
+    AVURLAsset *avAsset = [[AVURLAsset alloc] initWithURL:[NSURL fileURLWithPath:filePath] options:nil];
+    BBZVideoAsset *videoAsset = [BBZVideoAsset assetWithAVAsset:avAsset];
+    videoAsset.playTimeRange = timeRange;
+    [self.interAssetItems addObject:videoAsset];
+    return YES;
+}
+
+
+
 - (BOOL)addVideoAsset:(AVAsset *)avAsset {
     BBZVideoAsset *videoAsset = [BBZVideoAsset assetWithAVAsset:avAsset];
+    [self.interAssetItems addObject:videoAsset];
+    return YES;
+}
+
+- (BOOL)addVideoAsset:(AVAsset *)avAsset visibleTimeRange:(CMTimeRange)timeRange {
+    BBZVideoAsset *videoAsset = [BBZVideoAsset assetWithAVAsset:avAsset];
+    videoAsset.playTimeRange = timeRange;
+    [self.interAssetItems addObject:videoAsset];
+    return YES;
+}
+
+- (BOOL)addVideoAsset:(AVAsset *)avAsset videoCompostion:(AVVideoComposition *)videoComposition visibleTimeRange:(CMTimeRange)timeRange {
+    BBZVideoAsset *videoAsset = [BBZVideoAsset assetWithAVAsset:avAsset];
+    videoAsset.playTimeRange = timeRange;
+    videoAsset.videoCompostion = videoComposition;
     [self.interAssetItems addObject:videoAsset];
     return YES;
 }
@@ -102,6 +128,46 @@
 
 - (void)addTransitionGroup:(NSString *)strDirectory {
     _transitonModel = [[BBZTransitionModel alloc] initWidthDir:strDirectory];
+}
+
+
+//- (void)addGifFilter:(NSArray *)images
+//               atttment:(NSDictionary *)info
+//            interval:(CGFloat)fInterval {
+//    [self checkFilterModel];
+//    BBZFilterNode *filterNode = _filterModel.filterGroups.firstObject;
+//    
+//    NSMutableArray *actions = [NSMutableArray arrayWithArray:filterNode.actions];
+//    BBZNode *node = [BBZNode createLocalNode:BBZNodeOverLayImage duration:100000.0];
+//    node.attachmentInfo = info;
+//    [actions addObject:node];
+//    filterNode.actions = actions;
+//    node.images = images;
+//    node.fInterval = fmax(0.05, fInterval);
+//    
+//}
+//
+//- (void)addMaskFilter:(UIImage *)image  frame:(CGRect)frame{
+//    [self checkFilterModel];
+//    BBZFilterNode *filterNode = _filterModel.filterGroups.firstObject;
+//    NSMutableArray *actions = [NSMutableArray arrayWithArray:filterNode.actions];
+//    BBZNode *node = [BBZNode createLocalNode:BBZNodeBlendImage duration:100000.0];
+//    [actions addObject:node];
+//    filterNode.actions = actions;
+//    node.images = @[image];
+//    [node buildBlendFrame:frame];
+//    node.fInterval = 100;
+//}
+
+- (void)checkFilterModel {
+    if(_filterModel) {
+        return;
+    }
+    _filterModel = [[BBZFilterModel alloc] initWidthDir:nil];
+    BBZFilterNode *filterNode = [[BBZFilterNode alloc] initWithDictionary:nil withFilePath:nil];
+    filterNode.begin = 0.0;
+    filterNode.duration = 10000.0;
+    _filterModel.filterGroups = @[filterNode];
 }
 
 #pragma mark - Timeline

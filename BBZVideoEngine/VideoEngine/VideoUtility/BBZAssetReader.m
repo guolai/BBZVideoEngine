@@ -8,7 +8,7 @@
 
 #import "BBZAssetReader.h"
 #import "BBZVideoEngineHeader.h"
-
+#import "BBZVideoTools.h"
 
 @interface BBZAssetReaderOutput ()
 @property (nonatomic, weak) BBZAssetReader *reader;
@@ -90,7 +90,7 @@
 }
 
 - (void)startProcessing {
-    [self restartProvider];
+    
 }
 
 - (void)endProcessing {
@@ -118,11 +118,6 @@
 
 - (NSError *)error {
     return ((self.provider != nil) && (self.provider.status == AVAssetReaderStatusFailed)) ? self.provider.error : self.lastError;
-}
-
-
-- (BOOL)restartProvider {
-    return NO;
 }
 
 - (NSError *)restartProviderWithOutputs:(NSArray *)outputs timeRange:(CMTimeRange)timeRange {
@@ -181,9 +176,97 @@
     NSArray *tracks = [self.reader.asset tracksWithMediaType:AVMediaTypeVideo];
     if (tracks.count > 0) {
         output = [AVAssetReaderVideoCompositionOutput assetReaderVideoCompositionOutputWithVideoTracks:tracks videoSettings:outputSettings];
-         output.videoComposition = self.reader.videoComposition ? : [AVVideoComposition videoCompositionWithPropertiesOfAsset:self.reader.asset];
+        output.videoComposition = self.reader.videoComposition ? self.reader.videoComposition : [self buildDefaultVideoCompostion];
     }
     return output;
+}
+
+- (AVVideoComposition *)buildDefaultVideoCompostion {
+    AVVideoComposition *retVideoComposition = nil;
+    if([self.reader.asset isKindOfClass:[AVComposition class]]) {
+        AVMutableVideoComposition *videoComposition = [AVMutableVideoComposition videoComposition];
+        
+        AVMutableVideoCompositionInstruction *passThroughInstruction = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
+        CMTime startTime = kCMTimeZero;
+        CMTime timeDuration = kCMTimeZero;
+        
+        NSMutableArray *arrayLayerInstruction = [NSMutableArray arrayWithCapacity:2];
+        CGSize renderSize = CGSizeZero;
+        CGFloat videoFrameRate = 30;
+        NSArray *videoTracks = [self.reader.asset tracksWithMediaType:AVMediaTypeVideo];
+        for (int i = 0; i < videoTracks.count; i++) {
+            AVAssetTrack *videoTrack = [videoTracks objectAtIndex:i];
+            if(i == 0) {
+                startTime = videoTrack.timeRange.start;
+            }
+            
+            float trackFrameRate = [videoTrack nominalFrameRate];
+            
+            if (trackFrameRate == 0) {
+                trackFrameRate = 30;
+            }
+            videoFrameRate = MIN(videoFrameRate, trackFrameRate);
+            
+            CGSize naturalSize = [videoTrack naturalSize];
+            CGAffineTransform transform = videoTrack.preferredTransform;
+            CGFloat videoAngleInDegree  = atan2(transform.b, transform.a) * 180 / M_PI;
+            CGRect resultRect = CGRectApplyAffineTransform(CGRectMake(0, 0, naturalSize.width, naturalSize.height), videoTrack.preferredTransform);
+            
+            if (videoAngleInDegree == 90 || videoAngleInDegree == -90) {
+                CGRect interRect = CGRectIntersection(resultRect, CGRectMake(0, 0, naturalSize.height, naturalSize.width));
+                if (fabs(interRect.size.width - fabs(naturalSize.width)) > 0.01 || fabs(interRect.size.height - fabs(naturalSize.height)) > 0.01) {
+                    // 需要矫正
+                    if (videoAngleInDegree == 90 && transform.a == 0.f && transform.b == 1.f && transform.c == -1.f && transform.d == 0.f) {
+                        transform.tx = naturalSize.height;
+                        transform.ty = 0;
+                    } else if (videoAngleInDegree == -90 && transform.a == 0.f && transform.b == -1.f && transform.c == 1.f && transform.d == 0.f) {
+                        transform.tx = 0;
+                        transform.ty = naturalSize.width;
+                    }
+                    // 其他情况暂不支持
+                }
+                CGFloat width = naturalSize.width;
+                naturalSize.width = naturalSize.height;
+                naturalSize.height = width;
+            } else if (videoAngleInDegree == 180) {
+                CGRect interRect = CGRectIntersection(resultRect, CGRectMake(0, 0, naturalSize.width, naturalSize.height));
+                if (fabs(interRect.size.width - fabs(naturalSize.width)) > 0.01 || fabs(interRect.size.height - fabs(naturalSize.height)) > 0.01) {
+                    if (transform.a == -1.f && transform.b == 0.f && transform.c == 0.f && transform.d == -1.f) {
+                        transform.tx = naturalSize.width / 1.f;
+                        transform.ty = naturalSize.height / 1.f;
+                    }
+                }
+            }
+            if(renderSize.width == 0) {
+                renderSize.width = naturalSize.width;
+                renderSize.height = naturalSize.height;
+            } else if(renderSize.width > naturalSize.width && naturalSize.width > 0) {
+                renderSize.width = naturalSize.width;
+                renderSize.height = naturalSize.height;
+            }
+            
+            AVMutableVideoCompositionLayerInstruction *passThroughLayer = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:videoTrack];
+            
+            [passThroughLayer setTransform:transform atTime:startTime];
+            [arrayLayerInstruction addObject:passThroughLayer];
+            timeDuration = CMTimeAdd(timeDuration, videoTrack.timeRange.duration);
+        }
+        if(renderSize.width == 0 || renderSize.height == 0) {
+            renderSize.width = 640.0;
+            renderSize.height = 1138.0;
+        }
+        videoComposition.frameDuration =  CMTimeMake(1, videoFrameRate);
+        videoComposition.renderSize = CGSizeMake([BBZVideoTools adjustVideoSizeValue:renderSize.width], [BBZVideoTools adjustVideoSizeValue:renderSize.height]);
+        passThroughInstruction.layerInstructions = arrayLayerInstruction;
+        videoComposition.instructions = @[passThroughInstruction];
+        passThroughInstruction.timeRange = CMTimeRangeMake(startTime, timeDuration);
+        NSLog(@"videoComposition.renderSize %f, %f", renderSize.width, renderSize.height);
+        retVideoComposition = videoComposition;
+    } else {
+        retVideoComposition = [AVVideoComposition videoCompositionWithPropertiesOfAsset:self.reader.asset];
+    }
+    
+    return retVideoComposition;
 }
 
 - (AVAssetReaderOutput *)audioTrackOutputWithOutputSettings:(NSDictionary *)outputSettings {

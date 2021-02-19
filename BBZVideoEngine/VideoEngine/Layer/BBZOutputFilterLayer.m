@@ -27,7 +27,12 @@
         BBZNode *node = nil;
         if(self.model.maskImage) {
             node = [BBZNode createLocalNode:BBZNodeBlendImage duration:inputBuilder.startTime];
-            [node buildBlendFrame:CGRectMake(self.context.renderSize.width - 40.0 - 50.0, self.context.renderSize.height - 40.0 - 50.0, 40.0, 40.0)];
+            if(CGRectEqualToRect(self.model.maskImageRect, CGRectZero)) {
+                  [node buildBlendFrame:CGRectMake(self.context.renderSize.width - 40.0 - 50.0, self.context.renderSize.height - 40.0 - 50.0, 40.0, 40.0)];
+            } else {
+                  [node buildBlendFrame:self.model.maskImageRect];
+            }
+          
             node.images = self.model.maskImage;
         }
         

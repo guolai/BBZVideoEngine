@@ -40,6 +40,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (CGSize)resolutionForVideoSize:(CGSize)videoSize limitedByResolution:(NSInteger)resolutionLimit;
 
++ (int)adjustVideoSizeValue:(CGFloat)fValue;
+
 + (void)readAVAsset:(AVAsset *)videoAsset
           forVideoSize:(CGSize *)videoSize
           videoBitRate:(NSInteger *)videoBitRate

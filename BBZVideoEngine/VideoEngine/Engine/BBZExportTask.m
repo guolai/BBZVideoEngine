@@ -17,6 +17,7 @@
 @property (nonatomic, strong) BBZVideoEngine *videoEngine;
 @property (nonatomic, strong) BBZEngineContext *context;
 @property (nonatomic, assign) BOOL bShouldResume;
+@property (nonatomic, assign) UIApplicationState appState;
 //@property (nonatomic, assign) dispatch_queue_t queue;
 @end
 
@@ -30,6 +31,7 @@
             BBZINFO(@"BBZExportTask remove exportFile %@", self.exportFilePath);
         }
     }
+    [self removeObserverNotification];
 }
 
 - (instancetype)initWithModel:(BBZVideoModel *)videoModel {
@@ -39,6 +41,7 @@
         [NSFileManager createDirIfNeed:tmpDir];
         _exportFilePath = [NSString stringWithFormat:@"%@/output.mp4", tmpDir];
 //        _queue = [BBZQueueManager exportQueue];
+        [self addObserverNotification];
     }
     return self;
 }
@@ -59,8 +62,9 @@
             if ([[NSFileManager defaultManager] fileExistsAtPath:self.outputFile]) {
                 [[NSFileManager defaultManager] removeItemAtPath:self.outputFile error:NULL];
             }
-            if ([UIApplication sharedApplication].applicationState != UIApplicationStateActive) {
+            if (self.appState != UIApplicationStateActive) {
                 self.bShouldResume = YES;
+                return;
             }
             self.state = BBZTaskStateRunning;
             bRet = YES;
@@ -79,7 +83,6 @@
             });
         }
     });
-    [self addObserverNotification];
     return bRet;
 }
 
@@ -148,15 +151,40 @@
 #pragma mark - Private
 
 - (void)addObserverNotification {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(applicationDidBecomeActive)
+                                                 name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(applicationWillResignActive)
+                                                 name:UIApplicationWillResignActiveNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(applicationWillEnterForeground)
+                                                 name:UIApplicationWillEnterForegroundNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(applicationDidEnterBackground)
+                                                 name:UIApplicationDidEnterBackgroundNotification
+                                               object:nil];
 }
 
 - (void)removeObserverNotification {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+
+- (void)applicationWillEnterForeground {
+    self.appState = [UIApplication sharedApplication].applicationState;
+}
+
+- (void)applicationDidEnterBackground {
+    self.appState = [UIApplication sharedApplication].applicationState;
+}
+
 - (void)applicationDidBecomeActive {
+    self.appState = [UIApplication sharedApplication].applicationState;
     if(self.bShouldResume) {
         [self resume];
         self.bShouldResume = NO;
@@ -164,6 +192,7 @@
 }
 
 - (void)applicationWillResignActive {
+    self.appState = [UIApplication sharedApplication].applicationState;
     if(self.state == BBZTaskStateRunning) {
         self.bShouldResume = YES;
         [self pause];

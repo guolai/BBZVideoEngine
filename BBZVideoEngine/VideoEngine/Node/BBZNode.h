@@ -73,6 +73,8 @@ extern NSString *const BBZFilterMovieEnding;
 @property (nonatomic, assign) BOOL useGaussImage;
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) NSArray *images;
+@property (nonatomic, assign) double fInterval;//动画间隔
+@property (nonatomic, strong) NSDictionary *attachmentInfo;
 //@property (nonatomic, assign) double offset;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dic withFilePath:(NSString *)filePath;
