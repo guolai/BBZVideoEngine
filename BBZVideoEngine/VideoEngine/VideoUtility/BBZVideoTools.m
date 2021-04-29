@@ -75,13 +75,6 @@
     NSURL *url = [NSURL fileURLWithPath:filePath];
     
     BBZINFO(@"========视频保存Asset开始========");
-    //    QZEVGifEffectExporterHandler *exporterHandler = [[QZEVGifEffectExporterHandler alloc] init];
-    //    WSSDAVAssetExportSession *exporter = [WSSDAVAssetExportSession exportSessionWithAsset:asset];
-    //    exporter.delegate = exporterHandler;
-    //    exporter.shouldOptimizeForNetworkUse = YES;
-    //    exporter.outputURL = url;
-    //    exporter.outputFileType = AVFileTypeMPEG4;
-    //    exporter.metadata = [self metaDataForAsset:asset];
     AVAssetExportSession *exporter = [[AVAssetExportSession alloc] initWithAsset:asset presetName:AVAssetExportPresetPassthrough];
     exporter.shouldOptimizeForNetworkUse = YES;
     exporter.outputURL = url;
