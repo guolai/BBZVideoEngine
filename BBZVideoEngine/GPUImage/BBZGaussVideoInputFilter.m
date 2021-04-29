@@ -214,8 +214,7 @@ NSString *const kBBZGaussVideoInputFragmentShader = SHADER_STRING
 
     glVertexAttribPointer(_gaussFilterPositionAttribute, 2, GL_FLOAT, 0, 0, normalVertices);
     glVertexAttribPointer(_gaussFilterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, normalTextureCoordinates);
-//    glEnableVertexAttribArray(_gaussFilterPositionAttribute);
-//    glEnableVertexAttribArray(_gaussFilterTextureCoordinateAttribute);
+
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     
    
@@ -245,10 +244,8 @@ NSString *const kBBZGaussVideoInputFragmentShader = SHADER_STRING
     glBindTexture(GL_TEXTURE_2D, [frameBuffer2 texture]);
     glUniform1i(_gaussFilterInputTextureUniform, 2);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-//    glFinish();
+
     self.bgFrameBuffer = frameBuffer1;
-//    [frameBuffer1 unlock];
-//    frameBuffer1 = nil;
     [frameBuffer2 unlock];
     frameBuffer2 = nil;
 }
